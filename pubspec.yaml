@@ -30,6 +30,7 @@ flutter:
   assets:
     - assets/Icons/
     - assets/Icons/Arrows/
+    - assets/Icons/Bank/
 # Fonts
   fonts:
     - family: Inter
