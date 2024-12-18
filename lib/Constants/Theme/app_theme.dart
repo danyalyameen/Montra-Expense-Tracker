@@ -4,6 +4,7 @@ import 'package:montra_expense_tracker/Constants/Theme/text_styles.dart';
 
 class AppTheme {
   ThemeData lightTheme = ThemeData(
+    useMaterial3: true,
     appBarTheme: AppBarTheme(
       titleTextStyle: CustomTextStyles.appBarTitle,
       centerTitle: true,
@@ -22,15 +23,13 @@ class AppTheme {
     fontFamily: "Inter",
     primaryColor: AppColors.primaryViolet,
     elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(AppColors.primaryViolet),
-        shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primaryViolet,
+          foregroundColor: AppColors.light80,
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
           ),
-        ),
-        textStyle: WidgetStatePropertyAll(CustomTextStyles.buttonText),
-      ),
+          textStyle: const TextStyle(fontWeight: FontWeight.w600)),
     ),
   );
 }

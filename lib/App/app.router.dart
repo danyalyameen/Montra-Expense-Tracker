@@ -28,8 +28,11 @@ class StackedRouter extends _i1.RouterBase {
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.ExpenseView: (data) {
+      final args = data.getArgs<ExpenseViewArguments>(
+        orElse: () => const ExpenseViewArguments(),
+      );
       return _i3.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i2.ExpenseView(),
+        builder: (context) => _i2.ExpenseView(key: args.key),
         settings: data,
       );
     }
@@ -42,29 +45,55 @@ class StackedRouter extends _i1.RouterBase {
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
 }
 
+class ExpenseViewArguments {
+  const ExpenseViewArguments({this.key});
+
+  final _i3.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant ExpenseViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
 extension NavigatorStateExtension on _i4.NavigationService {
-  Future<dynamic> navigateToExpenseView([
+  Future<dynamic> navigateToExpenseView({
+    _i3.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.expenseView,
+        arguments: ExpenseViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> replaceWithExpenseView([
+  Future<dynamic> replaceWithExpenseView({
+    _i3.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.expenseView,
+        arguments: ExpenseViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

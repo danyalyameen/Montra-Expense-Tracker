@@ -6,4 +6,6 @@ class IconsPath {
   static String ubl = "assets/Icons/Bank/UBL.svg";
   static String hbl = "assets/Icons/Bank/HBL.svg";
   static String sadapay = "assets/Icons/Bank/Sadapay.svg";
+  static String attachment = "assets/Icons/Attachment/attachment.svg";
+  static String transaction = "assets/Icons/Finance/transaction.svg";
 }

@@ -14,6 +14,7 @@ dependencies:
   stacked: ^3.4.4
   stacked_services: ^1.6.0
   flutter_svg: ^2.0.16
+  dotted_border: ^2.1.0
 
 # Dev Dependencies
 dev_dependencies:
@@ -31,6 +32,8 @@ flutter:
     - assets/Icons/
     - assets/Icons/Arrows/
     - assets/Icons/Bank/
+    - assets/Icons/Attachment/
+    - assets/Icons/Finance/
 # Fonts
   fonts:
     - family: Inter

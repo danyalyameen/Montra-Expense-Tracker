@@ -3,18 +3,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
-import 'package:montra_expense_tracker/Features/Expense/Views/expense_view_model.dart';
+import 'package:montra_expense_tracker/Features/Income/Views/income_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_drop_down.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
 import 'package:stacked/stacked.dart';
 
 // ignore: must_be_immutable
-class ExpenseView extends StackedView<ExpenseViewModel> {
-  ExpenseView({super.key});
+class IncomeView extends StackedView<IncomeViewModel> {
+  IncomeView({super.key});
 
   String continueButtonText = "Continue";
-  String appBarTitle = "Expense";
+  String appBarTitle = "Income";
   String createCategoryButtonText = "Create Category";
   String categoryDropDownHintText = "Category";
   String descriptionTextFieldHintText = "Description";
@@ -29,15 +29,15 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
 
   @override
   Widget builder(
-      BuildContext context, ExpenseViewModel viewModel, Widget? child) {
+      BuildContext context, IncomeViewModel viewModel, Widget? child) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.primaryRed,
+        backgroundColor: AppColors.primaryGreen,
         appBar: AppBar(
-          backgroundColor: AppColors.primaryRed,
+          backgroundColor: AppColors.primaryGreen,
           title: Text(
             appBarTitle,
             style: TextStyle(fontSize: width * 0.05),
@@ -172,7 +172,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
   }
 
   @override
-  ExpenseViewModel viewModelBuilder(BuildContext context) => ExpenseViewModel();
+  IncomeViewModel viewModelBuilder(BuildContext context) => IncomeViewModel();
 }
 
 // ignore: must_be_immutable
