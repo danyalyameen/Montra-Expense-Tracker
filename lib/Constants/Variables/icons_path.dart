@@ -8,4 +8,9 @@ class IconsPath {
   static String sadapay = "assets/Icons/Bank/Sadapay.svg";
   static String attachment = "assets/Icons/Attachment/attachment.svg";
   static String transaction = "assets/Icons/Finance/transaction.svg";
+  static String account = "assets/Icons/Profile/account.svg";
+  static String settings = "assets/Icons/Profile/settings.svg";
+  static String export = "assets/Icons/Profile/export.svg";
+  static String logout = "assets/Icons/Profile/logout.svg";
+  static String edit = "assets/Icons/Edit/edit.svg";
 }

@@ -11,6 +11,7 @@ class AppColors {
   static Color red60 = const Color(0xFFFD6F7A);
   static Color red40 = const Color(0xFFFDA2A9);
   static Color red20 = const Color(0xFFFDD5D7);
+  static Color logoutBackground = const Color(0xFFFFE2E4);
   static Color primaryGreen = const Color(0xFF00A86B);
   static Color green80 = const Color(0xFF2AB784);
   static Color green60 = const Color(0xFF65D1AA);
@@ -25,6 +26,7 @@ class AppColors {
   static Color light60 = const Color(0xFFF7F9FA);
   static Color light40 = const Color(0xFFF2F4F5);
   static Color light20 = const Color(0xFFE3E5E5);
+  static Color profileBackground = const Color(0xFFF6F6F6);
   static Color primaryYellow = const Color(0xFFFCAC12);
   static Color yellow80 = const Color(0xFFFCBB3C);
   static Color yellow60 = const Color(0xFFFCCC6F);

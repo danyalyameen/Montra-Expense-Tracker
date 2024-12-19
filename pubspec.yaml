@@ -34,6 +34,9 @@ flutter:
     - assets/Icons/Bank/
     - assets/Icons/Attachment/
     - assets/Icons/Finance/
+    - assets/Icons/Profile/
+    - assets/Icons/Edit/
+    - assets/Images/User Image/
 # Fonts
   fonts:
     - family: Inter
