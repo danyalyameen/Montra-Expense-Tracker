@@ -14,4 +14,9 @@ class IconsPath {
   static String logout = "assets/Icons/Profile/logout.svg";
   static String edit = "assets/Icons/Edit/edit.svg";
   static String accountBackground = "assets/Icons/Account View/background.svg";
+  static String shopping = "assets/Icons/Expanses Icons/shopping.svg";
+  static String food = "assets/Icons/Expanses Icons/food.svg";
+  static String subscription = "assets/Icons/Expanses Icons/subscription.svg";
+  static String transportation =
+      "assets/Icons/Expanses Icons/transportation.svg";
 }

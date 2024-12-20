@@ -215,7 +215,7 @@ class AddedWallets extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     "\$${Database.walletOptions[index][walletBalanceKey]}",
                     style: TextStyle(
