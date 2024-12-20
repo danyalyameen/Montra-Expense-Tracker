@@ -26,7 +26,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
         backgroundColor: AppColors.profileBackground,
         body: Column(
           children: [
-            AccountDetails(username: username, accountTitle: accountTitle),
+            UserAccount(username: username, accountTitle: accountTitle),
             SizedBox(
               height: height * 0.05,
             ),
@@ -48,9 +48,9 @@ class ProfileView extends StackedView<ProfileViewModel> {
   ProfileViewModel viewModelBuilder(BuildContext context) => ProfileViewModel();
 }
 
-class AccountDetails extends StatelessWidget {
+class UserAccount extends StatelessWidget {
   final String username, accountTitle;
-  const AccountDetails(
+  const UserAccount(
       {super.key, required this.username, required this.accountTitle});
 
   @override

@@ -1,5 +1,5 @@
 class IconsPath {
-  static String leftArrow = "assets/Icons/Arrows/arrow-left.svg";
+  static String backArrow = "assets/Icons/Arrows/arrow-left.svg";
   static String dropdownArrow = "assets/Icons/Arrows/arrow-down-2.svg";
   static String easypaisa = "assets/Icons/Bank/Easypaisa.svg";
   static String jazzcash = "assets/Icons/Bank/Jazz Cash.svg";

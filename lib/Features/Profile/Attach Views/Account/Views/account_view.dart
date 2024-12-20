@@ -2,12 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view_model.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 // ignore: must_be_immutable
 class AccountView extends StackedView<AccountViewModel> {
@@ -40,7 +42,7 @@ class AccountView extends StackedView<AccountViewModel> {
             width: width * 0.08,
             height: width * 0.08,
             child: SvgPicture.asset(
-              IconsPath.leftArrow,
+              IconsPath.backArrow,
             ),
           ),
         ),
@@ -64,6 +66,7 @@ class AccountView extends StackedView<AccountViewModel> {
               walletPictureKey: walletPictureKey,
               walletNameKey: walletNameKey,
               walletBalanceKey: walletBalanceKey,
+              navigationService: viewModel.navigationService,
             ),
             SizedBox(
               height: height * 0.06,
@@ -156,13 +159,15 @@ class AccountBalance extends StatelessWidget {
 class AddedWallets extends StatelessWidget {
   final double width, height;
   final String walletPictureKey, walletNameKey, walletBalanceKey;
+  final NavigationService navigationService;
   const AddedWallets(
       {super.key,
       required this.width,
       required this.height,
       required this.walletPictureKey,
       required this.walletNameKey,
-      required this.walletBalanceKey});
+      required this.walletBalanceKey,
+      required this.navigationService});
 
   @override
   Widget build(BuildContext context) {
@@ -171,47 +176,56 @@ class AddedWallets extends StatelessWidget {
       height: height * 0.4,
       child: ListView.separated(
         itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(vertical: height * 0.02),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: width * 0.12,
-                  height: width * 0.12,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(width * 0.04),
-                    color: AppColors.walletIconBackgroundColorProfile,
-                  ),
-                  child: Center(
-                    child: SvgPicture.asset(
-                      Database.walletOptions[index][walletPictureKey],
-                      width: width * 0.04,
-                      height: width * 0.04,
+          return InkWell(
+            onTap: () {
+              navigationService.navigateToAccountDetails(
+                  walletName: Database.walletOptions[index][walletNameKey],
+                  walletBalance: Database.walletOptions[index]
+                      [walletBalanceKey],
+                  icon: Database.walletOptions[index][walletPictureKey]);
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: height * 0.02),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: width * 0.12,
+                    height: width * 0.12,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(width * 0.04),
+                      color: AppColors.walletIconBackgroundColorProfile,
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        Database.walletOptions[index][walletPictureKey],
+                        width: width * 0.04,
+                        height: width * 0.04,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: width * 0.04,
-                ),
-                Text(
-                  Database.walletOptions[index][walletNameKey],
-                  style: TextStyle(
-                    color: AppColors.primaryBlack,
-                    fontSize: width * 0.045,
-                    fontWeight: FontWeight.w600,
+                  SizedBox(
+                    width: width * 0.04,
                   ),
-                ),
-                Spacer(),
-                Text(
-                  "\$${Database.walletOptions[index][walletBalanceKey]}",
-                  style: TextStyle(
-                    color: AppColors.primaryBlack,
-                    fontSize: width * 0.045,
-                    fontWeight: FontWeight.bold,
+                  Text(
+                    Database.walletOptions[index][walletNameKey],
+                    style: TextStyle(
+                      color: AppColors.primaryBlack,
+                      fontSize: width * 0.045,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-              ],
+                  Spacer(),
+                  Text(
+                    "\$${Database.walletOptions[index][walletBalanceKey]}",
+                    style: TextStyle(
+                      color: AppColors.primaryBlack,
+                      fontSize: width * 0.045,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },

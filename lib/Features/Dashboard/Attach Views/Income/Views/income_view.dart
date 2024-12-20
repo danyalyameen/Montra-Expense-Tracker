@@ -50,7 +50,7 @@ class IncomeView extends StackedView<IncomeViewModel> {
               bottom: height * 0.012,
             ),
             child: SvgPicture.asset(
-              IconsPath.leftArrow,
+              IconsPath.backArrow,
               colorFilter:
                   ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
               width: width * 0.01,

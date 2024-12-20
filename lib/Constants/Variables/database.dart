@@ -63,4 +63,81 @@ class Database {
       "Colors": AppColors.primaryYellow,
     },
   ];
+  static List<Map<String, dynamic>> todayExpenseDatabase = [
+    {
+      "Category": "Shopping",
+      "Description": "Buy Some Grocery",
+      "Time": "10:00 AM",
+      "Expense": "\$120",
+      "Icon": "",
+      "Icon-Color": AppColors.primaryRed,
+      "Icon-Background": AppColors.primaryRed,
+    },
+    {
+      "Category": "Subscription",
+      "Description": "Buy Some Grocery",
+      "Time": "10:00 AM",
+      "Expense": "\$120",
+      "Icon": "",
+      "Icon-Color": AppColors.primaryRed,
+      "Icon-Background": AppColors.primaryRed,
+    },
+    {
+      "Category": "Food",
+      "Description": "Buy Some Grocery",
+      "Time": "10:00 AM",
+      "Expense": "\$120",
+      "Icon": "",
+      "Icon-Color": AppColors.primaryRed,
+      "Icon-Background": AppColors.primaryRed,
+    },
+    {
+      "Category": "Transportation",
+      "Description": "Buy Some Grocery",
+      "Time": "10:00 AM",
+      "Expense": "\$120",
+      "Icon": "",
+      "Icon-Color": AppColors.primaryRed,
+      "Icon-Background": AppColors.primaryRed,
+    },
+  ];
+
+  static List<Map<String, dynamic>> yesterdayExpenseDatabase = [
+    {
+      "Category": "Shopping",
+      "Description": "Buy Some Grocery",
+      "Time": "10:00 AM",
+      "Expense": "\$120",
+      "Icon": "",
+      "Icon-Color": AppColors.primaryRed,
+      "Icon-Background": AppColors.primaryRed,
+    },
+    {
+      "Category": "Subscription",
+      "Description": "Buy Some Grocery",
+      "Time": "10:00 AM",
+      "Expense": "\$120",
+      "Icon": "",
+      "Icon-Color": AppColors.primaryRed,
+      "Icon-Background": AppColors.primaryRed,
+    },
+    {
+      "Category": "Food",
+      "Description": "Buy Some Grocery",
+      "Time": "10:00 AM",
+      "Expense": "\$120",
+      "Icon": "",
+      "Icon-Color": AppColors.primaryRed,
+      "Icon-Background": AppColors.primaryRed,
+    },
+    {
+      "Category": "Transportation",
+      "Description": "Buy Some Grocery",
+      "Time": "10:00 AM",
+      "Expense": "\$120",
+      "Icon": "",
+      "Icon-Color": AppColors.primaryRed,
+      "Icon-Background": AppColors.primaryRed,
+    },
+  ];
 }
