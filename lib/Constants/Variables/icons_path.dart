@@ -13,4 +13,5 @@ class IconsPath {
   static String export = "assets/Icons/Profile/export.svg";
   static String logout = "assets/Icons/Profile/logout.svg";
   static String edit = "assets/Icons/Edit/edit.svg";
+  static String accountBackground = "assets/Icons/Account View/background.svg";
 }

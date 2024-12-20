@@ -1,43 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
+import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
-import 'package:montra_expense_tracker/Features/Expense/Views/expense_view_model.dart';
+import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Transfer/Views/transfer_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_drop_down.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
 import 'package:stacked/stacked.dart';
 
 // ignore: must_be_immutable
-class ExpenseView extends StackedView<ExpenseViewModel> {
-  ExpenseView({super.key});
+class TransferView extends StackedView<TransferViewModel> {
+  TransferView({super.key});
 
   String continueButtonText = "Continue";
-  String appBarTitle = "Expense";
-  String createCategoryButtonText = "Create Category";
-  String categoryDropDownHintText = "Category";
+  String appBarTitle = "Transfer";
   String descriptionTextFieldHintText = "Description";
   String addWalletButtonText = "Add Wallet";
   String walletDropDownHintText = "Wallet";
-  String categoryOptionsCategoryKey = "Category";
-  String categoryOptionsColorKey = "Colors";
   String walletOptionsBankNameKey = "Wallet";
   String walletOptionsAccountBalanceKey = "Balance";
   String walletOptionsAccountTypeKey = "Account Type";
   String walletOptionsBankPictureKey = "Picture";
+  String fromTextFieldHintText = "From";
+  String toTextFieldHintText = "To";
 
   @override
   Widget builder(
-      BuildContext context, ExpenseViewModel viewModel, Widget? child) {
+      BuildContext context, TransferViewModel viewModel, Widget? child) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.primaryRed,
+        backgroundColor: AppColors.primaryBlue,
         appBar: AppBar(
-          backgroundColor: AppColors.primaryRed,
+          backgroundColor: AppColors.primaryBlue,
           title: Text(
             appBarTitle,
             style: TextStyle(fontSize: width * 0.05),
@@ -64,7 +63,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                height: height * 0.6,
+                height: height * 0.3,
                 decoration: BoxDecoration(
                   color: AppColors.primaryLight,
                   borderRadius: BorderRadius.only(
@@ -74,36 +73,13 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                 ),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: height * 0.05),
-                      child: CustomDropDown(
-                        buttonsBottomHight: height * 0.035,
-                        buttonText: createCategoryButtonText,
-                        buttonWidth: width * 0.38,
-                        bottomSheetHight: height * 0.25,
-                        hintText: categoryDropDownHintText,
-                        showItems: ShowItemsForCategory(
-                          categoryKey: categoryOptionsCategoryKey,
-                          colorsKey: categoryOptionsColorKey,
-                          width: width,
-                          height: height,
-                          categoryOptions: viewModel.categoryOptions,
-                          updateCategory: (index) {
-                            viewModel.updateCategoryHintText(index: index);
-                          },
-                        ),
-                        showSelectedItemOnHintText: ShowSelectedCategory(
-                          colorsKey: categoryOptionsColorKey,
-                          width: width,
-                          height: height,
-                          storeSelectedCategory:
-                              viewModel.storeSelectedCategory,
-                        ),
-                        storeSelectedItem: viewModel.storeSelectedCategory,
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
+                    TransferTextField(
+                      fromController: viewModel.fromController,
+                      toController: viewModel.toController,
+                      fromTextFieldHintText: fromTextFieldHintText,
+                      toTextFieldHintText: toTextFieldHintText,
+                      height: height,
+                      width: width,
                     ),
                     CustomTextField(
                       controller: viewModel.descriptionController,
@@ -136,17 +112,13 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                         },
                         width: width,
                         height: height,
-                        walletOptions: viewModel.walletOptions,
+                        walletOptions: Database.walletOptions,
                       ),
                     ),
                     SizedBox(
                       height: height * 0.02,
                     ),
                     FileInserter(),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    const ListTileSwitch(),
                     SizedBox(
                       height: height * 0.02,
                     ),
@@ -172,7 +144,8 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
   }
 
   @override
-  ExpenseViewModel viewModelBuilder(BuildContext context) => ExpenseViewModel();
+  TransferViewModel viewModelBuilder(BuildContext context) =>
+      TransferViewModel();
 }
 
 // ignore: must_be_immutable
@@ -184,8 +157,9 @@ class Balance extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Padding(
-      padding: EdgeInsets.only(top: width * 0.3, left: width * 0.05),
+      padding: EdgeInsets.only(top: height * 0.15, left: width * 0.05),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -235,123 +209,74 @@ class Balance extends StatelessWidget {
   }
 }
 
-class ShowSelectedCategory extends StatelessWidget {
+class TransferTextField extends StatelessWidget {
   final double width, height;
-  final Map<String, dynamic> storeSelectedCategory;
-  final String colorsKey;
-  const ShowSelectedCategory(
+  final TextEditingController fromController, toController;
+  final String toTextFieldHintText, fromTextFieldHintText;
+  const TransferTextField(
       {super.key,
       required this.width,
       required this.height,
-      required this.storeSelectedCategory,
-      required this.colorsKey});
+      required this.fromController,
+      required this.toController,
+      required this.toTextFieldHintText,
+      required this.fromTextFieldHintText});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: height * 0.01, bottom: height * 0.01),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: AppColors.primaryBlack,
-            width: width * 0.002,
+      padding: EdgeInsets.only(top: height * 0.05),
+      child: Stack(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                  width: width * 0.42,
+                  height: height * 0.1,
+                  child: CustomTextField(
+                      controller: fromController,
+                      width: width,
+                      hintText: fromTextFieldHintText,
+                      height: height)),
+              SizedBox(
+                width: width * 0.05,
+              ),
+              SizedBox(
+                  width: width * 0.42,
+                  height: height * 0.1,
+                  child: CustomTextField(
+                      controller: toController,
+                      width: width,
+                      hintText: toTextFieldHintText,
+                      height: height)),
+            ],
           ),
-          borderRadius: BorderRadius.circular(width * 0.08),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                storeSelectedCategory[Variables.universalItemKey],
-                style: TextStyle(
-                    color: AppColors.primaryBlack, fontWeight: FontWeight.w500),
-              ),
-            ),
-            SizedBox(
-              width: width * 0.02,
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: width * 0.04),
-              child: CircleAvatar(
-                maxRadius: width * 0.01,
-                backgroundColor: storeSelectedCategory[colorsKey],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ShowItemsForCategory extends StatelessWidget {
-  final double width, height;
-  final List<Map<String, dynamic>> categoryOptions;
-  final Function(int index) updateCategory;
-  final String colorsKey;
-  final String categoryKey;
-  const ShowItemsForCategory({
-    super.key,
-    required this.width,
-    required this.height,
-    required this.categoryOptions,
-    required this.updateCategory,
-    required this.colorsKey,
-    required this.categoryKey,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 3,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: categoryOptions.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: width * 0.1, vertical: height * 0.057),
-            child: InkWell(
-              onTap: () {
-                updateCategory(index);
-              },
+          Padding(
+            padding: EdgeInsets.only(top: height * 0.01),
+            child: Center(
               child: Container(
                 decoration: BoxDecoration(
+                    color: AppColors.light80,
                     border: Border.all(
-                      color: AppColors.primaryBlack,
-                      width: width * 0.002,
-                    ),
-                    borderRadius: BorderRadius.circular(width * 0.08)),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        categoryOptions[index]["Category"],
-                        style: TextStyle(
-                          color: AppColors.primaryBlack,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: width * 0.02,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: width * 0.04),
-                      child: CircleAvatar(
-                        maxRadius: width * 0.01,
-                        backgroundColor: categoryOptions[index][colorsKey],
-                      ),
-                    )
-                  ],
+                        color: AppColors.light60, width: width * 0.02),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primaryBlack,
+                        blurRadius: width * 0.001,
+                        blurStyle: BlurStyle.outer,
+                      )
+                    ]),
+                child: SvgPicture.asset(
+                  IconsPath.transaction,
+                  width: width * 0.03,
+                  height: height * 0.03,
                 ),
               ),
             ),
-          );
-        },
+          )
+        ],
       ),
     );
   }
@@ -557,46 +482,6 @@ class _ShowItemsForWalletState extends State<ShowItemsForWallet> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ListTileSwitch extends StatefulWidget {
-  const ListTileSwitch({super.key});
-
-  @override
-  State<ListTileSwitch> createState() => _ListTileSwitchState();
-}
-
-class _ListTileSwitchState extends State<ListTileSwitch> {
-  bool isRepeat = false;
-  String titleText = "Repeat";
-  String subTitleText = "Repeat transaction";
-  @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-      child: SwitchListTile(
-        title: Text(
-          titleText,
-          style: TextStyle(
-            color: AppColors.primaryBlack,
-            fontWeight: FontWeight.w500,
-            fontSize: width * 0.042,
-          ),
-        ),
-        subtitle: Text(
-          subTitleText,
-          style: TextStyle(
-            color: AppColors.grey,
-            fontSize: width * 0.03,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        value: isRepeat,
-        onChanged: (value) {},
       ),
     );
   }

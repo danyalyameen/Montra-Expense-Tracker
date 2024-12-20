@@ -27,6 +27,7 @@ class AppColors {
   static Color light40 = const Color(0xFFF2F4F5);
   static Color light20 = const Color(0xFFE3E5E5);
   static Color profileBackground = const Color(0xFFF6F6F6);
+  static Color walletIconBackgroundColorProfile = const Color(0xFFF1F1FA);
   static Color primaryYellow = const Color(0xFFFCAC12);
   static Color yellow80 = const Color(0xFFFCBB3C);
   static Color yellow60 = const Color(0xFFFCCC6F);

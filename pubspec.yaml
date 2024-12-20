@@ -37,6 +37,7 @@ flutter:
     - assets/Icons/Profile/
     - assets/Icons/Edit/
     - assets/Images/User Image/
+    - assets/Icons/Account View/
 # Fonts
   fonts:
     - family: Inter

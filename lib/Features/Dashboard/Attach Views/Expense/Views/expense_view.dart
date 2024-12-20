@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
+import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
-import 'package:montra_expense_tracker/Features/Income/Views/income_view_model.dart';
+import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_drop_down.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
 import 'package:stacked/stacked.dart';
 
 // ignore: must_be_immutable
-class IncomeView extends StackedView<IncomeViewModel> {
-  IncomeView({super.key});
+class ExpenseView extends StackedView<ExpenseViewModel> {
+  ExpenseView({super.key});
 
   String continueButtonText = "Continue";
-  String appBarTitle = "Income";
+  String appBarTitle = "Expense";
   String createCategoryButtonText = "Create Category";
   String categoryDropDownHintText = "Category";
   String descriptionTextFieldHintText = "Description";
@@ -29,15 +30,15 @@ class IncomeView extends StackedView<IncomeViewModel> {
 
   @override
   Widget builder(
-      BuildContext context, IncomeViewModel viewModel, Widget? child) {
+      BuildContext context, ExpenseViewModel viewModel, Widget? child) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.primaryGreen,
+        backgroundColor: AppColors.primaryRed,
         appBar: AppBar(
-          backgroundColor: AppColors.primaryGreen,
+          backgroundColor: AppColors.primaryRed,
           title: Text(
             appBarTitle,
             style: TextStyle(fontSize: width * 0.05),
@@ -87,7 +88,7 @@ class IncomeView extends StackedView<IncomeViewModel> {
                           colorsKey: categoryOptionsColorKey,
                           width: width,
                           height: height,
-                          categoryOptions: viewModel.categoryOptions,
+                          categoryOptions: Database.categoryOptions,
                           updateCategory: (index) {
                             viewModel.updateCategoryHintText(index: index);
                           },
@@ -136,7 +137,7 @@ class IncomeView extends StackedView<IncomeViewModel> {
                         },
                         width: width,
                         height: height,
-                        walletOptions: viewModel.walletOptions,
+                        walletOptions: Database.walletOptions,
                       ),
                     ),
                     SizedBox(
@@ -172,7 +173,7 @@ class IncomeView extends StackedView<IncomeViewModel> {
   }
 
   @override
-  IncomeViewModel viewModelBuilder(BuildContext context) => IncomeViewModel();
+  ExpenseViewModel viewModelBuilder(BuildContext context) => ExpenseViewModel();
 }
 
 // ignore: must_be_immutable

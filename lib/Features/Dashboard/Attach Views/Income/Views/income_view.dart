@@ -1,41 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
+import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
-import 'package:montra_expense_tracker/Features/Transfer/Views/transfer_view_model.dart';
+import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Income/Views/income_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_drop_down.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
 import 'package:stacked/stacked.dart';
 
 // ignore: must_be_immutable
-class TransferView extends StackedView<TransferViewModel> {
-  TransferView({super.key});
+class IncomeView extends StackedView<IncomeViewModel> {
+  IncomeView({super.key});
 
   String continueButtonText = "Continue";
-  String appBarTitle = "Transfer";
+  String appBarTitle = "Income";
+  String addIncomeButtonText = "Add Income";
+  String incomeDropDownHintText = "Income";
   String descriptionTextFieldHintText = "Description";
   String addWalletButtonText = "Add Wallet";
   String walletDropDownHintText = "Wallet";
+  String incomeOptionsIncomeKey = "Income";
+  String incomeOptionsColorKey = "Colors";
   String walletOptionsBankNameKey = "Wallet";
   String walletOptionsAccountBalanceKey = "Balance";
   String walletOptionsAccountTypeKey = "Account Type";
   String walletOptionsBankPictureKey = "Picture";
-  String fromTextFieldHintText = "From";
-  String toTextFieldHintText = "To";
 
   @override
   Widget builder(
-      BuildContext context, TransferViewModel viewModel, Widget? child) {
+      BuildContext context, IncomeViewModel viewModel, Widget? child) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.primaryBlue,
+        backgroundColor: AppColors.primaryGreen,
         appBar: AppBar(
-          backgroundColor: AppColors.primaryBlue,
+          backgroundColor: AppColors.primaryGreen,
           title: Text(
             appBarTitle,
             style: TextStyle(fontSize: width * 0.05),
@@ -62,7 +65,7 @@ class TransferView extends StackedView<TransferViewModel> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                height: height * 0.3,
+                height: height * 0.6,
                 decoration: BoxDecoration(
                   color: AppColors.primaryLight,
                   borderRadius: BorderRadius.only(
@@ -72,13 +75,35 @@ class TransferView extends StackedView<TransferViewModel> {
                 ),
                 child: Column(
                   children: [
-                    TransferTextField(
-                      fromController: viewModel.fromController,
-                      toController: viewModel.toController,
-                      fromTextFieldHintText: fromTextFieldHintText,
-                      toTextFieldHintText: toTextFieldHintText,
-                      height: height,
-                      width: width,
+                    Padding(
+                      padding: EdgeInsets.only(top: height * 0.05),
+                      child: CustomDropDown(
+                        buttonsBottomHight: height * 0.035,
+                        buttonText: addIncomeButtonText,
+                        buttonWidth: width * 0.38,
+                        bottomSheetHight: height * 0.25,
+                        hintText: incomeDropDownHintText,
+                        showItems: ShowItemsForIncome(
+                          incomeKey: incomeOptionsIncomeKey,
+                          colorsKey: incomeOptionsColorKey,
+                          width: width,
+                          height: height,
+                          incomeOptions: Database.incomeOptions,
+                          updateIncome: (index) {
+                            viewModel.updateIncomeHintText(index: index);
+                          },
+                        ),
+                        showSelectedItemOnHintText: ShowSelectedIncome(
+                          colorsKey: incomeOptionsColorKey,
+                          width: width,
+                          height: height,
+                          storeSelectedIncome: viewModel.storeSelectedIncome,
+                        ),
+                        storeSelectedItem: viewModel.storeSelectedIncome,
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.02,
                     ),
                     CustomTextField(
                       controller: viewModel.descriptionController,
@@ -111,13 +136,17 @@ class TransferView extends StackedView<TransferViewModel> {
                         },
                         width: width,
                         height: height,
-                        walletOptions: viewModel.walletOptions,
+                        walletOptions: Database.walletOptions,
                       ),
                     ),
                     SizedBox(
                       height: height * 0.02,
                     ),
                     FileInserter(),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    const ListTileSwitch(),
                     SizedBox(
                       height: height * 0.02,
                     ),
@@ -143,8 +172,7 @@ class TransferView extends StackedView<TransferViewModel> {
   }
 
   @override
-  TransferViewModel viewModelBuilder(BuildContext context) =>
-      TransferViewModel();
+  IncomeViewModel viewModelBuilder(BuildContext context) => IncomeViewModel();
 }
 
 // ignore: must_be_immutable
@@ -156,9 +184,8 @@ class Balance extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     return Padding(
-      padding: EdgeInsets.only(top: height * 0.15, left: width * 0.05),
+      padding: EdgeInsets.only(top: width * 0.3, left: width * 0.05),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -208,74 +235,123 @@ class Balance extends StatelessWidget {
   }
 }
 
-class TransferTextField extends StatelessWidget {
+class ShowSelectedIncome extends StatelessWidget {
   final double width, height;
-  final TextEditingController fromController, toController;
-  final String toTextFieldHintText, fromTextFieldHintText;
-  const TransferTextField(
+  final Map<String, dynamic> storeSelectedIncome;
+  final String colorsKey;
+  const ShowSelectedIncome(
       {super.key,
       required this.width,
       required this.height,
-      required this.fromController,
-      required this.toController,
-      required this.toTextFieldHintText,
-      required this.fromTextFieldHintText});
+      required this.storeSelectedIncome,
+      required this.colorsKey});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: height * 0.05),
-      child: Stack(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                  width: width * 0.42,
-                  height: height * 0.1,
-                  child: CustomTextField(
-                      controller: fromController,
-                      width: width,
-                      hintText: fromTextFieldHintText,
-                      height: height)),
-              SizedBox(
-                width: width * 0.05,
-              ),
-              SizedBox(
-                  width: width * 0.42,
-                  height: height * 0.1,
-                  child: CustomTextField(
-                      controller: toController,
-                      width: width,
-                      hintText: toTextFieldHintText,
-                      height: height)),
-            ],
+      padding: EdgeInsets.only(top: height * 0.01, bottom: height * 0.01),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: AppColors.primaryBlack,
+            width: width * 0.002,
           ),
-          Padding(
-            padding: EdgeInsets.only(top: height * 0.01),
-            child: Center(
+          borderRadius: BorderRadius.circular(width * 0.08),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                storeSelectedIncome[Variables.universalItemKey],
+                style: TextStyle(
+                    color: AppColors.primaryBlack, fontWeight: FontWeight.w500),
+              ),
+            ),
+            SizedBox(
+              width: width * 0.02,
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: width * 0.04),
+              child: CircleAvatar(
+                maxRadius: width * 0.01,
+                backgroundColor: storeSelectedIncome[colorsKey],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ShowItemsForIncome extends StatelessWidget {
+  final double width, height;
+  final List<Map<String, dynamic>> incomeOptions;
+  final Function(int index) updateIncome;
+  final String colorsKey;
+  final String incomeKey;
+  const ShowItemsForIncome({
+    super.key,
+    required this.width,
+    required this.height,
+    required this.incomeOptions,
+    required this.updateIncome,
+    required this.colorsKey,
+    required this.incomeKey,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 3,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: incomeOptions.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: width * 0.1, vertical: height * 0.057),
+            child: InkWell(
+              onTap: () {
+                updateIncome(index);
+              },
               child: Container(
                 decoration: BoxDecoration(
-                    color: AppColors.light80,
                     border: Border.all(
-                        color: AppColors.light60, width: width * 0.02),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primaryBlack,
-                        blurRadius: width * 0.001,
-                        blurStyle: BlurStyle.outer,
-                      )
-                    ]),
-                child: SvgPicture.asset(
-                  IconsPath.transaction,
-                  width: width * 0.03,
-                  height: height * 0.03,
+                      color: AppColors.primaryBlack,
+                      width: width * 0.002,
+                    ),
+                    borderRadius: BorderRadius.circular(width * 0.08)),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        incomeOptions[index]["Income"],
+                        style: TextStyle(
+                          color: AppColors.primaryBlack,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: width * 0.02,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: width * 0.04),
+                      child: CircleAvatar(
+                        maxRadius: width * 0.01,
+                        backgroundColor: incomeOptions[index][colorsKey],
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
-          )
-        ],
+          );
+        },
       ),
     );
   }
@@ -481,6 +557,46 @@ class _ShowItemsForWalletState extends State<ShowItemsForWallet> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ListTileSwitch extends StatefulWidget {
+  const ListTileSwitch({super.key});
+
+  @override
+  State<ListTileSwitch> createState() => _ListTileSwitchState();
+}
+
+class _ListTileSwitchState extends State<ListTileSwitch> {
+  bool isRepeat = false;
+  String titleText = "Repeat";
+  String subTitleText = "Repeat transaction";
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+      child: SwitchListTile(
+        title: Text(
+          titleText,
+          style: TextStyle(
+            color: AppColors.primaryBlack,
+            fontWeight: FontWeight.w500,
+            fontSize: width * 0.042,
+          ),
+        ),
+        subtitle: Text(
+          subTitleText,
+          style: TextStyle(
+            color: AppColors.grey,
+            fontSize: width * 0.03,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        value: isRepeat,
+        onChanged: (value) {},
       ),
     );
   }
