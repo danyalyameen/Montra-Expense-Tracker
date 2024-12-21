@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
-import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_drop_down.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
+import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 // ignore: must_be_immutable
@@ -37,26 +37,11 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: AppColors.primaryRed,
-        appBar: AppBar(
+        appBar: whiteAppBar(
+          title: appBarTitle,
+          width: width,
+          height: height,
           backgroundColor: AppColors.primaryRed,
-          title: Text(
-            appBarTitle,
-            style: TextStyle(fontSize: width * 0.05),
-          ),
-          leading: Padding(
-            padding: EdgeInsets.only(
-              top: height * 0.012,
-              left: width * 0.018,
-              bottom: height * 0.012,
-            ),
-            child: SvgPicture.asset(
-              IconsPath.backArrow,
-              colorFilter:
-                  ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
-              width: width * 0.01,
-              height: height * 0.01,
-            ),
-          ),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

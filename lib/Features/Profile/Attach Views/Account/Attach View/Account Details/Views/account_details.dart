@@ -4,6 +4,7 @@ import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Attach%20View/Account%20Details/Views/account_details_view_model.dart';
+import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 // ignore: must_be_immutable
@@ -27,36 +28,22 @@ class AccountDetails extends StackedView<AccountDetailsViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          appBarTitle,
-          style: TextStyle(
-            color: AppColors.primaryBlack,
-            fontSize: width * 0.05,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        centerTitle: true,
-        leading: Center(
-          child: SizedBox(
-            width: width * 0.07,
-            height: width * 0.07,
-            child: InkWell(
-                onTap: () {
-                  viewModel.navigationService.back();
-                },
-                child: SvgPicture.asset(IconsPath.backArrow)),
-          ),
-        ),
+      appBar: blackAppBar(
+        title: appBarTitle,
+        width: width,
+        height: height,
+        onTap: () {
+          viewModel.navigationService.back();
+        },
         actions: [
           Padding(
             padding: EdgeInsets.only(right: width * 0.02),
-            child: SizedBox(
+            child: SvgPicture.asset(
+              IconsPath.edit,
               width: width * 0.07,
               height: width * 0.07,
-              child: SvgPicture.asset(IconsPath.edit),
             ),
-          )
+          ),
         ],
       ),
       body: Center(

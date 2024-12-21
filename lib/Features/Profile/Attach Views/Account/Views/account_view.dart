@@ -8,6 +8,7 @@ import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view_model.dart';
+import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -28,25 +29,7 @@ class AccountView extends StackedView<AccountViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          appBarTitle,
-          style: TextStyle(
-              fontSize: width * 0.05,
-              color: AppColors.primaryBlack,
-              fontWeight: FontWeight.w600),
-        ),
-        centerTitle: true,
-        leading: Center(
-          child: SizedBox(
-            width: width * 0.08,
-            height: width * 0.08,
-            child: SvgPicture.asset(
-              IconsPath.backArrow,
-            ),
-          ),
-        ),
-      ),
+      appBar: blackAppBar(title: appBarTitle, width: width, height: height),
       body: Padding(
         padding: EdgeInsets.only(top: height * 0.02),
         child: Column(

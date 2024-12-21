@@ -8,6 +8,7 @@ import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Transfe
 import 'package:montra_expense_tracker/Widgets/custom_drop_down.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
+import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 // ignore: must_be_immutable
@@ -35,27 +36,11 @@ class TransferView extends StackedView<TransferViewModel> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: AppColors.primaryBlue,
-        appBar: AppBar(
-          backgroundColor: AppColors.primaryBlue,
-          title: Text(
-            appBarTitle,
-            style: TextStyle(fontSize: width * 0.05),
-          ),
-          leading: Padding(
-            padding: EdgeInsets.only(
-              top: height * 0.012,
-              left: width * 0.018,
-              bottom: height * 0.012,
-            ),
-            child: SvgPicture.asset(
-              IconsPath.backArrow,
-              colorFilter:
-                  ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
-              width: width * 0.01,
-              height: height * 0.01,
-            ),
-          ),
-        ),
+        appBar: whiteAppBar(
+            title: appBarTitle,
+            width: width,
+            height: height,
+            backgroundColor: AppColors.primaryBlue),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
