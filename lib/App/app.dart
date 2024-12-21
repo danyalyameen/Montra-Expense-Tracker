@@ -2,6 +2,13 @@ import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Income/Views/income_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Attach%20View/Account%20Details/Views/account_details.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/About/Views/about_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Security/Views/security_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Theme/Views/theme_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Views/settings_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Transfer/Views/transfer_view.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -15,6 +22,13 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: ProfileView),
     MaterialRoute(page: AccountView),
     MaterialRoute(page: AccountDetails),
+    MaterialRoute(page: SettingsView),
+    MaterialRoute(page: AboutView),
+    MaterialRoute(page: CurrencyView),
+    MaterialRoute(page: HelpView),
+    MaterialRoute(page: NotificationView),
+    MaterialRoute(page: SecurityView),
+    MaterialRoute(page: ThemeView),
   ],
   dependencies: [LazySingleton(classType: NavigationService)],
 )

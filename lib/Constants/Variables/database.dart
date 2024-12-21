@@ -1,5 +1,11 @@
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/About/Views/about_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Security/Views/security_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Theme/Views/theme_view.dart';
 
 class Database {
   static List<Map<String, dynamic>> walletOptions = [
@@ -93,33 +99,58 @@ class Database {
     },
   ];
 
-  static List<Map<String, dynamic>> yesterdayExpenseDatabase = [
+  static List<Map<String, dynamic>> settingsData = [
     {
-      "Category": "Transportation",
-      "Description": "Charging Tesla",
-      "Time": "02:30 PM",
-      "Expense": "- \$18",
-      "Icon": IconsPath.transportation,
-      "Icon-Color": AppColors.primaryBlue,
-      "Icon-Background": AppColors.blue20,
+      "Title": "Currency",
+      "Default-Selection": "USD",
     },
     {
-      "Category": "Transportation",
-      "Description": "Charging Tesla",
-      "Time": "02:30 PM",
-      "Expense": "- \$18",
-      "Icon": IconsPath.transportation,
-      "Icon-Color": AppColors.primaryBlue,
-      "Icon-Background": AppColors.blue20,
+      "Title": "Theme",
+      "Default-Selection": "Light",
     },
     {
-      "Category": "Transportation",
-      "Description": "Charging Tesla",
-      "Time": "02:30 PM",
-      "Expense": "- \$18",
-      "Icon": IconsPath.transportation,
-      "Icon-Color": AppColors.primaryBlue,
-      "Icon-Background": AppColors.blue20,
+      "Title": "Security",
+      "Default-Selection": "Pin",
     },
+    {
+      "Title": "Notification",
+      "Default-Selection": "",
+    },
+    {
+      "Title": "About",
+      "Default-Selection": "",
+    },
+    {
+      "Title": "Help",
+      "Default-Selection": "",
+    },
+  ];
+
+  static List<Map<String, dynamic>> currencyData = [
+    {"Currency": "United States (USD)", "isSelect": true, "Symbol": "USD"},
+    {"Currency": "Pakistan (PKR)", "isSelect": false, "Symbol": "PKR"},
+    {"Currency": "Indonesia (IDR)", "isSelect": false, "Symbol": "IDR"},
+    {"Currency": "Japan (JPY)", "isSelect": false, "Symbol": "JPY"},
+    {"Currency": "Russia (RUB)", "isSelect": false, "Symbol": "RUB"},
+    {"Currency": "Germany (EUR)", "isSelect": false, "Symbol": "EUR"},
+    {"Currency": "Korea (WON)", "isSelect": false, "Symbol": "WON"},
+  ];
+  static List<Map<String, dynamic>> themeData = [
+    {"Theme": "Light", "isSelect": true},
+    {"Theme": "Dark", "isSelect": false},
+  ];
+  static List<Map<String, dynamic>> securityData = [
+    {"Security": "Pin", "isSelect": true},
+    {"Security": "Fingerprint", "isSelect": false},
+    {"Security": "Face ID", "isSelect": false},
+  ];
+
+  static List navigationViews = [
+    CurrencyView(),
+    ThemeView(),
+    SecurityView(),
+    const NotificationView(),
+    const AboutView(),
+    const HelpView(),
   ];
 }

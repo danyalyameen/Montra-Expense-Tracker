@@ -39,6 +39,7 @@ flutter:
     - assets/Images/User Image/
     - assets/Icons/Account View/
     - assets/Icons/Expanses Icons/
+    - assets/Icons/Success/
 # Fonts
   fonts:
     - family: Inter
@@ -50,5 +51,7 @@ flutter:
           weight: 800
         - asset: assets\Fonts\Inter\Inter_28pt-Bold.ttf
           weight: 700
-        - asset: assets/Fonts/Inter/Inter_28pt-SemiBold.ttf
+        - asset: assets\Fonts\Inter\Inter_28pt-SemiBold.ttf
           weight: 600
+        - asset: assets\Fonts\Inter\Inter_28pt-Medium.ttf
+          weight: 500

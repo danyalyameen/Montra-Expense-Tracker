@@ -1,6 +1,7 @@
 class IconsPath {
-  static String backArrow = "assets/Icons/Arrows/arrow-left.svg";
-  static String dropdownArrow = "assets/Icons/Arrows/arrow-down-2.svg";
+  static String backArrow = "assets/Icons/Arrows/left_arrow.svg";
+  static String rightArrow = "assets/Icons/Arrows/right_arrow.svg";
+  static String dropdownArrow = "assets/Icons/Arrows/down_arrow.svg";
   static String easypaisa = "assets/Icons/Bank/Easypaisa.svg";
   static String jazzcash = "assets/Icons/Bank/Jazz Cash.svg";
   static String ubl = "assets/Icons/Bank/UBL.svg";
@@ -19,4 +20,5 @@ class IconsPath {
   static String subscription = "assets/Icons/Expanses Icons/subscription.svg";
   static String transportation =
       "assets/Icons/Expanses Icons/transportation.svg";
+  static String success = "assets/Icons/Success/success.svg";
 }
