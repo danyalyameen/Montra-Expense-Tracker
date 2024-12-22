@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/App/app.locator.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_theme.dart';
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Views/settings_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 void main() async {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: StackedRouter().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,
       theme: AppTheme().lightTheme,
-      home: SettingsView(),
+      home: ProfileView(),
     );
   }
 }

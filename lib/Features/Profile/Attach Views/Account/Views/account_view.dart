@@ -29,7 +29,12 @@ class AccountView extends StackedView<AccountViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: blackAppBar(title: appBarTitle, width: width, height: height),
+      appBar: blackAppBar(
+        title: appBarTitle,
+        width: width,
+        height: height,
+        onTap: () => viewModel.navigationService.back(),
+      ),
       body: Padding(
         padding: EdgeInsets.only(top: height * 0.02),
         child: Column(

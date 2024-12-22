@@ -115,13 +115,14 @@ class WalletDetails extends StatelessWidget {
           width: width * 0.12,
           height: width * 0.12,
           decoration: BoxDecoration(
-              color: AppColors.light20,
-              borderRadius: BorderRadius.circular(width * 0.04)),
+            borderRadius: BorderRadius.circular(width * 0.04),
+            color: AppColors.walletIconBackgroundColorProfile,
+          ),
           child: Center(
             child: SvgPicture.asset(
               icon,
-              width: width * 0.06,
-              height: width * 0.06,
+              width: width * 0.04,
+              height: width * 0.04,
             ),
           ),
         ),

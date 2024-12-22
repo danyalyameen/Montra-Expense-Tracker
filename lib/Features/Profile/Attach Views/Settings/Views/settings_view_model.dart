@@ -3,7 +3,8 @@ import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 
 class SettingsViewModel extends ViewModel {
   void navigation({required int index}) async {
-    await navigationService.navigateToView(Database.navigationViews[index]);
+    await navigationService
+        .navigateToView(Database.navigationViewsForSettings[index]);
     rebuildUi();
   }
 }

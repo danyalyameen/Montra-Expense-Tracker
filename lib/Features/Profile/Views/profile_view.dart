@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
+import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/image_path.dart';
 import 'package:montra_expense_tracker/Features/Profile/Views/profile_view_model.dart';
@@ -21,25 +22,26 @@ class ProfileView extends StackedView<ProfileViewModel> {
   Widget builder(
       BuildContext context, ProfileViewModel viewModel, Widget? child) {
     double height = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.profileBackground,
-        body: Column(
-          children: [
-            UserAccount(username: username, accountTitle: accountTitle),
-            SizedBox(
-              height: height * 0.05,
-            ),
-            ProfilePages(
-              profileData: viewModel.profileData,
-              profileDataIconKey: profileDataIconKey,
-              profileDataPageNameKey: profileDataPageNameKey,
-              profileDataIconBackgroundColorKey:
-                  profileDataIconBackgroundColorKey,
-              profileDataIconColorKey: profileDataIconColorKey,
-            ),
-          ],
-        ),
+    return Scaffold(
+      backgroundColor: AppColors.profileBackground,
+      body: Column(
+        children: [
+          UserAccount(username: username, accountTitle: accountTitle),
+          SizedBox(
+            height: height * 0.05,
+          ),
+          ProfilePages(
+            profileData: Database.profileData,
+            profileDataIconKey: profileDataIconKey,
+            profileDataPageNameKey: profileDataPageNameKey,
+            profileDataIconBackgroundColorKey:
+                profileDataIconBackgroundColorKey,
+            profileDataIconColorKey: profileDataIconColorKey,
+            navigate: ({required index}) {
+              viewModel.navigation(index: index);
+            },
+          ),
+        ],
       ),
     );
   }
@@ -132,13 +134,15 @@ class ProfilePages extends StatelessWidget {
       profileDataIconBackgroundColorKey,
       profileDataIconColorKey;
   final List<Map<String, dynamic>> profileData;
+  final Function({required int index}) navigate;
   const ProfilePages(
       {super.key,
       required this.profileData,
       required this.profileDataIconKey,
       required this.profileDataPageNameKey,
       required this.profileDataIconBackgroundColorKey,
-      required this.profileDataIconColorKey});
+      required this.profileDataIconColorKey,
+      required this.navigate});
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +150,7 @@ class ProfilePages extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     return SizedBox(
       width: width * 0.9,
-      height: height * 0.41,
+      height: height * 0.36,
       child: Card(
         color: AppColors.primaryLight,
         elevation: width * 0.008,
@@ -155,12 +159,12 @@ class ProfilePages extends StatelessWidget {
         ),
         child: ListView.separated(
           itemBuilder: (context, index) {
-            return Padding(
-              padding: index == 0
-                  ? EdgeInsets.only(top: height * 0.01)
-                  : const EdgeInsets.all(0),
+            return InkWell(
+              onTap: () {
+                navigate(index: index);
+              },
               child: ListTile(
-                minTileHeight: height * 0.08,
+                minTileHeight: height * 0.07,
                 title: Text(
                   profileData[index][profileDataPageNameKey],
                   style: TextStyle(
@@ -197,6 +201,7 @@ class ProfilePages extends StatelessWidget {
             );
           },
           itemCount: profileData.length,
+          padding: EdgeInsets.only(top: height * 0.008),
         ),
       ),
     );

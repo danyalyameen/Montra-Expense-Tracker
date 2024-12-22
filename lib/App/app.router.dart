@@ -202,7 +202,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i9.AboutView: (data) {
       return _i15.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i9.AboutView(),
+        builder: (context) => _i9.AboutView(),
         settings: data,
       );
     },
@@ -217,13 +217,13 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i11.HelpView: (data) {
       return _i15.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i11.HelpView(),
+        builder: (context) => _i11.HelpView(),
         settings: data,
       );
     },
     _i12.NotificationView: (data) {
       return _i15.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i12.NotificationView(),
+        builder: (context) => _i12.NotificationView(),
         settings: data,
       );
     },

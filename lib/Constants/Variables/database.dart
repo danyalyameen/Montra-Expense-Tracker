@@ -1,11 +1,13 @@
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/About/Views/about_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Security/Views/security_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Theme/Views/theme_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Views/settings_view.dart';
 
 class Database {
   static List<Map<String, dynamic>> walletOptions = [
@@ -145,12 +147,46 @@ class Database {
     {"Security": "Face ID", "isSelect": false},
   ];
 
-  static List navigationViews = [
+  static List navigationViewsForSettings = [
     CurrencyView(),
     ThemeView(),
     SecurityView(),
-    const NotificationView(),
-    const AboutView(),
-    const HelpView(),
+    NotificationView(),
+    AboutView(),
+    HelpView(),
+  ];
+
+  static List navigationViewsForProfile = [
+    AccountView(),
+    SettingsView(),
+    AccountView(),
+    SettingsView(),
+  ];
+
+  static List<Map<String, dynamic>> profileData = [
+    {
+      "Icon": IconsPath.account,
+      "Page-Name": "Account",
+      "Icon-Color": AppColors.primaryViolet,
+      "Background-Color": AppColors.violet20,
+    },
+    {
+      "Icon": IconsPath.settings,
+      "Page-Name": "Settings",
+      "Icon-Color": AppColors.primaryViolet,
+      "Background-Color": AppColors.violet20,
+    },
+    {
+      "Icon": IconsPath.export,
+      "Page-Name": "Export Data",
+      "Icon-Color": AppColors.primaryViolet,
+      "Background-Color": AppColors.violet20,
+    },
+    {
+      "Icon": IconsPath.logout,
+      "Page-Name": "Logout",
+      "Icon-Color": AppColors.primaryRed,
+      "Background-Color": AppColors.logoutBackground,
+    },
   ];
 }
