@@ -140,6 +140,11 @@ class CategoryBottomSheet {
                     SizedBox(
                       width: buttonWidth,
                       child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(
+                            AppColors.primaryViolet,
+                          ),
+                        ),
                         onPressed: () {},
                         child: Text(
                           buttonText,

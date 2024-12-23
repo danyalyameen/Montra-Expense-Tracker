@@ -189,4 +189,34 @@ class Database {
       "Background-Color": AppColors.logoutBackground,
     },
   ];
+
+  static List<String> months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  static List<Map<String, dynamic>> budgetData = [
+    {
+      "Category": "Shopping",
+      "Color": AppColors.primaryYellow,
+      "Limit": 1000,
+      "Spend": 1200,
+    },
+    {
+      "Category": "Transportation",
+      "Color": AppColors.primaryBlue,
+      "Limit": 700,
+      "Spend": 350,
+    },
+  ];
 }

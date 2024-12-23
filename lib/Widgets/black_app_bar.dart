@@ -9,9 +9,12 @@ PreferredSizeWidget? blackAppBar(
     required double height,
     List<Widget>? actions,
     Color backgroundColor = Colors.white,
+    Widget? leading,
+    double? toolBarHeight,
     GestureTapCallback? onTap}) {
   return AppBar(
     backgroundColor: backgroundColor,
+    toolbarHeight: toolBarHeight,
     centerTitle: true,
     title: Text(
       title,
@@ -21,18 +24,19 @@ PreferredSizeWidget? blackAppBar(
         fontWeight: FontWeight.w700,
       ),
     ),
-    leading: Center(
-      child: InkWell(
-        onTap: onTap,
-        child: SvgPicture.asset(
-          IconsPath.backArrow,
-          colorFilter:
-              ColorFilter.mode(AppColors.primaryBlack, BlendMode.srcIn),
-          width: width * 0.04,
-          height: height * 0.04,
+    leading: leading ??
+        Center(
+          child: InkWell(
+            onTap: onTap,
+            child: SvgPicture.asset(
+              IconsPath.backArrow,
+              colorFilter:
+                  ColorFilter.mode(AppColors.primaryBlack, BlendMode.srcIn),
+              width: width * 0.04,
+              height: height * 0.04,
+            ),
+          ),
         ),
-      ),
-    ),
     actions: actions,
   );
 }

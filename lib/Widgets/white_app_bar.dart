@@ -9,9 +9,12 @@ PreferredSizeWidget? whiteAppBar(
     required double height,
     List<Widget> actions = const [],
     Color backgroundColor = Colors.white,
+    Widget? leading,
+    double? toolBarHight,
     GestureTapCallback? onTap}) {
   return AppBar(
     backgroundColor: backgroundColor,
+    toolbarHeight: toolBarHight,
     centerTitle: true,
     title: Text(
       title,
@@ -21,7 +24,7 @@ PreferredSizeWidget? whiteAppBar(
         fontWeight: FontWeight.w700,
       ),
     ),
-    leading: Center(
+    leading: leading ?? Center(
       child: InkWell(
         onTap: onTap,
         child: SvgPicture.asset(

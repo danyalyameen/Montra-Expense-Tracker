@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
-import 'package:montra_expense_tracker/Constants/Theme/text_styles.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -33,7 +32,8 @@ class CustomTextField extends StatelessWidget {
             right: width * 0.04,
           ),
           hintText: hintText,
-          hintStyle: CustomTextStyles.textFieldTextStyle,
+          hintStyle: TextStyle(
+      color: AppColors.grey, fontSize: width * 0.045, fontWeight: FontWeight.w500),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(width * 0.04),
             borderSide: BorderSide(

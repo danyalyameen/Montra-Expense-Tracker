@@ -32,98 +32,96 @@ class TransferView extends StackedView<TransferViewModel> {
       BuildContext context, TransferViewModel viewModel, Widget? child) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.primaryBlue,
-        appBar: whiteAppBar(
-            title: appBarTitle,
-            width: width,
-            height: height,
-            backgroundColor: AppColors.primaryBlue),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Balance(),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                height: height * 0.3,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryLight,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(width * 0.1),
-                    topRight: Radius.circular(width * 0.1),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    TransferTextField(
-                      fromController: viewModel.fromController,
-                      toController: viewModel.toController,
-                      fromTextFieldHintText: fromTextFieldHintText,
-                      toTextFieldHintText: toTextFieldHintText,
-                      height: height,
-                      width: width,
-                    ),
-                    CustomTextField(
-                      controller: viewModel.descriptionController,
-                      width: width,
-                      hintText: descriptionTextFieldHintText,
-                      height: height,
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    CustomDropDown(
-                      buttonsBottomHight: 0,
-                      buttonText: addWalletButtonText,
-                      buttonWidth: width * 0.3,
-                      bottomSheetHight: height * 0.38,
-                      hintText: walletDropDownHintText,
-                      showSelectedItemOnHintText: ShowSelectedWallet(
-                        accountName: viewModel
-                            .storeSelectedWallet[Variables.universalItemKey],
-                        width: width,
-                      ),
-                      storeSelectedItem: viewModel.storeSelectedWallet,
-                      showItems: ShowItemsForWallet(
-                        accountBalanceKey: walletOptionsAccountBalanceKey,
-                        accountTypeKey: walletOptionsAccountTypeKey,
-                        bankNamekey: walletOptionsBankNameKey,
-                        walletPictureKey: walletOptionsBankPictureKey,
-                        updateHintText: (index) {
-                          viewModel.updateWalletHintText(index: index);
-                        },
-                        width: width,
-                        height: height,
-                        walletOptions: Database.walletOptions,
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    FileInserter(),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    SizedBox(
-                      width: width * 0.9,
-                      height: height * 0.065,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                          continueButtonText,
-                          style: TextStyle(fontSize: width * 0.05),
-                        ),
-                      ),
-                    )
-                  ],
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: AppColors.primaryBlue,
+      appBar: whiteAppBar(
+          title: appBarTitle,
+          width: width,
+          height: height,
+          backgroundColor: AppColors.primaryBlue),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Balance(),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              height: height * 0.3,
+              decoration: BoxDecoration(
+                color: AppColors.primaryLight,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(width * 0.1),
+                  topRight: Radius.circular(width * 0.1),
                 ),
               ),
+              child: Column(
+                children: [
+                  TransferTextField(
+                    fromController: viewModel.fromController,
+                    toController: viewModel.toController,
+                    fromTextFieldHintText: fromTextFieldHintText,
+                    toTextFieldHintText: toTextFieldHintText,
+                    height: height,
+                    width: width,
+                  ),
+                  CustomTextField(
+                    controller: viewModel.descriptionController,
+                    width: width,
+                    hintText: descriptionTextFieldHintText,
+                    height: height,
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  CustomDropDown(
+                    buttonsBottomHight: 0,
+                    buttonText: addWalletButtonText,
+                    buttonWidth: width * 0.3,
+                    bottomSheetHight: height * 0.38,
+                    hintText: walletDropDownHintText,
+                    showSelectedItemOnHintText: ShowSelectedWallet(
+                      accountName: viewModel
+                          .storeSelectedWallet[Variables.universalItemKey],
+                      width: width,
+                    ),
+                    storeSelectedItem: viewModel.storeSelectedWallet,
+                    showItems: ShowItemsForWallet(
+                      accountBalanceKey: walletOptionsAccountBalanceKey,
+                      accountTypeKey: walletOptionsAccountTypeKey,
+                      bankNamekey: walletOptionsBankNameKey,
+                      walletPictureKey: walletOptionsBankPictureKey,
+                      updateHintText: (index) {
+                        viewModel.updateWalletHintText(index: index);
+                      },
+                      width: width,
+                      height: height,
+                      walletOptions: Database.walletOptions,
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  FileInserter(),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  SizedBox(
+                    width: width * 0.9,
+                    height: height * 0.065,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text(
+                        continueButtonText,
+                        style: TextStyle(fontSize: width * 0.05),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
