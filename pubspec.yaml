@@ -15,7 +15,7 @@ dependencies:
   stacked_services: ^1.6.0
   flutter_svg: ^2.0.16
   dotted_border: ^2.1.0
-  syncfusion_flutter_sliders: ^28.1.35
+  flutter_xlider: ^3.5.0
 
 # Dev Dependencies
 dev_dependencies:
@@ -42,6 +42,7 @@ flutter:
     - assets/Icons/Expanses Icons/
     - assets/Icons/Success/
     - assets/Icons/Errors/
+    - assets/Icons/Delete/
 # Fonts
   fonts:
     - family: Inter

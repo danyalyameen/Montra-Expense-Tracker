@@ -5,10 +5,14 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i17;
+import 'dart:ui' as _i19;
+
+import 'package:flutter/material.dart' as _i18;
 import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Create%20Budget/create_budget_view.dart'
     as _i16;
+import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Edit%20Budget/edit_budget_view.dart'
+    as _i17;
 import 'package:montra_expense_tracker/Features/Budget/Views/budget_view.dart'
     as _i15;
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view.dart'
@@ -38,7 +42,7 @@ import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/
 import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart'
     as _i5;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i18;
+import 'package:stacked_services/stacked_services.dart' as _i20;
 
 class Routes {
   static const incomeView = '/income-view';
@@ -71,6 +75,8 @@ class Routes {
 
   static const createBudgetView = '/create-budget-view';
 
+  static const editBudgetView = '/edit-budget-view';
+
   static const all = <String>{
     incomeView,
     expenseView,
@@ -87,6 +93,7 @@ class Routes {
     themeView,
     budgetView,
     createBudgetView,
+    editBudgetView,
   };
 }
 
@@ -152,6 +159,10 @@ class StackedRouter extends _i1.RouterBase {
       Routes.createBudgetView,
       page: _i16.CreateBudgetView,
     ),
+    _i1.RouteDef(
+      Routes.editBudgetView,
+      page: _i17.EditBudgetView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
@@ -159,7 +170,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<IncomeViewArguments>(
         orElse: () => const IncomeViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i2.IncomeView(key: args.key),
         settings: data,
       );
@@ -168,7 +179,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ExpenseViewArguments>(
         orElse: () => const ExpenseViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i3.ExpenseView(key: args.key),
         settings: data,
       );
@@ -177,7 +188,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<TransferViewArguments>(
         orElse: () => const TransferViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i4.TransferView(key: args.key),
         settings: data,
       );
@@ -186,7 +197,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ProfileViewArguments>(
         orElse: () => const ProfileViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i5.ProfileView(key: args.key),
         settings: data,
       );
@@ -195,14 +206,14 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<AccountViewArguments>(
         orElse: () => const AccountViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i6.AccountView(key: args.key),
         settings: data,
       );
     },
     _i7.AccountDetails: (data) {
       final args = data.getArgs<AccountDetailsArguments>(nullOk: false);
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i7.AccountDetails(
             args.walletName, args.walletBalance, args.icon,
             key: args.key),
@@ -213,7 +224,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SettingsViewArguments>(
         orElse: () => const SettingsViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i8.SettingsView(key: args.key),
         settings: data,
       );
@@ -222,7 +233,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<AboutViewArguments>(
         orElse: () => const AboutViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i9.AboutView(key: args.key),
         settings: data,
       );
@@ -231,7 +242,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CurrencyViewArguments>(
         orElse: () => const CurrencyViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i10.CurrencyView(key: args.key),
         settings: data,
       );
@@ -240,7 +251,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<HelpViewArguments>(
         orElse: () => const HelpViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i11.HelpView(key: args.key),
         settings: data,
       );
@@ -249,7 +260,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<NotificationViewArguments>(
         orElse: () => const NotificationViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i12.NotificationView(key: args.key),
         settings: data,
       );
@@ -258,7 +269,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SecurityViewArguments>(
         orElse: () => const SecurityViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i13.SecurityView(key: args.key),
         settings: data,
       );
@@ -267,7 +278,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ThemeViewArguments>(
         orElse: () => const ThemeViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i14.ThemeView(key: args.key),
         settings: data,
       );
@@ -276,7 +287,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<BudgetViewArguments>(
         orElse: () => const BudgetViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i15.BudgetView(key: args.key),
         settings: data,
       );
@@ -285,8 +296,23 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CreateBudgetViewArguments>(
         orElse: () => const CreateBudgetViewArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i16.CreateBudgetView(key: args.key),
+        settings: data,
+      );
+    },
+    _i17.EditBudgetView: (data) {
+      final args = data.getArgs<EditBudgetViewArguments>(nullOk: false);
+      return _i18.MaterialPageRoute<dynamic>(
+        builder: (context) => _i17.EditBudgetView(
+            args.color,
+            args.category,
+            args.spendBalance,
+            args.limitBalance,
+            args.backgroundColor,
+            args.iconColor,
+            args.icon,
+            key: args.key),
         settings: data,
       );
     },
@@ -302,7 +328,7 @@ class StackedRouter extends _i1.RouterBase {
 class IncomeViewArguments {
   const IncomeViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -324,7 +350,7 @@ class IncomeViewArguments {
 class ExpenseViewArguments {
   const ExpenseViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -346,7 +372,7 @@ class ExpenseViewArguments {
 class TransferViewArguments {
   const TransferViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -368,7 +394,7 @@ class TransferViewArguments {
 class ProfileViewArguments {
   const ProfileViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -390,7 +416,7 @@ class ProfileViewArguments {
 class AccountViewArguments {
   const AccountViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -423,7 +449,7 @@ class AccountDetailsArguments {
 
   final String icon;
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -451,7 +477,7 @@ class AccountDetailsArguments {
 class SettingsViewArguments {
   const SettingsViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -473,7 +499,7 @@ class SettingsViewArguments {
 class AboutViewArguments {
   const AboutViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -495,7 +521,7 @@ class AboutViewArguments {
 class CurrencyViewArguments {
   const CurrencyViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -517,7 +543,7 @@ class CurrencyViewArguments {
 class HelpViewArguments {
   const HelpViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -539,7 +565,7 @@ class HelpViewArguments {
 class NotificationViewArguments {
   const NotificationViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -561,7 +587,7 @@ class NotificationViewArguments {
 class SecurityViewArguments {
   const SecurityViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -583,7 +609,7 @@ class SecurityViewArguments {
 class ThemeViewArguments {
   const ThemeViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -605,7 +631,7 @@ class ThemeViewArguments {
 class BudgetViewArguments {
   const BudgetViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -627,7 +653,7 @@ class BudgetViewArguments {
 class CreateBudgetViewArguments {
   const CreateBudgetViewArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -646,9 +672,68 @@ class CreateBudgetViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i18.NavigationService {
+class EditBudgetViewArguments {
+  const EditBudgetViewArguments({
+    required this.color,
+    required this.category,
+    required this.spendBalance,
+    required this.limitBalance,
+    required this.backgroundColor,
+    required this.iconColor,
+    required this.icon,
+    this.key,
+  });
+
+  final _i19.Color color;
+
+  final String category;
+
+  final int spendBalance;
+
+  final int limitBalance;
+
+  final _i19.Color backgroundColor;
+
+  final _i19.Color iconColor;
+
+  final String icon;
+
+  final _i18.Key? key;
+
+  @override
+  String toString() {
+    return '{"color": "$color", "category": "$category", "spendBalance": "$spendBalance", "limitBalance": "$limitBalance", "backgroundColor": "$backgroundColor", "iconColor": "$iconColor", "icon": "$icon", "key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant EditBudgetViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.color == color &&
+        other.category == category &&
+        other.spendBalance == spendBalance &&
+        other.limitBalance == limitBalance &&
+        other.backgroundColor == backgroundColor &&
+        other.iconColor == iconColor &&
+        other.icon == icon &&
+        other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return color.hashCode ^
+        category.hashCode ^
+        spendBalance.hashCode ^
+        limitBalance.hashCode ^
+        backgroundColor.hashCode ^
+        iconColor.hashCode ^
+        icon.hashCode ^
+        key.hashCode;
+  }
+}
+
+extension NavigatorStateExtension on _i20.NavigationService {
   Future<dynamic> navigateToIncomeView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -664,7 +749,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToExpenseView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -680,7 +765,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToTransferView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -696,7 +781,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToProfileView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -712,7 +797,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToAccountView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -731,7 +816,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
     required String walletName,
     required int walletBalance,
     required String icon,
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -751,7 +836,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToSettingsView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -767,7 +852,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToAboutView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -783,7 +868,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToCurrencyView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -799,7 +884,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToHelpView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -815,7 +900,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToNotificationView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -831,7 +916,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToSecurityView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -847,7 +932,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToThemeView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -863,7 +948,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToBudgetView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -879,7 +964,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> navigateToCreateBudgetView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -894,8 +979,39 @@ extension NavigatorStateExtension on _i18.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToEditBudgetView({
+    required _i19.Color color,
+    required String category,
+    required int spendBalance,
+    required int limitBalance,
+    required _i19.Color backgroundColor,
+    required _i19.Color iconColor,
+    required String icon,
+    _i18.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.editBudgetView,
+        arguments: EditBudgetViewArguments(
+            color: color,
+            category: category,
+            spendBalance: spendBalance,
+            limitBalance: limitBalance,
+            backgroundColor: backgroundColor,
+            iconColor: iconColor,
+            icon: icon,
+            key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithIncomeView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -911,7 +1027,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithExpenseView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -927,7 +1043,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithTransferView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -943,7 +1059,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithProfileView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -959,7 +1075,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithAccountView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -978,7 +1094,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
     required String walletName,
     required int walletBalance,
     required String icon,
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -998,7 +1114,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithSettingsView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1014,7 +1130,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithAboutView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1030,7 +1146,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithCurrencyView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1046,7 +1162,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithHelpView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1062,7 +1178,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithNotificationView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1078,7 +1194,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithSecurityView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1094,7 +1210,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithThemeView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1110,7 +1226,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithBudgetView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1126,7 +1242,7 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }
 
   Future<dynamic> replaceWithCreateBudgetView({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1135,6 +1251,37 @@ extension NavigatorStateExtension on _i18.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.createBudgetView,
         arguments: CreateBudgetViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithEditBudgetView({
+    required _i19.Color color,
+    required String category,
+    required int spendBalance,
+    required int limitBalance,
+    required _i19.Color backgroundColor,
+    required _i19.Color iconColor,
+    required String icon,
+    _i18.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.editBudgetView,
+        arguments: EditBudgetViewArguments(
+            color: color,
+            category: category,
+            spendBalance: spendBalance,
+            limitBalance: limitBalance,
+            backgroundColor: backgroundColor,
+            iconColor: iconColor,
+            icon: icon,
+            key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

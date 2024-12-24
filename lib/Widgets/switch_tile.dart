@@ -3,17 +3,20 @@ import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 
 class SwitchTile extends StatefulWidget {
   final String title, subtitle;
-  final Function? onChanged;
+  final Function(bool)? onChanged;
+  final bool value;
   const SwitchTile(
-      {super.key, required this.title, required this.subtitle, this.onChanged});
+      {super.key,
+      required this.title,
+      required this.subtitle,
+      this.onChanged,
+      required this.value});
 
   @override
   State<SwitchTile> createState() => _SwitchTileState();
 }
 
 class _SwitchTileState extends State<SwitchTile> {
-  bool isOn = false;
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -38,12 +41,8 @@ class _SwitchTileState extends State<SwitchTile> {
           fontWeight: FontWeight.w500,
         ),
       ),
-      value: isOn,
-      onChanged: 
-        widget.onChanged!() ?? (value) {
-        isOn = !isOn;
-        setState(() {});
-      },
+      value: widget.value,
+      onChanged: widget.onChanged,
     );
   }
 }

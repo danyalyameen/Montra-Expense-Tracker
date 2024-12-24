@@ -23,4 +23,5 @@ class IconsPath {
       "assets/Icons/Expanses Icons/transportation.svg";
   static String success = "assets/Icons/Success/success.svg";
   static String warning = "assets/Icons/Errors/warning.svg";
+  static String delete = "assets/Icons/Delete/delete.svg";
 }

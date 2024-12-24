@@ -14,6 +14,8 @@ class NotificationView extends StackedView<NotificationViewModel> {
   String budgetAlertTitle = "Budget";
   String budgetAlertSubtitle =
       "Get notification when your budget exceed the limit";
+  bool alertNotification = false;
+  bool budgetAlertNotification = false;
 
   @override
   Widget builder(
@@ -31,8 +33,24 @@ class NotificationView extends StackedView<NotificationViewModel> {
       ),
       body: Column(
         children: [
-          SwitchTile(title: expenseAlertTitle, subtitle: expenseAlertSubtitle),
-          SwitchTile(title: budgetAlertTitle, subtitle: budgetAlertSubtitle),
+          SwitchTile(
+            value: alertNotification,
+            title: expenseAlertTitle,
+            subtitle: expenseAlertSubtitle,
+            onChanged: (value) {
+              alertNotification = value;
+              viewModel.notifyListeners();
+            },
+          ),
+          SwitchTile(
+            value: budgetAlertNotification,
+            title: budgetAlertTitle,
+            subtitle: budgetAlertSubtitle,
+            onChanged: (value) {
+              budgetAlertNotification = value;
+              viewModel.notifyListeners();
+            },
+          ),
         ],
       ),
     );

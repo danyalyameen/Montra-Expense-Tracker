@@ -1,4 +1,5 @@
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Create%20Budget/create_budget_view.dart';
+import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Edit%20Budget/edit_budget_view.dart';
 import 'package:montra_expense_tracker/Features/Budget/Views/budget_view.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Income/Views/income_view.dart';
@@ -33,6 +34,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: ThemeView),
     MaterialRoute(page: BudgetView),
     MaterialRoute(page: CreateBudgetView),
+    MaterialRoute(page: EditBudgetView)
   ],
   dependencies: [LazySingleton(classType: NavigationService)],
 )

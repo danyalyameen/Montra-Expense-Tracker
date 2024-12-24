@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
@@ -42,6 +43,7 @@ class CreateBudgetView extends StackedView<CreateBudgetViewModel> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           BudgetBalance(
+            isOn: viewModel.isOn,
             inputHintText: inputHintText,
             height: height,
             width: width,
@@ -88,14 +90,57 @@ class CreateBudgetView extends StackedView<CreateBudgetViewModel> {
                   Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: width * 0.02, vertical: height * 0.01),
-                    child:
-                        SwitchTile(title: alertTitle, subtitle: alertsubtitle, onChanged: () {
-                          
-                        },),
+                    child: SwitchTile(
+                      value: viewModel.isOn,
+                      title: alertTitle,
+                      subtitle: alertsubtitle,
+                      onChanged: (value) {
+                        viewModel.updateSwitch(value);
+                      },
+                    ),
                   ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
+                  viewModel.isOn
+                      ? FlutterSlider(
+                          values: [viewModel.sliderValue],
+                          max: 100,
+                          min: 0,
+                          handlerHeight: height * 0.04,
+                          handlerWidth: width * 0.14,
+                          handler: FlutterSliderHandler(
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryViolet,
+                              borderRadius: BorderRadius.circular(width * 0.06),
+                              border: Border.all(
+                                width: width * 0.01,
+                                color: AppColors.primaryLight,
+                              ),
+                            ),
+                            child: Text(
+                              "${viewModel.sliderValue.toInt()}%",
+                              style: TextStyle(
+                                color: AppColors.primaryLight,
+                                fontSize: width * 0.035,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          onDragging: (handlerIndex, lowerValue, upperValue) {
+                            viewModel.updateSlider(lowerValue);
+                          },
+                          trackBar: FlutterSliderTrackBar(
+                            activeTrackBarHeight: height * 0.02,
+                            activeTrackBar: BoxDecoration(
+                              borderRadius: BorderRadius.circular(width * 0.06),
+                              color: AppColors.primaryViolet,
+                            ),
+                            inactiveTrackBarHeight: height * 0.02,
+                            inactiveTrackBar: BoxDecoration(
+                              color: AppColors.light40,
+                              borderRadius: BorderRadius.circular(width * 0.06),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
                   Padding(
                     padding: EdgeInsets.only(bottom: height * 0.05),
                     child: CustomElevatedButton(
@@ -122,16 +167,19 @@ class CreateBudgetView extends StackedView<CreateBudgetViewModel> {
 class BudgetBalance extends StatelessWidget {
   final double height, width;
   final String inputHintText;
+  final bool isOn;
   const BudgetBalance(
       {super.key,
       required this.height,
       required this.width,
-      required this.inputHintText});
+      required this.inputHintText,
+      required this.isOn});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: height * 0.36, left: width * 0.05),
+      padding: EdgeInsets.only(
+          top: isOn ? height * 0.28 : height * 0.35, left: width * 0.05),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

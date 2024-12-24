@@ -8,6 +8,7 @@ import 'package:montra_expense_tracker/Features/Budget/Views/budget_view_model.d
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 // ignore: must_be_immutable
 class BudgetView extends StackedView<BudgetViewModel> {
@@ -17,6 +18,9 @@ class BudgetView extends StackedView<BudgetViewModel> {
   String colorKey = "Color";
   String limitKey = "Limit";
   String spendKey = "Spend";
+  String iconKey = "Icon";
+  String iconColorKey = "Icon-Color";
+  String iconBackgroundColorKey = "Icon-Background";
   String titleOnEmptyList =
       "You don't have a budget. \n Let's make one so you in control.";
   String warning = "You've exceed the limit";
@@ -92,6 +96,7 @@ class BudgetView extends StackedView<BudgetViewModel> {
                 percentage: (index) {
                   return viewModel.percentage(index: index);
                 },
+                navigationService: viewModel.navigationService, iconKey: iconKey, iconBackgroundColorKey: iconBackgroundColorKey, iconColorKey: iconColorKey,
               ),
             ),
             Padding(
@@ -121,9 +126,13 @@ class BudgetItemUI extends StatelessWidget {
       colorKey,
       limitKey,
       spendKey,
+      iconKey,
+      iconColorKey,
+      iconBackgroundColorKey,
       warning;
   final double width, height;
   final double Function(int index) percentage;
+  final NavigationService navigationService;
   const BudgetItemUI(
       {super.key,
       required this.titleOnEmptyList,
@@ -134,7 +143,8 @@ class BudgetItemUI extends StatelessWidget {
       required this.limitKey,
       required this.spendKey,
       required this.percentage,
-      required this.warning});
+      required this.warning,
+      required this.navigationService, required this.iconKey, required this.iconColorKey, required this.iconBackgroundColorKey});
 
   @override
   Widget build(BuildContext context) {
@@ -164,150 +174,160 @@ class BudgetItemUI extends StatelessWidget {
                             Database.budgetData[index][limitKey]
                         ? height * 0.24
                         : height * 0.2,
-                    child: Card(
-                      color: AppColors.light80,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(width * 0.06),
-                      ),
-                      elevation: width * 0.002,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: height * 0.02,
-                              left: width * 0.04,
-                              right: width * 0.04,
-                              bottom: height * 0.01,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: width * 0.001,
-                                      color: AppColors.primaryBlack,
-                                    ),
-                                    borderRadius:
-                                        BorderRadius.circular(width * 0.04),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: width * 0.001,
-                                        horizontal: width * 0.03),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        SizedBox(
-                                          width: width * 0.035,
-                                          height: height * 0.035,
-                                          child: CircleAvatar(
-                                            backgroundColor: Database
-                                                .budgetData[index][colorKey],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: width * 0.02,
-                                        ),
-                                        Text(
-                                          Database.budgetData[index]
-                                              [categoryKey],
-                                          style: TextStyle(
-                                            color: AppColors.primaryBlack,
-                                            fontSize: width * 0.038,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Database.budgetData[index][spendKey] >
-                                        Database.budgetData[index][limitKey]
-                                    ? SvgPicture.asset(
-                                        IconsPath.warning,
-                                        colorFilter: ColorFilter.mode(
-                                            AppColors.primaryRed,
-                                            BlendMode.srcIn),
-                                      )
-                                    : const Spacer(),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: width * 0.04),
-                            child: Text(
-                              Database.budgetData[index][spendKey] >
-                                      Database.budgetData[index][limitKey]
-                                  ? "Remaining \$0"
-                                  : "Remaining \$${Database.budgetData[index][limitKey] - Database.budgetData[index][spendKey]}",
-                              style: TextStyle(
-                                color: AppColors.primaryBlack,
-                                fontSize: width * 0.06,
-                                fontWeight: FontWeight.w700,
+                    child: InkWell(
+                      onTap: () {
+                        navigationService.navigateToEditBudgetView(
+                            color: Database.budgetData[index][colorKey],
+                            category: Database.budgetData[index][categoryKey],
+                            spendBalance: Database.budgetData[index][spendKey],
+                            limitBalance: Database.budgetData[index][limitKey], backgroundColor: Database.budgetData[index][iconBackgroundColorKey], icon: Database.budgetData[index][iconKey], iconColor: Database.budgetData[index][iconColorKey]);
+                      },
+                      child: Card(
+                        color: AppColors.light80,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(width * 0.06),
+                        ),
+                        elevation: width * 0.002,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: height * 0.02,
+                                left: width * 0.04,
+                                right: width * 0.04,
+                                bottom: height * 0.01,
                               ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
-                          Center(
-                            child: SizedBox(
-                              width: width * 0.8,
-                              child: Stack(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    width: width * 0.8,
-                                    height: height * 0.018,
                                     decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: width * 0.001,
+                                        color: AppColors.primaryBlack,
+                                      ),
                                       borderRadius:
-                                          BorderRadius.circular(width * 0.06),
-                                      color: AppColors.light40,
+                                          BorderRadius.circular(width * 0.04),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: width * 0.001,
+                                          horizontal: width * 0.03),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          SizedBox(
+                                            width: width * 0.035,
+                                            height: height * 0.035,
+                                            child: CircleAvatar(
+                                              backgroundColor: Database
+                                                  .budgetData[index][colorKey],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: width * 0.02,
+                                          ),
+                                          Text(
+                                            Database.budgetData[index]
+                                                [categoryKey],
+                                            style: TextStyle(
+                                              color: AppColors.primaryBlack,
+                                              fontSize: width * 0.038,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    width: width * 0.8 * percentage(index),
-                                    height: height * 0.018,
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(width * 0.06),
-                                      color: Database.budgetData[index]
-                                          [colorKey],
-                                    ),
-                                  )
+                                  Database.budgetData[index][spendKey] >
+                                          Database.budgetData[index][limitKey]
+                                      ? SvgPicture.asset(
+                                          IconsPath.warning,
+                                          colorFilter: ColorFilter.mode(
+                                              AppColors.primaryRed,
+                                              BlendMode.srcIn),
+                                        )
+                                      : const Spacer(),
                                 ],
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: height * 0.01, left: width * 0.04),
-                            child: Text(
-                              "\$${Database.budgetData[index][spendKey]} of \$${Database.budgetData[index][limitKey]}",
-                              style: TextStyle(
-                                color: AppColors.grey,
-                                fontSize: width * 0.045,
-                                fontWeight: FontWeight.w500,
+                            Padding(
+                              padding: EdgeInsets.only(left: width * 0.04),
+                              child: Text(
+                                Database.budgetData[index][spendKey] >
+                                        Database.budgetData[index][limitKey]
+                                    ? "Remaining \$0"
+                                    : "Remaining \$${Database.budgetData[index][limitKey] - Database.budgetData[index][spendKey]}",
+                                style: TextStyle(
+                                  color: AppColors.primaryBlack,
+                                  fontSize: width * 0.06,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
-                          ),
-                          Database.budgetData[index][spendKey] >
-                                  Database.budgetData[index][limitKey]
-                              ? Padding(
-                                  padding: EdgeInsets.only(
-                                      left: width * 0.04, top: height * 0.01),
-                                  child: Text(
-                                    warning,
-                                    style: TextStyle(
-                                        color: AppColors.primaryRed,
-                                        fontSize: width * 0.04,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                )
-                              : const Spacer(),
-                        ],
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            Center(
+                              child: SizedBox(
+                                width: width * 0.8,
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      width: width * 0.8,
+                                      height: height * 0.018,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(width * 0.06),
+                                        color: AppColors.light40,
+                                      ),
+                                    ),
+                                    Container(
+                                      width: width * 0.8 * percentage(index),
+                                      height: height * 0.018,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(width * 0.06),
+                                        color: Database.budgetData[index]
+                                            [colorKey],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: height * 0.01, left: width * 0.04),
+                              child: Text(
+                                "\$${Database.budgetData[index][spendKey]} of \$${Database.budgetData[index][limitKey]}",
+                                style: TextStyle(
+                                  color: AppColors.grey,
+                                  fontSize: width * 0.045,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            Database.budgetData[index][spendKey] >
+                                    Database.budgetData[index][limitKey]
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                        left: width * 0.04, top: height * 0.01),
+                                    child: Text(
+                                      warning,
+                                      style: TextStyle(
+                                          color: AppColors.primaryRed,
+                                          fontSize: width * 0.04,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  )
+                                : const Spacer(),
+                          ],
+                        ),
                       ),
                     ),
                   ),

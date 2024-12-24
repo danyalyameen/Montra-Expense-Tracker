@@ -209,12 +209,18 @@ class Database {
     {
       "Category": "Shopping",
       "Color": AppColors.primaryYellow,
+      "Icon" : IconsPath.shopping,
+      "Icon-Color" : AppColors.primaryYellow,
+      "Icon-Background" : AppColors.yellow20,
       "Limit": 1000,
       "Spend": 1200,
     },
     {
       "Category": "Transportation",
       "Color": AppColors.primaryBlue,
+      "Icon" : IconsPath.transportation,
+      "Icon-Color" : AppColors.primaryBlue,
+      "Icon-Background" : AppColors.blue20,
       "Limit": 700,
       "Spend": 350,
     },
