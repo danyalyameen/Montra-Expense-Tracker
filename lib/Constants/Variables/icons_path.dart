@@ -24,4 +24,8 @@ class IconsPath {
   static String success = "assets/Icons/Success/success.svg";
   static String warning = "assets/Icons/Errors/warning.svg";
   static String delete = "assets/Icons/Delete/delete.svg";
+  static String filter = "assets/Icons/Filter/filter.svg";
+  static String salary = "assets/Icons/Finance/salary.svg";
+  static String lineChart = "assets/Icons/Graph/Line Chart/line-chart.svg";
+  static String pieChart = "assets/Icons/Graph/Pie Chart/pie-chart.svg";
 }

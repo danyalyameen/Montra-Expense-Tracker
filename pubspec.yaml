@@ -16,6 +16,7 @@ dependencies:
   flutter_svg: ^2.0.16
   dotted_border: ^2.1.0
   flutter_xlider: ^3.5.0
+  fl_chart: ^0.69.2
 
 # Dev Dependencies
 dev_dependencies:
@@ -43,6 +44,9 @@ flutter:
     - assets/Icons/Success/
     - assets/Icons/Errors/
     - assets/Icons/Delete/
+    - assets/Icons/Filter/
+    - assets/Icons/Graph/Line Chart/
+    - assets/Icons/Graph/Pie Chart/
 # Fonts
   fonts:
     - family: Inter

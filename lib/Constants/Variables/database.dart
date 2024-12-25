@@ -101,6 +101,27 @@ class Database {
     },
   ];
 
+  static List<Map<String, dynamic>> incomeDatabase = [
+    {
+      "Category": "Salary",
+      "Description": "Salary of November",
+      "Time": "04:30 PM",
+      "Expense": "+ \$4500",
+      "Icon": IconsPath.salary,
+      "Icon-Color": AppColors.primaryGreen,
+      "Icon-Background": AppColors.green20,
+    },
+    {
+      "Category": "Passive Income",
+      "Description": "UI8 sales",
+      "Time": "08:30 PM",
+      "Expense": "+ \$1000",
+      "Icon": IconsPath.salary,
+      "Icon-Color": AppColors.primaryGreen,
+      "Icon-Background": AppColors.green20,
+    },
+  ];
+
   static List<Map<String, dynamic>> settingsData = [
     {
       "Title": "Currency",
@@ -209,20 +230,62 @@ class Database {
     {
       "Category": "Shopping",
       "Color": AppColors.primaryYellow,
-      "Icon" : IconsPath.shopping,
-      "Icon-Color" : AppColors.primaryYellow,
-      "Icon-Background" : AppColors.yellow20,
+      "Icon": IconsPath.shopping,
+      "Icon-Color": AppColors.primaryYellow,
+      "Icon-Background": AppColors.yellow20,
       "Limit": 1000,
       "Spend": 1200,
     },
     {
       "Category": "Transportation",
       "Color": AppColors.primaryBlue,
-      "Icon" : IconsPath.transportation,
-      "Icon-Color" : AppColors.primaryBlue,
-      "Icon-Background" : AppColors.blue20,
+      "Icon": IconsPath.transportation,
+      "Icon-Color": AppColors.primaryBlue,
+      "Icon-Background": AppColors.blue20,
       "Limit": 700,
       "Spend": 350,
+    },
+  ];
+
+  static List<Map<String, dynamic>> financialReport = [
+    {
+      "Background": AppColors.primaryRed,
+      "Title": "This Month",
+      "Description": "You Spend 💸",
+      "Spend": 332,
+      "Biggest-Spending-Title": "Your Biggest Spending is from",
+      "Biggest-Spending": 120,
+      "Category": "Shopping",
+      "Icon": IconsPath.shopping,
+      "Icon-Color": AppColors.primaryYellow,
+      "Icon-Background": AppColors.yellow20,
+    },
+    {
+      "Background": AppColors.primaryGreen,
+      "Title": "This Month",
+      "Description": "You Earned 💰",
+      "Spend": 6000,
+      "Biggest-Spending-Title": "Your Biggest Income is from",
+      "Biggest-Spending": 5000,
+      "Category": "Salary",
+      "Icon": IconsPath.salary,
+      "Icon-Color": AppColors.primaryGreen,
+      "Icon-Background": AppColors.green20,
+    },
+  ];
+
+  static List<Map<String, dynamic>> graphData = [
+    {
+      "Drop-Down-Arrow": IconsPath.dropdownArrow,
+      "Icon": IconsPath.lineChart,
+      "Spend": 332,
+      "Income": 332,
+    },
+    {
+      "Drop-Down-Arrow": IconsPath.dropdownArrow,
+      "Icon": IconsPath.pieChart,
+      "Spend": 332,
+      "Income": 332,
     },
   ];
 }

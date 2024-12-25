@@ -5,6 +5,7 @@ import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Attach%20View/Account%20Details/Views/account_details_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
+import 'package:montra_expense_tracker/Widgets/expense_item.dart';
 import 'package:stacked/stacked.dart';
 
 // ignore: must_be_immutable
@@ -72,16 +73,27 @@ class AccountDetails extends StackedView<AccountDetailsViewModel> {
                   ),
                 ),
               ),
-              ExpensesList(
-                width: width,
-                height: height,
-                titleKey: titleKey,
-                descriptionKey: descriptionKey,
-                timeKey: timeKey,
-                priceKey: priceKey,
-                iconKey: iconKey,
-                iconColorKey: iconColorKey,
-                iconBackgroundColor: iconBackgroundColor,
+              Expanded(
+                child: ListView.builder(
+                  itemCount: Database.todayExpenseDatabase.length,
+                  itemBuilder: (context, index) {
+                    return Center(
+                      child: ExpenseItem(
+                        width: width,
+                        height: height,
+                        titleKey: titleKey,
+                        descriptionKey: descriptionKey,
+                        timeKey: timeKey,
+                        priceKey: priceKey,
+                        iconKey: iconKey,
+                        iconColorKey: iconColorKey,
+                        iconBackgroundColor: iconBackgroundColor,
+                        index: index,
+                        data: Database.todayExpenseDatabase,
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
@@ -147,142 +159,6 @@ class WalletDetails extends StatelessWidget {
               fontSize: width * 0.07),
         )
       ],
-    );
-  }
-}
-
-class ExpensesList extends StatelessWidget {
-  final double width, height;
-  final String titleKey,
-      descriptionKey,
-      timeKey,
-      priceKey,
-      iconKey,
-      iconColorKey,
-      iconBackgroundColor;
-  const ExpensesList(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.titleKey,
-      required this.descriptionKey,
-      required this.timeKey,
-      required this.priceKey,
-      required this.iconKey,
-      required this.iconColorKey,
-      required this.iconBackgroundColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: Database.todayExpenseDatabase.length,
-        itemBuilder: (context, index) {
-          return Center(
-            child: Container(
-              margin: EdgeInsets.only(top: height * 0.01),
-              width: width * 0.9,
-              height: height * 0.1,
-              decoration: BoxDecoration(
-                color: AppColors.light80,
-                borderRadius: BorderRadius.circular(width * 0.04),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: width * 0.04),
-                    child: Container(
-                      width: width * 0.15,
-                      height: width * 0.15,
-                      decoration: BoxDecoration(
-                        color: Database.todayExpenseDatabase[index]
-                            [iconBackgroundColor],
-                        borderRadius: BorderRadius.circular(width * 0.04),
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          Database.todayExpenseDatabase[index][iconKey],
-                          colorFilter: ColorFilter.mode(
-                              Database.todayExpenseDatabase[index]
-                                  [iconColorKey],
-                              BlendMode.srcIn),
-                          width: width * 0.09,
-                          height: width * 0.09,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: height * 0.02, left: width * 0.04),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          Database.todayExpenseDatabase[index][titleKey],
-                          style: TextStyle(
-                            color: AppColors.primaryBlack,
-                            fontSize: width * 0.042,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.002,
-                        ),
-                        Text(
-                          Database.todayExpenseDatabase[index][descriptionKey]
-                                      .length >
-                                  20
-                              ? Database.todayExpenseDatabase[index]
-                                          [descriptionKey]
-                                      .substring(0, 20) +
-                                  "..."
-                              : Database.todayExpenseDatabase[index]
-                                  [descriptionKey],
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: AppColors.grey,
-                            fontSize: width * 0.035,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        right: width * 0.04, top: height * 0.02),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          Database.todayExpenseDatabase[index][priceKey],
-                          style: TextStyle(
-                            color: AppColors.primaryRed,
-                            fontSize: width * 0.045,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.005,
-                        ),
-                        Text(
-                          Database.todayExpenseDatabase[index][timeKey],
-                          style: TextStyle(
-                            color: AppColors.grey,
-                            fontSize: width * 0.032,
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          );
-        },
-      ),
     );
   }
 }
