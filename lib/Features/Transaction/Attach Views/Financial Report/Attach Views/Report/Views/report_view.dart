@@ -19,6 +19,12 @@ class ReportView extends StackedView<ReportViewModel> {
   String incomeKey = "Income";
   String iconKey = "Icon";
   String dropDownKey = "Drop-Down-Arrow";
+  String titleKey = "Category";
+  String descriptionKey = "Description";
+  String timeKey = "Time";
+  String priceKey = "Expense";
+  String iconColorKey = "Icon-Color";
+  String iconBackgroundColorKey = "Icon-Background";
 
   @override
   Widget builder(
@@ -55,6 +61,13 @@ class ReportView extends StackedView<ReportViewModel> {
             indexForButtons: viewModel.indexForButtons,
             onTapExpense: viewModel.onTapExpense,
             onTapIncome: viewModel.onTapIncome,
+            iconKey: iconKey,
+            iconColorKey: iconColorKey,
+            iconBackgroundColorKey: iconBackgroundColorKey,
+            descriptionKey: descriptionKey,
+            priceKey: priceKey,
+            timeKey: timeKey,
+            titleKey: titleKey,
           ),
         ],
       ),
@@ -210,7 +223,10 @@ class Graph extends StatelessWidget {
                               FlSpot(9.5, 3),
                               FlSpot(11, 4),
                             ],
-                            barWidth: width * 0.025,
+                            dotData: const FlDotData(
+                              show: false,
+                            ),
+                            barWidth: width * 0.015,
                             color: AppColors.primaryViolet,
                             isCurved: true,
                             belowBarData: BarAreaData(
@@ -219,7 +235,7 @@ class Graph extends StatelessWidget {
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [
-                                  AppColors.violet60,
+                                  AppColors.violet40.withOpacity(0.8),
                                   AppColors.primaryLight,
                                 ],
                               ),
@@ -310,13 +326,14 @@ class ReportDetails extends StatelessWidget {
   final double width, height;
   final int indexForButtons;
   final Function onTapExpense, onTapIncome;
+  final String titleKey, descriptionKey, priceKey, timeKey, iconKey, iconColorKey, iconBackgroundColorKey;
   ReportDetails(
       {super.key,
       required this.width,
       required this.height,
       required this.indexForButtons,
       required this.onTapExpense,
-      required this.onTapIncome});
+      required this.onTapIncome, required this.titleKey, required this.descriptionKey, required this.priceKey, required this.timeKey, required this.iconKey, required this.iconColorKey, required this.iconBackgroundColorKey});
 
   String expenseButtonText = "Expense";
   String incomeButtonText = "Income";
@@ -448,13 +465,13 @@ class ReportDetails extends StatelessWidget {
                         return ExpenseItem(
                           width: width,
                           height: height,
-                          titleKey: "Category",
-                          descriptionKey: "Description",
-                          timeKey: "Time",
-                          priceKey: "Expense",
-                          iconKey: "Icon",
-                          iconColorKey: "Icon-Color",
-                          iconBackgroundColor: "Icon-Background",
+                          titleKey: titleKey,
+                          descriptionKey: descriptionKey,
+                          timeKey: timeKey,
+                          priceKey: priceKey,
+                          iconKey: iconKey,
+                          iconColorKey: iconColorKey,
+                          iconBackgroundColor: iconBackgroundColorKey,
                           index: index,
                           data: Database.todayExpenseDatabase,
                         );

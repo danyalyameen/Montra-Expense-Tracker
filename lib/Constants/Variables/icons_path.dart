@@ -28,4 +28,12 @@ class IconsPath {
   static String salary = "assets/Icons/Finance/salary.svg";
   static String lineChart = "assets/Icons/Graph/Line Chart/line-chart.svg";
   static String pieChart = "assets/Icons/Graph/Pie Chart/pie-chart.svg";
+  static String notification = "assets/Icons/Notification/notification.svg";
+  static String income = "assets/Icons/Finance/income.svg";
+  static String expense = "assets/Icons/Finance/expense.svg";
+  static String close = "assets/Icons/Create/close.svg";
+  static String home = "assets/Icons/Bottom Navigation/home.svg";
+  static String userProfile = "assets/Icons/Bottom Navigation/user.svg";
+  static String currencyExchange =
+      "assets/Icons/Bottom Navigation/currency-exchange.svg";
 }

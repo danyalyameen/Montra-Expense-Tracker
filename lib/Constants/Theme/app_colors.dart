@@ -40,4 +40,6 @@ class AppColors {
   static Color blue40 = const Color(0xFF8AC0FF);
   static Color blue20 = const Color(0xFFBDDCFF);
   static Color grey = Colors.grey;
+  static Color customColorBrown = const Color(0xFFFFF6E5);
+  static Color customColorWhite = const Color(0xFFF8EDD8);
 }

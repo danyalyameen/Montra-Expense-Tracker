@@ -288,4 +288,30 @@ class Database {
       "Income": 332,
     },
   ];
+
+  static List<String> time = [
+    "Today",
+    "Week",
+    "Month",
+    "Year",
+  ];
+
+  static List<Map<String, dynamic>> bottomNavigationData = [
+    {
+      "Icon": IconsPath.home,
+      "Title": "Home",
+    },
+    {
+      "Icon": IconsPath.transaction,
+      "Title": "Transaction",
+    },
+    {
+      "Icon": IconsPath.pieChart,
+      "Title": "Budget",
+    },
+    {
+      "Icon": IconsPath.userProfile,
+      "Title": "Profile",
+    },
+  ];
 }
