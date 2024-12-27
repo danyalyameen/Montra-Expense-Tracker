@@ -50,6 +50,9 @@ flutter:
     - assets/Icons/Notification/
     - assets/Icons/Create/
     - assets/Icons/Bottom Navigation/
+    - assets/Icons/Illustrations/
+    - assets/Icons/Show/
+    - assets/Icons/Social/
 # Fonts
   fonts:
     - family: Inter

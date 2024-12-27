@@ -314,4 +314,23 @@ class Database {
       "Title": "Profile",
     },
   ];
+
+  static List<Map<String, dynamic>> onBoardingData = [
+    {
+      "Icon": IconsPath.gainMoney,
+      "Title": "Gain total control of your money",
+      "Description": "Become your own money manager and make every cent count",
+    },
+    {
+      "Icon": IconsPath.trackMoney,
+      "Title": "Know where your money goes",
+      "Description":
+          "Track your transaction easily, with categories and financial report ",
+    },
+    {
+      "Icon": IconsPath.plans,
+      "Title": "Planning ahead",
+      "Description": "Setup your budget for each category so you in control",
+    },
+  ];
 }

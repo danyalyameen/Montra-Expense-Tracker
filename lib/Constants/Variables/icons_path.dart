@@ -34,6 +34,12 @@ class IconsPath {
   static String close = "assets/Icons/Create/close.svg";
   static String home = "assets/Icons/Bottom Navigation/home.svg";
   static String userProfile = "assets/Icons/Bottom Navigation/user.svg";
+  static String gainMoney = "assets/Icons/Illustrations/Gain Money.svg";
+  static String trackMoney = "assets/Icons/Illustrations/Track Money.svg";
+  static String plans = "assets/Icons/Illustrations/Plans.svg";
+  static String show = "assets/Icons/Show/show.svg";
+  static String google = "assets/Icons/Social/google.svg";
+  static String deleteCharacter = "assets/Icons/Delete/delete character.svg";
   static String currencyExchange =
       "assets/Icons/Bottom Navigation/currency-exchange.svg";
 }

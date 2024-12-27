@@ -50,7 +50,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(width * 0.04),
-          border: Border.all(color: AppColors.light20, width: width * 0.005),
+          border: Border.all(color: AppColors.light60, width: width * 0.004),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -6,53 +6,62 @@ class CustomTextField extends StatelessWidget {
   final double width;
   final double height;
   final String hintText;
+  final Widget? suffixIcon;
+  final VoidCallback? onTap;
+  final TapRegionCallback? onTapOutside;
+  final VoidCallback? onCompleted;
   const CustomTextField(
       {super.key,
       required this.controller,
       required this.width,
       required this.hintText,
-      required this.height});
+      required this.height,
+      this.suffixIcon,
+      this.onTap,
+      this.onTapOutside, this.onCompleted});
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width * 0.9,
-      child: TextField(
-        controller: controller,
-        cursorColor: AppColors.primaryBlack,
-        style: TextStyle(
-          color: AppColors.primaryBlack,
-          fontSize: width * 0.04,
-          fontWeight: FontWeight.w500,
-        ),
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(
-            left: width * 0.04,
-            top: height * 0.018,
-            bottom: height * 0.018,
-            right: width * 0.04,
+    return Center(
+      child: SizedBox(
+        width: width * 0.9,
+        child: TextField(
+          controller: controller,
+          onTap: onTap,
+          onTapOutside: onTapOutside,
+          onEditingComplete: onCompleted,
+          cursorColor: AppColors.primaryBlack,
+          style: TextStyle(
+            color: AppColors.primaryBlack,
+            fontSize: width * 0.04,
+            fontWeight: FontWeight.w500,
           ),
-          hintText: hintText,
-          hintStyle: TextStyle(
-      color: AppColors.grey, fontSize: width * 0.045, fontWeight: FontWeight.w500),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(width * 0.04),
-            borderSide: BorderSide(
-              color: AppColors.light20,
-              width: width * 0.005,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(
+              left: width * 0.04,
+              top: height * 0.018,
+              bottom: height * 0.018,
+              right: width * 0.04,
             ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(width * 0.04),
-            borderSide: BorderSide(
-              color: AppColors.light20,
-              width: width * 0.005,
+            hintText: hintText,
+            suffixIcon: suffixIcon,
+            hintStyle: TextStyle(
+              color: AppColors.grey,
+              fontSize: width * 0.045,
+              fontWeight: FontWeight.w500,
             ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(width * 0.04),
-            borderSide: BorderSide(
-              color: AppColors.light20,
-              width: width * 0.005,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(width * 0.04),
+              borderSide: BorderSide(
+                color: AppColors.primaryViolet,
+                width: width * 0.005,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(width * 0.04),
+              borderSide: BorderSide(
+                color: AppColors.light60,
+                width: width * 0.004,
+              ),
             ),
           ),
         ),
