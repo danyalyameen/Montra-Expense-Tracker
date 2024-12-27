@@ -27,7 +27,6 @@ class SetupPinViewModel extends ViewModel {
   void addPin(String value) {
     if (enteredPin.length < 4) {
       enteredPin += value;
-      print(enteredPin);
     }
     rebuildUi();
   }
@@ -35,7 +34,6 @@ class SetupPinViewModel extends ViewModel {
   void removePin() {
     if (enteredPin.isNotEmpty) {
       enteredPin = enteredPin.substring(0, enteredPin.length - 1);
-      print(enteredPin);
     }
     rebuildUi();
   }
