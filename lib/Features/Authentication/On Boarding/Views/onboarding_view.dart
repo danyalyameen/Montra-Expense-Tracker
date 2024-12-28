@@ -158,13 +158,11 @@ class ShowIndicators extends StatelessWidget {
           return Container(
             width: currentIndex == index ? width * 0.04 : width * 0.025,
             height: currentIndex == index ? width * 0.04 : width * 0.025,
-            margin: EdgeInsets.symmetric(
-                horizontal: width * 0.02, vertical: height * 0.02),
-            decoration: BoxDecoration(
-              color: index == currentIndex
+            margin: EdgeInsets.all(width * 0.01),
+            child: CircleAvatar(
+              backgroundColor: index == currentIndex
                   ? AppColors.primaryViolet
                   : AppColors.violet20,
-              shape: BoxShape.circle,
             ),
           );
         },

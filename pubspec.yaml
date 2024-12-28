@@ -53,6 +53,7 @@ flutter:
     - assets/Icons/Illustrations/
     - assets/Icons/Show/
     - assets/Icons/Social/
+    - assets/Icons/Menu/
 # Fonts
   fonts:
     - family: Inter

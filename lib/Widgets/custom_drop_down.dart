@@ -1,164 +1,72 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 
-class CustomDropDown extends StatefulWidget {
-  final Widget showItems;
-  final String hintText, buttonText;
-  final Widget showSelectedItemOnHintText;
-  final double bottomSheetHight, buttonWidth, buttonsBottomHight;
-  final Map<String, dynamic> storeSelectedItem;
-  const CustomDropDown({
+class DropDown extends StatelessWidget {
+  final double width, height;
+  final String hintText, selectedAccountType;
+  final List<String> items;
+  final Function(String value) onChanged;
+  const DropDown({
     super.key,
+    required this.width,
+    required this.height,
     required this.hintText,
-    required this.showSelectedItemOnHintText,
-    required this.storeSelectedItem,
-    required this.showItems,
-    required this.bottomSheetHight,
-    required this.buttonText,
-    required this.buttonWidth,
-    required this.buttonsBottomHight,
+    required this.onChanged,
+    required this.selectedAccountType,
+    required this.items,
   });
 
   @override
-  State<CustomDropDown> createState() => _CustomDropDownState();
-}
-
-class _CustomDropDownState extends State<CustomDropDown> {
-  @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    return InkWell(
-      onTap: () {
-        CategoryBottomSheet.showBottomSheet(
-          buttonsBottomHight: widget.buttonsBottomHight,
-          buttonText: widget.buttonText,
-          buttonWidth: widget.buttonWidth,
-          showItems: widget.showItems,
-          width: width,
-          height: widget.bottomSheetHight,
-          context: context,
-          selectedCategory: widget.storeSelectedItem,
-        );
-      },
+    return DropdownButtonHideUnderline(
       child: Container(
         width: width * 0.9,
-        height: height * 0.07,
+        height: height * 0.068,
+        padding: EdgeInsets.only(left: width * 0.03, right: width * 0.03),
         decoration: BoxDecoration(
-          color: Colors.transparent,
+          border: Border.all(
+            width: width * 0.004,
+            color: AppColors.light60,
+          ),
           borderRadius: BorderRadius.circular(width * 0.04),
-          border: Border.all(color: AppColors.light60, width: width * 0.004),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: width * 0.04),
-              child: widget.storeSelectedItem[Variables.universalItemKey] ==
-                      widget.hintText
-                  ? Text(
-                      widget.hintText,
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: width * 0.05,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
-                  : widget.showSelectedItemOnHintText,
+        child: DropdownButton<String>(
+          alignment: Alignment.center,
+          borderRadius: BorderRadius.circular(width * 0.04),
+          hint: Text(
+            selectedAccountType.isEmpty
+                ? hintText
+                : selectedAccountType,
+            style: TextStyle(
+              color: selectedAccountType.isEmpty
+                  ? AppColors.grey
+                  : AppColors.primaryBlack,
+              fontSize: width * 0.0405,
+              fontWeight: FontWeight.w500,
             ),
-            Padding(
-              padding: EdgeInsets.only(right: width * 0.035),
-              child: SvgPicture.asset(
-                IconsPath.dropdownArrow,
-                colorFilter:
-                    const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
-              ),
-            ),
-          ],
+          ),
+          icon: SvgPicture.asset(
+            IconsPath.dropdownArrow,
+            colorFilter: ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+          ),
+          items: items.map<DropdownMenuItem<String>>(
+            (e) {
+              return DropdownMenuItem(
+                value: e.toString(),
+                child: Text(
+                  e.toString(),
+                  style: TextStyle(
+                    color: AppColors.primaryBlack,
+                  ),
+                ),
+              );
+            },
+          ).toList(),
+          onChanged: (value) => onChanged(value!),
         ),
       ),
-    );
-  }
-}
-
-class CategoryBottomSheet {
-  static void showBottomSheet({
-    required double width,
-    required double height,
-    required double buttonWidth,
-    required double buttonsBottomHight,
-    required String buttonText,
-    required BuildContext context,
-    required Map<String, dynamic> selectedCategory,
-    required Widget showItems,
-  }) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          height: height,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: AppColors.primaryLight,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(width * 0.05),
-              topRight: Radius.circular(width * 0.05),
-            ),
-          ),
-          child: Column(
-            children: [
-              showItems,
-              Padding(
-                padding: EdgeInsets.only(bottom: buttonsBottomHight),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: buttonWidth,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStatePropertyAll(AppColors.violet20),
-                          shape: WidgetStatePropertyAll(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(width * 0.05),
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          "Cancel",
-                          style: TextStyle(color: AppColors.primaryViolet),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: buttonWidth,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(
-                            AppColors.primaryViolet,
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          buttonText,
-                          style: TextStyle(color: AppColors.primaryLight),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        );
-      },
     );
   }
 }

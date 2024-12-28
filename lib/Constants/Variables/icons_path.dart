@@ -40,6 +40,7 @@ class IconsPath {
   static String show = "assets/Icons/Show/show.svg";
   static String google = "assets/Icons/Social/google.svg";
   static String deleteCharacter = "assets/Icons/Delete/delete character.svg";
+  static String menuDots = "assets/Icons/Menu/menu dots.svg";
   static String currencyExchange =
       "assets/Icons/Bottom Navigation/currency-exchange.svg";
 }

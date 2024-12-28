@@ -333,4 +333,32 @@ class Database {
       "Description": "Setup your budget for each category so you in control",
     },
   ];
+
+  static List<Map<String, dynamic>> notificationsData = [
+    {
+      "Title": "Shopping budget has exceeds the limit",
+      "Description": "Your shopping budget has exceeds the limit",
+      "Time": "19.30",
+    },
+    {
+      "Title": "Utilities budget has exceeds the limit",
+      "Description": "Your utilities budget has exceeds the limit",
+      "Time": "17.28",
+    },
+    {
+      "Title": "Travel budget has exceeds the limit",
+      "Description": "Your travel budget has exceeds the limit",
+      "Time": "23.07",
+    },
+  ];
+
+  static List<String> accountTypes = [
+    "Wallet",
+    "Bank",
+  ];
+
+  static List<String> menuItems = [
+    "Mark All Read",
+    "Remove all",
+  ];
 }

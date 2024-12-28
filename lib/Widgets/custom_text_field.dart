@@ -10,6 +10,7 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final TapRegionCallback? onTapOutside;
   final VoidCallback? onCompleted;
+  final double? borderRadius;
   const CustomTextField(
       {super.key,
       required this.controller,
@@ -18,7 +19,8 @@ class CustomTextField extends StatelessWidget {
       required this.height,
       this.suffixIcon,
       this.onTap,
-      this.onTapOutside, this.onCompleted});
+      this.onTapOutside,
+      this.onCompleted, this.borderRadius});
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -50,14 +52,14 @@ class CustomTextField extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(width * 0.04),
+              borderRadius: BorderRadius.circular(borderRadius ?? width * 0.04),
               borderSide: BorderSide(
                 color: AppColors.primaryViolet,
                 width: width * 0.005,
               ),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(width * 0.04),
+              borderRadius: BorderRadius.circular(borderRadius ?? width * 0.04),
               borderSide: BorderSide(
                 color: AppColors.light60,
                 width: width * 0.004,
