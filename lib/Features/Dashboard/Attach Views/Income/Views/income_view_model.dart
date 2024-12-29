@@ -8,6 +8,13 @@ class IncomeViewModel extends ViewModel {
 
   TextEditingController get descriptionController => _descriptionController;
 
+  bool _isRepeat = false;
+
+  bool get isRepeat => _isRepeat;
+  String selectedItemForFrequency = "";
+  String selectedItemForMonth = "";
+  String selectedItemForDate = "";
+
   Map<String, dynamic> storeSelectedIncome = {
     Variables.universalItemKey: "Income",
     "Colors": null
@@ -30,5 +37,25 @@ class IncomeViewModel extends ViewModel {
         Database.walletOptions[index]["Wallet"];
     navigationService.back();
     notifyListeners();
+  }
+
+  void toggleSwitch(bool? value) {
+    _isRepeat = value!;
+    rebuildUi();
+  }
+
+  void onChangedFrequency(String value) {
+    selectedItemForFrequency = value;
+    rebuildUi();
+  }
+
+  void onChangedMonth(String value) {
+    selectedItemForMonth = value;
+    rebuildUi();
+  }
+
+  void onChangedDate(String value) {
+    selectedItemForDate = value;
+    rebuildUi();
   }
 }

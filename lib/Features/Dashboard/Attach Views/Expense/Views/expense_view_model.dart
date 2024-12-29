@@ -7,6 +7,12 @@ class ExpenseViewModel extends ViewModel {
   final TextEditingController _descriptionController = TextEditingController();
 
   TextEditingController get descriptionController => _descriptionController;
+  bool _isRepeat = false;
+
+  bool get isRepeat => _isRepeat;
+  String selectedItemForFrequency = "";
+  String selectedItemForMonth = "";
+  String selectedItemForDate = "";
 
   Map<String, dynamic> storeSelectedCategory = {
     Variables.universalItemKey: "Category",
@@ -30,5 +36,25 @@ class ExpenseViewModel extends ViewModel {
         Database.walletOptions[index]["Wallet"];
     navigationService.back();
     notifyListeners();
+  }
+
+  void toggleSwitch(bool? value) {
+    _isRepeat = value!;
+    rebuildUi();
+  }
+
+  void onChangedFrequency(String value) {
+    selectedItemForFrequency = value;
+    rebuildUi();
+  }
+
+  void onChangedMonth(String value) {
+    selectedItemForMonth = value;
+    rebuildUi();
+  }
+
+  void onChangedDate(String value) {
+    selectedItemForDate = value;
+    rebuildUi();
   }
 }

@@ -6,6 +6,7 @@ import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Transfer/Views/transfer_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_bottom_sheet.dart';
+import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
@@ -74,7 +75,7 @@ class TransferView extends StackedView<TransferViewModel> {
                   SizedBox(
                     height: height * 0.02,
                   ),
-                  CustomDropDown(
+                  CustomBottomSheet(
                     buttonsBottomHight: 0,
                     buttonText: addWalletButtonText,
                     buttonWidth: width * 0.3,
@@ -100,23 +101,14 @@ class TransferView extends StackedView<TransferViewModel> {
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.02,
+                    height: height * 0.04,
                   ),
                   FileInserter(),
                   SizedBox(
-                    height: height * 0.02,
+                    height: height * 0.04,
                   ),
-                  SizedBox(
-                    width: width * 0.9,
-                    height: height * 0.065,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text(
-                        continueButtonText,
-                        style: TextStyle(fontSize: width * 0.05),
-                      ),
-                    ),
-                  )
+                  CustomElevatedButton(
+                      width: width, height: height, text: continueButtonText)
                 ],
               ),
             ),

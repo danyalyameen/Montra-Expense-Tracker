@@ -4,13 +4,13 @@ import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 
-class CustomDropDown extends StatefulWidget {
+class CustomBottomSheet extends StatefulWidget {
   final Widget showItems;
   final String hintText, buttonText;
   final Widget showSelectedItemOnHintText;
   final double bottomSheetHight, buttonWidth, buttonsBottomHight;
   final Map<String, dynamic> storeSelectedItem;
-  const CustomDropDown({
+  const CustomBottomSheet({
     super.key,
     required this.hintText,
     required this.showSelectedItemOnHintText,
@@ -23,10 +23,10 @@ class CustomDropDown extends StatefulWidget {
   });
 
   @override
-  State<CustomDropDown> createState() => _CustomDropDownState();
+  State<CustomBottomSheet> createState() => _CustomBottomSheetState();
 }
 
-class _CustomDropDownState extends State<CustomDropDown> {
+class _CustomBottomSheetState extends State<CustomBottomSheet> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;

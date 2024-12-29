@@ -4,6 +4,7 @@ import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Edit%20Budget/edit_budget_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
+import 'package:montra_expense_tracker/Widgets/custom_delete.dart';
 import 'package:montra_expense_tracker/Widgets/show_category.dart';
 import 'package:stacked/stacked.dart';
 
@@ -19,6 +20,8 @@ class EditBudgetView extends StackedView<EditBudgetViewModel> {
 
   String appBarTitle = "Budget Details";
   String warning = "You've exceed the limit";
+  String title = "Remove this Budget?";
+  String subtitle = "Are you sure do you want to remove this budget?";
 
   @override
   Widget builder(
@@ -34,12 +37,23 @@ class EditBudgetView extends StackedView<EditBudgetViewModel> {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: width * 0.04),
-            child: SvgPicture.asset(
-              IconsPath.delete,
-              colorFilter:
-                  ColorFilter.mode(AppColors.primaryRed, BlendMode.srcIn),
-              width: width * 0.04,
-              height: height * 0.04,
+            child: InkWell(
+              onTap: () {
+                Delete.showSheet(
+                  context: context,
+                  width: width,
+                  height: height,
+                  title: title,
+                  subtitle: subtitle,
+                );
+              },
+              child: SvgPicture.asset(
+                IconsPath.delete,
+                colorFilter:
+                    ColorFilter.mode(AppColors.primaryRed, BlendMode.srcIn),
+                width: width * 0.04,
+                height: height * 0.04,
+              ),
             ),
           )
         ],

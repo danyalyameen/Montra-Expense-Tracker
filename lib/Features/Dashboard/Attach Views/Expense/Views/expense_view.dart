@@ -5,8 +5,11 @@ import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_bottom_sheet.dart';
+import 'package:montra_expense_tracker/Widgets/custom_drop_down.dart';
+import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
+import 'package:montra_expense_tracker/Widgets/switch_tile.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -27,6 +30,11 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
   String walletOptionsAccountBalanceKey = "Balance";
   String walletOptionsAccountTypeKey = "Account Type";
   String walletOptionsBankPictureKey = "Picture";
+  String switchTitleText = "Repeat";
+  String switchSubTitleText = "Repeat transaction";
+  String hintTextForFrequency = "Frequency";
+  String hintTextForMonth = "Month";
+  String hintTextForDate = "Date";
 
   @override
   Widget builder(
@@ -62,7 +70,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(top: height * 0.05),
-                      child: CustomDropDown(
+                      child: CustomBottomSheet(
                         buttonsBottomHight: height * 0.035,
                         buttonText: createCategoryButtonText,
                         buttonWidth: width * 0.38,
@@ -100,7 +108,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    CustomDropDown(
+                    CustomBottomSheet(
                       buttonsBottomHight: 0,
                       buttonText: addWalletButtonText,
                       buttonWidth: width * 0.3,
@@ -132,20 +140,35 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    const ListTileSwitch(),
+                    SwitchTile(
+                      title: switchTitleText,
+                      subtitle: switchSubTitleText,
+                      value: viewModel.isRepeat,
+                      onChanged: (value) {
+                        Database.addDataToDates();
+                        viewModel.toggleSwitch(value);
+                        RepeatDialog.bottomSheet(
+                          context: context,
+                          width: width,
+                          height: height,
+                          selectedItemForFrequency:
+                              viewModel.selectedItemForFrequency,
+                          selectedItemForMonth: viewModel.selectedItemForMonth,
+                          selectedItemForDates: viewModel.selectedItemForDate,
+                          hintTextForFrequency: hintTextForFrequency,
+                          hintTextForMonth: hintTextForMonth,
+                          hintTextForDate: hintTextForDate,
+                          continueButtonHintText: continueButtonText,
+                        );
+                      },
+                    ),
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    SizedBox(
-                      width: width * 0.9,
-                      height: height * 0.065,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                          continueButtonText,
-                          style: TextStyle(fontSize: width * 0.05),
-                        ),
-                      ),
+                    CustomElevatedButton(
+                      width: width,
+                      height: height,
+                      text: continueButtonText,
                     )
                   ],
                 ),
@@ -548,42 +571,75 @@ class _ShowItemsForWalletState extends State<ShowItemsForWallet> {
   }
 }
 
-class ListTileSwitch extends StatefulWidget {
-  const ListTileSwitch({super.key});
-
-  @override
-  State<ListTileSwitch> createState() => _ListTileSwitchState();
-}
-
-class _ListTileSwitchState extends State<ListTileSwitch> {
-  bool isRepeat = false;
-  String titleText = "Repeat";
-  String subTitleText = "Repeat transaction";
-  @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-      child: SwitchListTile(
-        title: Text(
-          titleText,
-          style: TextStyle(
-            color: AppColors.primaryBlack,
-            fontWeight: FontWeight.w500,
-            fontSize: width * 0.042,
-          ),
-        ),
-        subtitle: Text(
-          subTitleText,
-          style: TextStyle(
-            color: AppColors.grey,
-            fontSize: width * 0.03,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        value: isRepeat,
-        onChanged: (value) {},
-      ),
+class RepeatDialog {
+  static void bottomSheet({
+    required BuildContext context,
+    required double width,
+    required double height,
+    required String selectedItemForFrequency,
+    required String selectedItemForMonth,
+    required String selectedItemForDates,
+    required String hintTextForFrequency,
+    required String hintTextForMonth,
+    required String hintTextForDate,
+    required String continueButtonHintText,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return BottomSheet(
+          showDragHandle: true,
+          dragHandleColor: AppColors.violet40,
+          dragHandleSize: Size(width * 0.2, height * 0.005),
+          backgroundColor: AppColors.primaryLight,
+          constraints: BoxConstraints(maxHeight: height * 0.4, minWidth: width),
+          onClosing: () {},
+          builder: (context) {
+            return Column(
+              children: [
+                DropDown(
+                  height: height,
+                  width: width,
+                  hintText: hintTextForFrequency,
+                  items: Database.frequencyData,
+                  onChanged: (value) {},
+                  selectedItem: selectedItemForFrequency,
+                ),
+                SizedBox(
+                  height: height * 0.02,
+                ),
+                DropDown(
+                  height: height,
+                  width: width,
+                  hintText: hintTextForMonth,
+                  items: Database.months,
+                  onChanged: (value) {},
+                  selectedItem: selectedItemForMonth,
+                ),
+                SizedBox(
+                  height: height * 0.02,
+                ),
+                DropDown(
+                  height: height,
+                  width: width,
+                  hintText: hintTextForDate,
+                  items: Database.dates,
+                  onChanged: (value) {},
+                  selectedItem: selectedItemForDates,
+                ),
+                SizedBox(
+                  height: height * 0.02,
+                ),
+                CustomElevatedButton(
+                  width: width,
+                  height: height,
+                  text: continueButtonHintText,
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }

@@ -5,7 +5,7 @@ import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 
 class DropDown extends StatelessWidget {
   final double width, height;
-  final String hintText, selectedAccountType;
+  final String hintText, selectedItem;
   final List<String> items;
   final Function(String value) onChanged;
   const DropDown({
@@ -14,7 +14,7 @@ class DropDown extends StatelessWidget {
     required this.height,
     required this.hintText,
     required this.onChanged,
-    required this.selectedAccountType,
+    required this.selectedItem,
     required this.items,
   });
 
@@ -33,14 +33,11 @@ class DropDown extends StatelessWidget {
           borderRadius: BorderRadius.circular(width * 0.04),
         ),
         child: DropdownButton<String>(
-          alignment: Alignment.center,
           borderRadius: BorderRadius.circular(width * 0.04),
           hint: Text(
-            selectedAccountType.isEmpty
-                ? hintText
-                : selectedAccountType,
+            selectedItem.isEmpty ? hintText : selectedItem,
             style: TextStyle(
-              color: selectedAccountType.isEmpty
+              color: selectedItem.isEmpty
                   ? AppColors.grey
                   : AppColors.primaryBlack,
               fontSize: width * 0.0405,

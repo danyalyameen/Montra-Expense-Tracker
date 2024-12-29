@@ -41,6 +41,9 @@ class IconsPath {
   static String google = "assets/Icons/Social/google.svg";
   static String deleteCharacter = "assets/Icons/Delete/delete character.svg";
   static String menuDots = "assets/Icons/Menu/menu dots.svg";
+  static String camera = "assets/Icons/Attachment/camera.svg";
+  static String gallery = "assets/Icons/Attachment/gallery.svg";
+  static String document = "assets/Icons/Attachment/document.svg";
   static String currencyExchange =
       "assets/Icons/Bottom Navigation/currency-exchange.svg";
 }

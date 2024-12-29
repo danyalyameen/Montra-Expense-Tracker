@@ -62,7 +62,7 @@ class CreateBudgetView extends StackedView<CreateBudgetViewModel> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(top: height * 0.05),
-                    child: CustomDropDown(
+                    child: CustomBottomSheet(
                       buttonsBottomHight: height * 0.035,
                       buttonText: createCategoryText,
                       buttonWidth: width * 0.38,

@@ -5,9 +5,9 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:ui' as _i22;
+import 'dart:ui' as _i23;
 
-import 'package:flutter/material.dart' as _i21;
+import 'package:flutter/material.dart' as _i22;
 import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Create%20Budget/create_budget_view.dart'
     as _i16;
@@ -41,6 +41,8 @@ import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/
     as _i8;
 import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart'
     as _i5;
+import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Details%20Transaction/Views/details_transaction_view.dart'
+    as _i21;
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Attach%20Views/Report/Views/report_view.dart'
     as _i20;
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Views/financial_report_summary_view.dart'
@@ -48,7 +50,7 @@ import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Finan
 import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_view.dart'
     as _i18;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i23;
+import 'package:stacked_services/stacked_services.dart' as _i24;
 
 class Routes {
   static const incomeView = '/income-view';
@@ -89,6 +91,8 @@ class Routes {
 
   static const reportView = '/report-view';
 
+  static const detailsTransactionView = '/details-transaction-view';
+
   static const all = <String>{
     incomeView,
     expenseView,
@@ -109,6 +113,7 @@ class Routes {
     transactionView,
     financialReportSummaryView,
     reportView,
+    detailsTransactionView,
   };
 }
 
@@ -190,6 +195,10 @@ class StackedRouter extends _i1.RouterBase {
       Routes.reportView,
       page: _i20.ReportView,
     ),
+    _i1.RouteDef(
+      Routes.detailsTransactionView,
+      page: _i21.DetailsTransactionView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
@@ -197,7 +206,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<IncomeViewArguments>(
         orElse: () => const IncomeViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i2.IncomeView(key: args.key),
         settings: data,
       );
@@ -206,7 +215,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ExpenseViewArguments>(
         orElse: () => const ExpenseViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i3.ExpenseView(key: args.key),
         settings: data,
       );
@@ -215,7 +224,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<TransferViewArguments>(
         orElse: () => const TransferViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i4.TransferView(key: args.key),
         settings: data,
       );
@@ -224,7 +233,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ProfileViewArguments>(
         orElse: () => const ProfileViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i5.ProfileView(key: args.key),
         settings: data,
       );
@@ -233,14 +242,14 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<AccountViewArguments>(
         orElse: () => const AccountViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i6.AccountView(key: args.key),
         settings: data,
       );
     },
     _i7.AccountDetails: (data) {
       final args = data.getArgs<AccountDetailsArguments>(nullOk: false);
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i7.AccountDetails(
             args.walletName, args.walletBalance, args.icon,
             key: args.key),
@@ -251,7 +260,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SettingsViewArguments>(
         orElse: () => const SettingsViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i8.SettingsView(key: args.key),
         settings: data,
       );
@@ -260,7 +269,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<AboutViewArguments>(
         orElse: () => const AboutViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i9.AboutView(key: args.key),
         settings: data,
       );
@@ -269,7 +278,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CurrencyViewArguments>(
         orElse: () => const CurrencyViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i10.CurrencyView(key: args.key),
         settings: data,
       );
@@ -278,7 +287,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<HelpViewArguments>(
         orElse: () => const HelpViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i11.HelpView(key: args.key),
         settings: data,
       );
@@ -287,7 +296,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<NotificationViewArguments>(
         orElse: () => const NotificationViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i12.NotificationView(key: args.key),
         settings: data,
       );
@@ -296,7 +305,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SecurityViewArguments>(
         orElse: () => const SecurityViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i13.SecurityView(key: args.key),
         settings: data,
       );
@@ -305,7 +314,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ThemeViewArguments>(
         orElse: () => const ThemeViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i14.ThemeView(key: args.key),
         settings: data,
       );
@@ -314,7 +323,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<BudgetViewArguments>(
         orElse: () => const BudgetViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i15.BudgetView(key: args.key),
         settings: data,
       );
@@ -323,14 +332,14 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CreateBudgetViewArguments>(
         orElse: () => const CreateBudgetViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i16.CreateBudgetView(key: args.key),
         settings: data,
       );
     },
     _i17.EditBudgetView: (data) {
       final args = data.getArgs<EditBudgetViewArguments>(nullOk: false);
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i17.EditBudgetView(
             args.color,
             args.category,
@@ -347,7 +356,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<TransactionViewArguments>(
         orElse: () => const TransactionViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i18.TransactionView(key: args.key),
         settings: data,
       );
@@ -356,7 +365,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<FinancialReportSummaryViewArguments>(
         orElse: () => const FinancialReportSummaryViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i19.FinancialReportSummaryView(key: args.key),
         settings: data,
       );
@@ -365,8 +374,23 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ReportViewArguments>(
         orElse: () => const ReportViewArguments(),
       );
-      return _i21.MaterialPageRoute<dynamic>(
+      return _i22.MaterialPageRoute<dynamic>(
         builder: (context) => _i20.ReportView(key: args.key),
+        settings: data,
+      );
+    },
+    _i21.DetailsTransactionView: (data) {
+      final args = data.getArgs<DetailsTransactionViewArguments>(nullOk: false);
+      return _i22.MaterialPageRoute<dynamic>(
+        builder: (context) => _i21.DetailsTransactionView(
+            args.balance,
+            args.description,
+            args.time,
+            args.category,
+            args.type,
+            args.accountType,
+            args.color,
+            key: args.key),
         settings: data,
       );
     },
@@ -382,7 +406,7 @@ class StackedRouter extends _i1.RouterBase {
 class IncomeViewArguments {
   const IncomeViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -404,7 +428,7 @@ class IncomeViewArguments {
 class ExpenseViewArguments {
   const ExpenseViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -426,7 +450,7 @@ class ExpenseViewArguments {
 class TransferViewArguments {
   const TransferViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -448,7 +472,7 @@ class TransferViewArguments {
 class ProfileViewArguments {
   const ProfileViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -470,7 +494,7 @@ class ProfileViewArguments {
 class AccountViewArguments {
   const AccountViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -503,7 +527,7 @@ class AccountDetailsArguments {
 
   final String icon;
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -531,7 +555,7 @@ class AccountDetailsArguments {
 class SettingsViewArguments {
   const SettingsViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -553,7 +577,7 @@ class SettingsViewArguments {
 class AboutViewArguments {
   const AboutViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -575,7 +599,7 @@ class AboutViewArguments {
 class CurrencyViewArguments {
   const CurrencyViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -597,7 +621,7 @@ class CurrencyViewArguments {
 class HelpViewArguments {
   const HelpViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -619,7 +643,7 @@ class HelpViewArguments {
 class NotificationViewArguments {
   const NotificationViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -641,7 +665,7 @@ class NotificationViewArguments {
 class SecurityViewArguments {
   const SecurityViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -663,7 +687,7 @@ class SecurityViewArguments {
 class ThemeViewArguments {
   const ThemeViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -685,7 +709,7 @@ class ThemeViewArguments {
 class BudgetViewArguments {
   const BudgetViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -707,7 +731,7 @@ class BudgetViewArguments {
 class CreateBudgetViewArguments {
   const CreateBudgetViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -738,7 +762,7 @@ class EditBudgetViewArguments {
     this.key,
   });
 
-  final _i22.Color color;
+  final _i23.Color color;
 
   final String category;
 
@@ -746,13 +770,13 @@ class EditBudgetViewArguments {
 
   final int limitBalance;
 
-  final _i22.Color backgroundColor;
+  final _i23.Color backgroundColor;
 
-  final _i22.Color iconColor;
+  final _i23.Color iconColor;
 
   final String icon;
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -788,7 +812,7 @@ class EditBudgetViewArguments {
 class TransactionViewArguments {
   const TransactionViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -810,7 +834,7 @@ class TransactionViewArguments {
 class FinancialReportSummaryViewArguments {
   const FinancialReportSummaryViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -832,7 +856,7 @@ class FinancialReportSummaryViewArguments {
 class ReportViewArguments {
   const ReportViewArguments({this.key});
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   @override
   String toString() {
@@ -851,9 +875,68 @@ class ReportViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i23.NavigationService {
+class DetailsTransactionViewArguments {
+  const DetailsTransactionViewArguments({
+    required this.balance,
+    required this.description,
+    required this.time,
+    required this.category,
+    required this.type,
+    required this.accountType,
+    required this.color,
+    this.key,
+  });
+
+  final String balance;
+
+  final String description;
+
+  final String time;
+
+  final String category;
+
+  final String type;
+
+  final String accountType;
+
+  final _i23.Color color;
+
+  final _i22.Key? key;
+
+  @override
+  String toString() {
+    return '{"balance": "$balance", "description": "$description", "time": "$time", "category": "$category", "type": "$type", "accountType": "$accountType", "color": "$color", "key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant DetailsTransactionViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.balance == balance &&
+        other.description == description &&
+        other.time == time &&
+        other.category == category &&
+        other.type == type &&
+        other.accountType == accountType &&
+        other.color == color &&
+        other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return balance.hashCode ^
+        description.hashCode ^
+        time.hashCode ^
+        category.hashCode ^
+        type.hashCode ^
+        accountType.hashCode ^
+        color.hashCode ^
+        key.hashCode;
+  }
+}
+
+extension NavigatorStateExtension on _i24.NavigationService {
   Future<dynamic> navigateToIncomeView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -869,7 +952,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToExpenseView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -885,7 +968,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToTransferView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -901,7 +984,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToProfileView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -917,7 +1000,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToAccountView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -936,7 +1019,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
     required String walletName,
     required int walletBalance,
     required String icon,
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -956,7 +1039,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToSettingsView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -972,7 +1055,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToAboutView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -988,7 +1071,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToCurrencyView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1004,7 +1087,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToHelpView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1020,7 +1103,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToNotificationView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1036,7 +1119,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToSecurityView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1052,7 +1135,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToThemeView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1068,7 +1151,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToBudgetView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1084,7 +1167,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToCreateBudgetView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1100,14 +1183,14 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToEditBudgetView({
-    required _i22.Color color,
+    required _i23.Color color,
     required String category,
     required int spendBalance,
     required int limitBalance,
-    required _i22.Color backgroundColor,
-    required _i22.Color iconColor,
+    required _i23.Color backgroundColor,
+    required _i23.Color iconColor,
     required String icon,
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1131,7 +1214,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToTransactionView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1147,7 +1230,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToFinancialReportSummaryView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1163,7 +1246,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> navigateToReportView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1178,8 +1261,39 @@ extension NavigatorStateExtension on _i23.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToDetailsTransactionView({
+    required String balance,
+    required String description,
+    required String time,
+    required String category,
+    required String type,
+    required String accountType,
+    required _i23.Color color,
+    _i22.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.detailsTransactionView,
+        arguments: DetailsTransactionViewArguments(
+            balance: balance,
+            description: description,
+            time: time,
+            category: category,
+            type: type,
+            accountType: accountType,
+            color: color,
+            key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithIncomeView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1195,7 +1309,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithExpenseView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1211,7 +1325,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithTransferView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1227,7 +1341,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithProfileView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1243,7 +1357,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithAccountView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1262,7 +1376,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
     required String walletName,
     required int walletBalance,
     required String icon,
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1282,7 +1396,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithSettingsView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1298,7 +1412,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithAboutView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1314,7 +1428,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithCurrencyView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1330,7 +1444,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithHelpView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1346,7 +1460,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithNotificationView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1362,7 +1476,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithSecurityView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1378,7 +1492,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithThemeView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1394,7 +1508,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithBudgetView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1410,7 +1524,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithCreateBudgetView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1426,14 +1540,14 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithEditBudgetView({
-    required _i22.Color color,
+    required _i23.Color color,
     required String category,
     required int spendBalance,
     required int limitBalance,
-    required _i22.Color backgroundColor,
-    required _i22.Color iconColor,
+    required _i23.Color backgroundColor,
+    required _i23.Color iconColor,
     required String icon,
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1457,7 +1571,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithTransactionView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1473,7 +1587,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithFinancialReportSummaryView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1489,7 +1603,7 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }
 
   Future<dynamic> replaceWithReportView({
-    _i21.Key? key,
+    _i22.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1498,6 +1612,37 @@ extension NavigatorStateExtension on _i23.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.reportView,
         arguments: ReportViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithDetailsTransactionView({
+    required String balance,
+    required String description,
+    required String time,
+    required String category,
+    required String type,
+    required String accountType,
+    required _i23.Color color,
+    _i22.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.detailsTransactionView,
+        arguments: DetailsTransactionViewArguments(
+            balance: balance,
+            description: description,
+            time: time,
+            category: category,
+            type: type,
+            accountType: accountType,
+            color: color,
+            key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

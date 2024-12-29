@@ -76,7 +76,7 @@ class SetupWalletView extends StackedView<SetupWalletViewModel> {
                     width: width,
                     height: height,
                     hintText: dropDownHintText,
-                    selectedAccountType: viewModel.selectedAccountType,
+                    selectedItem: viewModel.selectedAccountType,
                     items: Database.accountTypes,
                     onChanged: (value) => viewModel.dropDownOnChanged(value),
                   ),
@@ -248,21 +248,23 @@ class SelectBankOrWallet extends StatelessWidget {
                       selectedAccountType: selectedAccountType,
                     );
                   },
-                  child: Container(
-                    width: width * 0.2,
-                    height: height * 0.045,
-                    margin: EdgeInsets.only(top: height * 0.005),
-                    decoration: BoxDecoration(
-                      color: AppColors.violet20,
-                      borderRadius: BorderRadius.circular(width * 0.02),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "See other",
-                        style: TextStyle(
-                          color: AppColors.primaryViolet,
-                          fontSize: width * 0.035,
-                          fontWeight: FontWeight.w500,
+                  child: Center(
+                    child: Container(
+                      width: width * 0.2,
+                      height: height * 0.045,
+                      margin: EdgeInsets.only(top: height * 0.005),
+                      decoration: BoxDecoration(
+                        color: AppColors.violet20,
+                        borderRadius: BorderRadius.circular(width * 0.02),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "See other",
+                          style: TextStyle(
+                            color: AppColors.primaryViolet,
+                            fontSize: width * 0.035,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
@@ -319,104 +321,74 @@ class SelectBankBottomSheet {
     required navigationService,
     required String selectedAccountType,
   }) {
-    showBottomSheet(
+    showModalBottomSheet(
       context: context,
       builder: (context) {
-        return Container(
-          width: width,
-          height: height * 0.6,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(width * 0.04),
-              topRight: Radius.circular(width * 0.04),
-            ),
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  top: height * 0.02,
-                  left: width * 0.05,
-                  right: width * 0.05,
+        return BottomSheet(
+          showDragHandle: true,
+          shadowColor: AppColors.primaryBlack,
+          dragHandleColor: AppColors.violet40,
+          dragHandleSize: Size(width * 0.2, height * 0.005),
+          backgroundColor: AppColors.primaryLight,
+          elevation: width * 0.02,
+          constraints: BoxConstraints(minHeight: height * 0.4, minWidth: width),
+          onClosing: () {},
+          builder: (context) {
+            return Column(
+              children: [
+                CustomTextField(
+                  controller: searchController,
+                  width: width,
+                  hintText: hintText,
+                  height: height,
+                  borderRadius: width * 0.08,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        color: AppColors.primaryBlack,
-                        fontSize: width * 0.05,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () => navigationService.back(),
-                      child: SvgPicture.asset(
-                        IconsPath.close,
-                        width: width * 0.04,
-                        height: height * 0.04,
-                        colorFilter: ColorFilter.mode(
-                          AppColors.primaryBlack,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                    )
-                  ],
+                SizedBox(
+                  height: height * 0.01,
                 ),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              CustomTextField(
-                controller: searchController,
-                width: width,
-                hintText: hintText,
-                height: height,
-                borderRadius: width * 0.08,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return Center(
-                      child: Container(
-                        width: width * 0.9,
-                        height: height * 0.068,
-                        padding: EdgeInsets.only(left: width * 0.03),
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              selectedAccountType.isNotEmpty &&
-                                      selectedAccountType == "Wallet"
-                                  ? IconsPath.easypaisa
-                                  : IconsPath.ubl,
-                              width: width * 0.06,
-                              height: width * 0.06,
-                            ),
-                            SizedBox(
-                              width: width * 0.06,
-                            ),
-                            Text(
-                              selectedAccountType.isNotEmpty &&
-                                      selectedAccountType == "Wallet"
-                                  ? "Easypaisa"
-                                  : "UBL",
-                              style: TextStyle(
-                                color: AppColors.primaryBlack,
-                                fontWeight: FontWeight.w600,
-                                fontSize: width * 0.045,
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return Center(
+                        child: Container(
+                          width: width * 0.9,
+                          height: height * 0.068,
+                          padding: EdgeInsets.only(left: width * 0.03),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                selectedAccountType.isNotEmpty &&
+                                        selectedAccountType == "Wallet"
+                                    ? IconsPath.easypaisa
+                                    : IconsPath.ubl,
+                                width: width * 0.06,
+                                height: width * 0.06,
                               ),
-                            )
-                          ],
+                              SizedBox(
+                                width: width * 0.06,
+                              ),
+                              Text(
+                                selectedAccountType.isNotEmpty &&
+                                        selectedAccountType == "Wallet"
+                                    ? "Easypaisa"
+                                    : "UBL",
+                                style: TextStyle(
+                                  color: AppColors.primaryBlack,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: width * 0.045,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            );
+          },
         );
       },
     );

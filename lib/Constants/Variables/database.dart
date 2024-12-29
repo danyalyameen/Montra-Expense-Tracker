@@ -361,4 +361,50 @@ class Database {
     "Mark All Read",
     "Remove all",
   ];
+
+  static List<String> frequencyData = [
+    "Daily",
+    "Weekly",
+    "Monthly",
+    "Yearly",
+  ];
+
+  static List<String> filterbyData = [
+    "Income",
+    "Expense",
+    "Transfer",
+  ];
+
+  static List<String> sortbyData = [
+    "Highest",
+    "Lowest",
+    "Newest",
+    "Oldest",
+  ];
+
+  static List<String> dates = [];
+
+  static List<Map<String, dynamic>> attachmentData = [
+    {
+      "Icon": IconsPath.camera,
+      "Title": "Camera",
+    },
+    {
+      "Icon": IconsPath.gallery,
+      "Title": "Gallery",
+    },
+    {
+      "Icon": IconsPath.document,
+      "Title": "Document",
+    },
+  ];
+
+  static int i = 1;
+
+  static void addDataToDates() {
+    while (i <= 31) {
+      dates.add("$i");
+      i++;
+    }
+  }
 }
