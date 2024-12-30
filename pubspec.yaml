@@ -29,31 +29,23 @@ dev_dependencies:
 # Material Design
 flutter:
   uses-material-design: true
-# Images
+# Icons
   assets:
-    - assets/Icons/
     - assets/Icons/Arrows/
-    - assets/Icons/Bank/
     - assets/Icons/Attachment/
+    - assets/Icons/Backgrounds/
+    - assets/Icons/Bank/
+    - assets/Icons/Bottom Navigation/
+    - assets/Icons/Expanses/
     - assets/Icons/Finance/
-    - assets/Icons/Profile/
-    - assets/Icons/Edit/
-    - assets/Images/User Image/
-    - assets/Icons/Account View/
-    - assets/Icons/Expanses Icons/
-    - assets/Icons/Success/
-    - assets/Icons/Errors/
-    - assets/Icons/Delete/
-    - assets/Icons/Filter/
+    - assets/Icons/Graph/
     - assets/Icons/Graph/Line Chart/
     - assets/Icons/Graph/Pie Chart/
-    - assets/Icons/Notification/
-    - assets/Icons/Create/
-    - assets/Icons/Bottom Navigation/
     - assets/Icons/Illustrations/
-    - assets/Icons/Show/
-    - assets/Icons/Social/
-    - assets/Icons/Menu/
+    - assets/Icons/Operations/
+# Images
+    - assets/Images/User Image/
+
 # Fonts
   fonts:
     - family: Inter

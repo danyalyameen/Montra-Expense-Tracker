@@ -27,6 +27,7 @@ PreferredSizeWidget? blackAppBar(
     leading: leading ??
         Center(
           child: InkWell(
+            borderRadius: BorderRadius.circular(width),
             onTap: onTap,
             child: SvgPicture.asset(
               IconsPath.backArrow,

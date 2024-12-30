@@ -6,18 +6,11 @@ import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class VerificationView extends StackedView<VerificationViewModel> {
-  VerificationView({super.key});
+  const VerificationView({super.key});
 
-  String appBarTitle = "Verification";
-  String title = "Enter your Verification Code";
-  String time = "04:59";
-  String descriptionStart = "We send verification code to your email ";
-  String email = "brajaoma*****@gmail.com.";
-  String descriptionEnd = "You can check your inbox";
-  String noReceiveCodeText = "I didn't received the code? Send again";
-  String verifyButtonText = "Verify";
+  final String appBarTitle = "Verification";
+  final String verifyButtonText = "Verify";
 
   @override
   Widget builder(
@@ -33,21 +26,16 @@ class VerificationView extends StackedView<VerificationViewModel> {
       ),
       body: Column(
         children: [
-          VerificationUI(
+          _VerificationUI(
             width: width,
             height: height,
-            title: title,
-            time: time,
-            descriptionStart: descriptionStart,
-            email: email,
-            descriptionEnd: descriptionEnd,
-            notReceiveCode: noReceiveCodeText,
             formKey: viewModel.formKey,
           ),
           CustomElevatedButton(
             width: width,
             height: height,
             text: verifyButtonText,
+            onPressed: () => viewModel.setupPinNavigation(),
           ),
         ],
       ),
@@ -59,26 +47,20 @@ class VerificationView extends StackedView<VerificationViewModel> {
       VerificationViewModel();
 }
 
-class VerificationUI extends StatelessWidget {
+class _VerificationUI extends StatelessWidget {
   final double width, height;
-  final String title,
-      time,
-      descriptionStart,
-      email,
-      descriptionEnd,
-      notReceiveCode;
   final GlobalKey formKey;
-  const VerificationUI(
-      {super.key,
-      required this.width,
+  const _VerificationUI(
+      {required this.width,
       required this.height,
-      required this.title,
-      required this.time,
-      required this.notReceiveCode,
-      required this.descriptionStart,
-      required this.email,
-      required this.descriptionEnd,
       required this.formKey});
+  
+  final String title = "Enter your Verification Code";
+  final String time = "04:59";
+  final String descriptionStart = "We send verification code to your email ";
+  final String email = "brajaoma*****@gmail.com.";
+  final String descriptionEnd = "You can check your inbox";
+  final String noReceiveCodeText = "I didn't received the code? Send again";
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +96,7 @@ class VerificationUI extends StatelessWidget {
                       child: SizedBox(
                         width: width * 0.08,
                         child: TextFormField(
-                          keyboardType: const TextInputType.numberWithOptions(),
+                          keyboardType: TextInputType.number,
                           showCursor: false,
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -202,7 +184,7 @@ class VerificationUI extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                notReceiveCode,
+                noReceiveCodeText,
                 style: TextStyle(
                   color: AppColors.primaryViolet,
                   fontSize: width * 0.045,

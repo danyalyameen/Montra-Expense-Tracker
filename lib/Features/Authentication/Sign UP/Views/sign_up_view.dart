@@ -8,17 +8,11 @@ import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class SignUpView extends StackedView<SignUpViewModel> {
-  SignUpView({super.key});
+  const SignUpView({super.key});
 
-  String appBarTitle = "Sign Up";
-  String nameHintText = "Name";
-  String emailHintText = "Email";
-  String passwordHintText = "Password";
-  String signUpHintText = "Sign Up";
-  String otherSignUpItemsHintText = "Or with";
-  String googleButtonText = "Sign Up with Google";
+  final String appBarTitle = "Sign Up";
+  final String otherSignUpItemsHintText = "Or with";
 
   @override
   Widget builder(
@@ -26,6 +20,7 @@ class SignUpView extends StackedView<SignUpViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: blackAppBar(
         title: appBarTitle,
         width: width,
@@ -34,22 +29,12 @@ class SignUpView extends StackedView<SignUpViewModel> {
       ),
       body: Column(
         children: [
-          SignUPItems(
+          _SignUpItems(
             width: width,
             height: height,
-            nameHintText: nameHintText,
-            emailHintText: emailHintText,
-            passwordHintText: passwordHintText,
             nameEditingController: viewModel.nameController,
             emailEditingController: viewModel.emailController,
-            passwordEditingController: viewModel.passwordController,
-            onTap: () => viewModel.onTap(),
-            onTapOutside: (event) => viewModel.onTapOutside(context),
-            isFocus: viewModel.isFocus,
-            onComplete: () => viewModel.onComplete(context),
-            isCheck: viewModel.isCheck,
-            onChanged: (value) => viewModel.toggleCheck(value),
-            signUpHintText: signUpHintText,
+            verificationNavigation: viewModel.verificationNavigation,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: height * 0.015),
@@ -62,12 +47,15 @@ class SignUpView extends StackedView<SignUpViewModel> {
               ),
             ),
           ),
-          OtherSignUpItems(
+          _OtherSignUpItems(
             width: width,
             height: height,
-            buttonText: googleButtonText,
           ),
-          Login(width: width, height: height),
+          _Login(
+            width: width,
+            height: height,
+            loginNavigation: viewModel.loginNavigation,
+          ),
         ],
       ),
     );
@@ -75,36 +63,25 @@ class SignUpView extends StackedView<SignUpViewModel> {
 
   @override
   SignUpViewModel viewModelBuilder(BuildContext context) => SignUpViewModel();
+
+  @override
+  bool get reactive => false;
 }
 
-class SignUPItems extends StatelessWidget {
+class _SignUpItems extends StatelessWidget {
   final double width, height;
-  final String nameHintText, emailHintText, passwordHintText, signUpHintText;
-  final TextEditingController nameEditingController,
-      emailEditingController,
-      passwordEditingController;
-  final VoidCallback onTap;
-  final VoidCallback onComplete;
-  final TapRegionCallback onTapOutside;
-  final bool isFocus, isCheck;
-  final Function(bool? value) onChanged;
-  const SignUPItems(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.nameHintText,
-      required this.emailHintText,
-      required this.passwordHintText,
-      required this.nameEditingController,
-      required this.emailEditingController,
-      required this.passwordEditingController,
-      required this.onTap,
-      required this.onTapOutside,
-      required this.isFocus,
-      required this.onComplete,
-      required this.isCheck,
-      required this.onChanged,
-      required this.signUpHintText});
+  final TextEditingController nameEditingController, emailEditingController;
+  final Function verificationNavigation;
+  const _SignUpItems({
+    required this.width,
+    required this.height,
+    required this.nameEditingController,
+    required this.emailEditingController, required this.verificationNavigation,
+  });
+
+  final String nameHintText = "Name";
+  final String emailHintText = "Email";
+  final String signUpButtonHintText = "Sign Up";
 
   @override
   Widget build(BuildContext context) {
@@ -113,115 +90,140 @@ class SignUPItems extends StatelessWidget {
       child: Column(
         children: [
           CustomTextField(
-            controller: nameEditingController,
             width: width,
+            height: height,
             hintText: nameHintText,
-            height: height,
+            controller: nameEditingController,
           ),
           SizedBox(
             height: height * 0.02,
           ),
           CustomTextField(
-            controller: emailEditingController,
             width: width,
+            height: height,
             hintText: emailHintText,
-            height: height,
+            controller: emailEditingController,
           ),
           SizedBox(
             height: height * 0.02,
           ),
-          CustomTextField(
-            controller: passwordEditingController,
-            width: width,
-            hintText: passwordHintText,
-            height: height,
-            onTap: onTap,
-            onTapOutside: onTapOutside,
-            onCompleted: onComplete,
-            suffixIcon: Container(
-              width: width * 0.15,
-              height: width * 0.15,
-              padding: EdgeInsets.only(right: width * 0.05),
-              child: SvgPicture.asset(
-                IconsPath.show,
-                colorFilter: ColorFilter.mode(
-                  isFocus
-                      ? AppColors.primaryViolet
-                      : AppColors.grey.withOpacity(0.8),
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
-          ),
+          _PasswordTextField(width: width, height: height),
           SizedBox(
             height: height * 0.02,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.04),
-            child: Row(
-              children: [
-                Transform.scale(
-                  scale: width * 0.004,
-                  child: Checkbox(
-                    value: isCheck,
-                    onChanged: (value) => onChanged(value),
-                    activeColor: AppColors.primaryViolet,
-                    checkColor: AppColors.primaryLight,
-                    side: BorderSide(
-                      color: AppColors.primaryViolet,
-                      width: width * 0.004,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(width * 0.013),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "By signing up, you agree to the ",
-                          style: TextStyle(
-                            color: AppColors.primaryBlack,
-                            fontSize: width * 0.04,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        TextSpan(
-                          text: "Terms of Service and Privacy Policy",
-                          style: TextStyle(
-                            color: AppColors.primaryViolet,
-                            fontSize: width * 0.04,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
+          _PrivacePolicy(width: width, height: height),
           SizedBox(
             height: height * 0.02,
           ),
           CustomElevatedButton(
-              width: width, height: height, text: signUpHintText)
+              width: width, height: height, text: signUpButtonHintText, onPressed: () => verificationNavigation(),)
         ],
       ),
     );
   }
 }
 
-class OtherSignUpItems extends StatelessWidget {
+class _PasswordTextField extends ViewModelWidget<SignUpViewModel> {
   final double width, height;
-  final String buttonText;
-  const OtherSignUpItems(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.buttonText});
+  const _PasswordTextField({required this.width, required this.height});
+
+  final String passwordHintText = "Password";
+
+  @override
+  Widget build(BuildContext context, SignUpViewModel viewModel) {
+    return CustomTextField(
+      width: width,
+      height: height,
+      hintText: passwordHintText,
+      controller: viewModel.passwordController,
+      onTap: () => viewModel.onTap(),
+      onTapOutside: (event) => viewModel.onTapOutside(context: context),
+      onCompleted: () => viewModel.onComplete(context: context),
+      suffixIcon: Container(
+        width: width * 0.15,
+        height: width * 0.15,
+        padding: EdgeInsets.only(right: width * 0.05),
+        child: SvgPicture.asset(
+          IconsPath.show,
+          colorFilter: ColorFilter.mode(
+            viewModel.isFocus
+                ? AppColors.primaryViolet
+                : AppColors.grey.withOpacity(0.8),
+            BlendMode.srcIn,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PrivacePolicy extends ViewModelWidget<SignUpViewModel> {
+  final double width, height;
+  const _PrivacePolicy({
+    required this.width,
+    required this.height,
+  });
+
+  final String privacyPolicyTitle = "By signing up, you agree to the ";
+  final String privacyPolicy = "Terms of Service and Privacy Policy";
+
+  @override
+  Widget build(BuildContext context, SignUpViewModel viewModel) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+      child: Row(
+        children: [
+          Transform.scale(
+            scale: width * 0.004,
+            child: Checkbox(
+              value: viewModel.isCheck,
+              onChanged: (value) => viewModel.toggleCheck(value),
+              activeColor: AppColors.primaryViolet,
+              checkColor: AppColors.primaryLight,
+              side: BorderSide(
+                color: AppColors.primaryViolet,
+                width: width * 0.004,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(width * 0.013),
+              ),
+            ),
+          ),
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: privacyPolicyTitle,
+                    style: TextStyle(
+                      color: AppColors.primaryBlack,
+                      fontSize: width * 0.04,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  TextSpan(
+                    text: privacyPolicy,
+                    style: TextStyle(
+                      color: AppColors.primaryViolet,
+                      fontSize: width * 0.04,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _OtherSignUpItems extends StatelessWidget {
+  final double width, height;
+  const _OtherSignUpItems({required this.width, required this.height});
+
+  final String buttonText = "Sign Up with Google";
 
   @override
   Widget build(BuildContext context) {
@@ -260,9 +262,16 @@ class OtherSignUpItems extends StatelessWidget {
   }
 }
 
-class Login extends StatelessWidget {
+class _Login extends StatelessWidget {
   final double width, height;
-  const Login({super.key, required this.width, required this.height});
+  final Function loginNavigation;
+  const _Login(
+      {required this.width,
+      required this.height,
+      required this.loginNavigation});
+
+  final String loginTextTitle = "Already have an account? ";
+  final String loginText = "Login ";
 
   @override
   Widget build(BuildContext context) {
@@ -272,21 +281,24 @@ class Login extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Already have an account? ",
+            loginTextTitle,
             style: TextStyle(
               color: AppColors.grey,
               fontSize: width * 0.045,
               fontWeight: FontWeight.w500,
             ),
           ),
-          Text(
-            "Login",
-            style: TextStyle(
-              color: AppColors.primaryViolet,
-              fontSize: width * 0.042,
-              fontWeight: FontWeight.w500,
-              decoration: TextDecoration.underline,
-              decorationColor: AppColors.primaryViolet,
+          InkWell(
+            onTap: () => loginNavigation(),
+            child: Text(
+              loginText,
+              style: TextStyle(
+                color: AppColors.primaryViolet,
+                fontSize: width * 0.042,
+                fontWeight: FontWeight.w500,
+                decoration: TextDecoration.underline,
+                decorationColor: AppColors.primaryViolet,
+              ),
             ),
           ),
         ],

@@ -9,7 +9,6 @@ import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 // ignore: must_be_immutable
 class SetupWalletView extends StackedView<SetupWalletViewModel> {
@@ -17,10 +16,6 @@ class SetupWalletView extends StackedView<SetupWalletViewModel> {
 
   String appBarTitle = "Add new Account";
   String continueButtonText = "Continue";
-  String nameTextFieldHintText = "Name";
-  String dropDownHintText = "Account Type";
-  String bottomSheetTitle = "Select Bank";
-  String bottomSheetTextFieldHintText = "Search";
 
   @override
   Widget builder(
@@ -40,10 +35,8 @@ class SetupWalletView extends StackedView<SetupWalletViewModel> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Balance(
+          _Balance(
             width: width,
-            isFocus: viewModel.focus,
-            selectedAccountType: viewModel.selectedAccountType,
           ),
           Expanded(
             child: Container(
@@ -57,46 +50,24 @@ class SetupWalletView extends StackedView<SetupWalletViewModel> {
               ),
               child: Column(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: height * 0.05),
-                    child: CustomTextField(
-                      controller: viewModel.nameController,
-                      width: width,
-                      hintText: nameTextFieldHintText,
-                      height: height,
-                      onTap: () => viewModel.isFocus(),
-                      onTapOutside: (event) => viewModel.onTapOutside(context),
-                      onCompleted: () => viewModel.onComplete(context),
-                    ),
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  DropDown(
+                  _InputFields(
                     width: width,
                     height: height,
-                    hintText: dropDownHintText,
-                    selectedItem: viewModel.selectedAccountType,
-                    items: Database.accountTypes,
-                    onChanged: (value) => viewModel.dropDownOnChanged(value),
+                    nameController: viewModel.nameController,
+                    selectedAccountType: viewModel.selectedAccountType,
+                    onTap: viewModel.onTap,
+                    onTapOutside: (context) => viewModel.onTapOutside(context),
+                    onCompleted: (context) => viewModel.onComplete(context),
+                    onChanged: (value) => viewModel.onChanged(value),
                   ),
                   SizedBox(
                     height: height * 0.01,
                   ),
                   viewModel.selectedAccountType.isEmpty
                       ? const SizedBox()
-                      : SelectBankOrWallet(
+                      : _SelectBankOrWallet(
                           width: width,
                           height: height,
-                          selectedAccountType: viewModel.selectedAccountType,
-                          currentIndex: viewModel.currentIndex,
-                          searchController: viewModel.searchController,
-                          updateIndex: (index) =>
-                              viewModel.updateCurrentIndex(index),
-                          bottomSheetTitle: bottomSheetTitle,
-                          bottomSheetTextFieldHintText:
-                              bottomSheetTextFieldHintText,
-                          navigationService: viewModel.navigationService,
                         ),
                   SizedBox(
                     height: height * 0.005,
@@ -105,6 +76,7 @@ class SetupWalletView extends StackedView<SetupWalletViewModel> {
                     width: width,
                     height: height,
                     text: continueButtonText,
+                    onPressed: () => viewModel.allSetupNavigation(),
                   ),
                 ],
               ),
@@ -120,36 +92,33 @@ class SetupWalletView extends StackedView<SetupWalletViewModel> {
       SetupWalletViewModel();
 }
 
-// ignore: must_be_immutable
-class Balance extends StatelessWidget {
+class _Balance extends ViewModelWidget<SetupWalletViewModel> {
   final double width;
-  final bool isFocus;
-  final String selectedAccountType;
-  Balance(
-      {super.key,
-      required this.width,
-      required this.isFocus,
-      required this.selectedAccountType});
+  const _Balance({
+    required this.width,
+  });
 
-  String inputHintText = "Balance";
+  final String balanceText = "Balance";
+  final String balance = "0";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, SetupWalletViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.only(
-          top: isFocus
-              ? selectedAccountType.isEmpty
-                  ? width * 0.55
-                  : width * 0.56
-              : selectedAccountType.isEmpty
-                  ? width * 0.8
-                  : width * 0.64,
-          left: width * 0.05),
+        top: viewModel.isFocus
+            ? viewModel.selectedAccountType.isEmpty
+                ? width * 0.55
+                : width * 0.56
+            : viewModel.selectedAccountType.isEmpty
+                ? width * 0.8
+                : width * 0.64,
+        left: width * 0.05,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            inputHintText,
+            balanceText,
             style: TextStyle(
                 fontSize: width * 0.05,
                 fontWeight: FontWeight.w600,
@@ -160,9 +129,10 @@ class Balance extends StatelessWidget {
               Text(
                 "\$",
                 style: TextStyle(
-                    fontSize: width * 0.16,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.light80),
+                  fontSize: width * 0.16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.light80,
+                ),
               ),
               Expanded(
                 child: TextField(
@@ -177,7 +147,7 @@ class Balance extends StatelessWidget {
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
-                    hintText: "0",
+                    hintText: balance,
                     hintStyle: TextStyle(
                       fontSize: width * 0.16,
                       fontWeight: FontWeight.w600,
@@ -194,58 +164,90 @@ class Balance extends StatelessWidget {
   }
 }
 
-class SelectBankOrWallet extends StatelessWidget {
+class _InputFields extends StatelessWidget {
   final double width, height;
-  final String selectedAccountType,
-      bottomSheetTitle,
-      bottomSheetTextFieldHintText;
-  final int currentIndex;
-  final Function(int index) updateIndex;
-  final TextEditingController searchController;
-  final NavigationService navigationService;
-  const SelectBankOrWallet(
-      {super.key,
-      required this.width,
+  final String selectedAccountType;
+  final TextEditingController nameController;
+  final Function onTap;
+  final Function(BuildContext context) onTapOutside, onCompleted;
+  final Function(String value) onChanged;
+  const _InputFields(
+      {required this.width,
       required this.height,
+      required this.nameController,
       required this.selectedAccountType,
-      required this.currentIndex,
-      required this.updateIndex,
-      required this.searchController,
-      required this.bottomSheetTitle,
-      required this.bottomSheetTextFieldHintText,
-      required this.navigationService});
+      required this.onTap,
+      required this.onTapOutside,
+      required this.onCompleted,
+      required this.onChanged});
+
+  final String nameTextFieldHintText = "Name";
+  final String dropDownHintText = "Account Type";
 
   @override
   Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: height * 0.05),
+          child: CustomTextField(
+            width: width,
+            height: height,
+            hintText: nameTextFieldHintText,
+            controller: nameController,
+            onTap: () => onTap(),
+            onTapOutside: (event) => onTapOutside(context),
+            onCompleted: () => onCompleted(context),
+          ),
+        ),
+        SizedBox(
+          height: height * 0.02,
+        ),
+        DropDown(
+          width: width,
+          height: height,
+          hintText: dropDownHintText,
+          selectedItem: selectedAccountType,
+          items: Database.accountTypes,
+          onChanged: (value) => onChanged(value),
+        ),
+      ],
+    );
+  }
+}
+
+class _SelectBankOrWallet extends ViewModelWidget<SetupWalletViewModel> {
+  final double width, height;
+  const _SelectBankOrWallet({
+    required this.width,
+    required this.height,
+  });
+
+  @override
+  Widget build(BuildContext context, SetupWalletViewModel viewModel) {
     return SizedBox(
       width: width * 0.9,
       height: height * 0.12,
       child: GridView.builder(
         padding: EdgeInsets.zero,
-        shrinkWrap: true,
-        addAutomaticKeepAlives: false,
-        addRepaintBoundaries: false,
-        addSemanticIndexes: false,
         itemCount: 8,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-            mainAxisSpacing: 0,
-            crossAxisSpacing: 0,
-            childAspectRatio: 2),
+          crossAxisCount: 4,
+          mainAxisSpacing: 0,
+          crossAxisSpacing: 0,
+          childAspectRatio: 2,
+        ),
         itemBuilder: (context, index) {
           return index == 7
               ? InkWell(
                   borderRadius: BorderRadius.circular(width * 0.02),
                   onTap: () {
-                    SelectBankBottomSheet.showSheet(
+                    _SelectBankBottomSheet.showSheet(
                       context: context,
                       width: width,
                       height: height,
-                      searchController: searchController,
-                      title: bottomSheetTitle,
-                      hintText: bottomSheetTextFieldHintText,
-                      navigationService: navigationService,
-                      selectedAccountType: selectedAccountType,
+                      searchController: viewModel.searchController,
+                      selectedAccountType: viewModel.selectedAccountType,
                     );
                   },
                   child: Center(
@@ -274,27 +276,28 @@ class SelectBankOrWallet extends StatelessWidget {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(width * 0.02),
                     onTap: () {
-                      updateIndex(index);
+                      viewModel.updateCurrentIndex(index);
                     },
                     child: Container(
                       width: width * 0.2,
                       height: height * 0.045,
                       margin: EdgeInsets.only(top: height * 0.005),
                       decoration: BoxDecoration(
-                          color: index == currentIndex
-                              ? AppColors.violet20
+                        color: index == viewModel.currentIndex
+                            ? AppColors.violet20
+                            : AppColors.walletIconBackgroundColorProfile,
+                        borderRadius: BorderRadius.circular(width * 0.02),
+                        border: Border.all(
+                          width: width * 0.002,
+                          color: index == viewModel.currentIndex
+                              ? AppColors.primaryViolet
                               : AppColors.walletIconBackgroundColorProfile,
-                          borderRadius: BorderRadius.circular(width * 0.02),
-                          border: Border.all(
-                            width: width * 0.002,
-                            color: index == currentIndex
-                                ? AppColors.primaryViolet
-                                : AppColors.walletIconBackgroundColorProfile,
-                          )),
+                        ),
+                      ),
                       child: Center(
                         child: SvgPicture.asset(
-                          selectedAccountType.isNotEmpty &&
-                                  selectedAccountType == "Bank"
+                          viewModel.selectedAccountType.isNotEmpty &&
+                                  viewModel.selectedAccountType == "Bank"
                               ? IconsPath.ubl
                               : IconsPath.jazzcash,
                           width: width * 0.02,
@@ -310,17 +313,15 @@ class SelectBankOrWallet extends StatelessWidget {
   }
 }
 
-class SelectBankBottomSheet {
+class _SelectBankBottomSheet {
   static void showSheet({
     required BuildContext context,
     required double width,
     required double height,
     required searchController,
-    required String hintText,
-    required String title,
-    required navigationService,
     required String selectedAccountType,
   }) {
+    String dropDownHintText = "Account Type";
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -339,7 +340,7 @@ class SelectBankBottomSheet {
                 CustomTextField(
                   controller: searchController,
                   width: width,
-                  hintText: hintText,
+                  hintText: dropDownHintText,
                   height: height,
                   borderRadius: width * 0.08,
                 ),

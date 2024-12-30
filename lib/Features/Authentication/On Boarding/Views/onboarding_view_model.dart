@@ -1,3 +1,4 @@
+import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 
 class OnBoardingViewModel extends ViewModel {
@@ -5,6 +6,14 @@ class OnBoardingViewModel extends ViewModel {
 
   void updateCurrentIndex(int index) {
     currentIndex = index;
-    rebuildUi();
+    notifyListeners();
+  }
+
+  void navigationSignUp() {
+    navigationService.replaceWithSignUpView();
+  }
+
+  void navigationLogin() {
+    navigationService.replaceWithLoginView();
   }
 }

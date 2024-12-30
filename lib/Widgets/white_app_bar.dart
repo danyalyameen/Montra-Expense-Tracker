@@ -24,18 +24,20 @@ PreferredSizeWidget? whiteAppBar(
         fontWeight: FontWeight.w700,
       ),
     ),
-    leading: leading ?? Center(
-      child: InkWell(
-        onTap: onTap,
-        child: SvgPicture.asset(
-          IconsPath.backArrow,
-          colorFilter:
-              ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
-          width: width * 0.04,
-          height: height * 0.04,
+    leading: leading ??
+        Center(
+          child: InkWell(
+            borderRadius: BorderRadius.circular(width),
+            onTap: onTap,
+            child: SvgPicture.asset(
+              IconsPath.backArrow,
+              colorFilter:
+                  ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
+              width: width * 0.04,
+              height: height * 0.04,
+            ),
+          ),
         ),
-      ),
-    ),
     actions: actions,
   );
 }

@@ -9,28 +9,8 @@ import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view_m
 import 'package:montra_expense_tracker/Widgets/expense_item.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class DashboardView extends StackedView<DashboardViewModel> {
-  DashboardView({super.key});
-
-  String monthText = "Month";
-  String accountTitle = "Account Balance";
-  int balance = 9450;
-  String incomeText = "Income";
-  int incomeBalance = 5000;
-  String expenseText = "Expense";
-  int expenseBalance = 1200;
-  String transactionsTitle = "Recent Transactions";
-  String seeAllTransactionsText = "See All";
-  String titleKey = "Category";
-  String descriptionKey = "Description";
-  String timeKey = "Time";
-  String priceKey = "Expense";
-  String iconKey = "Icon";
-  String iconColorKey = "Icon-Color";
-  String iconBackgroundColorKey = "Icon-Background";
-  String bottomNavigationIconKey = "Icon";
-  String bottomNavigationTitleKey = "Title";
+  const DashboardView({super.key});
 
   @override
   Widget builder(
@@ -38,152 +18,10 @@ class DashboardView extends StackedView<DashboardViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            height: height * 0.3,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.customColorBrown,
-                  AppColors.customColorWhite.withOpacity(0),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: height * 0.005),
-            child: ListView(
-              children: [
-                TopNavigation(
-                    height: height, width: width, monthText: monthText),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                ShowAcccount(
-                  title: accountTitle,
-                  balance: balance,
-                  height: height,
-                  width: width,
-                  incomeText: incomeText,
-                  incomeBalance: incomeBalance,
-                  expenseText: expenseText,
-                  expenseBalance: expenseBalance,
-                ),
-                SizedBox(
-                  height: height * 0.03,
-                ),
-                ShowGraph(
-                  width: width,
-                  height: height,
-                  data: Database.time,
-                  updateIndex: (index) {
-                    viewModel.updateIndex(index);
-                  },
-                  currentIndex: viewModel.currentIndex,
-                ),
-                SizedBox(
-                  height: height * 0.015,
-                ),
-                RecentTransactions(
-                  width: width,
-                  height: height,
-                  transactionsTitle: transactionsTitle,
-                  seeAllTransactionsText: seeAllTransactionsText,
-                  descriptionKey: descriptionKey,
-                  iconBackgroundColorKey: iconBackgroundColorKey,
-                  iconColorKey: iconColorKey,
-                  iconKey: iconKey,
-                  priceKey: priceKey,
-                  timeKey: timeKey,
-                  titleKey: titleKey,
-                ),
-              ],
-            ),
-          ),
-          viewModel.showItems
-              ? Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.primaryViolet.withOpacity(0.45),
-                        AppColors.primaryViolet.withOpacity(0),
-                      ],
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.only(top: height * 0.72),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: width * 0.07,
-                              backgroundColor: AppColors.primaryBlue,
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  IconsPath.currencyExchange,
-                                  width: width * 0.09,
-                                  height: width * 0.09,
-                                  colorFilter: ColorFilter.mode(
-                                      AppColors.primaryLight, BlendMode.srcIn),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: width * 0.07,
-                              backgroundColor: AppColors.primaryGreen,
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  IconsPath.income,
-                                  width: width * 0.09,
-                                  height: width * 0.09,
-                                  colorFilter: ColorFilter.mode(
-                                      AppColors.primaryLight, BlendMode.srcIn),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: width * 0.25,
-                            ),
-                            CircleAvatar(
-                              radius: width * 0.07,
-                              backgroundColor: AppColors.primaryRed,
-                              child: SvgPicture.asset(
-                                IconsPath.expense,
-                                width: width * 0.09,
-                                height: width * 0.09,
-                                colorFilter: ColorFilter.mode(
-                                    AppColors.primaryLight, BlendMode.srcIn),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              : const SizedBox(),
-        ],
-      ),
+      body: Database
+          .bottomNavigationViews[viewModel.currentIndexForBottomNavigation],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FAB(
+      floatingActionButton: _FAB(
         width: width,
         height: height,
         onPressed: () {
@@ -195,16 +33,9 @@ class DashboardView extends StackedView<DashboardViewModel> {
         shape: const CircularNotchedRectangle(),
         notchMargin: width * 0.02,
         height: height * 0.0956,
-        child: BottomNavigation(
+        child: _BottomNavigation(
           width: width,
           height: height,
-          data: Database.bottomNavigationData,
-          iconKey: iconKey,
-          titleKey: bottomNavigationTitleKey,
-          updateIndex: (index) {
-            viewModel.updateIndexForBottomNavigation(index);
-          },
-          currentIndex: viewModel.currentIndexForBottomNavigation,
         ),
       ),
     );
@@ -215,14 +46,81 @@ class DashboardView extends StackedView<DashboardViewModel> {
       DashboardViewModel();
 }
 
-class TopNavigation extends StatelessWidget {
+class DashboardUI extends ViewModelWidget<DashboardViewModel> {
+  const DashboardUI({super.key});
+
+  @override
+  Widget build(BuildContext context, DashboardViewModel viewModel) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return Stack(
+      children: [
+        Container(
+          height: height * 0.3,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppColors.customColorBrown,
+                AppColors.customColorWhite.withOpacity(0),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: height * 0.005),
+          child: ListView(
+            children: [
+              _TopNavigation(
+                height: height,
+                width: width,
+                navigationNotification: viewModel.notificationNavigation,
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              _ShowAcccount(
+                height: height,
+                width: width,
+              ),
+              SizedBox(
+                height: height * 0.03,
+              ),
+              _ShowGraph(
+                width: width,
+                height: height,
+              ),
+              SizedBox(
+                height: height * 0.015,
+              ),
+              _RecentTransactions(
+                width: width,
+                height: height,
+              ),
+            ],
+          ),
+        ),
+        _ShowOrHide(
+          width: width,
+          height: height,
+        ),
+      ],
+    );
+  }
+}
+
+class _TopNavigation extends StatelessWidget {
   final double height, width;
-  final String monthText;
-  const TopNavigation(
-      {super.key,
-      required this.height,
-      required this.width,
-      required this.monthText});
+  final Function navigationNotification;
+  const _TopNavigation({
+    required this.height,
+    required this.width,
+    required this.navigationNotification,
+  });
+
+  final String monthText = "Month";
 
   @override
   Widget build(BuildContext context) {
@@ -289,14 +187,18 @@ class TopNavigation extends StatelessWidget {
             ),
           ),
           Center(
-            child: SvgPicture.asset(
-              IconsPath.notification,
-              colorFilter: ColorFilter.mode(
-                AppColors.primaryViolet,
-                BlendMode.srcIn,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(width),
+              onTap: () => navigationNotification(),
+              child: SvgPicture.asset(
+                IconsPath.notification,
+                width: width * 0.08,
+                height: width * 0.08,
+                colorFilter: ColorFilter.mode(
+                  AppColors.primaryViolet,
+                  BlendMode.srcIn,
+                ),
               ),
-              width: width * 0.08,
-              height: width * 0.08,
             ),
           )
         ],
@@ -305,28 +207,26 @@ class TopNavigation extends StatelessWidget {
   }
 }
 
-class ShowAcccount extends StatelessWidget {
+class _ShowAcccount extends StatelessWidget {
   final double height, width;
-  final int balance;
-  final String title, incomeText, expenseText;
-  final int incomeBalance, expenseBalance;
-  const ShowAcccount(
-      {super.key,
-      required this.title,
-      required this.height,
-      required this.width,
-      required this.balance,
-      required this.incomeText,
-      required this.incomeBalance,
-      required this.expenseText,
-      required this.expenseBalance});
+  const _ShowAcccount({
+    required this.height,
+    required this.width,
+  });
+
+  final String accountTitle = "Account Balance";
+  final int balance = 9450;
+  final String incomeText = "Income";
+  final int incomeBalance = 5000;
+  final String expenseText = "Expense";
+  final int expenseBalance = 1200;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
-          title,
+          accountTitle,
           style: TextStyle(
             color: AppColors.grey,
             fontSize: width * 0.04,
@@ -481,28 +381,25 @@ class ShowAcccount extends StatelessWidget {
   }
 }
 
-class ShowGraph extends StatelessWidget {
+class _ShowGraph extends ViewModelWidget<DashboardViewModel> {
   final double width, height;
-  final List<String> data;
-  final int currentIndex;
-  final Function(int index) updateIndex;
-  const ShowGraph(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.data,
-      required this.updateIndex,
-      required this.currentIndex});
+  _ShowGraph({
+    required this.width,
+    required this.height,
+  });
+
+  final String title = "Spend Frequency";
+  final List<String> data = Database.time;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, DashboardViewModel viewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.only(left: width * 0.05),
           child: Text(
-            "Spend Frequency",
+            title,
             style: TextStyle(
               color: AppColors.primaryBlack,
               fontSize: width * 0.05,
@@ -588,16 +485,16 @@ class ShowGraph extends StatelessWidget {
               data.length,
               (index) {
                 return InkWell(
-                  onTap: () => updateIndex(index),
+                  onTap: () => viewModel.updateIndex(index),
                   borderRadius: BorderRadius.circular(width * 0.06),
                   child: Container(
                     width: width * 0.2,
                     height: height * 0.05,
                     decoration: BoxDecoration(
-                      color: index == currentIndex
+                      color: index == viewModel.currentIndex
                           ? AppColors.yellow20
                           : Colors.transparent,
-                      borderRadius: index == currentIndex
+                      borderRadius: index == viewModel.currentIndex
                           ? BorderRadius.circular(width * 0.06)
                           : BorderRadius.zero,
                     ),
@@ -605,7 +502,7 @@ class ShowGraph extends StatelessWidget {
                       child: Text(
                         data[index],
                         style: TextStyle(
-                          color: index == currentIndex
+                          color: index == viewModel.currentIndex
                               ? AppColors.primaryYellow
                               : AppColors.grey,
                           fontSize: width * 0.045,
@@ -624,30 +521,22 @@ class ShowGraph extends StatelessWidget {
   }
 }
 
-class RecentTransactions extends StatelessWidget {
+class _RecentTransactions extends StatelessWidget {
   final double width, height;
-  final String transactionsTitle,
-      seeAllTransactionsText,
-      titleKey,
-      descriptionKey,
-      priceKey,
-      timeKey,
-      iconKey,
-      iconColorKey,
-      iconBackgroundColorKey;
-  const RecentTransactions(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.transactionsTitle,
-      required this.seeAllTransactionsText,
-      required this.titleKey,
-      required this.priceKey,
-      required this.timeKey,
-      required this.iconKey,
-      required this.iconColorKey,
-      required this.iconBackgroundColorKey,
-      required this.descriptionKey});
+  const _RecentTransactions({
+    required this.width,
+    required this.height,
+  });
+
+  final String transactionsTitle = "Recent Transactions";
+  final String seeAllTransactionsText = "See All";
+  final String titleKey = "Category";
+  final String descriptionKey = "Description";
+  final String timeKey = "Time";
+  final String priceKey = "Expense";
+  final String iconKey = "Icon";
+  final String iconColorKey = "Icon-Color";
+  final String iconBackgroundColorKey = "Icon-Background";
 
   @override
   Widget build(BuildContext context) {
@@ -714,14 +603,11 @@ class RecentTransactions extends StatelessWidget {
   }
 }
 
-class FAB extends StatelessWidget {
+class _FAB extends StatelessWidget {
   final VoidCallback onPressed;
   final double width, height;
-  const FAB(
-      {super.key,
-      required this.onPressed,
-      required this.width,
-      required this.height});
+  const _FAB(
+      {required this.onPressed, required this.width, required this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -746,24 +632,105 @@ class FAB extends StatelessWidget {
   }
 }
 
-class BottomNavigation extends StatelessWidget {
+class _ShowOrHide extends ViewModelWidget<DashboardViewModel> {
   final double width, height;
-  final List<Map<String, dynamic>> data;
-  final String iconKey, titleKey;
-  final Function(int index) updateIndex;
-  final int currentIndex;
-  const BottomNavigation(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.data,
-      required this.iconKey,
-      required this.titleKey,
-      required this.updateIndex,
-      required this.currentIndex});
+  const _ShowOrHide({required this.width, required this.height});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, DashboardViewModel viewModel) {
+    return viewModel.showItems
+        ? Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primaryViolet.withOpacity(0.45),
+                  AppColors.primaryViolet.withOpacity(0),
+                ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(top: height * 0.72),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: width * 0.07,
+                        backgroundColor: AppColors.primaryBlue,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            IconsPath.currencyExchange,
+                            width: width * 0.09,
+                            height: width * 0.09,
+                            colorFilter: ColorFilter.mode(
+                                AppColors.primaryLight, BlendMode.srcIn),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: width * 0.07,
+                        backgroundColor: AppColors.primaryGreen,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            IconsPath.income,
+                            width: width * 0.09,
+                            height: width * 0.09,
+                            colorFilter: ColorFilter.mode(
+                                AppColors.primaryLight, BlendMode.srcIn),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: width * 0.25,
+                      ),
+                      CircleAvatar(
+                        radius: width * 0.07,
+                        backgroundColor: AppColors.primaryRed,
+                        child: SvgPicture.asset(
+                          IconsPath.expense,
+                          width: width * 0.09,
+                          height: width * 0.09,
+                          colorFilter: ColorFilter.mode(
+                              AppColors.primaryLight, BlendMode.srcIn),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          )
+        : const SizedBox();
+  }
+}
+
+class _BottomNavigation extends ViewModelWidget<DashboardViewModel> {
+  final double width, height;
+  _BottomNavigation({
+    required this.width,
+    required this.height,
+  });
+
+  final String iconKey = "Icon";
+  final String titleKey = "Title";
+  final List<Map<String, dynamic>> data = Database.bottomNavigationData;
+  final List viewsData = Database.bottomNavigationViews;
+
+  @override
+  Widget build(BuildContext context, DashboardViewModel viewModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -780,13 +747,15 @@ class BottomNavigation extends StatelessWidget {
                 child: InkWell(
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  onTap: () => updateIndex(index),
+                  onTap: () {
+                    viewModel.updateIndexForBottomNavigation(index);
+                  },
                   child: Column(
                     children: [
                       SvgPicture.asset(
                         data[index][iconKey],
                         colorFilter: ColorFilter.mode(
-                            index == currentIndex
+                            index == viewModel.currentIndexForBottomNavigation
                                 ? AppColors.primaryViolet
                                 : AppColors.grey,
                             BlendMode.srcIn),
@@ -799,9 +768,10 @@ class BottomNavigation extends StatelessWidget {
                       Text(
                         data[index][titleKey],
                         style: TextStyle(
-                          color: index == currentIndex
-                              ? AppColors.primaryViolet
-                              : AppColors.grey,
+                          color:
+                              index == viewModel.currentIndexForBottomNavigation
+                                  ? AppColors.primaryViolet
+                                  : AppColors.grey,
                           fontSize: width * 0.03,
                           fontWeight: FontWeight.w500,
                         ),
@@ -826,13 +796,16 @@ class BottomNavigation extends StatelessWidget {
                 child: InkWell(
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  onTap: () => updateIndex(index + 2),
+                  onTap: () {
+                    viewModel.updateIndexForBottomNavigation(index + 2);
+                  },
                   child: Column(
                     children: [
                       SvgPicture.asset(
                         data[index + 2][iconKey],
                         colorFilter: ColorFilter.mode(
-                            index + 2 == currentIndex
+                            index + 2 ==
+                                    viewModel.currentIndexForBottomNavigation
                                 ? AppColors.primaryViolet
                                 : AppColors.grey,
                             BlendMode.srcIn),
@@ -845,7 +818,8 @@ class BottomNavigation extends StatelessWidget {
                       Text(
                         data[index + 2][titleKey],
                         style: TextStyle(
-                          color: index + 2 == currentIndex
+                          color: index + 2 ==
+                                  viewModel.currentIndexForBottomNavigation
                               ? AppColors.primaryViolet
                               : AppColors.grey,
                           fontSize: width * 0.03,

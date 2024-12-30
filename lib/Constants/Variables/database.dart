@@ -1,13 +1,17 @@
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
+import 'package:montra_expense_tracker/Features/Budget/Views/budget_view.dart';
+import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/About/Views/about_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart';
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_settings_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Security/Views/security_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Theme/Views/theme_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Views/settings_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart';
+import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_view.dart';
 
 class Database {
   static List<Map<String, dynamic>> walletOptions = [
@@ -172,7 +176,7 @@ class Database {
     CurrencyView(),
     ThemeView(),
     SecurityView(),
-    NotificationView(),
+    NotificationSettingsView(),
     AboutView(),
     HelpView(),
   ];
@@ -313,6 +317,13 @@ class Database {
       "Icon": IconsPath.userProfile,
       "Title": "Profile",
     },
+  ];
+
+  static List bottomNavigationViews = [
+    const DashboardUI(),
+    TransactionView(),
+    BudgetView(),
+    ProfileView(),
   ];
 
   static List<Map<String, dynamic>> onBoardingData = [

@@ -5,23 +5,10 @@ import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Setup%20PIN/Views/setup_pin_view_model.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class SetupPinView extends StackedView<SetupPinViewModel> {
-  SetupPinView({super.key});
+  const SetupPinView({super.key});
 
-  String title = "Let's setup your PIN";
-
-  @override
-  void onViewModelReady(SetupPinViewModel viewModel) {
-    viewModel.setNotificationItemsWhite();
-    super.onViewModelReady(viewModel);
-  }
-
-  @override
-  void onDispose(SetupPinViewModel viewModel) {
-    viewModel.resetNotificationItems();
-    super.onDispose(viewModel);
-  }
+  final String title = "Let's setup your PIN";
 
   @override
   Widget builder(
@@ -47,19 +34,18 @@ class SetupPinView extends StackedView<SetupPinViewModel> {
             SizedBox(
               height: height * 0.12,
             ),
-            InputPin(
+            _InputPin(
               width: width,
               height: height,
-              isFocus: viewModel.isFocus,
-              enteredPin: viewModel.enteredPin,
             ),
             Padding(
               padding: EdgeInsets.only(top: height * 0.1),
-              child: InputDigits(
+              child: _InputDigits(
                 width: width,
                 height: height,
                 addPin: (value) => viewModel.addPin(value),
                 removePin: viewModel.removePin,
+                setupAccountNavigation: viewModel.setupAccountNavigation,
               ),
             )
           ],
@@ -71,22 +57,17 @@ class SetupPinView extends StackedView<SetupPinViewModel> {
   @override
   SetupPinViewModel viewModelBuilder(BuildContext context) =>
       SetupPinViewModel();
-}
-
-// ignore: must_be_immutable
-class InputPin extends StatelessWidget {
-  final double width, height;
-  final String enteredPin;
-  bool isFocus;
-  InputPin(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.isFocus,
-      required this.enteredPin});
 
   @override
-  Widget build(BuildContext context) {
+  bool get reactive => false;
+}
+
+class _InputPin extends ViewModelWidget<SetupPinViewModel> {
+  final double width, height;
+  const _InputPin({required this.width, required this.height});
+
+  @override
+  Widget build(BuildContext context, SetupPinViewModel viewModel) {
     return SizedBox(
       width: width,
       height: height * 0.1,
@@ -104,12 +85,12 @@ class InputPin extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: index < enteredPin.length
+                      color: index < viewModel.enteredPin.length
                           ? AppColors.primaryLight
                           : AppColors.violet20,
                       width: width * 0.01,
                     ),
-                    color: index < enteredPin.length
+                    color: index < viewModel.enteredPin.length
                         ? AppColors.primaryLight
                         : Colors.transparent,
                   ),
@@ -123,16 +104,16 @@ class InputPin extends StatelessWidget {
   }
 }
 
-class InputDigits extends StatelessWidget {
+class _InputDigits extends StatelessWidget {
   final double width, height;
   final Function(String value) addPin;
-  final Function removePin;
-  const InputDigits(
-      {super.key,
-      required this.width,
+  final Function removePin, setupAccountNavigation;
+  const _InputDigits(
+      {required this.width,
       required this.height,
       required this.addPin,
-      required this.removePin});
+      required this.removePin,
+      required this.setupAccountNavigation});
 
   @override
   Widget build(BuildContext context) {
@@ -182,6 +163,8 @@ class InputDigits extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             InkWell(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
               onTap: () => removePin(),
               child: Transform.rotate(
                 angle: 3.14,
@@ -217,12 +200,16 @@ class InputDigits extends StatelessWidget {
             ),
             Transform.rotate(
               angle: 3.14,
-              child: SvgPicture.asset(
-                IconsPath.backArrow,
-                width: width * 0.14,
-                height: width * 0.14,
-                colorFilter:
-                    ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(width),
+                onTap: () => setupAccountNavigation(),
+                child: SvgPicture.asset(
+                  IconsPath.backArrow,
+                  width: width * 0.14,
+                  height: width * 0.14,
+                  colorFilter:
+                      ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
+                ),
               ),
             ),
           ],

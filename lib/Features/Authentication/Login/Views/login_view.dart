@@ -8,16 +8,11 @@ import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class LoginView extends StackedView<LoginViewModel> {
-  LoginView({super.key});
+  const LoginView({super.key});
 
-  String appBarTitle = "Login";
-  String emailHintText = "Email";
-  String passwordHintText = "Password";
-  String loginHintText = "Login";
-  String forgetPasswordHintText = "Forget Password?";
-  String googleButtonText = "Login with Google";
+  final String appBarTitle = "Login";
+  final String forgetPasswordHintText = "Forget Password?";
 
   @override
   Widget builder(
@@ -33,36 +28,34 @@ class LoginView extends StackedView<LoginViewModel> {
       ),
       body: Column(
         children: [
-          LoginItems(
+          _LoginItems(
             width: width,
             height: height,
-            emailHintText: emailHintText,
-            passwordHintText: passwordHintText,
-            emailEditingController: viewModel.emailController,
-            passwordEditingController: viewModel.passwordController,
-            onTap: () => viewModel.onTap(),
-            onTapOutside: (event) => viewModel.onTapOutside(context),
-            isFocus: viewModel.isFocus,
-            onComplete: () => viewModel.onComplete(context),
-            loginHintText: loginHintText,
+            verificationNavigation: viewModel.verificationNavigation,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: height * 0.04),
-            child: Text(
-              forgetPasswordHintText,
-              style: TextStyle(
-                color: AppColors.primaryViolet,
-                fontSize: width * 0.05,
-                fontWeight: FontWeight.w600,
+            child: InkWell(
+              onTap: () => viewModel.forgetPasswordNavigation(),
+              child: Text(
+                forgetPasswordHintText,
+                style: TextStyle(
+                  color: AppColors.primaryViolet,
+                  fontSize: width * 0.05,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
-          OtherLoginItems(
+          _OtherLoginItems(
             width: width,
             height: height,
-            buttonText: googleButtonText,
           ),
-          SignUp(width: width, height: height),
+          _SignUp(
+            width: width,
+            height: height,
+            signUpNavigation: viewModel.signUpNavigation,
+          ),
         ],
       ),
     );
@@ -72,36 +65,26 @@ class LoginView extends StackedView<LoginViewModel> {
   LoginViewModel viewModelBuilder(BuildContext context) => LoginViewModel();
 }
 
-class LoginItems extends StatelessWidget {
+class _LoginItems extends ViewModelWidget<LoginViewModel> {
   final double width, height;
-  final String emailHintText, passwordHintText, loginHintText;
-  final TextEditingController emailEditingController, passwordEditingController;
-  final VoidCallback onTap;
-  final VoidCallback onComplete;
-  final TapRegionCallback onTapOutside;
-  final bool isFocus;
-  const LoginItems(
-      {super.key,
+  final Function verificationNavigation;
+  const _LoginItems(
+      {required this.verificationNavigation,
       required this.width,
-      required this.height,
-      required this.emailHintText,
-      required this.passwordHintText,
-      required this.emailEditingController,
-      required this.passwordEditingController,
-      required this.onTap,
-      required this.onTapOutside,
-      required this.isFocus,
-      required this.onComplete,
-      required this.loginHintText});
+      required this.height});
+
+  final String emailHintText = "Email";
+  final String passwordHintText = "Password";
+  final String loginHintText = "Login";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, LoginViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.only(top: height * 0.06),
       child: Column(
         children: [
           CustomTextField(
-            controller: emailEditingController,
+            controller: viewModel.emailController,
             width: width,
             hintText: emailHintText,
             height: height,
@@ -110,13 +93,13 @@ class LoginItems extends StatelessWidget {
             height: height * 0.02,
           ),
           CustomTextField(
-            controller: passwordEditingController,
+            controller: viewModel.passwordController,
             width: width,
             hintText: passwordHintText,
             height: height,
-            onTap: onTap,
-            onTapOutside: onTapOutside,
-            onCompleted: onComplete,
+            onTap: () => viewModel.onTap(),
+            onTapOutside: (event) => viewModel.onTapOutside(context),
+            onCompleted: () => viewModel.onComplete(context),
             suffixIcon: Container(
               width: width * 0.15,
               height: width * 0.15,
@@ -124,7 +107,7 @@ class LoginItems extends StatelessWidget {
               child: SvgPicture.asset(
                 IconsPath.show,
                 colorFilter: ColorFilter.mode(
-                  isFocus
+                  viewModel.isFocus
                       ? AppColors.primaryViolet
                       : AppColors.grey.withOpacity(0.8),
                   BlendMode.srcIn,
@@ -136,21 +119,24 @@ class LoginItems extends StatelessWidget {
             height: height * 0.02,
           ),
           CustomElevatedButton(
-              width: width, height: height, text: loginHintText)
+            width: width,
+            height: height,
+            text: loginHintText,
+            onPressed: () => verificationNavigation(),
+          )
         ],
       ),
     );
   }
 }
 
-class OtherLoginItems extends StatelessWidget {
+class _OtherLoginItems extends StatelessWidget {
   final double width, height;
-  final String buttonText;
-  const OtherLoginItems(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.buttonText});
+  const _OtherLoginItems({
+    required this.width,
+    required this.height,
+  });
+  final String googleButtonText = "Login with Google";
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +162,7 @@ class OtherLoginItems extends StatelessWidget {
             width: width * 0.04,
           ),
           Text(
-            buttonText,
+            googleButtonText,
             style: TextStyle(
               color: AppColors.black75.withOpacity(0.95),
               fontSize: width * 0.05,
@@ -189,9 +175,16 @@ class OtherLoginItems extends StatelessWidget {
   }
 }
 
-class SignUp extends StatelessWidget {
+class _SignUp extends StatelessWidget {
   final double width, height;
-  const SignUp({super.key, required this.width, required this.height});
+  final Function signUpNavigation;
+  const _SignUp(
+      {required this.width,
+      required this.height,
+      required this.signUpNavigation});
+
+  final signUpTitle = "Don't have an account yet? ";
+  final signUp = "Sign Up";
 
   @override
   Widget build(BuildContext context) {
@@ -201,21 +194,24 @@ class SignUp extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Don't have an account yet? ",
+            signUpTitle,
             style: TextStyle(
               color: AppColors.grey,
               fontSize: width * 0.045,
               fontWeight: FontWeight.w500,
             ),
           ),
-          Text(
-            "Sign Up",
-            style: TextStyle(
-              color: AppColors.primaryViolet,
-              fontSize: width * 0.042,
-              fontWeight: FontWeight.w500,
-              decoration: TextDecoration.underline,
-              decorationColor: AppColors.primaryViolet,
+          InkWell(
+            onTap: () => signUpNavigation(),
+            child: Text(
+              signUp,
+              style: TextStyle(
+                color: AppColors.primaryViolet,
+                fontSize: width * 0.042,
+                fontWeight: FontWeight.w500,
+                decoration: TextDecoration.underline,
+                decorationColor: AppColors.primaryViolet,
+              ),
             ),
           ),
         ],

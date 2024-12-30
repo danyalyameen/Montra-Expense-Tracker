@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 
 class ResetPasswordViewModel extends ViewModel {
@@ -11,4 +12,12 @@ class ResetPasswordViewModel extends ViewModel {
       _newPasswordEditingController;
   TextEditingController get retypeNewPasswordEditingController =>
       _retypeNewPasswordingEditingController;
+
+  void setupPinNavigation() {
+    navigationService.replaceWithSetupPinView();
+  }
+
+  void back() {
+    navigationService.back();
+  }
 }

@@ -1,40 +1,28 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 
 class SetupPinViewModel extends ViewModel {
-  bool isFocus = true;
-  String enteredPin = "";
+  final bool _isFocus = true;
+  String _enteredPin = "";
 
-  void setNotificationItemsWhite() {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-      ),
-    );
-  }
-
-  void resetNotificationItems() {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-      ),
-    );
-  }
+  bool get isFocus => _isFocus;
+  String get enteredPin => _enteredPin;
 
   void addPin(String value) {
-    if (enteredPin.length < 4) {
-      enteredPin += value;
+    if (_enteredPin.length < 4) {
+      _enteredPin += value;
     }
-    rebuildUi();
+    notifyListeners();
   }
 
   void removePin() {
-    if (enteredPin.isNotEmpty) {
-      enteredPin = enteredPin.substring(0, enteredPin.length - 1);
+    if (_enteredPin.isNotEmpty) {
+      _enteredPin = _enteredPin.substring(0, _enteredPin.length - 1);
     }
-    rebuildUi();
+    notifyListeners();
+  }
+
+  void setupAccountNavigation() {
+    navigationService.replaceWithSetupAccountView();
   }
 }

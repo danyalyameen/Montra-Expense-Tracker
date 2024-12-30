@@ -1,15 +1,28 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Authentication/All%20Setup/Views/all_setup_view_model.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class AllSetupView extends StackedView<AllSetupViewModel> {
-  AllSetupView({super.key});
+  const AllSetupView({super.key});
 
-  String successTitle = "You are set!";
+  final String successTitle = "You are set!";
+
+  @override
+  void onViewModelReady(AllSetupViewModel viewModel) {
+    super.onViewModelReady(viewModel);
+    Timer(
+      const Duration(seconds: 3),
+      () {
+        viewModel.navigationService.replaceWithDashboardView();
+      },
+    );
+  }
 
   @override
   Widget builder(

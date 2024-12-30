@@ -1,3 +1,4 @@
+import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 
 class DashboardViewModel extends ViewModel {
@@ -5,18 +6,22 @@ class DashboardViewModel extends ViewModel {
   int currentIndexForBottomNavigation = 0;
   bool showItems = false;
 
+  void notificationNavigation() {
+    navigationService.navigateToNotificationView();
+  }
+
   void updateIndex(int index) {
     currentIndex = index;
-    rebuildUi();
+    notifyListeners();
   }
 
   void updateIndexForBottomNavigation(int index) {
     currentIndexForBottomNavigation = index;
-    rebuildUi();
+    notifyListeners();
   }
 
   void showOrHideItems() {
     showItems = !showItems;
-    rebuildUi();
+    notifyListeners();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 
 class LoginViewModel extends ViewModel {
@@ -15,18 +16,30 @@ class LoginViewModel extends ViewModel {
 
   void onTap() {
     _isFocus = true;
-    rebuildUi();
+    notifyListeners();
   }
 
   void onTapOutside(BuildContext context) {
     _isFocus = false;
     FocusScope.of(context).unfocus();
-    rebuildUi();
+    notifyListeners();
   }
 
   void onComplete(BuildContext context) {
     _isFocus = false;
     FocusScope.of(context).unfocus();
-    rebuildUi();
+    notifyListeners();
+  }
+
+  void verificationNavigation() {
+    navigationService.replaceWithVerificationView();
+  }
+
+  void forgetPasswordNavigation() {
+    navigationService.navigateToForgetPasswordView();
+  }
+
+  void signUpNavigation() {
+    navigationService.replaceWithSignUpView();
   }
 }

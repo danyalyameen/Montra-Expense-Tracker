@@ -6,15 +6,14 @@ import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
-  ForgetPasswordView({super.key});
+  const ForgetPasswordView({super.key});
 
-  String appBarTitle = "Forget Password";
-  String title =
+  final String appBarTitle = "Forget Password";
+  final String title =
       "Don't worry. \nEnter your email and we'll send you a link to reset your password.";
-  String textFieldHintText = "Email";
-  String buttonHintText = "Continue";
+  final String textFieldHintText = "Email";
+  final String buttonHintText = "Continue";
 
   @override
   Widget builder(
@@ -22,7 +21,12 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: blackAppBar(title: appBarTitle, width: width, height: height),
+      appBar: blackAppBar(
+        title: appBarTitle,
+        width: width,
+        height: height,
+        onTap: () => viewModel.back(),
+      ),
       body: Column(
         children: [
           Padding(
@@ -56,6 +60,7 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
             width: width,
             height: height,
             text: buttonHintText,
+            onPressed: () => viewModel.resetPasswordNavigation(),
           ),
         ],
       ),

@@ -1,19 +1,32 @@
+import 'package:montra_expense_tracker/Features/Authentication/All%20Setup/Views/all_setup_view.dart';
+import 'package:montra_expense_tracker/Features/Authentication/Forget%20Password/Attach%20Views/New%20Password/Views/reset_password_view.dart';
+import 'package:montra_expense_tracker/Features/Authentication/Forget%20Password/Views/forget_password_view.dart';
+import 'package:montra_expense_tracker/Features/Authentication/Login/Views/login_view.dart';
+import 'package:montra_expense_tracker/Features/Authentication/On%20Boarding/Views/onboarding_view.dart';
+import 'package:montra_expense_tracker/Features/Authentication/Setup%20Account/Views/setup_account_view.dart';
+import 'package:montra_expense_tracker/Features/Authentication/Setup%20PIN/Views/setup_pin_view.dart';
+import 'package:montra_expense_tracker/Features/Authentication/Setup%20Wallet/Views/setup_wallet_view.dart';
+import 'package:montra_expense_tracker/Features/Authentication/Sign%20UP/Views/sign_up_view.dart';
+import 'package:montra_expense_tracker/Features/Authentication/Verification/Views/verification_view.dart';
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Create%20Budget/create_budget_view.dart';
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Edit%20Budget/edit_budget_view.dart';
 import 'package:montra_expense_tracker/Features/Budget/Views/budget_view.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Income/Views/income_view.dart';
+import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Notification/Views/notification_view.dart';
+import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Attach%20View/Account%20Details/Views/account_details.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/About/Views/about_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart';
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_settings_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Security/Views/security_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Theme/Views/theme_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Views/settings_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Transfer/Views/transfer_view.dart';
+import 'package:montra_expense_tracker/Features/Splash%20Screen/Views/splash_screen_view.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Details%20Transaction/Views/details_transaction_view.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Attach%20Views/Report/Views/report_view.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Views/financial_report_summary_view.dart';
@@ -23,26 +36,39 @@ import 'package:stacked_services/stacked_services.dart';
 
 @StackedApp(
   routes: [
-    MaterialRoute(page: IncomeView),
+    MaterialRoute(page: SplashScreenView),
+    MaterialRoute(page: OnBoardingView),
+    MaterialRoute(page: SignUpView),
+    MaterialRoute(page: LoginView),
+    MaterialRoute(page: VerificationView),
+    MaterialRoute(page: SetupPinView),
+    MaterialRoute(page: ForgetPasswordView),
+    MaterialRoute(page: ResetPasswordView),
+    MaterialRoute(page: SetupAccountView),
+    MaterialRoute(page: SetupWalletView),
+    MaterialRoute(page: AllSetupView),
+    MaterialRoute(page: DashboardView),
+    MaterialRoute(page: NotificationView),
     MaterialRoute(page: ExpenseView),
     MaterialRoute(page: TransferView),
+    MaterialRoute(page: IncomeView),
+    MaterialRoute(page: TransactionView),
+    MaterialRoute(page: DetailsTransactionView),
+    MaterialRoute(page: BudgetView),
+    MaterialRoute(page: CreateBudgetView),
+    MaterialRoute(page: EditBudgetView),
     MaterialRoute(page: ProfileView),
     MaterialRoute(page: AccountView),
     MaterialRoute(page: AccountDetails),
     MaterialRoute(page: SettingsView),
     MaterialRoute(page: AboutView),
     MaterialRoute(page: CurrencyView),
+    MaterialRoute(page: NotificationSettingsView),
     MaterialRoute(page: HelpView),
-    MaterialRoute(page: NotificationView),
     MaterialRoute(page: SecurityView),
     MaterialRoute(page: ThemeView),
-    MaterialRoute(page: BudgetView),
-    MaterialRoute(page: CreateBudgetView),
-    MaterialRoute(page: EditBudgetView),
-    MaterialRoute(page: TransactionView),
     MaterialRoute(page: FinancialReportSummaryView),
     MaterialRoute(page: ReportView),
-    MaterialRoute(page: DetailsTransactionView),
   ],
   dependencies: [LazySingleton(classType: NavigationService)],
 )

@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
+import 'package:montra_expense_tracker/Constants/Theme/app_text_styles.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Features/Authentication/On%20Boarding/Views/onboarding_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class OnBoardingView extends StackedView<OnBoardingViewModel> {
-  OnBoardingView({super.key});
-
-  String iconKey = "Icon";
-  String titleKey = "Title";
-  String descriptionKey = "Description";
-  String signUpText = "Sign Up";
-  String loginText = "Login";
+  const OnBoardingView({super.key});
 
   @override
   Widget builder(
@@ -24,28 +18,24 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
     return Scaffold(
       body: Column(
         children: [
-          OnBardingItem(
+          _OnBardingItem(
             width: width,
             height: height,
-            iconKey: iconKey,
-            titleKey: titleKey,
-            descriptionKey: descriptionKey,
             data: Database.onBoardingData,
             updateCurrentIndex: (index) {
               viewModel.updateCurrentIndex(index);
             },
           ),
-          ShowIndicators(
+          _ShowIndicators(
             width: width,
             height: height,
-            data: Database.onBoardingData,
-            currentIndex: viewModel.currentIndex,
+            length: Database.onBoardingData.length,
           ),
-          AuthenticationButtons(
+          _AuthenticationButtons(
             width: width,
             height: height,
-            loginText: loginText,
-            signUpText: signUpText,
+            navigationSignUp: viewModel.navigationSignUp,
+            navigationLogin: viewModel.navigationLogin,
           ),
         ],
       ),
@@ -55,22 +45,24 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
   @override
   OnBoardingViewModel viewModelBuilder(BuildContext context) =>
       OnBoardingViewModel();
+
+  @override
+  bool get reactive => false;
 }
 
-class OnBardingItem extends StatelessWidget {
+class _OnBardingItem extends StatelessWidget {
   final double width, height;
   final List<Map<String, dynamic>> data;
-  final String iconKey, titleKey, descriptionKey;
   final Function(int index) updateCurrentIndex;
-  const OnBardingItem(
-      {super.key,
-      required this.width,
+  const _OnBardingItem(
+      {required this.width,
       required this.height,
       required this.data,
-      required this.iconKey,
-      required this.titleKey,
-      required this.descriptionKey,
       required this.updateCurrentIndex});
+
+  final String iconKey = "Icon";
+  final String titleKey = "Title";
+  final String descriptionKey = "Description";
 
   @override
   Widget build(BuildContext context) {
@@ -106,11 +98,8 @@ class OnBardingItem extends StatelessWidget {
                         Text(
                           data[index][titleKey],
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: AppColors.black75,
-                            fontSize: width * 0.08,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: AppTextStyles.onBoardingTitleBlack(
+                              context: context),
                         ),
                         SizedBox(
                           height: height * 0.01,
@@ -118,11 +107,8 @@ class OnBardingItem extends StatelessWidget {
                         Text(
                           data[index][descriptionKey],
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: AppColors.black25,
-                            fontSize: width * 0.04,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: AppTextStyles.onBoardingDescriptionBlack(
+                              context: context),
                         ),
                       ],
                     ),
@@ -137,30 +123,27 @@ class OnBardingItem extends StatelessWidget {
   }
 }
 
-class ShowIndicators extends StatelessWidget {
+class _ShowIndicators extends ViewModelWidget<OnBoardingViewModel> {
   final double width, height;
-  final List<Map<String, dynamic>> data;
-  final int currentIndex;
-  const ShowIndicators(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.data,
-      required this.currentIndex});
+  final int length;
+  const _ShowIndicators(
+      {required this.width, required this.height, required this.length});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, OnBoardingViewModel viewModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
-        data.length,
+        length,
         (index) {
           return Container(
-            width: currentIndex == index ? width * 0.04 : width * 0.025,
-            height: currentIndex == index ? width * 0.04 : width * 0.025,
+            width:
+                viewModel.currentIndex == index ? width * 0.04 : width * 0.025,
+            height:
+                viewModel.currentIndex == index ? width * 0.04 : width * 0.025,
             margin: EdgeInsets.all(width * 0.01),
             child: CircleAvatar(
-              backgroundColor: index == currentIndex
+              backgroundColor: index == viewModel.currentIndex
                   ? AppColors.primaryViolet
                   : AppColors.violet20,
             ),
@@ -171,15 +154,18 @@ class ShowIndicators extends StatelessWidget {
   }
 }
 
-class AuthenticationButtons extends StatelessWidget {
+class _AuthenticationButtons extends StatelessWidget {
   final double width, height;
-  final String loginText, signUpText;
-  const AuthenticationButtons(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.loginText,
-      required this.signUpText});
+  final Function navigationLogin, navigationSignUp;
+  const _AuthenticationButtons({
+    required this.width,
+    required this.height,
+    required this.navigationLogin,
+    required this.navigationSignUp,
+  });
+
+  final String signUpText = "Sign Up";
+  final String loginText = "Login";
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +175,12 @@ class AuthenticationButtons extends StatelessWidget {
       ),
       child: Column(
         children: [
-          CustomElevatedButton(width: width, height: height, text: signUpText),
+          CustomElevatedButton(
+            width: width,
+            height: height,
+            text: signUpText,
+            onPressed: () => navigationSignUp(),
+          ),
           SizedBox(
             height: height * 0.015,
           ),
@@ -200,6 +191,7 @@ class AuthenticationButtons extends StatelessWidget {
             textStyle: TextStyle(
                 color: AppColors.primaryViolet, fontSize: width * 0.045),
             backgroundColor: AppColors.violet20,
+            onPressed: () => navigationLogin(),
           ),
         ],
       ),

@@ -4,13 +4,13 @@ import 'package:montra_expense_tracker/Features/Authentication/Setup%20Account/V
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class SetupAccountView extends StackedView<SetupAccountViewModel> {
-  SetupAccountView({super.key});
+  const SetupAccountView({super.key});
 
-  String title = "Let's setup your account!";
-  String description = "Account can be your bank, credit card or your wallet.";
-  String buttonText = "Let's go";
+  final String title = "Let's setup your account!";
+  final String description =
+      "Account can be your bank, credit card or your wallet.";
+  final String buttonText = "Let's go";
 
   @override
   Widget builder(
@@ -54,7 +54,11 @@ class SetupAccountView extends StackedView<SetupAccountViewModel> {
             Padding(
               padding: EdgeInsets.only(top: height * 0.58),
               child: CustomElevatedButton(
-                  width: width, height: height, text: buttonText),
+                width: width,
+                height: height,
+                text: buttonText,
+                onPressed: () => viewModel.setupWalletNavigation(),
+              ),
             )
           ],
         ),

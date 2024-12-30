@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:montra_expense_tracker/App/app.locator.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_theme.dart';
-import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart';
+import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 void main() async {
   await setupLocator();
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.dark,
-  ));
   runApp(const MyApp());
 }
 
@@ -25,7 +20,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: StackedRouter().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,
       theme: AppTheme().lightTheme,
-      home: ProfileView(),
+      home: const DashboardView(),
     );
   }
 }
