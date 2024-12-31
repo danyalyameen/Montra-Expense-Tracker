@@ -122,7 +122,7 @@ class _Balance extends ViewModelWidget<SetupWalletViewModel> {
             style: TextStyle(
                 fontSize: width * 0.05,
                 fontWeight: FontWeight.w600,
-                color: AppColors.light80.withOpacity(0.6)),
+                color: AppColors.light80.withValues(alpha: 0.6)),
           ),
           Row(
             children: [

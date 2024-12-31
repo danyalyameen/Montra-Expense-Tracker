@@ -4,18 +4,26 @@ import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_mo
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 
 class FinancialReportSummaryViewModel extends ViewModel {
-  int currentIndex = 0;
+  int _currentIndex = 0;
+  int get currentIndex => _currentIndex;
+
+  void onChanged (int value) {
+    currentIndex == value;
+          notifyListeners();
+  }
+
   void swithingViews(
       {required TapUpDetails details, required double deviceWidth}) {
-    if (currentIndex == Database.financialReport.length - 1 &&
+    if (_currentIndex == Database.financialReport.length - 1 &&
         details.localPosition.dx > deviceWidth / 2) {
       navigationService.replaceWithReportView();
     } else if (details.localPosition.dx > deviceWidth / 2) {
-      currentIndex++;
-      rebuildUi();
-    } else if (details.localPosition.dx < deviceWidth / 2 && currentIndex > 0) {
-      currentIndex--;
-      rebuildUi();
+      _currentIndex++;
+      notifyListeners();
+    } else if (details.localPosition.dx < deviceWidth / 2 &&
+        _currentIndex > 0) {
+      _currentIndex--;
+      notifyListeners();
     }
   }
 }

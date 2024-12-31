@@ -71,7 +71,7 @@ class EditBudgetView extends StackedView<EditBudgetViewModel> {
           SizedBox(
             height: height * 0.01,
           ),
-          RemainingBalance(
+          _RemainingBalance(
             spendBalance: spendBalance,
             limitBalance: limitBalance,
             width: width,
@@ -80,14 +80,14 @@ class EditBudgetView extends StackedView<EditBudgetViewModel> {
           SizedBox(
             height: height * 0.01,
           ),
-          BalancePercentageIndicator(
+          _BalancePercentageIndicator(
             width: width,
             height: height,
             spendBalance: spendBalance,
             limitBalance: limitBalance,
             color: color,
           ),
-          Warning(
+          _Warning(
             spendBalance: spendBalance,
             limitBalance: limitBalance,
             width: width,
@@ -104,12 +104,11 @@ class EditBudgetView extends StackedView<EditBudgetViewModel> {
       EditBudgetViewModel();
 }
 
-class RemainingBalance extends StatelessWidget {
-  final int spendBalance, limitBalance;
+class _RemainingBalance extends StatelessWidget {
   final double width, height;
-  const RemainingBalance(
-      {super.key,
-      required this.spendBalance,
+  final int spendBalance, limitBalance;
+  const _RemainingBalance(
+      {required this.spendBalance,
       required this.limitBalance,
       required this.width,
       required this.height});
@@ -144,13 +143,12 @@ class RemainingBalance extends StatelessWidget {
   }
 }
 
-class BalancePercentageIndicator extends StatelessWidget {
+class _BalancePercentageIndicator extends StatelessWidget {
   final double width, height;
   final int spendBalance, limitBalance;
   final Color color;
-  const BalancePercentageIndicator(
-      {super.key,
-      required this.width,
+  const _BalancePercentageIndicator(
+      {required this.width,
       required this.height,
       required this.spendBalance,
       required this.limitBalance,
@@ -186,13 +184,12 @@ class BalancePercentageIndicator extends StatelessWidget {
   }
 }
 
-class Warning extends StatelessWidget {
+class _Warning extends StatelessWidget {
   final int spendBalance, limitBalance;
   final double width, height;
   final String warning;
-  const Warning(
-      {super.key,
-      required this.spendBalance,
+  const _Warning(
+      {required this.spendBalance,
       required this.limitBalance,
       required this.width,
       required this.height,

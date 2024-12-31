@@ -8,20 +8,12 @@ import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_vi
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/expense_item.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
-// ignore: must_be_immutable
 class TransactionView extends StackedView<TransactionViewModel> {
-  TransactionView({super.key});
+  const TransactionView({super.key});
 
-  String monthText = "Month";
-  String report = "See your financial report.";
-  String titleKey = "Category";
-  String descriptionKey = "Description";
-  String timeKey = "Time";
-  String priceKey = "Expense";
-  String iconKey = "Icon";
-  String iconColorKey = "Icon-Color";
-  String iconBackgroundColor = "Icon-Background";
+  final String title = "Today";
 
   @override
   Widget builder(
@@ -31,45 +23,14 @@ class TransactionView extends StackedView<TransactionViewModel> {
     return Scaffold(
       body: Column(
         children: [
-          TopNavigation(
+          _TopNavigation(
             width: width,
             height: height,
-            monthIcon: IconsPath.dropdownArrow,
-            filterIcon: IconsPath.filter,
-            monthText: monthText,
           ),
-          InkWell(
-            onTap: () => viewModel.navigationService
-                .navigateToFinancialReportSummaryView(),
-            child: Container(
-              width: width * 0.9,
-              height: height * 0.06,
-              decoration: BoxDecoration(
-                color: AppColors.violet20,
-                borderRadius: BorderRadius.circular(width * 0.02),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.04),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      report,
-                      style: TextStyle(
-                        color: AppColors.primaryViolet,
-                        fontSize: width * 0.045,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    SvgPicture.asset(
-                      IconsPath.rightArrow,
-                      colorFilter: ColorFilter.mode(
-                          AppColors.primaryViolet, BlendMode.srcIn),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          _SeeFinancialReport(
+            width: width,
+            height: height,
+            navigationService: viewModel.navigationService,
           ),
           Padding(
             padding: EdgeInsets.only(
@@ -77,7 +38,7 @@ class TransactionView extends StackedView<TransactionViewModel> {
               right: width * 0.72,
             ),
             child: Text(
-              "Today",
+              title,
               style: TextStyle(
                 color: AppColors.primaryBlack,
                 fontSize: width * 0.05,
@@ -85,43 +46,10 @@ class TransactionView extends StackedView<TransactionViewModel> {
               ),
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: Database.todayExpenseDatabase.length,
-              itemBuilder: (context, index) {
-                return Center(
-                  child: InkWell(
-                    onTap: () {
-                      viewModel.navigationService
-                          .navigateToDetailsTransactionView(
-                        balance: Database.todayExpenseDatabase[index][priceKey],
-                        description: Database.todayExpenseDatabase[index]
-                            [descriptionKey],
-                        time: Database.todayExpenseDatabase[index][timeKey],
-                        category: Database.todayExpenseDatabase[index]
-                            [titleKey],
-                        type: Database.todayExpenseDatabase[index][titleKey],
-                        accountType: "Wallet",
-                        color: AppColors.primaryRed,
-                      );
-                    },
-                    child: ExpenseItem(
-                      width: width,
-                      height: height,
-                      titleKey: titleKey,
-                      descriptionKey: descriptionKey,
-                      timeKey: timeKey,
-                      priceKey: priceKey,
-                      iconKey: iconKey,
-                      iconColorKey: iconColorKey,
-                      iconBackgroundColor: iconBackgroundColor,
-                      index: index,
-                      data: Database.todayExpenseDatabase,
-                    ),
-                  ),
-                );
-              },
-            ),
+          _ExpenseItems(
+            width: width,
+            height: height,
+            navigationService: viewModel.navigationService,
           ),
         ],
       ),
@@ -131,18 +59,21 @@ class TransactionView extends StackedView<TransactionViewModel> {
   @override
   TransactionViewModel viewModelBuilder(BuildContext context) =>
       TransactionViewModel();
+
+  @override
+  bool get reactive => false;
 }
 
-class TopNavigation extends StatelessWidget {
+class _TopNavigation extends StatelessWidget {
   final double width, height;
-  final String monthText, monthIcon, filterIcon;
-  const TopNavigation(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.monthText,
-      required this.monthIcon,
-      required this.filterIcon});
+  _TopNavigation({
+    required this.width,
+    required this.height,
+  });
+
+  final String monthText = "Month";
+  final String dropDownArrow = IconsPath.dropdownArrow;
+  final String filter = IconsPath.filter;
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +102,7 @@ class TopNavigation extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: width * 0.006),
                   child: SvgPicture.asset(
-                    IconsPath.dropdownArrow,
+                    dropDownArrow,
                     width: width * 0.07,
                     height: width * 0.07,
                     colorFilter: ColorFilter.mode(
@@ -184,7 +115,7 @@ class TopNavigation extends StatelessWidget {
                   width: width * 0.01,
                 ),
                 Text(
-                  "Month",
+                  monthText,
                   style: TextStyle(
                     color: AppColors.primaryBlack,
                     fontSize: width * 0.035,
@@ -197,7 +128,7 @@ class TopNavigation extends StatelessWidget {
           InkWell(
             borderRadius: BorderRadius.circular(width * 0.03),
             onTap: () {
-              ShowFilter.bottomSheet(
+              _ShowFilter.bottomSheet(
                   context: context, width: width, height: height);
             },
             child: Container(
@@ -212,7 +143,7 @@ class TopNavigation extends StatelessWidget {
               ),
               child: Center(
                 child: SvgPicture.asset(
-                  IconsPath.filter,
+                  filter,
                   colorFilter:
                       ColorFilter.mode(AppColors.primaryBlack, BlendMode.srcIn),
                   width: width * 0.06,
@@ -227,13 +158,16 @@ class TopNavigation extends StatelessWidget {
   }
 }
 
-class ShowFilter {
-  static String title = "Filter Transaction";
-  static String subtitleFilter = "Filter by";
-  static String subtitleSort = "Sort by";
-  static String subtitleCategory = "Category";
-  static String buttonText = "Apply";
-  static String resetButtonText = "Reset";
+class _ShowFilter {
+  static const String title = "Filter Transaction";
+  static const String resetButtonText = "Reset";
+  static const String subtitleFilter = "Filter by";
+  static const String subtitleSort = "Sort by";
+  static const String subtitleCategory = "Category";
+  static const String chooseCategory = "Choose Category";
+  static const String selectedCategory = "0";
+  static const String selectedText = "Selected";
+  static const String buttonText = "Apply";
   static void bottomSheet({
     required BuildContext context,
     required double width,
@@ -412,7 +346,7 @@ class ShowFilter {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Choose Category",
+                          chooseCategory,
                           style: TextStyle(
                             color: AppColors.black75,
                             fontSize: width * 0.04,
@@ -426,7 +360,7 @@ class ShowFilter {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                "0",
+                                selectedCategory,
                                 style: TextStyle(
                                   color: AppColors.black50,
                                   fontSize: width * 0.035,
@@ -437,7 +371,7 @@ class ShowFilter {
                                 width: width * 0.01,
                               ),
                               Text(
-                                "Selected",
+                                selectedText,
                                 style: TextStyle(
                                   color: AppColors.black50,
                                   fontSize: width * 0.035,
@@ -465,7 +399,7 @@ class ShowFilter {
                   CustomElevatedButton(
                     width: width,
                     height: height,
-                    text: "Apply",
+                    text: buttonText,
                   ),
                 ],
               ),
@@ -473,6 +407,111 @@ class ShowFilter {
           },
         );
       },
+    );
+  }
+}
+
+class _SeeFinancialReport extends StatelessWidget {
+  final double width, height;
+  final NavigationService navigationService;
+  const _SeeFinancialReport(
+      {required this.width,
+      required this.height,
+      required this.navigationService});
+
+  final String report = "See your financial report.";
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => navigationService.navigateToFinancialReportSummaryView(),
+      child: Container(
+        width: width * 0.9,
+        height: height * 0.06,
+        decoration: BoxDecoration(
+          color: AppColors.violet20,
+          borderRadius: BorderRadius.circular(width * 0.02),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                report,
+                style: TextStyle(
+                  color: AppColors.primaryViolet,
+                  fontSize: width * 0.045,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              SvgPicture.asset(
+                IconsPath.rightArrow,
+                colorFilter:
+                    ColorFilter.mode(AppColors.primaryViolet, BlendMode.srcIn),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ExpenseItems extends StatelessWidget {
+  final double width, height;
+  final NavigationService navigationService;
+  _ExpenseItems(
+      {required this.width,
+      required this.height,
+      required this.navigationService});
+
+  final List<Map<String, dynamic>> data = Database.todayExpenseDatabase;
+  final String titleKey = "Category";
+  final String descriptionKey = "Description";
+  final String timeKey = "Time";
+  final String priceKey = "Expense";
+  final String iconKey = "Icon";
+  final String iconColorKey = "Icon-Color";
+  final String iconBackgroundColor = "Icon-Background";
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: Database.todayExpenseDatabase.length,
+        itemBuilder: (context, index) {
+          return Center(
+            child: InkWell(
+              onTap: () {
+                navigationService.navigateToDetailsTransactionView(
+                  balance: Database.todayExpenseDatabase[index][priceKey],
+                  description: Database.todayExpenseDatabase[index]
+                      [descriptionKey],
+                  time: Database.todayExpenseDatabase[index][timeKey],
+                  category: Database.todayExpenseDatabase[index][titleKey],
+                  type: Database.todayExpenseDatabase[index][titleKey],
+                  accountType: "Wallet",
+                  color: AppColors.primaryRed,
+                );
+              },
+              child: ExpenseItem(
+                data: data,
+                width: width,
+                height: height,
+                index: index,
+                titleKey: titleKey,
+                descriptionKey: descriptionKey,
+                timeKey: timeKey,
+                priceKey: priceKey,
+                iconKey: iconKey,
+                iconColorKey: iconColorKey,
+                iconBackgroundColor: iconBackgroundColor,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

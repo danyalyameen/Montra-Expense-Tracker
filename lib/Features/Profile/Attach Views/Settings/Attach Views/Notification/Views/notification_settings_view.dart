@@ -4,22 +4,20 @@ import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/switch_tile.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
-class NotificationSettingsView extends StackedView<NotificationSettingsViewModel> {
-  NotificationSettingsView({super.key});
+class NotificationSettingsView
+    extends StackedView<NotificationSettingsViewModel> {
+  const NotificationSettingsView({super.key});
 
-  String appBarTitle = 'Notification';
-  String expenseAlertTitle = "Expense Alert";
-  String expenseAlertSubtitle = "Get notification about your expense";
-  String budgetAlertTitle = "Budget";
-  String budgetAlertSubtitle =
+  final String appBarTitle = 'Notification';
+  final String expenseAlertTitle = "Expense Alert";
+  final String expenseAlertSubtitle = "Get notification about your expense";
+  final String budgetAlertTitle = "Budget";
+  final String budgetAlertSubtitle =
       "Get notification when your budget exceed the limit";
-  bool alertNotification = false;
-  bool budgetAlertNotification = false;
 
   @override
-  Widget builder(
-      BuildContext context, NotificationSettingsViewModel viewModel, Widget? child) {
+  Widget builder(BuildContext context, NotificationSettingsViewModel viewModel,
+      Widget? child) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -34,21 +32,19 @@ class NotificationSettingsView extends StackedView<NotificationSettingsViewModel
       body: Column(
         children: [
           SwitchTile(
-            value: alertNotification,
+            value: viewModel.alertNotification,
             title: expenseAlertTitle,
             subtitle: expenseAlertSubtitle,
             onChanged: (value) {
-              alertNotification = value;
-              viewModel.notifyListeners();
+              viewModel.updateExpense(value);
             },
           ),
           SwitchTile(
-            value: budgetAlertNotification,
+            value: viewModel.budgetAlertNotification,
             title: budgetAlertTitle,
             subtitle: budgetAlertSubtitle,
             onChanged: (value) {
-              budgetAlertNotification = value;
-              viewModel.notifyListeners();
+              viewModel.updateBudget(value);
             },
           ),
         ],

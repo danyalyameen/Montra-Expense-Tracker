@@ -5,10 +5,10 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:ui' as _i34;
+import 'dart:ui' as _i36;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as _i33;
+import 'package:flutter/material.dart' as _i35;
 import 'package:montra_expense_tracker/Features/Authentication/All%20Setup/Views/all_setup_view.dart'
     as _i12;
 import 'package:montra_expense_tracker/Features/Authentication/Forget%20Password/Attach%20Views/New%20Password/Views/reset_password_view.dart'
@@ -30,49 +30,53 @@ import 'package:montra_expense_tracker/Features/Authentication/Sign%20UP/Views/s
 import 'package:montra_expense_tracker/Features/Authentication/Verification/Views/verification_view.dart'
     as _i6;
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Create%20Budget/create_budget_view.dart'
-    as _i27;
+    as _i23;
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Edit%20Budget/edit_budget_view.dart'
-    as _i28;
+    as _i24;
 import 'package:montra_expense_tracker/Features/Budget/Views/budget_view.dart'
-    as _i26;
+    as _i22;
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view.dart'
+    as _i19;
+import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Income/Views/income_view.dart'
+    as _i21;
+import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Notification/Views/notification_view.dart'
     as _i14;
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Transfer/Views/transfer_view.dart'
-    as _i15;
+    as _i20;
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart'
     as _i13;
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Attach%20View/Account%20Details/Views/account_details.dart'
-    as _i18;
+    as _i27;
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view.dart'
-    as _i17;
+    as _i26;
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/About/Views/about_view.dart'
-    as _i20;
+    as _i29;
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart'
-    as _i21;
+    as _i30;
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart'
-    as _i22;
+    as _i32;
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_settings_view.dart'
-    as _i23;
+    as _i31;
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Security/Views/security_view.dart'
-    as _i24;
+    as _i33;
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Theme/Views/theme_view.dart'
-    as _i25;
+    as _i34;
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Views/settings_view.dart'
-    as _i19;
+    as _i28;
 import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart'
-    as _i16;
+    as _i25;
 import 'package:montra_expense_tracker/Features/Splash%20Screen/Views/splash_screen_view.dart'
     as _i2;
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Details%20Transaction/Views/details_transaction_view.dart'
-    as _i32;
+    as _i18;
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Attach%20Views/Report/Views/report_view.dart'
-    as _i31;
+    as _i17;
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Views/financial_report_summary_view.dart'
-    as _i30;
+    as _i16;
 import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_view.dart'
-    as _i29;
+    as _i15;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i35;
+import 'package:stacked_services/stacked_services.dart' as _i37;
 
 class Routes {
   static const splashScreenView = '/splash-screen-view';
@@ -99,9 +103,27 @@ class Routes {
 
   static const dashboardView = '/dashboard-view';
 
+  static const notificationView = '/notification-view';
+
+  static const transactionView = '/transaction-view';
+
+  static const financialReportSummaryView = '/financial-report-summary-view';
+
+  static const reportView = '/report-view';
+
+  static const detailsTransactionView = '/details-transaction-view';
+
   static const expenseView = '/expense-view';
 
   static const transferView = '/transfer-view';
+
+  static const incomeView = '/income-view';
+
+  static const budgetView = '/budget-view';
+
+  static const createBudgetView = '/create-budget-view';
+
+  static const editBudgetView = '/edit-budget-view';
 
   static const profileView = '/profile-view';
 
@@ -115,27 +137,13 @@ class Routes {
 
   static const currencyView = '/currency-view';
 
-  static const helpView = '/help-view';
+  static const notificationSettingsView = '/notification-settings-view';
 
-  static const notificationView = '/notification-view';
+  static const helpView = '/help-view';
 
   static const securityView = '/security-view';
 
   static const themeView = '/theme-view';
-
-  static const budgetView = '/budget-view';
-
-  static const createBudgetView = '/create-budget-view';
-
-  static const editBudgetView = '/edit-budget-view';
-
-  static const transactionView = '/transaction-view';
-
-  static const financialReportSummaryView = '/financial-report-summary-view';
-
-  static const reportView = '/report-view';
-
-  static const detailsTransactionView = '/details-transaction-view';
 
   static const all = <String>{
     splashScreenView,
@@ -150,25 +158,27 @@ class Routes {
     setupWalletView,
     allSetupView,
     dashboardView,
+    notificationView,
+    transactionView,
+    financialReportSummaryView,
+    reportView,
+    detailsTransactionView,
     expenseView,
     transferView,
+    incomeView,
+    budgetView,
+    createBudgetView,
+    editBudgetView,
     profileView,
     accountView,
     accountDetails,
     settingsView,
     aboutView,
     currencyView,
+    notificationSettingsView,
     helpView,
-    notificationView,
     securityView,
     themeView,
-    budgetView,
-    createBudgetView,
-    editBudgetView,
-    transactionView,
-    financialReportSummaryView,
-    reportView,
-    detailsTransactionView,
   };
 }
 
@@ -223,134 +233,142 @@ class StackedRouter extends _i1.RouterBase {
       page: _i13.DashboardView,
     ),
     _i1.RouteDef(
-      Routes.expenseView,
-      page: _i14.ExpenseView,
-    ),
-    _i1.RouteDef(
-      Routes.transferView,
-      page: _i15.TransferView,
-    ),
-    _i1.RouteDef(
-      Routes.profileView,
-      page: _i16.ProfileView,
-    ),
-    _i1.RouteDef(
-      Routes.accountView,
-      page: _i17.AccountView,
-    ),
-    _i1.RouteDef(
-      Routes.accountDetails,
-      page: _i18.AccountDetails,
-    ),
-    _i1.RouteDef(
-      Routes.settingsView,
-      page: _i19.SettingsView,
-    ),
-    _i1.RouteDef(
-      Routes.aboutView,
-      page: _i20.AboutView,
-    ),
-    _i1.RouteDef(
-      Routes.currencyView,
-      page: _i21.CurrencyView,
-    ),
-    _i1.RouteDef(
-      Routes.helpView,
-      page: _i22.HelpView,
-    ),
-    _i1.RouteDef(
       Routes.notificationView,
-      page: _i23.NotificationSettingsView,
-    ),
-    _i1.RouteDef(
-      Routes.securityView,
-      page: _i24.SecurityView,
-    ),
-    _i1.RouteDef(
-      Routes.themeView,
-      page: _i25.ThemeView,
-    ),
-    _i1.RouteDef(
-      Routes.budgetView,
-      page: _i26.BudgetView,
-    ),
-    _i1.RouteDef(
-      Routes.createBudgetView,
-      page: _i27.CreateBudgetView,
-    ),
-    _i1.RouteDef(
-      Routes.editBudgetView,
-      page: _i28.EditBudgetView,
+      page: _i14.NotificationView,
     ),
     _i1.RouteDef(
       Routes.transactionView,
-      page: _i29.TransactionView,
+      page: _i15.TransactionView,
     ),
     _i1.RouteDef(
       Routes.financialReportSummaryView,
-      page: _i30.FinancialReportSummaryView,
+      page: _i16.FinancialReportSummaryView,
     ),
     _i1.RouteDef(
       Routes.reportView,
-      page: _i31.ReportView,
+      page: _i17.ReportView,
     ),
     _i1.RouteDef(
       Routes.detailsTransactionView,
-      page: _i32.DetailsTransactionView,
+      page: _i18.DetailsTransactionView,
+    ),
+    _i1.RouteDef(
+      Routes.expenseView,
+      page: _i19.ExpenseView,
+    ),
+    _i1.RouteDef(
+      Routes.transferView,
+      page: _i20.TransferView,
+    ),
+    _i1.RouteDef(
+      Routes.incomeView,
+      page: _i21.IncomeView,
+    ),
+    _i1.RouteDef(
+      Routes.budgetView,
+      page: _i22.BudgetView,
+    ),
+    _i1.RouteDef(
+      Routes.createBudgetView,
+      page: _i23.CreateBudgetView,
+    ),
+    _i1.RouteDef(
+      Routes.editBudgetView,
+      page: _i24.EditBudgetView,
+    ),
+    _i1.RouteDef(
+      Routes.profileView,
+      page: _i25.ProfileView,
+    ),
+    _i1.RouteDef(
+      Routes.accountView,
+      page: _i26.AccountView,
+    ),
+    _i1.RouteDef(
+      Routes.accountDetails,
+      page: _i27.AccountDetails,
+    ),
+    _i1.RouteDef(
+      Routes.settingsView,
+      page: _i28.SettingsView,
+    ),
+    _i1.RouteDef(
+      Routes.aboutView,
+      page: _i29.AboutView,
+    ),
+    _i1.RouteDef(
+      Routes.currencyView,
+      page: _i30.CurrencyView,
+    ),
+    _i1.RouteDef(
+      Routes.notificationSettingsView,
+      page: _i31.NotificationSettingsView,
+    ),
+    _i1.RouteDef(
+      Routes.helpView,
+      page: _i32.HelpView,
+    ),
+    _i1.RouteDef(
+      Routes.securityView,
+      page: _i33.SecurityView,
+    ),
+    _i1.RouteDef(
+      Routes.themeView,
+      page: _i34.ThemeView,
     ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashScreenView: (data) {
-      return _i33.MaterialPageRoute<dynamic>(
+      return _i35.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.SplashScreenView(),
         settings: data,
       );
     },
     _i3.OnBoardingView: (data) {
-      return _i33.MaterialPageRoute<dynamic>(
+      return _i35.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.OnBoardingView(),
         settings: data,
       );
     },
     _i4.SignUpView: (data) {
-      return _i33.MaterialPageRoute<dynamic>(
+      return _i35.MaterialPageRoute<dynamic>(
         builder: (context) => const _i4.SignUpView(),
         settings: data,
       );
     },
     _i5.LoginView: (data) {
-      return _i33.MaterialPageRoute<dynamic>(
+      return _i35.MaterialPageRoute<dynamic>(
         builder: (context) => const _i5.LoginView(),
         settings: data,
       );
     },
     _i6.VerificationView: (data) {
-      return _i33.MaterialPageRoute<dynamic>(
+      return _i35.MaterialPageRoute<dynamic>(
         builder: (context) => const _i6.VerificationView(),
         settings: data,
       );
     },
     _i7.SetupPinView: (data) {
-      return _i33.MaterialPageRoute<dynamic>(
+      return _i35.MaterialPageRoute<dynamic>(
         builder: (context) => const _i7.SetupPinView(),
         settings: data,
       );
     },
     _i8.ForgetPasswordView: (data) {
-      return _i33.MaterialPageRoute<dynamic>(
+      return _i35.MaterialPageRoute<dynamic>(
         builder: (context) => const _i8.ForgetPasswordView(),
         settings: data,
       );
     },
     _i9.ResetPasswordView: (data) {
-      return _i33.MaterialPageRoute<dynamic>(
+      return _i35.MaterialPageRoute<dynamic>(
         builder: (context) => const _i9.ResetPasswordView(),
         settings: data,
       );
     },
     _i10.SetupAccountView: (data) {
-      return _i33.MaterialPageRoute<dynamic>(
+      return _i35.MaterialPageRoute<dynamic>(
         builder: (context) => const _i10.SetupAccountView(),
         settings: data,
       );
@@ -359,156 +377,111 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SetupWalletViewArguments>(
         orElse: () => const SetupWalletViewArguments(),
       );
-      return _i33.MaterialPageRoute<dynamic>(
+      return _i35.MaterialPageRoute<dynamic>(
         builder: (context) => _i11.SetupWalletView(key: args.key),
         settings: data,
       );
     },
     _i12.AllSetupView: (data) {
-      return _i33.MaterialPageRoute<dynamic>(
+      return _i35.MaterialPageRoute<dynamic>(
         builder: (context) => const _i12.AllSetupView(),
         settings: data,
       );
     },
     _i13.DashboardView: (data) {
-      final args = data.getArgs<DashboardViewArguments>(
-        orElse: () => const DashboardViewArguments(),
-      );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i13.DashboardView(key: args.key),
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i13.DashboardView(),
         settings: data,
       );
     },
-    _i14.ExpenseView: (data) {
-      final args = data.getArgs<ExpenseViewArguments>(
-        orElse: () => const ExpenseViewArguments(),
-      );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i14.ExpenseView(key: args.key),
+    _i14.NotificationView: (data) {
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i14.NotificationView(),
         settings: data,
       );
     },
-    _i15.TransferView: (data) {
-      final args = data.getArgs<TransferViewArguments>(
-        orElse: () => const TransferViewArguments(),
-      );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i15.TransferView(key: args.key),
+    _i15.TransactionView: (data) {
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i15.TransactionView(),
         settings: data,
       );
     },
-    _i16.ProfileView: (data) {
-      final args = data.getArgs<ProfileViewArguments>(
-        orElse: () => const ProfileViewArguments(),
-      );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i16.ProfileView(key: args.key),
+    _i16.FinancialReportSummaryView: (data) {
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i16.FinancialReportSummaryView(),
         settings: data,
       );
     },
-    _i17.AccountView: (data) {
-      final args = data.getArgs<AccountViewArguments>(
-        orElse: () => const AccountViewArguments(),
-      );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i17.AccountView(key: args.key),
+    _i17.ReportView: (data) {
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i17.ReportView(),
         settings: data,
       );
     },
-    _i18.AccountDetails: (data) {
-      final args = data.getArgs<AccountDetailsArguments>(nullOk: false);
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i18.AccountDetails(
-            args.walletName, args.walletBalance, args.icon,
+    _i18.DetailsTransactionView: (data) {
+      final args = data.getArgs<DetailsTransactionViewArguments>(nullOk: false);
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i18.DetailsTransactionView(
+            args.balance,
+            args.description,
+            args.time,
+            args.category,
+            args.type,
+            args.accountType,
+            args.color,
             key: args.key),
         settings: data,
       );
     },
-    _i19.SettingsView: (data) {
-      final args = data.getArgs<SettingsViewArguments>(
-        orElse: () => const SettingsViewArguments(),
+    _i19.ExpenseView: (data) {
+      final args = data.getArgs<ExpenseViewArguments>(
+        orElse: () => const ExpenseViewArguments(),
       );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i19.SettingsView(key: args.key),
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i19.ExpenseView(key: args.key),
         settings: data,
       );
     },
-    _i20.AboutView: (data) {
-      final args = data.getArgs<AboutViewArguments>(
-        orElse: () => const AboutViewArguments(),
+    _i20.TransferView: (data) {
+      final args = data.getArgs<TransferViewArguments>(
+        orElse: () => const TransferViewArguments(),
       );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i20.AboutView(key: args.key),
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i20.TransferView(key: args.key),
         settings: data,
       );
     },
-    _i21.CurrencyView: (data) {
-      final args = data.getArgs<CurrencyViewArguments>(
-        orElse: () => const CurrencyViewArguments(),
+    _i21.IncomeView: (data) {
+      final args = data.getArgs<IncomeViewArguments>(
+        orElse: () => const IncomeViewArguments(),
       );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i21.CurrencyView(key: args.key),
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i21.IncomeView(key: args.key),
         settings: data,
       );
     },
-    _i22.HelpView: (data) {
-      final args = data.getArgs<HelpViewArguments>(
-        orElse: () => const HelpViewArguments(),
-      );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i22.HelpView(key: args.key),
-        settings: data,
-      );
-    },
-    _i23.NotificationSettingsView: (data) {
-      final args = data.getArgs<NotificationViewArguments>(
-        orElse: () => const NotificationViewArguments(),
-      );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i23.NotificationSettingsView(key: args.key),
-        settings: data,
-      );
-    },
-    _i24.SecurityView: (data) {
-      final args = data.getArgs<SecurityViewArguments>(
-        orElse: () => const SecurityViewArguments(),
-      );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i24.SecurityView(key: args.key),
-        settings: data,
-      );
-    },
-    _i25.ThemeView: (data) {
-      final args = data.getArgs<ThemeViewArguments>(
-        orElse: () => const ThemeViewArguments(),
-      );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i25.ThemeView(key: args.key),
-        settings: data,
-      );
-    },
-    _i26.BudgetView: (data) {
+    _i22.BudgetView: (data) {
       final args = data.getArgs<BudgetViewArguments>(
         orElse: () => const BudgetViewArguments(),
       );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i26.BudgetView(key: args.key),
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i22.BudgetView(key: args.key),
         settings: data,
       );
     },
-    _i27.CreateBudgetView: (data) {
+    _i23.CreateBudgetView: (data) {
       final args = data.getArgs<CreateBudgetViewArguments>(
         orElse: () => const CreateBudgetViewArguments(),
       );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i27.CreateBudgetView(key: args.key),
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i23.CreateBudgetView(key: args.key),
         settings: data,
       );
     },
-    _i28.EditBudgetView: (data) {
+    _i24.EditBudgetView: (data) {
       final args = data.getArgs<EditBudgetViewArguments>(nullOk: false);
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i28.EditBudgetView(
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i24.EditBudgetView(
             args.color,
             args.category,
             args.spendBalance,
@@ -520,45 +493,93 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
-    _i29.TransactionView: (data) {
-      final args = data.getArgs<TransactionViewArguments>(
-        orElse: () => const TransactionViewArguments(),
+    _i25.ProfileView: (data) {
+      final args = data.getArgs<ProfileViewArguments>(
+        orElse: () => const ProfileViewArguments(),
       );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i29.TransactionView(key: args.key),
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i25.ProfileView(key: args.key),
         settings: data,
       );
     },
-    _i30.FinancialReportSummaryView: (data) {
-      final args = data.getArgs<FinancialReportSummaryViewArguments>(
-        orElse: () => const FinancialReportSummaryViewArguments(),
+    _i26.AccountView: (data) {
+      final args = data.getArgs<AccountViewArguments>(
+        orElse: () => const AccountViewArguments(),
       );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i30.FinancialReportSummaryView(key: args.key),
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i26.AccountView(key: args.key),
         settings: data,
       );
     },
-    _i31.ReportView: (data) {
-      final args = data.getArgs<ReportViewArguments>(
-        orElse: () => const ReportViewArguments(),
-      );
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i31.ReportView(key: args.key),
-        settings: data,
-      );
-    },
-    _i32.DetailsTransactionView: (data) {
-      final args = data.getArgs<DetailsTransactionViewArguments>(nullOk: false);
-      return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => _i32.DetailsTransactionView(
-            args.balance,
-            args.description,
-            args.time,
-            args.category,
-            args.type,
-            args.accountType,
-            args.color,
+    _i27.AccountDetails: (data) {
+      final args = data.getArgs<AccountDetailsArguments>(nullOk: false);
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i27.AccountDetails(
+            args.walletName, args.walletBalance, args.icon,
             key: args.key),
+        settings: data,
+      );
+    },
+    _i28.SettingsView: (data) {
+      final args = data.getArgs<SettingsViewArguments>(
+        orElse: () => const SettingsViewArguments(),
+      );
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i28.SettingsView(key: args.key),
+        settings: data,
+      );
+    },
+    _i29.AboutView: (data) {
+      final args = data.getArgs<AboutViewArguments>(
+        orElse: () => const AboutViewArguments(),
+      );
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i29.AboutView(key: args.key),
+        settings: data,
+      );
+    },
+    _i30.CurrencyView: (data) {
+      final args = data.getArgs<CurrencyViewArguments>(
+        orElse: () => const CurrencyViewArguments(),
+      );
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i30.CurrencyView(key: args.key),
+        settings: data,
+      );
+    },
+    _i31.NotificationSettingsView: (data) {
+      final args = data.getArgs<NotificationSettingsViewArguments>(
+        orElse: () => const NotificationSettingsViewArguments(),
+      );
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i31.NotificationSettingsView(key: args.key),
+        settings: data,
+      );
+    },
+    _i32.HelpView: (data) {
+      final args = data.getArgs<HelpViewArguments>(
+        orElse: () => const HelpViewArguments(),
+      );
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i32.HelpView(key: args.key),
+        settings: data,
+      );
+    },
+    _i33.SecurityView: (data) {
+      final args = data.getArgs<SecurityViewArguments>(
+        orElse: () => const SecurityViewArguments(),
+      );
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i33.SecurityView(key: args.key),
+        settings: data,
+      );
+    },
+    _i34.ThemeView: (data) {
+      final args = data.getArgs<ThemeViewArguments>(
+        orElse: () => const ThemeViewArguments(),
+      );
+      return _i35.MaterialPageRoute<dynamic>(
+        builder: (context) => _i34.ThemeView(key: args.key),
         settings: data,
       );
     },
@@ -574,7 +595,7 @@ class StackedRouter extends _i1.RouterBase {
 class SetupWalletViewArguments {
   const SetupWalletViewArguments({this.key});
 
-  final _i33.Key? key;
+  final _i35.Key? key;
 
   @override
   String toString() {
@@ -583,478 +604,6 @@ class SetupWalletViewArguments {
 
   @override
   bool operator ==(covariant SetupWalletViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class DashboardViewArguments {
-  const DashboardViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant DashboardViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class ExpenseViewArguments {
-  const ExpenseViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant ExpenseViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class TransferViewArguments {
-  const TransferViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant TransferViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class ProfileViewArguments {
-  const ProfileViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant ProfileViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class AccountViewArguments {
-  const AccountViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant AccountViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class AccountDetailsArguments {
-  const AccountDetailsArguments({
-    required this.walletName,
-    required this.walletBalance,
-    required this.icon,
-    this.key,
-  });
-
-  final String walletName;
-
-  final int walletBalance;
-
-  final String icon;
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"walletName": "$walletName", "walletBalance": "$walletBalance", "icon": "$icon", "key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant AccountDetailsArguments other) {
-    if (identical(this, other)) return true;
-    return other.walletName == walletName &&
-        other.walletBalance == walletBalance &&
-        other.icon == icon &&
-        other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return walletName.hashCode ^
-        walletBalance.hashCode ^
-        icon.hashCode ^
-        key.hashCode;
-  }
-}
-
-class SettingsViewArguments {
-  const SettingsViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant SettingsViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class AboutViewArguments {
-  const AboutViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant AboutViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class CurrencyViewArguments {
-  const CurrencyViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant CurrencyViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class HelpViewArguments {
-  const HelpViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant HelpViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class NotificationViewArguments {
-  const NotificationViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant NotificationViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class SecurityViewArguments {
-  const SecurityViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant SecurityViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class ThemeViewArguments {
-  const ThemeViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant ThemeViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class BudgetViewArguments {
-  const BudgetViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant BudgetViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class CreateBudgetViewArguments {
-  const CreateBudgetViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant CreateBudgetViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class EditBudgetViewArguments {
-  const EditBudgetViewArguments({
-    required this.color,
-    required this.category,
-    required this.spendBalance,
-    required this.limitBalance,
-    required this.backgroundColor,
-    required this.iconColor,
-    required this.icon,
-    this.key,
-  });
-
-  final _i34.Color color;
-
-  final String category;
-
-  final int spendBalance;
-
-  final int limitBalance;
-
-  final _i34.Color backgroundColor;
-
-  final _i34.Color iconColor;
-
-  final String icon;
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"color": "$color", "category": "$category", "spendBalance": "$spendBalance", "limitBalance": "$limitBalance", "backgroundColor": "$backgroundColor", "iconColor": "$iconColor", "icon": "$icon", "key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant EditBudgetViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.color == color &&
-        other.category == category &&
-        other.spendBalance == spendBalance &&
-        other.limitBalance == limitBalance &&
-        other.backgroundColor == backgroundColor &&
-        other.iconColor == iconColor &&
-        other.icon == icon &&
-        other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return color.hashCode ^
-        category.hashCode ^
-        spendBalance.hashCode ^
-        limitBalance.hashCode ^
-        backgroundColor.hashCode ^
-        iconColor.hashCode ^
-        icon.hashCode ^
-        key.hashCode;
-  }
-}
-
-class TransactionViewArguments {
-  const TransactionViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant TransactionViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class FinancialReportSummaryViewArguments {
-  const FinancialReportSummaryViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant FinancialReportSummaryViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class ReportViewArguments {
-  const ReportViewArguments({this.key});
-
-  final _i33.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant ReportViewArguments other) {
     if (identical(this, other)) return true;
     return other.key == key;
   }
@@ -1089,9 +638,9 @@ class DetailsTransactionViewArguments {
 
   final String accountType;
 
-  final _i34.Color color;
+  final _i36.Color color;
 
-  final _i33.Key? key;
+  final _i35.Key? key;
 
   @override
   String toString() {
@@ -1124,7 +673,413 @@ class DetailsTransactionViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i35.NavigationService {
+class ExpenseViewArguments {
+  const ExpenseViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant ExpenseViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class TransferViewArguments {
+  const TransferViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant TransferViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class IncomeViewArguments {
+  const IncomeViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant IncomeViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class BudgetViewArguments {
+  const BudgetViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant BudgetViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class CreateBudgetViewArguments {
+  const CreateBudgetViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant CreateBudgetViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class EditBudgetViewArguments {
+  const EditBudgetViewArguments({
+    required this.color,
+    required this.category,
+    required this.spendBalance,
+    required this.limitBalance,
+    required this.backgroundColor,
+    required this.iconColor,
+    required this.icon,
+    this.key,
+  });
+
+  final _i36.Color color;
+
+  final String category;
+
+  final int spendBalance;
+
+  final int limitBalance;
+
+  final _i36.Color backgroundColor;
+
+  final _i36.Color iconColor;
+
+  final String icon;
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"color": "$color", "category": "$category", "spendBalance": "$spendBalance", "limitBalance": "$limitBalance", "backgroundColor": "$backgroundColor", "iconColor": "$iconColor", "icon": "$icon", "key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant EditBudgetViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.color == color &&
+        other.category == category &&
+        other.spendBalance == spendBalance &&
+        other.limitBalance == limitBalance &&
+        other.backgroundColor == backgroundColor &&
+        other.iconColor == iconColor &&
+        other.icon == icon &&
+        other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return color.hashCode ^
+        category.hashCode ^
+        spendBalance.hashCode ^
+        limitBalance.hashCode ^
+        backgroundColor.hashCode ^
+        iconColor.hashCode ^
+        icon.hashCode ^
+        key.hashCode;
+  }
+}
+
+class ProfileViewArguments {
+  const ProfileViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant ProfileViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class AccountViewArguments {
+  const AccountViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant AccountViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class AccountDetailsArguments {
+  const AccountDetailsArguments({
+    required this.walletName,
+    required this.walletBalance,
+    required this.icon,
+    this.key,
+  });
+
+  final String walletName;
+
+  final int walletBalance;
+
+  final String icon;
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"walletName": "$walletName", "walletBalance": "$walletBalance", "icon": "$icon", "key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant AccountDetailsArguments other) {
+    if (identical(this, other)) return true;
+    return other.walletName == walletName &&
+        other.walletBalance == walletBalance &&
+        other.icon == icon &&
+        other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return walletName.hashCode ^
+        walletBalance.hashCode ^
+        icon.hashCode ^
+        key.hashCode;
+  }
+}
+
+class SettingsViewArguments {
+  const SettingsViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant SettingsViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class AboutViewArguments {
+  const AboutViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant AboutViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class CurrencyViewArguments {
+  const CurrencyViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant CurrencyViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class NotificationSettingsViewArguments {
+  const NotificationSettingsViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant NotificationSettingsViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class HelpViewArguments {
+  const HelpViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant HelpViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class SecurityViewArguments {
+  const SecurityViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant SecurityViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class ThemeViewArguments {
+  const ThemeViewArguments({this.key});
+
+  final _i35.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant ThemeViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+extension NavigatorStateExtension on _i37.NavigationService {
   Future<dynamic> navigateToSplashScreenView([
     int? routerId,
     bool preventDuplicates = true,
@@ -1252,7 +1207,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> navigateToSetupWalletView({
-    _i33.Key? key,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1281,16 +1236,101 @@ extension NavigatorStateExtension on _i35.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToDashboardView({
-    _i33.Key? key,
+  Future<dynamic> navigateToDashboardView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.dashboardView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToNotificationView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.notificationView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToTransactionView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.transactionView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToFinancialReportSummaryView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.financialReportSummaryView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToReportView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.reportView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToDetailsTransactionView({
+    required String balance,
+    required String description,
+    required String time,
+    required String category,
+    required String type,
+    required String accountType,
+    required _i36.Color color,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   }) async {
-    return navigateTo<dynamic>(Routes.dashboardView,
-        arguments: DashboardViewArguments(key: key),
+    return navigateTo<dynamic>(Routes.detailsTransactionView,
+        arguments: DetailsTransactionViewArguments(
+            balance: balance,
+            description: description,
+            time: time,
+            category: category,
+            type: type,
+            accountType: accountType,
+            color: color,
+            key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1298,7 +1338,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> navigateToExpenseView({
-    _i33.Key? key,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1314,7 +1354,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> navigateToTransferView({
-    _i33.Key? key,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1329,167 +1369,16 @@ extension NavigatorStateExtension on _i35.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToProfileView({
-    _i33.Key? key,
+  Future<dynamic> navigateToIncomeView({
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   }) async {
-    return navigateTo<dynamic>(Routes.profileView,
-        arguments: ProfileViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> navigateToAccountView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo<dynamic>(Routes.accountView,
-        arguments: AccountViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> navigateToAccountDetails({
-    required String walletName,
-    required int walletBalance,
-    required String icon,
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo<dynamic>(Routes.accountDetails,
-        arguments: AccountDetailsArguments(
-            walletName: walletName,
-            walletBalance: walletBalance,
-            icon: icon,
-            key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> navigateToSettingsView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo<dynamic>(Routes.settingsView,
-        arguments: SettingsViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> navigateToAboutView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo<dynamic>(Routes.aboutView,
-        arguments: AboutViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> navigateToCurrencyView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo<dynamic>(Routes.currencyView,
-        arguments: CurrencyViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> navigateToHelpView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo<dynamic>(Routes.helpView,
-        arguments: HelpViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> navigateToNotificationView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo<dynamic>(Routes.notificationView,
-        arguments: NotificationViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> navigateToSecurityView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo<dynamic>(Routes.securityView,
-        arguments: SecurityViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> navigateToThemeView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo<dynamic>(Routes.themeView,
-        arguments: ThemeViewArguments(key: key),
+    return navigateTo<dynamic>(Routes.incomeView,
+        arguments: IncomeViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1497,7 +1386,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> navigateToBudgetView({
-    _i33.Key? key,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1513,7 +1402,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> navigateToCreateBudgetView({
-    _i33.Key? key,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1529,14 +1418,14 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> navigateToEditBudgetView({
-    required _i34.Color color,
+    required _i36.Color color,
     required String category,
     required int spendBalance,
     required int limitBalance,
-    required _i34.Color backgroundColor,
-    required _i34.Color iconColor,
+    required _i36.Color backgroundColor,
+    required _i36.Color iconColor,
     required String icon,
-    _i33.Key? key,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1559,79 +1448,167 @@ extension NavigatorStateExtension on _i35.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToTransactionView({
-    _i33.Key? key,
+  Future<dynamic> navigateToProfileView({
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   }) async {
-    return navigateTo<dynamic>(Routes.transactionView,
-        arguments: TransactionViewArguments(key: key),
+    return navigateTo<dynamic>(Routes.profileView,
+        arguments: ProfileViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> navigateToFinancialReportSummaryView({
-    _i33.Key? key,
+  Future<dynamic> navigateToAccountView({
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   }) async {
-    return navigateTo<dynamic>(Routes.financialReportSummaryView,
-        arguments: FinancialReportSummaryViewArguments(key: key),
+    return navigateTo<dynamic>(Routes.accountView,
+        arguments: AccountViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> navigateToReportView({
-    _i33.Key? key,
+  Future<dynamic> navigateToAccountDetails({
+    required String walletName,
+    required int walletBalance,
+    required String icon,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   }) async {
-    return navigateTo<dynamic>(Routes.reportView,
-        arguments: ReportViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> navigateToDetailsTransactionView({
-    required String balance,
-    required String description,
-    required String time,
-    required String category,
-    required String type,
-    required String accountType,
-    required _i34.Color color,
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo<dynamic>(Routes.detailsTransactionView,
-        arguments: DetailsTransactionViewArguments(
-            balance: balance,
-            description: description,
-            time: time,
-            category: category,
-            type: type,
-            accountType: accountType,
-            color: color,
+    return navigateTo<dynamic>(Routes.accountDetails,
+        arguments: AccountDetailsArguments(
+            walletName: walletName,
+            walletBalance: walletBalance,
+            icon: icon,
             key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToSettingsView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.settingsView,
+        arguments: SettingsViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToAboutView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.aboutView,
+        arguments: AboutViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToCurrencyView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.currencyView,
+        arguments: CurrencyViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToNotificationSettingsView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.notificationSettingsView,
+        arguments: NotificationSettingsViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToHelpView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.helpView,
+        arguments: HelpViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToSecurityView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.securityView,
+        arguments: SecurityViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToThemeView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.themeView,
+        arguments: ThemeViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1765,7 +1742,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> replaceWithSetupWalletView({
-    _i33.Key? key,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1794,16 +1771,101 @@ extension NavigatorStateExtension on _i35.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithDashboardView({
-    _i33.Key? key,
+  Future<dynamic> replaceWithDashboardView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.dashboardView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithNotificationView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.notificationView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithTransactionView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.transactionView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithFinancialReportSummaryView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.financialReportSummaryView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithReportView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.reportView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithDetailsTransactionView({
+    required String balance,
+    required String description,
+    required String time,
+    required String category,
+    required String type,
+    required String accountType,
+    required _i36.Color color,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   }) async {
-    return replaceWith<dynamic>(Routes.dashboardView,
-        arguments: DashboardViewArguments(key: key),
+    return replaceWith<dynamic>(Routes.detailsTransactionView,
+        arguments: DetailsTransactionViewArguments(
+            balance: balance,
+            description: description,
+            time: time,
+            category: category,
+            type: type,
+            accountType: accountType,
+            color: color,
+            key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1811,7 +1873,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> replaceWithExpenseView({
-    _i33.Key? key,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1827,7 +1889,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> replaceWithTransferView({
-    _i33.Key? key,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1842,167 +1904,16 @@ extension NavigatorStateExtension on _i35.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithProfileView({
-    _i33.Key? key,
+  Future<dynamic> replaceWithIncomeView({
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   }) async {
-    return replaceWith<dynamic>(Routes.profileView,
-        arguments: ProfileViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithAccountView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return replaceWith<dynamic>(Routes.accountView,
-        arguments: AccountViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithAccountDetails({
-    required String walletName,
-    required int walletBalance,
-    required String icon,
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return replaceWith<dynamic>(Routes.accountDetails,
-        arguments: AccountDetailsArguments(
-            walletName: walletName,
-            walletBalance: walletBalance,
-            icon: icon,
-            key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithSettingsView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return replaceWith<dynamic>(Routes.settingsView,
-        arguments: SettingsViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithAboutView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return replaceWith<dynamic>(Routes.aboutView,
-        arguments: AboutViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithCurrencyView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return replaceWith<dynamic>(Routes.currencyView,
-        arguments: CurrencyViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithHelpView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return replaceWith<dynamic>(Routes.helpView,
-        arguments: HelpViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithNotificationView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return replaceWith<dynamic>(Routes.notificationView,
-        arguments: NotificationViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithSecurityView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return replaceWith<dynamic>(Routes.securityView,
-        arguments: SecurityViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithThemeView({
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return replaceWith<dynamic>(Routes.themeView,
-        arguments: ThemeViewArguments(key: key),
+    return replaceWith<dynamic>(Routes.incomeView,
+        arguments: IncomeViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2010,7 +1921,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> replaceWithBudgetView({
-    _i33.Key? key,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2026,7 +1937,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> replaceWithCreateBudgetView({
-    _i33.Key? key,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2042,14 +1953,14 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> replaceWithEditBudgetView({
-    required _i34.Color color,
+    required _i36.Color color,
     required String category,
     required int spendBalance,
     required int limitBalance,
-    required _i34.Color backgroundColor,
-    required _i34.Color iconColor,
+    required _i36.Color backgroundColor,
+    required _i36.Color iconColor,
     required String icon,
-    _i33.Key? key,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2072,79 +1983,167 @@ extension NavigatorStateExtension on _i35.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithTransactionView({
-    _i33.Key? key,
+  Future<dynamic> replaceWithProfileView({
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   }) async {
-    return replaceWith<dynamic>(Routes.transactionView,
-        arguments: TransactionViewArguments(key: key),
+    return replaceWith<dynamic>(Routes.profileView,
+        arguments: ProfileViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> replaceWithFinancialReportSummaryView({
-    _i33.Key? key,
+  Future<dynamic> replaceWithAccountView({
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   }) async {
-    return replaceWith<dynamic>(Routes.financialReportSummaryView,
-        arguments: FinancialReportSummaryViewArguments(key: key),
+    return replaceWith<dynamic>(Routes.accountView,
+        arguments: AccountViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> replaceWithReportView({
-    _i33.Key? key,
+  Future<dynamic> replaceWithAccountDetails({
+    required String walletName,
+    required int walletBalance,
+    required String icon,
+    _i35.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   }) async {
-    return replaceWith<dynamic>(Routes.reportView,
-        arguments: ReportViewArguments(key: key),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithDetailsTransactionView({
-    required String balance,
-    required String description,
-    required String time,
-    required String category,
-    required String type,
-    required String accountType,
-    required _i34.Color color,
-    _i33.Key? key,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return replaceWith<dynamic>(Routes.detailsTransactionView,
-        arguments: DetailsTransactionViewArguments(
-            balance: balance,
-            description: description,
-            time: time,
-            category: category,
-            type: type,
-            accountType: accountType,
-            color: color,
+    return replaceWith<dynamic>(Routes.accountDetails,
+        arguments: AccountDetailsArguments(
+            walletName: walletName,
+            walletBalance: walletBalance,
+            icon: icon,
             key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithSettingsView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.settingsView,
+        arguments: SettingsViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithAboutView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.aboutView,
+        arguments: AboutViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithCurrencyView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.currencyView,
+        arguments: CurrencyViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithNotificationSettingsView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.notificationSettingsView,
+        arguments: NotificationSettingsViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithHelpView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.helpView,
+        arguments: HelpViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithSecurityView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.securityView,
+        arguments: SecurityViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithThemeView({
+    _i35.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.themeView,
+        arguments: ThemeViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

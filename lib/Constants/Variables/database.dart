@@ -174,18 +174,18 @@ class Database {
 
   static List navigationViewsForSettings = [
     CurrencyView(),
-    ThemeView(),
-    SecurityView(),
-    NotificationSettingsView(),
+    const ThemeView(),
+    const SecurityView(),
+    const NotificationSettingsView(),
     AboutView(),
     HelpView(),
   ];
 
   static List navigationViewsForProfile = [
-    AccountView(),
-    SettingsView(),
-    AccountView(),
-    SettingsView(),
+    const AccountView(),
+    const SettingsView(),
+    const AccountView(),
+    const SettingsView(),
   ];
 
   static List<Map<String, dynamic>> profileData = [
@@ -321,9 +321,9 @@ class Database {
 
   static List bottomNavigationViews = [
     const DashboardUI(),
-    TransactionView(),
-    BudgetView(),
-    ProfileView(),
+    const TransactionView(),
+    const BudgetView(),
+    const ProfileView(),
   ];
 
   static List<Map<String, dynamic>> onBoardingData = [

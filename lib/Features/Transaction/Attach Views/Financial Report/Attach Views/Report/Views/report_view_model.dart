@@ -1,20 +1,24 @@
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 
 class ReportViewModel extends ViewModel {
-  int currentIndex = 0;
-  int indexForButtons = 0;
+  int _currentIndex = 0;
+  int _indexForButtons = 0;
+
+  int get currentIndex => _currentIndex;
+  int get indexForButtons => _indexForButtons;
+
   void switchBetweenGraphs({required int index}) {
-    currentIndex = index;
-    rebuildUi();
+    _currentIndex = index;
+    notifyListeners();
   }
 
   void onTapExpense() {
-    indexForButtons = 0;
-    rebuildUi();
+    _indexForButtons = 0;
+    notifyListeners();
   }
 
   void onTapIncome() {
-    indexForButtons = 1;
-    rebuildUi();
+    _indexForButtons = 1;
+    notifyListeners();
   }
 }

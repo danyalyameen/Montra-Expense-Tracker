@@ -56,7 +56,7 @@ class _Logo extends StatelessWidget {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.pinkAccent.withOpacity(0.6),
+                  color: Colors.pinkAccent.withValues(alpha: 0.6),
                   spreadRadius: width * 0.014,
                   blurRadius: width * 0.08,
                 ),

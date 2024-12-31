@@ -6,6 +6,7 @@ import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Detai
 import 'package:montra_expense_tracker/Widgets/custom_delete.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class DetailsTransactionView extends StackedView<DetailsTransactionViewModel> {
   final String balance, description, time, category, type, accountType;
@@ -15,6 +16,7 @@ class DetailsTransactionView extends StackedView<DetailsTransactionViewModel> {
       {super.key});
 
   final String attachments = "No Attachments";
+  final String editButtonText = "Edit";
 
   @override
   Widget builder(BuildContext context, DetailsTransactionViewModel viewModel,
@@ -25,43 +27,16 @@ class DetailsTransactionView extends StackedView<DetailsTransactionViewModel> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
-            children: [
-              Positioned(
-                child: Container(
-                  width: width,
-                  height: height * 0.36,
-                  decoration: BoxDecoration(
-                    color: color,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(width * 0.1),
-                      bottomRight: Radius.circular(width * 0.1),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      _AppBar(
-                        width: width,
-                        height: height,
-                      ),
-                      _Balance(
-                        width: width,
-                        height: height,
-                        description: description,
-                        time: time,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              _Types(
-                width: width,
-                height: height,
-                type: type,
-                category: category,
-                wallet: accountType,
-              ),
-            ],
+          _Background(
+            width: width,
+            height: height,
+            color: color,
+            description: description,
+            time: time,
+            type: type,
+            category: category,
+            accountType: accountType,
+            navigationService: viewModel.navigationService,
           ),
           SizedBox(
             height: height * 0.04,
@@ -97,7 +72,7 @@ class DetailsTransactionView extends StackedView<DetailsTransactionViewModel> {
             child: CustomElevatedButton(
               width: width,
               height: height,
-              text: "Edit",
+              text: editButtonText,
             ),
           )
         ],
@@ -110,9 +85,71 @@ class DetailsTransactionView extends StackedView<DetailsTransactionViewModel> {
       DetailsTransactionViewModel();
 }
 
+class _Background extends StatelessWidget {
+  final double width, height;
+  final Color color;
+  final String description, time, type, category, accountType;
+  final NavigationService navigationService;
+  const _Background(
+      {required this.width,
+      required this.height,
+      required this.color,
+      required this.description,
+      required this.time,
+      required this.type,
+      required this.category,
+      required this.accountType,
+      required this.navigationService});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned(
+          child: Container(
+            width: width,
+            height: height * 0.36,
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(width * 0.1),
+                bottomRight: Radius.circular(width * 0.1),
+              ),
+            ),
+            child: Column(
+              children: [
+                _AppBar(
+                  width: width,
+                  height: height,
+                  navigationService: navigationService,
+                ),
+                _Balance(
+                  width: width,
+                  height: height,
+                  description: description,
+                  time: time,
+                ),
+              ],
+            ),
+          ),
+        ),
+        _Types(
+          width: width,
+          height: height,
+          type: type,
+          category: category,
+          wallet: accountType,
+        ),
+      ],
+    );
+  }
+}
+
 class _AppBar extends StatelessWidget {
   final double width, height;
-  const _AppBar({required this.width, required this.height});
+  final NavigationService navigationService;
+  const _AppBar(
+      {required this.width, required this.height, required this.navigationService});
 
   final String appBarTitle = "Transaction Details";
   final String title = "Remove this Transaction?";
@@ -130,12 +167,15 @@ class _AppBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SvgPicture.asset(
-            IconsPath.backArrow,
-            colorFilter:
-                ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
-            width: width * 0.1,
-            height: width * 0.1,
+          InkWell(
+            onTap: () => navigationService.back(),
+            child: SvgPicture.asset(
+              IconsPath.backArrow,
+              colorFilter:
+                  ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
+              width: width * 0.1,
+              height: width * 0.1,
+            ),
           ),
           Text(
             appBarTitle,

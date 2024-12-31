@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
@@ -8,6 +9,7 @@ import 'package:montra_expense_tracker/Constants/Variables/image_path.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/expense_item.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class DashboardView extends StackedView<DashboardViewModel> {
   const DashboardView({super.key});
@@ -62,7 +64,7 @@ class DashboardUI extends ViewModelWidget<DashboardViewModel> {
             gradient: LinearGradient(
               colors: [
                 AppColors.customColorBrown,
-                AppColors.customColorWhite.withOpacity(0),
+                AppColors.customColorWhite.withValues(alpha: 0),
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -105,6 +107,7 @@ class DashboardUI extends ViewModelWidget<DashboardViewModel> {
         _ShowOrHide(
           width: width,
           height: height,
+          navigationService: viewModel.navigationService,
         ),
       ],
     );
@@ -448,7 +451,7 @@ class _ShowGraph extends ViewModelWidget<DashboardViewModel> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        AppColors.violet40.withOpacity(0.8),
+                        AppColors.violet40.withValues(alpha: 0.8),
                         AppColors.primaryLight,
                       ],
                     ),
@@ -634,7 +637,11 @@ class _FAB extends StatelessWidget {
 
 class _ShowOrHide extends ViewModelWidget<DashboardViewModel> {
   final double width, height;
-  const _ShowOrHide({required this.width, required this.height});
+  final NavigationService navigationService;
+  const _ShowOrHide(
+      {required this.navigationService,
+      required this.width,
+      required this.height});
 
   @override
   Widget build(BuildContext context, DashboardViewModel viewModel) {
@@ -645,30 +652,33 @@ class _ShowOrHide extends ViewModelWidget<DashboardViewModel> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.primaryViolet.withOpacity(0.45),
-                  AppColors.primaryViolet.withOpacity(0),
+                  AppColors.primaryViolet.withValues(alpha: 0.45),
+                  AppColors.primaryViolet.withValues(alpha: 0),
                 ],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.only(top: height * 0.72),
+              padding: EdgeInsets.only(top: height * 0.68),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        radius: width * 0.07,
-                        backgroundColor: AppColors.primaryBlue,
-                        child: Center(
-                          child: SvgPicture.asset(
-                            IconsPath.currencyExchange,
-                            width: width * 0.09,
-                            height: width * 0.09,
-                            colorFilter: ColorFilter.mode(
-                                AppColors.primaryLight, BlendMode.srcIn),
+                      InkWell(
+                        onTap: () => navigationService.navigateToTransferView(),
+                        child: CircleAvatar(
+                          radius: width * 0.07,
+                          backgroundColor: AppColors.primaryBlue,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              IconsPath.currencyExchange,
+                              width: width * 0.09,
+                              height: width * 0.09,
+                              colorFilter: ColorFilter.mode(
+                                  AppColors.primaryLight, BlendMode.srcIn),
+                            ),
                           ),
                         ),
                       )
@@ -680,31 +690,37 @@ class _ShowOrHide extends ViewModelWidget<DashboardViewModel> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        radius: width * 0.07,
-                        backgroundColor: AppColors.primaryGreen,
-                        child: Center(
-                          child: SvgPicture.asset(
-                            IconsPath.income,
-                            width: width * 0.09,
-                            height: width * 0.09,
-                            colorFilter: ColorFilter.mode(
-                                AppColors.primaryLight, BlendMode.srcIn),
+                      InkWell(
+                        onTap: () => navigationService.navigateToIncomeView(),
+                        child: CircleAvatar(
+                          radius: width * 0.07,
+                          backgroundColor: AppColors.primaryGreen,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              IconsPath.income,
+                              width: width * 0.09,
+                              height: width * 0.09,
+                              colorFilter: ColorFilter.mode(
+                                  AppColors.primaryLight, BlendMode.srcIn),
+                            ),
                           ),
                         ),
                       ),
                       SizedBox(
                         width: width * 0.25,
                       ),
-                      CircleAvatar(
-                        radius: width * 0.07,
-                        backgroundColor: AppColors.primaryRed,
-                        child: SvgPicture.asset(
-                          IconsPath.expense,
-                          width: width * 0.09,
-                          height: width * 0.09,
-                          colorFilter: ColorFilter.mode(
-                              AppColors.primaryLight, BlendMode.srcIn),
+                      InkWell(
+                        onTap: () => navigationService.navigateToExpenseView(),
+                        child: CircleAvatar(
+                          radius: width * 0.07,
+                          backgroundColor: AppColors.primaryRed,
+                          child: SvgPicture.asset(
+                            IconsPath.expense,
+                            width: width * 0.09,
+                            height: width * 0.09,
+                            colorFilter: ColorFilter.mode(
+                                AppColors.primaryLight, BlendMode.srcIn),
+                          ),
                         ),
                       )
                     ],

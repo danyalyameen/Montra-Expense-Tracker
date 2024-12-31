@@ -7,12 +7,9 @@ import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class SettingsView extends StackedView<SettingsViewModel> {
-  SettingsView({super.key});
-  String appBarTitle = "Settings";
-  String titleKey = "Title";
-  String defaultSelectionKey = "Default-Selection";
+  const SettingsView({super.key});
+  final String appBarTitle = "Settings";
 
   @override
   Widget builder(
@@ -32,12 +29,9 @@ class SettingsView extends StackedView<SettingsViewModel> {
             color: AppColors.light20,
             thickness: width * 0.002,
           ),
-          SettingsItems(
-            data: Database.settingsData,
+          _SettingsItems(
             width: width,
             height: height,
-            titleKey: titleKey,
-            defaultSelectionKey: defaultSelectionKey,
             navigate: ({required index}) {
               viewModel.navigation(index: index);
             },
@@ -52,19 +46,17 @@ class SettingsView extends StackedView<SettingsViewModel> {
       SettingsViewModel();
 }
 
-class SettingsItems extends StatelessWidget {
-  final List<Map<String, dynamic>> data;
+class _SettingsItems extends StatelessWidget {
   final double width, height;
-  final String titleKey, defaultSelectionKey;
   final Function({required int index}) navigate;
-  const SettingsItems(
-      {super.key,
-      required this.data,
-      required this.width,
+  _SettingsItems(
+      {required this.width,
       required this.height,
-      required this.titleKey,
-      required this.defaultSelectionKey,
       required this.navigate});
+
+  final String titleKey = "Title";
+  final String defaultSelectionKey = "Default-Selection";
+  final List<Map<String, dynamic>> data = Database.settingsData;
 
   @override
   Widget build(BuildContext context) {

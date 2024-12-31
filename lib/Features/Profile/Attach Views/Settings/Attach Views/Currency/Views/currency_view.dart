@@ -11,8 +11,6 @@ import 'package:stacked/stacked.dart';
 class CurrencyView extends StackedView<CurrencyViewModel> {
   CurrencyView({super.key});
   String appBarTitle = "Currency";
-  String currencyKey = "Currency";
-  String isSelectKey = "isSelect";
 
   @override
   Widget builder(
@@ -32,12 +30,9 @@ class CurrencyView extends StackedView<CurrencyViewModel> {
             color: AppColors.light20,
             thickness: width * 0.002,
           ),
-          CurrencyItems(
-            data: Database.currencyData,
+          _CurrencyItems(
             width: width,
             height: height,
-            currencyKey: currencyKey,
-            isSelectKey: isSelectKey,
             markSelected: ({required index}) {
               viewModel.markSelected(index);
             },
@@ -52,19 +47,17 @@ class CurrencyView extends StackedView<CurrencyViewModel> {
       CurrencyViewModel();
 }
 
-class CurrencyItems extends StatelessWidget {
-  final List<Map<String, dynamic>> data;
+class _CurrencyItems extends StatelessWidget {
   final double width, height;
-  final String currencyKey, isSelectKey;
   final Function({required int index}) markSelected;
-  const CurrencyItems(
-      {super.key,
-      required this.data,
-      required this.width,
+  _CurrencyItems(
+      {required this.width,
       required this.height,
-      required this.currencyKey,
-      required this.isSelectKey,
       required this.markSelected});
+
+  final String currencyKey = "Currency";
+  final String isSelectKey = "isSelect";
+  final List<Map<String, dynamic>> data = Database.currencyData;
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +78,13 @@ class CurrencyItems extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              trailing: data[index]["isSelect"] == true
+              trailing: data[index][isSelectKey] == true
                   ? SvgPicture.asset(
                       IconsPath.success,
                       colorFilter: ColorFilter.mode(
-                          AppColors.primaryViolet, BlendMode.srcIn),
+                        AppColors.primaryViolet,
+                        BlendMode.srcIn,
+                      ),
                     )
                   : null,
             ),

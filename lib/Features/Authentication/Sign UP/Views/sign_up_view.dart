@@ -148,7 +148,7 @@ class _PasswordTextField extends ViewModelWidget<SignUpViewModel> {
           colorFilter: ColorFilter.mode(
             viewModel.isFocus
                 ? AppColors.primaryViolet
-                : AppColors.grey.withOpacity(0.8),
+                : AppColors.grey.withValues(alpha: 0.8),
             BlendMode.srcIn,
           ),
         ),
@@ -251,7 +251,7 @@ class _OtherSignUpItems extends StatelessWidget {
           Text(
             buttonText,
             style: TextStyle(
-              color: AppColors.black75.withOpacity(0.95),
+              color: AppColors.black75.withValues(alpha: 0.95),
               fontSize: width * 0.05,
               fontWeight: FontWeight.bold,
             ),

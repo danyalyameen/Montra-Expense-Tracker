@@ -109,7 +109,7 @@ class _LoginItems extends ViewModelWidget<LoginViewModel> {
                 colorFilter: ColorFilter.mode(
                   viewModel.isFocus
                       ? AppColors.primaryViolet
-                      : AppColors.grey.withOpacity(0.8),
+                      : AppColors.grey.withValues(alpha: 0.8),
                   BlendMode.srcIn,
                 ),
               ),
@@ -164,7 +164,7 @@ class _OtherLoginItems extends StatelessWidget {
           Text(
             googleButtonText,
             style: TextStyle(
-              color: AppColors.black75.withOpacity(0.95),
+              color: AppColors.black75.withValues(alpha: 0.95),
               fontSize: width * 0.05,
               fontWeight: FontWeight.bold,
             ),

@@ -100,7 +100,7 @@ class _Notifications extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: AppColors.primaryBlack.withOpacity(0.9),
+                  color: AppColors.primaryBlack.withValues(alpha: 0.9),
                   fontSize: width * 0.042,
                   fontWeight: FontWeight.w500,
                 ),
@@ -118,7 +118,7 @@ class _Notifications extends StatelessWidget {
               trailing: Text(
                 Database.notificationsData[index][timeKey],
                 style: TextStyle(
-                  color: AppColors.primaryBlack.withOpacity(0.8),
+                  color: AppColors.primaryBlack.withValues(alpha: 0.8),
                   fontSize: width * 0.035,
                   fontWeight: FontWeight.w400,
                 ),

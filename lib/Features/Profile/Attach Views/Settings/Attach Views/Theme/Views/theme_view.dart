@@ -7,12 +7,9 @@ import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class ThemeView extends StackedView<ThemeViewModel> {
-  ThemeView({super.key});
-  String appBarTitle = "Theme";
-  String themeKey = "Theme";
-  String isSelectKey = "isSelect";
+  const ThemeView({super.key});
+  final String appBarTitle = "Theme";
 
   @override
   Widget builder(
@@ -32,12 +29,9 @@ class ThemeView extends StackedView<ThemeViewModel> {
             color: AppColors.light20,
             thickness: width * 0.002,
           ),
-          ThemeItems(
-            data: Database.themeData,
+          _ThemeItems(
             width: width,
             height: height,
-            themeKey: themeKey,
-            isSelectKey: isSelectKey,
             markSelected: ({required index}) {
               viewModel.markSelected(index);
             },
@@ -51,19 +45,18 @@ class ThemeView extends StackedView<ThemeViewModel> {
   ThemeViewModel viewModelBuilder(BuildContext context) => ThemeViewModel();
 }
 
-class ThemeItems extends StatelessWidget {
-  final List<Map<String, dynamic>> data;
+class _ThemeItems extends StatelessWidget {
   final double width, height;
-  final String themeKey, isSelectKey;
   final Function({required int index}) markSelected;
-  const ThemeItems(
-      {super.key,
-      required this.data,
-      required this.width,
+  _ThemeItems(
+      {required this.width,
       required this.height,
-      required this.themeKey,
-      required this.isSelectKey,
       required this.markSelected});
+
+  final List<Map<String, dynamic>> data = Database.themeData;
+  final String themeKey = "Theme";
+  final String isSelectKey = "isSelect";
+  
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +77,7 @@ class ThemeItems extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              trailing: data[index]["isSelect"] == true
+              trailing: data[index][isSelectKey] == true
                   ? SvgPicture.asset(
                       IconsPath.success,
                       colorFilter: ColorFilter.mode(

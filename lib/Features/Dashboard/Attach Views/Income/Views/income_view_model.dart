@@ -5,12 +5,13 @@ import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 
 class IncomeViewModel extends ViewModel {
   final TextEditingController _descriptionController = TextEditingController();
-
-  TextEditingController get descriptionController => _descriptionController;
-
+  int _itemIndex = 0;
   bool _isRepeat = false;
 
+  TextEditingController get descriptionController => _descriptionController;
   bool get isRepeat => _isRepeat;
+  int get itemIndex => _itemIndex;
+
   String selectedItemForFrequency = "";
   String selectedItemForMonth = "";
   String selectedItemForDate = "";
@@ -39,23 +40,28 @@ class IncomeViewModel extends ViewModel {
     notifyListeners();
   }
 
+  void onPageChanged(int value) {
+    _itemIndex = value;
+    notifyListeners();
+  }
+
   void toggleSwitch(bool? value) {
     _isRepeat = value!;
-    rebuildUi();
+    notifyListeners();
   }
 
   void onChangedFrequency(String value) {
     selectedItemForFrequency = value;
-    rebuildUi();
+    notifyListeners();
   }
 
   void onChangedMonth(String value) {
     selectedItemForMonth = value;
-    rebuildUi();
+    notifyListeners();
   }
 
   void onChangedDate(String value) {
     selectedItemForDate = value;
-    rebuildUi();
+    notifyListeners();
   }
 }

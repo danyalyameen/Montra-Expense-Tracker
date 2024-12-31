@@ -7,16 +7,8 @@ import 'package:montra_expense_tracker/Constants/Variables/image_path.dart';
 import 'package:montra_expense_tracker/Features/Profile/Views/profile_view_model.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class ProfileView extends StackedView<ProfileViewModel> {
-  ProfileView({super.key});
-
-  String profileDataIconKey = "Icon";
-  String profileDataPageNameKey = "Page-Name";
-  String profileDataIconBackgroundColorKey = "Background-Color";
-  String profileDataIconColorKey = "Icon-Color";
-  String accountTitle = "Username";
-  String username = "Danyal Yameen";
+  const ProfileView({super.key});
 
   @override
   Widget builder(
@@ -26,17 +18,11 @@ class ProfileView extends StackedView<ProfileViewModel> {
       backgroundColor: AppColors.profileBackground,
       body: Column(
         children: [
-          UserAccount(username: username, accountTitle: accountTitle),
+          _UserAccount(),
           SizedBox(
             height: height * 0.05,
           ),
-          ProfilePages(
-            profileData: Database.profileData,
-            profileDataIconKey: profileDataIconKey,
-            profileDataPageNameKey: profileDataPageNameKey,
-            profileDataIconBackgroundColorKey:
-                profileDataIconBackgroundColorKey,
-            profileDataIconColorKey: profileDataIconColorKey,
+          _ProfilePages(
             navigate: ({required index}) {
               viewModel.navigation(index: index);
             },
@@ -50,10 +36,9 @@ class ProfileView extends StackedView<ProfileViewModel> {
   ProfileViewModel viewModelBuilder(BuildContext context) => ProfileViewModel();
 }
 
-class UserAccount extends StatelessWidget {
-  final String username, accountTitle;
-  const UserAccount(
-      {super.key, required this.username, required this.accountTitle});
+class _UserAccount extends StatelessWidget {
+  final String accountTitle = "Username";
+  final String username = "Danyal Yameen";
 
   @override
   Widget build(BuildContext context) {
@@ -128,21 +113,15 @@ class UserAccount extends StatelessWidget {
   }
 }
 
-class ProfilePages extends StatelessWidget {
-  final String profileDataIconKey,
-      profileDataPageNameKey,
-      profileDataIconBackgroundColorKey,
-      profileDataIconColorKey;
-  final List<Map<String, dynamic>> profileData;
+class _ProfilePages extends StatelessWidget {
   final Function({required int index}) navigate;
-  const ProfilePages(
-      {super.key,
-      required this.profileData,
-      required this.profileDataIconKey,
-      required this.profileDataPageNameKey,
-      required this.profileDataIconBackgroundColorKey,
-      required this.profileDataIconColorKey,
-      required this.navigate});
+  _ProfilePages({required this.navigate});
+
+  final String profileDataIconKey = "Icon";
+  final String profileDataIconColorKey = "Icon-Color";
+  final String profileDataIconBackgroundColorKey = "Background-Color";
+  final String profileDataPageNameKey = "Page-Name";
+  final List<Map<String, dynamic>> data = Database.profileData;
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +145,7 @@ class ProfilePages extends StatelessWidget {
               child: ListTile(
                 minTileHeight: height * 0.07,
                 title: Text(
-                  profileData[index][profileDataPageNameKey],
+                  data[index][profileDataPageNameKey],
                   style: TextStyle(
                     color: AppColors.primaryBlack,
                     fontSize: width * 0.04,
@@ -177,15 +156,14 @@ class ProfilePages extends StatelessWidget {
                   width: width * 0.12,
                   height: width * 0.12,
                   decoration: BoxDecoration(
-                    color: profileData[index]
-                        [profileDataIconBackgroundColorKey],
+                    color: data[index][profileDataIconBackgroundColorKey],
                     borderRadius: BorderRadius.circular(width * 0.045),
                   ),
                   child: Center(
                     child: SvgPicture.asset(
-                      profileData[index][profileDataIconKey],
+                      data[index][profileDataIconKey],
                       colorFilter: ColorFilter.mode(
-                        profileData[index][profileDataIconColorKey],
+                        data[index][profileDataIconColorKey],
                         BlendMode.srcIn,
                       ),
                     ),
@@ -200,7 +178,7 @@ class ProfilePages extends StatelessWidget {
               thickness: width * 0.001,
             );
           },
-          itemCount: profileData.length,
+          itemCount: data.length,
           padding: EdgeInsets.only(top: height * 0.008),
         ),
       ),

@@ -6,22 +6,17 @@ import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
+import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-// ignore: must_be_immutable
 class AccountView extends StackedView<AccountViewModel> {
-  AccountView({super.key});
+  const AccountView({super.key});
 
-  String appBarTitle = "Account";
-  String accountBalanceTitle = "Account Balance";
-  String walletPictureKey = "Picture";
-  String walletNameKey = "Wallet";
-  String walletBalanceKey = "Balance";
-  String buttonText = " + Add new wallet";
+  final String appBarTitle = "Account";
+  final String buttonText = " + Add new wallet";
 
   @override
   Widget builder(
@@ -39,35 +34,28 @@ class AccountView extends StackedView<AccountViewModel> {
         padding: EdgeInsets.only(top: height * 0.02),
         child: Column(
           children: [
-            AccountBalance(
+            _AccountBalance(
               width: width,
               height: height,
-              accountBalanceTitle: accountBalanceTitle,
-              balance: Variables.balance,
             ),
             SizedBox(
               height: height * 0.04,
             ),
-            AddedWallets(
+            _AddedWallets(
               width: width,
               height: height,
-              walletPictureKey: walletPictureKey,
-              walletNameKey: walletNameKey,
-              walletBalanceKey: walletBalanceKey,
               navigationService: viewModel.navigationService,
             ),
             SizedBox(
-              height: height * 0.06,
+              height: height * 0.04,
             ),
             SizedBox(
               width: width * 0.9,
               height: height * 0.075,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  buttonText,
-                  style: TextStyle(fontSize: width * 0.045),
-                ),
+              child: CustomElevatedButton(
+                width: width,
+                height: height,
+                text: buttonText,
               ),
             )
           ],
@@ -80,15 +68,15 @@ class AccountView extends StackedView<AccountViewModel> {
   AccountViewModel viewModelBuilder(BuildContext context) => AccountViewModel();
 }
 
-class AccountBalance extends StatelessWidget {
-  final double width, height, balance;
-  final String accountBalanceTitle;
-  const AccountBalance(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.accountBalanceTitle,
-      required this.balance});
+class _AccountBalance extends StatelessWidget {
+  final double width, height;
+  const _AccountBalance({
+    required this.width,
+    required this.height,
+  });
+
+  final String accountBalanceTitle = "Account Balance";
+  final String balance = "0";
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +95,7 @@ class AccountBalance extends StatelessWidget {
             width: double.infinity,
             height: height * 0.27,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.1),
+              color: Colors.white.withValues(alpha: 0.1),
             ),
           ),
         ),
@@ -128,7 +116,7 @@ class AccountBalance extends StatelessWidget {
                   height: height * 0.01,
                 ),
                 Text(
-                  "\$${balance.ceil()}",
+                  "\$$balance",
                   style: TextStyle(
                     color: AppColors.primaryBlack,
                     fontWeight: FontWeight.w600,
@@ -144,18 +132,18 @@ class AccountBalance extends StatelessWidget {
   }
 }
 
-class AddedWallets extends StatelessWidget {
+class _AddedWallets extends StatelessWidget {
   final double width, height;
-  final String walletPictureKey, walletNameKey, walletBalanceKey;
   final NavigationService navigationService;
-  const AddedWallets(
-      {super.key,
-      required this.width,
+  _AddedWallets(
+      {required this.width,
       required this.height,
-      required this.walletPictureKey,
-      required this.walletNameKey,
-      required this.walletBalanceKey,
       required this.navigationService});
+
+  final String walletNameKey = "Wallet";
+  final String walletPictureKey = "Picture";
+  final String walletBalanceKey = "Balance";
+  final List<Map<String, dynamic>> data = Database.walletOptions;
 
   @override
   Widget build(BuildContext context) {
@@ -167,10 +155,10 @@ class AddedWallets extends StatelessWidget {
           return InkWell(
             onTap: () {
               navigationService.navigateToAccountDetails(
-                  walletName: Database.walletOptions[index][walletNameKey],
-                  walletBalance: Database.walletOptions[index]
+                  walletName: data[index][walletNameKey],
+                  walletBalance: data[index]
                       [walletBalanceKey],
-                  icon: Database.walletOptions[index][walletPictureKey]);
+                  icon: data[index][walletPictureKey]);
             },
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: height * 0.02),
@@ -186,7 +174,7 @@ class AddedWallets extends StatelessWidget {
                     ),
                     child: Center(
                       child: SvgPicture.asset(
-                        Database.walletOptions[index][walletPictureKey],
+                        data[index][walletPictureKey],
                         width: width * 0.04,
                         height: width * 0.04,
                       ),
@@ -196,7 +184,7 @@ class AddedWallets extends StatelessWidget {
                     width: width * 0.04,
                   ),
                   Text(
-                    Database.walletOptions[index][walletNameKey],
+                    data[index][walletNameKey],
                     style: TextStyle(
                       color: AppColors.primaryBlack,
                       fontSize: width * 0.045,
@@ -205,7 +193,7 @@ class AddedWallets extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    "\$${Database.walletOptions[index][walletBalanceKey]}",
+                    "\$${data[index][walletBalanceKey]}",
                     style: TextStyle(
                       color: AppColors.primaryBlack,
                       fontSize: width * 0.045,
@@ -224,7 +212,7 @@ class AddedWallets extends StatelessWidget {
             height: height * 0.001,
           );
         },
-        itemCount: Database.walletOptions.length,
+        itemCount: data.length,
       ),
     );
   }

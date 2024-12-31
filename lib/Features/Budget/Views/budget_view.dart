@@ -10,21 +10,10 @@ import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-// ignore: must_be_immutable
 class BudgetView extends StackedView<BudgetViewModel> {
-  BudgetView({super.key});
+  const BudgetView({super.key});
 
-  String categoryKey = "Category";
-  String colorKey = "Color";
-  String limitKey = "Limit";
-  String spendKey = "Spend";
-  String iconKey = "Icon";
-  String iconColorKey = "Icon-Color";
-  String iconBackgroundColorKey = "Icon-Background";
-  String titleOnEmptyList =
-      "You don't have a budget. \n Let's make one so you in control.";
-  String warning = "You've exceed the limit";
-  String buttonText = "Create a budget";
+  final String buttonText = "Create a budget";
 
   @override
   Widget builder(
@@ -34,19 +23,36 @@ class BudgetView extends StackedView<BudgetViewModel> {
     return Scaffold(
       backgroundColor: AppColors.primaryViolet,
       appBar: whiteAppBar(
-          toolBarHight: height * 0.12,
-          backgroundColor: AppColors.primaryViolet,
-          title: Database.months[viewModel.index],
-          width: width,
-          height: height,
-          leading: Center(
+        toolBarHight: height * 0.12,
+        backgroundColor: AppColors.primaryViolet,
+        title: Database.months[viewModel.index],
+        width: width,
+        height: height,
+        leading: Center(
+          child: InkWell(
+            borderRadius: BorderRadius.circular(width * 0.06),
+            onTap: () {
+              viewModel.decrementIndex();
+            },
+            child: SvgPicture.asset(
+              IconsPath.leftArrow,
+              width: width * 0.05,
+              height: height * 0.05,
+              colorFilter:
+                  ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
+            ),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: width * 0.02),
             child: InkWell(
-              borderRadius: BorderRadius.circular(width * 0.06),
+              borderRadius: BorderRadius.circular(width * 0.08),
               onTap: () {
-                viewModel.decrementIndex();
+                viewModel.incrementIndex();
               },
               child: SvgPicture.asset(
-                IconsPath.leftArrow,
+                IconsPath.rightArrow,
                 width: width * 0.05,
                 height: height * 0.05,
                 colorFilter:
@@ -54,24 +60,8 @@ class BudgetView extends StackedView<BudgetViewModel> {
               ),
             ),
           ),
-          actions: [
-            Padding(
-              padding: EdgeInsets.only(right: width * 0.02),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(width * 0.08),
-                onTap: () {
-                  viewModel.incrementIndex();
-                },
-                child: SvgPicture.asset(
-                  IconsPath.rightArrow,
-                  width: width * 0.05,
-                  height: height * 0.05,
-                  colorFilter:
-                      ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
-                ),
-              ),
-            ),
-          ]),
+        ],
+      ),
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -84,19 +74,13 @@ class BudgetView extends StackedView<BudgetViewModel> {
         child: Column(
           children: [
             Expanded(
-              child: BudgetItemUI(
-                warning: warning,
+              child: _BudgetItemUI(
                 height: height,
                 width: width,
-                titleOnEmptyList: titleOnEmptyList,
-                categoryKey: categoryKey,
-                colorKey: colorKey,
-                limitKey: limitKey,
-                spendKey: spendKey,
+                navigationService: viewModel.navigationService,
                 percentage: (index) {
                   return viewModel.percentage(index: index);
                 },
-                navigationService: viewModel.navigationService, iconKey: iconKey, iconBackgroundColorKey: iconBackgroundColorKey, iconColorKey: iconColorKey,
               ),
             ),
             Padding(
@@ -120,35 +104,33 @@ class BudgetView extends StackedView<BudgetViewModel> {
   BudgetViewModel viewModelBuilder(BuildContext context) => BudgetViewModel();
 }
 
-class BudgetItemUI extends StatelessWidget {
-  final String titleOnEmptyList,
-      categoryKey,
-      colorKey,
-      limitKey,
-      spendKey,
-      iconKey,
-      iconColorKey,
-      iconBackgroundColorKey,
-      warning;
+class _BudgetItemUI extends StatelessWidget {
   final double width, height;
   final double Function(int index) percentage;
   final NavigationService navigationService;
-  const BudgetItemUI(
-      {super.key,
-      required this.titleOnEmptyList,
-      required this.width,
-      required this.height,
-      required this.categoryKey,
-      required this.colorKey,
-      required this.limitKey,
-      required this.spendKey,
-      required this.percentage,
-      required this.warning,
-      required this.navigationService, required this.iconKey, required this.iconColorKey, required this.iconBackgroundColorKey});
+  _BudgetItemUI({
+    required this.width,
+    required this.height,
+    required this.percentage,
+    required this.navigationService,
+  });
+
+  final String categoryKey = "Category";
+  final String colorKey = "Color";
+  final String limitKey = "Limit";
+  final String spendKey = "Spend";
+  final String iconKey = "Icon";
+  final String iconColorKey = "Icon-Color";
+  final String iconBackgroundColorKey = "Icon-Background";
+  final String titleOnEmptyList =
+      "You don't have a budget. \n Let's make one so you in control.";
+  final String warning = "You've exceed the limit";
+
+  final List<Map<String, dynamic>> data = Database.budgetData;
 
   @override
   Widget build(BuildContext context) {
-    return Database.budgetData.isEmpty
+    return data.isEmpty
         ? Center(
             child: Text(
               titleOnEmptyList,
@@ -160,7 +142,7 @@ class BudgetItemUI extends StatelessWidget {
             ),
           )
         : ListView.builder(
-            itemCount: Database.budgetData.length,
+            itemCount: data.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.only(
@@ -170,17 +152,20 @@ class BudgetItemUI extends StatelessWidget {
                 child: Center(
                   child: SizedBox(
                     width: width * 0.9,
-                    height: Database.budgetData[index][spendKey] >
-                            Database.budgetData[index][limitKey]
+                    height: data[index][spendKey] > data[index][limitKey]
                         ? height * 0.24
                         : height * 0.2,
                     child: InkWell(
                       onTap: () {
                         navigationService.navigateToEditBudgetView(
-                            color: Database.budgetData[index][colorKey],
-                            category: Database.budgetData[index][categoryKey],
-                            spendBalance: Database.budgetData[index][spendKey],
-                            limitBalance: Database.budgetData[index][limitKey], backgroundColor: Database.budgetData[index][iconBackgroundColorKey], icon: Database.budgetData[index][iconKey], iconColor: Database.budgetData[index][iconColorKey]);
+                            color: data[index][colorKey],
+                            category: data[index][categoryKey],
+                            spendBalance: data[index][spendKey],
+                            limitBalance: data[index][limitKey],
+                            backgroundColor: data[index]
+                                [iconBackgroundColorKey],
+                            icon: data[index][iconKey],
+                            iconColor: data[index][iconColorKey]);
                       },
                       child: Card(
                         color: AppColors.light80,
@@ -231,8 +216,7 @@ class BudgetItemUI extends StatelessWidget {
                                             width: width * 0.02,
                                           ),
                                           Text(
-                                            Database.budgetData[index]
-                                                [categoryKey],
+                                            data[index][categoryKey],
                                             style: TextStyle(
                                               color: AppColors.primaryBlack,
                                               fontSize: width * 0.038,
@@ -243,8 +227,7 @@ class BudgetItemUI extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  Database.budgetData[index][spendKey] >
-                                          Database.budgetData[index][limitKey]
+                                  data[index][spendKey] > data[index][limitKey]
                                       ? SvgPicture.asset(
                                           IconsPath.warning,
                                           colorFilter: ColorFilter.mode(
@@ -258,10 +241,9 @@ class BudgetItemUI extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.only(left: width * 0.04),
                               child: Text(
-                                Database.budgetData[index][spendKey] >
-                                        Database.budgetData[index][limitKey]
+                                data[index][spendKey] > data[index][limitKey]
                                     ? "Remaining \$0"
-                                    : "Remaining \$${Database.budgetData[index][limitKey] - Database.budgetData[index][spendKey]}",
+                                    : "Remaining \$${data[index][limitKey] - data[index][spendKey]}",
                                 style: TextStyle(
                                   color: AppColors.primaryBlack,
                                   fontSize: width * 0.06,
@@ -292,8 +274,7 @@ class BudgetItemUI extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(width * 0.06),
-                                        color: Database.budgetData[index]
-                                            [colorKey],
+                                        color: data[index][colorKey],
                                       ),
                                     )
                                   ],
@@ -304,7 +285,7 @@ class BudgetItemUI extends StatelessWidget {
                               padding: EdgeInsets.only(
                                   top: height * 0.01, left: width * 0.04),
                               child: Text(
-                                "\$${Database.budgetData[index][spendKey]} of \$${Database.budgetData[index][limitKey]}",
+                                "\$${data[index][spendKey]} of \$${data[index][limitKey]}",
                                 style: TextStyle(
                                   color: AppColors.grey,
                                   fontSize: width * 0.045,
@@ -312,8 +293,7 @@ class BudgetItemUI extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Database.budgetData[index][spendKey] >
-                                    Database.budgetData[index][limitKey]
+                            data[index][spendKey] > data[index][limitKey]
                                 ? Padding(
                                     padding: EdgeInsets.only(
                                         left: width * 0.04, top: height * 0.01),

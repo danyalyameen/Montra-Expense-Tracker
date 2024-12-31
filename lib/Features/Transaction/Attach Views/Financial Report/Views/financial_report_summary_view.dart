@@ -5,21 +5,11 @@ import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Finan
 import 'package:montra_expense_tracker/Widgets/show_category.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class FinancialReportSummaryView
     extends StackedView<FinancialReportSummaryViewModel> {
-  FinancialReportSummaryView({super.key});
+  const FinancialReportSummaryView({super.key});
 
-  String backgroundColorKey = "Background";
-  String titleKey = "Title";
-  String descriptionKey = "Description";
-  String spendKey = "Spend";
-  String biggestSpendingTitleKey = "Biggest-Spending-Title";
-  String biggestSpendingKey = "Biggest-Spending";
-  String categoryKey = "Category";
-  String iconKey = "Icon";
-  String iconColorKey = "Icon-Color";
-  String iconBackgroundColorKey = "Icon-Background";
+  final String backgroundColorKey = "Background";
 
   @override
   Widget builder(BuildContext context,
@@ -35,92 +25,14 @@ class FinancialReportSummaryView
         },
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: height * 0.02),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    Database.financialReport.length,
-                    (index) {
-                      return Padding(
-                        padding: EdgeInsets.only(
-                          top: height * 0.04,
-                          left: width * 0.01,
-                          right: width * 0.01,
-                        ),
-                        child: Container(
-                          width:
-                              (width * 0.82) / Database.financialReport.length,
-                          height: height * 0.006,
-                          decoration: BoxDecoration(
-                            color: viewModel.currentIndex == index
-                                ? AppColors.primaryLight
-                                : AppColors.light30,
-                            borderRadius: BorderRadius.circular(width * 0.06),
-                          ),
-                        ),
-                      );
-                    },
-                  )),
+            _Indicators(
+              width: width,
+              height: height,
             ),
-            Expanded(
-              child: PageView.builder(
-                itemCount: Database.financialReport.length,
-                onPageChanged: (value) {
-                  viewModel.currentIndex == value;
-                  viewModel.rebuildUi();
-                },
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  index = viewModel.currentIndex;
-                  return Column(
-                    children: [
-                      Text(
-                        Database.financialReport[index][titleKey],
-                        style: TextStyle(
-                          color: AppColors.primaryLight.withOpacity(0.6),
-                          fontSize: width * 0.065,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.2,
-                      ),
-                      Text(
-                        Database.financialReport[index][descriptionKey],
-                        style: TextStyle(
-                          color: AppColors.light80,
-                          fontSize: width * 0.09,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        "\$${Database.financialReport[index][spendKey]}",
-                        style: TextStyle(
-                          color: AppColors.primaryLight,
-                          fontWeight: FontWeight.w700,
-                          fontSize: width * 0.16,
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.15,
-                      ),
-                      BiggestSpend(
-                        title: biggestSpendingTitleKey,
-                        category: categoryKey,
-                        icon: iconKey,
-                        iconColor: iconColorKey,
-                        iconBackgroundColor: iconBackgroundColorKey,
-                        biggestSpend: biggestSpendingKey,
-                        width: width,
-                        height: height,
-                        index: index,
-                      )
-                    ],
-                  );
-                },
-              ),
-            )
+            _ReportSummaryUI(
+              width: width,
+              height: height,
+            ),
           ],
         ),
       ),
@@ -130,28 +42,132 @@ class FinancialReportSummaryView
   @override
   FinancialReportSummaryViewModel viewModelBuilder(BuildContext context) =>
       FinancialReportSummaryViewModel();
+
+  @override
+  bool get reactive => false;
 }
 
-class BiggestSpend extends StatelessWidget {
+class _Indicators extends ViewModelWidget<FinancialReportSummaryViewModel> {
+  final double width, height;
+  const _Indicators({required this.width, required this.height});
+
+  @override
+  Widget build(
+      BuildContext context, FinancialReportSummaryViewModel viewModel) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: height * 0.02),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(
+          Database.financialReport.length,
+          (index) {
+            return Padding(
+              padding: EdgeInsets.only(
+                top: height * 0.04,
+                left: width * 0.01,
+                right: width * 0.01,
+              ),
+              child: Container(
+                width: (width * 0.82) / Database.financialReport.length,
+                height: height * 0.006,
+                decoration: BoxDecoration(
+                  color: viewModel.currentIndex == index
+                      ? AppColors.primaryLight
+                      : AppColors.light30,
+                  borderRadius: BorderRadius.circular(width * 0.06),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _ReportSummaryUI extends ViewModelWidget<FinancialReportSummaryViewModel> {
+  final double width, height;
+  _ReportSummaryUI({required this.width, required this.height});
+
+  final List<Map<String, dynamic>> data = Database.financialReport;
+  final String titleKey = "Title";
+  final String descriptionKey = "Description";
+  final String spendKey = "Spend";
+  final String categoryKey = "Category";
+  final String iconKey = "Icon";
+  final String iconColorKey = "Icon-Color";
+  final String iconBackgroundColorKey = "Icon-Background";
+
+  @override
+  Widget build(
+      BuildContext context, FinancialReportSummaryViewModel viewModel) {
+    return Expanded(
+      child: PageView.builder(
+        itemCount: data.length,
+        onPageChanged: (value) {
+          viewModel.onChanged(value);
+        },
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          index = viewModel.currentIndex;
+          return Column(
+            children: [
+              Text(
+                data[index][titleKey],
+                style: TextStyle(
+                  color: AppColors.primaryLight.withValues(alpha: 0.6),
+                  fontSize: width * 0.065,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(
+                height: height * 0.2,
+              ),
+              Text(
+                data[index][descriptionKey],
+                style: TextStyle(
+                  color: AppColors.light80,
+                  fontSize: width * 0.09,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                "\$${data[index][spendKey]}",
+                style: TextStyle(
+                  color: AppColors.primaryLight,
+                  fontWeight: FontWeight.w700,
+                  fontSize: width * 0.16,
+                ),
+              ),
+              SizedBox(
+                height: height * 0.15,
+              ),
+              _BiggestSpend(
+                width: width,
+                height: height,
+                index: index,
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _BiggestSpend extends StatelessWidget {
   final double width, height;
   final int index;
-  final String title,
-      category,
-      icon,
-      iconColor,
-      iconBackgroundColor,
-      biggestSpend;
-  const BiggestSpend(
-      {super.key,
-      required this.title,
-      required this.category,
-      required this.icon,
-      required this.iconColor,
-      required this.iconBackgroundColor,
-      required this.biggestSpend,
-      required this.width,
-      required this.height,
-      required this.index});
+  _BiggestSpend(
+      {required this.width, required this.height, required this.index});
+
+  final List<Map<String, dynamic>> data = Database.financialReport;
+  final String titleKey = "Title";
+  final String biggestSpendKey = "Biggest-Spending";
+  final String categoryKey = "Category";
+  final String iconKey = "Icon";
+  final String iconColorKey = "Icon-Color";
+  final String iconBackgroundColorKey = "Icon-Background";
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +183,7 @@ class BiggestSpend extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            Database.financialReport[index][title],
+            data[index][titleKey],
             textAlign: TextAlign.center,
             style: TextStyle(
               color: AppColors.primaryBlack,
@@ -178,14 +194,13 @@ class BiggestSpend extends StatelessWidget {
           ShowCategory(
             width: width,
             height: height,
-            category: Database.financialReport[index][category],
-            iconColor: Database.financialReport[index][iconColor],
-            backgroundColor: Database.financialReport[index]
-                [iconBackgroundColor],
-            icon: Database.financialReport[index][icon],
+            category: data[index][categoryKey],
+            icon: data[index][iconKey],
+            iconColor: data[index][iconColorKey],
+            backgroundColor: data[index][iconBackgroundColorKey],
           ),
           Text(
-            "\$ ${Database.financialReport[index][biggestSpend]}",
+            "\$ ${data[index][biggestSpendKey]}",
             style: TextStyle(
               color: AppColors.primaryBlack,
               fontSize: width * 0.08,

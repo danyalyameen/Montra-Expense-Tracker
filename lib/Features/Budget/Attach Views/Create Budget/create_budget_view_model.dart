@@ -15,6 +15,7 @@ class CreateBudgetViewModel extends ViewModel {
     storeSelectedCategory[Variables.universalItemKey] =
         Database.categoryOptions[index]["Category"];
     storeSelectedCategory["Colors"] = Database.categoryOptions[index]["Colors"];
+    navigationService.back();
     notifyListeners();
   }
 

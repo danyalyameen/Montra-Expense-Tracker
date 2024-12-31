@@ -8,20 +8,19 @@ import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/expense_item.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class AccountDetails extends StackedView<AccountDetailsViewModel> {
   final String walletName, icon;
   final int walletBalance;
-  AccountDetails(this.walletName, this.walletBalance, this.icon, {super.key});
+  const AccountDetails(this.walletName, this.walletBalance, this.icon, {super.key});
 
-  String appBarTitle = "Account Details";
-  String titleKey = "Category";
-  String descriptionKey = "Description";
-  String timeKey = "Time";
-  String priceKey = "Expense";
-  String iconKey = "Icon";
-  String iconColorKey = "Icon-Color";
-  String iconBackgroundColor = "Icon-Background";
+  final String appBarTitle = "Account Details";
+  final String titleKey = "Category";
+  final String descriptionKey = "Description";
+  final String timeKey = "Time";
+  final String priceKey = "Expense";
+  final String iconKey = "Icon";
+  final String iconColorKey = "Icon-Color";
+  final String iconBackgroundColor = "Icon-Background";
 
   @override
   Widget builder(
@@ -52,7 +51,7 @@ class AccountDetails extends StackedView<AccountDetailsViewModel> {
           padding: EdgeInsets.only(top: height * 0.06),
           child: Column(
             children: [
-              WalletDetails(
+              _WalletDetails(
                 width: width,
                 height: height,
                 icon: icon,
@@ -107,13 +106,12 @@ class AccountDetails extends StackedView<AccountDetailsViewModel> {
       AccountDetailsViewModel();
 }
 
-class WalletDetails extends StatelessWidget {
+class _WalletDetails extends StatelessWidget {
   final double width, height;
   final String icon, walletName;
   final int walletBalance;
-  const WalletDetails(
-      {super.key,
-      required this.width,
+  const _WalletDetails(
+      {required this.width,
       required this.height,
       required this.icon,
       required this.walletName,

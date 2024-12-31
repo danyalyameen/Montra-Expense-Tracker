@@ -9,22 +9,10 @@ import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/expense_item.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class ReportView extends StackedView<ReportViewModel> {
-  ReportView({super.key});
+  const ReportView({super.key});
 
-  String appBarTitle = "Financial Report";
-  String month = "Month";
-  String spendKey = "Spend";
-  String incomeKey = "Income";
-  String iconKey = "Icon";
-  String dropDownKey = "Drop-Down-Arrow";
-  String titleKey = "Category";
-  String descriptionKey = "Description";
-  String timeKey = "Time";
-  String priceKey = "Expense";
-  String iconColorKey = "Icon-Color";
-  String iconBackgroundColorKey = "Icon-Background";
+  final String appBarTitle = "Financial Report";
 
   @override
   Widget builder(
@@ -40,13 +28,9 @@ class ReportView extends StackedView<ReportViewModel> {
       ),
       body: Column(
         children: [
-          Graph(
+          _Graph(
             width: width,
             height: height,
-            spendKey: spendKey,
-            month: month,
-            dropDownIconKey: dropDownKey,
-            iconKey: iconKey,
             currentIndex: viewModel.currentIndex,
             switchBetweenGraphs: (int index) {
               viewModel.switchBetweenGraphs(index: index);
@@ -55,19 +39,12 @@ class ReportView extends StackedView<ReportViewModel> {
           SizedBox(
             height: height * 0.02,
           ),
-          ReportDetails(
+          _ReportDetails(
             width: width,
             height: height,
             indexForButtons: viewModel.indexForButtons,
             onTapExpense: viewModel.onTapExpense,
             onTapIncome: viewModel.onTapIncome,
-            iconKey: iconKey,
-            iconColorKey: iconColorKey,
-            iconBackgroundColorKey: iconBackgroundColorKey,
-            descriptionKey: descriptionKey,
-            priceKey: priceKey,
-            timeKey: timeKey,
-            titleKey: titleKey,
           ),
         ],
       ),
@@ -78,23 +55,21 @@ class ReportView extends StackedView<ReportViewModel> {
   ReportViewModel viewModelBuilder(BuildContext context) => ReportViewModel();
 }
 
-// ignore: must_be_immutable
-class Graph extends StatelessWidget {
+class _Graph extends StatelessWidget {
   final double width, height;
-  final String spendKey, month, dropDownIconKey, iconKey;
-  int currentIndex;
-  String dropDownText = "Month";
+  final int currentIndex;
   final Function(int index) switchBetweenGraphs;
-  Graph(
-      {super.key,
-      required this.width,
+  _Graph(
+      {required this.width,
       required this.height,
-      required this.spendKey,
-      required this.month,
-      required this.dropDownIconKey,
-      required this.iconKey,
       required this.currentIndex,
       required this.switchBetweenGraphs});
+
+  final List<Map<String, dynamic>> data = Database.graphData;
+  final String month = "Month";
+  final String iconKey = "Icon";
+  final String dropDownKey = "Drop-Down-Arrow";
+  final String spendKey = "Spend";
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +110,7 @@ class Graph extends StatelessWidget {
                       width: width * 0.01,
                     ),
                     Text(
-                      dropDownText,
+                      month,
                       style: TextStyle(
                         color: AppColors.primaryBlack,
                         fontSize: width * 0.035,
@@ -147,7 +122,7 @@ class Graph extends StatelessWidget {
               ),
               Row(
                 children: List.generate(
-                  Database.graphData.length,
+                  data.length,
                   (index) {
                     return InkWell(
                       onTap: () {
@@ -163,7 +138,7 @@ class Graph extends StatelessWidget {
                             borderRadius: BorderRadius.circular(width * 0.02)),
                         child: Center(
                           child: SvgPicture.asset(
-                            Database.graphData[index][iconKey],
+                            data[index][iconKey],
                             colorFilter: ColorFilter.mode(
                               index == currentIndex
                                   ? AppColors.primaryLight
@@ -183,161 +158,196 @@ class Graph extends StatelessWidget {
           ),
         ),
         currentIndex == 0
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: width * 0.05),
-                    child: Text(
-                      "\$ ${Database.graphData[0][spendKey]}",
-                      style: TextStyle(
-                        color: AppColors.primaryBlack,
-                        fontSize: width * 0.08,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: height * 0.2,
-                    child: LineChart(
-                      LineChartData(
-                        minX: 0,
-                        maxX: 11,
-                        minY: 0,
-                        maxY: 6,
-                        backgroundColor: AppColors.primaryLight,
-                        gridData: const FlGridData(show: false),
-                        titlesData: const FlTitlesData(show: false),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        lineBarsData: [
-                          LineChartBarData(
-                            spots: const [
-                              FlSpot(0, 3),
-                              FlSpot(2.6, 2),
-                              FlSpot(4.9, 5),
-                              FlSpot(6.8, 3.1),
-                              FlSpot(8, 4),
-                              FlSpot(9.5, 3),
-                              FlSpot(11, 4),
-                            ],
-                            dotData: const FlDotData(
-                              show: false,
-                            ),
-                            barWidth: width * 0.015,
-                            color: AppColors.primaryViolet,
-                            isCurved: true,
-                            belowBarData: BarAreaData(
-                              show: true,
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  AppColors.violet40.withOpacity(0.8),
-                                  AppColors.primaryLight,
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                        lineTouchData: LineTouchData(
-                          touchTooltipData: LineTouchTooltipData(
-                            getTooltipColor: (touchedSpot) =>
-                                AppColors.primaryViolet,
-                            getTooltipItems:
-                                (List<LineBarSpot> touchedBarSpots) {
-                              return touchedBarSpots.map((barSpot) {
-                                return LineTooltipItem(
-                                  '${barSpot.y.toInt()}',
-                                  TextStyle(
-                                    color: AppColors.primaryLight,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                );
-                              }).toList();
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+            ? _LineGraph(
+                width: width,
+                height: height,
+                spendKey: spendKey,
               )
-            : SizedBox(
-                height: height * 0.28,
-                child: Stack(
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      height: height * 0.3,
-                      child: PieChart(
-                        PieChartData(
-                          borderData: FlBorderData(
-                            show: false,
-                          ),
-                          centerSpaceColor: AppColors.primaryLight,
-                          centerSpaceRadius: double.infinity,
-                          sectionsSpace: 0,
-                          sections: [
-                            PieChartSectionData(
-                              showTitle: false,
-                              color: AppColors.primaryYellow,
-                              value: 50,
-                              radius: width * 0.07,
-                            ),
-                            PieChartSectionData(
-                              showTitle: false,
-                              color: AppColors.primaryViolet,
-                              value: 30,
-                              radius: width * 0.07,
-                            ),
-                            PieChartSectionData(
-                              showTitle: false,
-                              color: AppColors.primaryRed,
-                              value: 20,
-                              radius: width * 0.07,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Text(
-                        "\$ ${Database.graphData[0][spendKey]}",
-                        style: TextStyle(
-                          color: AppColors.primaryBlack,
-                          fontSize: width * 0.08,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+            : _CicleGraph(
+                height: height,
+                width: width,
+                spendKey: spendKey,
               ),
       ],
     );
   }
 }
 
-// ignore: must_be_immutable
-class ReportDetails extends StatelessWidget {
+class _LineGraph extends StatelessWidget {
+  final double width, height;
+  final String spendKey;
+  const _LineGraph(
+      {required this.width, required this.height, required this.spendKey});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: width * 0.05),
+          child: Text(
+            "\$ ${Database.graphData[0][spendKey]}",
+            style: TextStyle(
+              color: AppColors.primaryBlack,
+              fontSize: width * 0.08,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        SizedBox(
+          width: double.infinity,
+          height: height * 0.2,
+          child: LineChart(
+            LineChartData(
+              minX: 0,
+              maxX: 11,
+              minY: 0,
+              maxY: 6,
+              backgroundColor: AppColors.primaryLight,
+              gridData: const FlGridData(show: false),
+              titlesData: const FlTitlesData(show: false),
+              borderData: FlBorderData(
+                show: false,
+              ),
+              lineBarsData: [
+                LineChartBarData(
+                  spots: const [
+                    FlSpot(0, 3),
+                    FlSpot(2.6, 2),
+                    FlSpot(4.9, 5),
+                    FlSpot(6.8, 3.1),
+                    FlSpot(8, 4),
+                    FlSpot(9.5, 3),
+                    FlSpot(11, 4),
+                  ],
+                  dotData: const FlDotData(
+                    show: false,
+                  ),
+                  barWidth: width * 0.015,
+                  color: AppColors.primaryViolet,
+                  isCurved: true,
+                  belowBarData: BarAreaData(
+                    show: true,
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        AppColors.violet40.withValues(alpha: 0.8),
+                        AppColors.primaryLight,
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+              lineTouchData: LineTouchData(
+                touchTooltipData: LineTouchTooltipData(
+                  getTooltipColor: (touchedSpot) => AppColors.primaryViolet,
+                  getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
+                    return touchedBarSpots.map((barSpot) {
+                      return LineTooltipItem(
+                        '${barSpot.y.toInt()}',
+                        TextStyle(
+                          color: AppColors.primaryLight,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    }).toList();
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _CicleGraph extends StatelessWidget {
+  final double width, height;
+  final String spendKey;
+  const _CicleGraph(
+      {required this.width, required this.height, required this.spendKey});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height * 0.28,
+      child: Stack(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: height * 0.3,
+            child: PieChart(
+              PieChartData(
+                borderData: FlBorderData(
+                  show: false,
+                ),
+                centerSpaceColor: AppColors.primaryLight,
+                centerSpaceRadius: double.infinity,
+                sectionsSpace: 0,
+                sections: [
+                  PieChartSectionData(
+                    showTitle: false,
+                    color: AppColors.primaryYellow,
+                    value: 50,
+                    radius: width * 0.07,
+                  ),
+                  PieChartSectionData(
+                    showTitle: false,
+                    color: AppColors.primaryViolet,
+                    value: 30,
+                    radius: width * 0.07,
+                  ),
+                  PieChartSectionData(
+                    showTitle: false,
+                    color: AppColors.primaryRed,
+                    value: 20,
+                    radius: width * 0.07,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Center(
+            child: Text(
+              "\$ ${Database.graphData[0][spendKey]}",
+              style: TextStyle(
+                color: AppColors.primaryBlack,
+                fontSize: width * 0.08,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ReportDetails extends StatelessWidget {
   final double width, height;
   final int indexForButtons;
   final Function onTapExpense, onTapIncome;
-  final String titleKey, descriptionKey, priceKey, timeKey, iconKey, iconColorKey, iconBackgroundColorKey;
-  ReportDetails(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.indexForButtons,
-      required this.onTapExpense,
-      required this.onTapIncome, required this.titleKey, required this.descriptionKey, required this.priceKey, required this.timeKey, required this.iconKey, required this.iconColorKey, required this.iconBackgroundColorKey});
+  const _ReportDetails({
+    required this.width,
+    required this.height,
+    required this.indexForButtons,
+    required this.onTapExpense,
+    required this.onTapIncome,
+  });
 
-  String expenseButtonText = "Expense";
-  String incomeButtonText = "Income";
-  String dropDownText = "Sort";
+  final String expenseButtonText = "Expense";
+  final String incomeButtonText = "Income";
+  final String dropDownText = "Sort";
+  final String titleKey = "Category";
+  final String descriptionKey = "Description";
+  final String timeKey = "Time";
+  final String priceKey = "Expense";
+  final String iconKey = "Icon";
+  final String iconColorKey = "Icon-Color";
+  final String iconBackgroundColorKey = "Icon-Background";
 
   @override
   Widget build(BuildContext context) {
@@ -465,6 +475,8 @@ class ReportDetails extends StatelessWidget {
                         return ExpenseItem(
                           width: width,
                           height: height,
+                          index: index,
+                          data: Database.todayExpenseDatabase,
                           titleKey: titleKey,
                           descriptionKey: descriptionKey,
                           timeKey: timeKey,
@@ -472,8 +484,6 @@ class ReportDetails extends StatelessWidget {
                           iconKey: iconKey,
                           iconColorKey: iconColorKey,
                           iconBackgroundColor: iconBackgroundColorKey,
-                          index: index,
-                          data: Database.todayExpenseDatabase,
                         );
                       },
                     ),
@@ -531,13 +541,13 @@ class ReportDetails extends StatelessWidget {
                         return ExpenseItem(
                           width: width,
                           height: height,
-                          titleKey: "Category",
-                          descriptionKey: "Description",
-                          timeKey: "Time",
-                          priceKey: "Expense",
-                          iconKey: "Icon",
-                          iconColorKey: "Icon-Color",
-                          iconBackgroundColor: "Icon-Background",
+                          titleKey: titleKey,
+                          descriptionKey: descriptionKey,
+                          timeKey: timeKey,
+                          priceKey: priceKey,
+                          iconKey: iconKey,
+                          iconColorKey: iconColorKey,
+                          iconBackgroundColor: iconBackgroundColorKey,
                           index: index,
                           data: Database.incomeDatabase,
                           priceColor: AppColors.primaryGreen,
@@ -546,7 +556,7 @@ class ReportDetails extends StatelessWidget {
                     ),
                   )
                 ],
-              )
+              ),
       ],
     );
   }
