@@ -51,9 +51,7 @@ class _CurrencyItems extends StatelessWidget {
   final double width, height;
   final Function({required int index}) markSelected;
   _CurrencyItems(
-      {required this.width,
-      required this.height,
-      required this.markSelected});
+      {required this.width, required this.height, required this.markSelected});
 
   final String currencyKey = "Currency";
   final String isSelectKey = "isSelect";

@@ -50,9 +50,7 @@ class _SettingsItems extends StatelessWidget {
   final double width, height;
   final Function({required int index}) navigate;
   _SettingsItems(
-      {required this.width,
-      required this.height,
-      required this.navigate});
+      {required this.width, required this.height, required this.navigate});
 
   final String titleKey = "Title";
   final String defaultSelectionKey = "Default-Selection";

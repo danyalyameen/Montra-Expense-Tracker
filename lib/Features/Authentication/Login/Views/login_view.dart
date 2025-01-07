@@ -31,7 +31,7 @@ class LoginView extends StackedView<LoginViewModel> {
           _LoginItems(
             width: width,
             height: height,
-            verificationNavigation: viewModel.verificationNavigation,
+            verificationNavigation: viewModel.verificationNavigation(),
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: height * 0.04),
@@ -54,7 +54,7 @@ class LoginView extends StackedView<LoginViewModel> {
           _SignUp(
             width: width,
             height: height,
-            signUpNavigation: viewModel.signUpNavigation,
+            signUpNavigation: viewModel.signUpNavigation(),
           ),
         ],
       ),

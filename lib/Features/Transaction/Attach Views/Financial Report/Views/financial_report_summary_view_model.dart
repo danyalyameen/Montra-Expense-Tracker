@@ -7,9 +7,9 @@ class FinancialReportSummaryViewModel extends ViewModel {
   int _currentIndex = 0;
   int get currentIndex => _currentIndex;
 
-  void onChanged (int value) {
+  void onChanged(int value) {
     currentIndex == value;
-          notifyListeners();
+    notifyListeners();
   }
 
   void swithingViews(

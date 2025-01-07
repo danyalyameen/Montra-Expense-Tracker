@@ -85,7 +85,8 @@ class _Indicators extends ViewModelWidget<FinancialReportSummaryViewModel> {
   }
 }
 
-class _ReportSummaryUI extends ViewModelWidget<FinancialReportSummaryViewModel> {
+class _ReportSummaryUI
+    extends ViewModelWidget<FinancialReportSummaryViewModel> {
   final double width, height;
   _ReportSummaryUI({required this.width, required this.height});
 

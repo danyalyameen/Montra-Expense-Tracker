@@ -156,8 +156,7 @@ class _AddedWallets extends StatelessWidget {
             onTap: () {
               navigationService.navigateToAccountDetails(
                   walletName: data[index][walletNameKey],
-                  walletBalance: data[index]
-                      [walletBalanceKey],
+                  walletBalance: data[index][walletBalanceKey],
                   icon: data[index][walletPictureKey]);
             },
             child: Padding(

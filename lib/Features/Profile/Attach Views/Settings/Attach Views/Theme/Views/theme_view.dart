@@ -49,14 +49,11 @@ class _ThemeItems extends StatelessWidget {
   final double width, height;
   final Function({required int index}) markSelected;
   _ThemeItems(
-      {required this.width,
-      required this.height,
-      required this.markSelected});
+      {required this.width, required this.height, required this.markSelected});
 
   final List<Map<String, dynamic>> data = Database.themeData;
   final String themeKey = "Theme";
   final String isSelectKey = "isSelect";
-  
 
   @override
   Widget build(BuildContext context) {

@@ -20,7 +20,8 @@ class CustomTextField extends StatelessWidget {
       this.suffixIcon,
       this.onTap,
       this.onTapOutside,
-      this.onCompleted, this.borderRadius});
+      this.onCompleted,
+      this.borderRadius});
   @override
   Widget build(BuildContext context) {
     return Center(

@@ -50,11 +50,8 @@ class _SecurityItems extends StatelessWidget {
   final double width, height;
   final Function({required int index}) markSelected;
   _SecurityItems(
-      {
-      required this.width,
-      required this.height,
-      required this.markSelected});
-  
+      {required this.width, required this.height, required this.markSelected});
+
   final List<Map<String, dynamic>> data = Database.securityData;
   final String securityKey = "Security";
   final String isSelectKey = "isSelect";

@@ -149,7 +149,9 @@ class _AppBar extends StatelessWidget {
   final double width, height;
   final NavigationService navigationService;
   const _AppBar(
-      {required this.width, required this.height, required this.navigationService});
+      {required this.width,
+      required this.height,
+      required this.navigationService});
 
   final String appBarTitle = "Transaction Details";
   final String title = "Remove this Transaction?";

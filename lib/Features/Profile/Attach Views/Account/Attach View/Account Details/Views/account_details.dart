@@ -11,7 +11,8 @@ import 'package:stacked/stacked.dart';
 class AccountDetails extends StackedView<AccountDetailsViewModel> {
   final String walletName, icon;
   final int walletBalance;
-  const AccountDetails(this.walletName, this.walletBalance, this.icon, {super.key});
+  const AccountDetails(this.walletName, this.walletBalance, this.icon,
+      {super.key});
 
   final String appBarTitle = "Account Details";
   final String titleKey = "Category";

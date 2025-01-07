@@ -89,7 +89,6 @@ class CreateBudgetView extends StackedView<CreateBudgetViewModel> {
   @override
   CreateBudgetViewModel viewModelBuilder(BuildContext context) =>
       CreateBudgetViewModel();
-
 }
 
 class _BudgetBalance extends StatelessWidget {

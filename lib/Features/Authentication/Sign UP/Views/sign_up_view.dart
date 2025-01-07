@@ -76,7 +76,8 @@ class _SignUpItems extends StatelessWidget {
     required this.width,
     required this.height,
     required this.nameEditingController,
-    required this.emailEditingController, required this.verificationNavigation,
+    required this.emailEditingController,
+    required this.verificationNavigation,
   });
 
   final String nameHintText = "Name";
@@ -116,7 +117,11 @@ class _SignUpItems extends StatelessWidget {
             height: height * 0.02,
           ),
           CustomElevatedButton(
-              width: width, height: height, text: signUpButtonHintText, onPressed: () => verificationNavigation(),)
+            width: width,
+            height: height,
+            text: signUpButtonHintText,
+            onPressed: () => verificationNavigation(),
+          )
         ],
       ),
     );

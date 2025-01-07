@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 
 class AppTextStyles {
-
   //Black Text Styles
 
   static TextStyle titleBlack({required BuildContext context}) {
@@ -49,7 +48,6 @@ class AppTextStyles {
       fontWeight: FontWeight.w500,
     );
   }
-
 
   // White Text Styles
 

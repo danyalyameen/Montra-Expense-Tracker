@@ -29,7 +29,10 @@ class NotificationView extends StackedView<NotificationViewModel> {
           ),
         ],
       ),
-      body: _Notifications(width: width, height: height,),
+      body: _Notifications(
+        width: width,
+        height: height,
+      ),
     );
   }
 

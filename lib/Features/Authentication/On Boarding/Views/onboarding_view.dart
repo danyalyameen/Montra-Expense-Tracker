@@ -29,7 +29,6 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
           _ShowIndicators(
             width: width,
             height: height,
-            length: Database.onBoardingData.length,
           ),
           _AuthenticationButtons(
             width: width,
@@ -125,16 +124,14 @@ class _OnBardingItem extends StatelessWidget {
 
 class _ShowIndicators extends ViewModelWidget<OnBoardingViewModel> {
   final double width, height;
-  final int length;
-  const _ShowIndicators(
-      {required this.width, required this.height, required this.length});
+  const _ShowIndicators({required this.width, required this.height});
 
   @override
   Widget build(BuildContext context, OnBoardingViewModel viewModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
-        length,
+        Database.onBoardingData.length,
         (index) {
           return Container(
             width:
@@ -156,7 +153,7 @@ class _ShowIndicators extends ViewModelWidget<OnBoardingViewModel> {
 
 class _AuthenticationButtons extends StatelessWidget {
   final double width, height;
-  final Function navigationLogin, navigationSignUp;
+  final Function navigationLogin,navigationSignUp;
   const _AuthenticationButtons({
     required this.width,
     required this.height,

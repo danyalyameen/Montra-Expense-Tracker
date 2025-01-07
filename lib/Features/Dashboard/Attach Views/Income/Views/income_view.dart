@@ -321,8 +321,11 @@ class _Wallet extends ViewModelWidget<IncomeViewModel> {
   final double width, height;
   final int itemIndex;
   final Function(int index) updateIndex;
-  const _Wallet({required this.updateIndex, 
-      required this.itemIndex, required this.width, required this.height});
+  const _Wallet(
+      {required this.updateIndex,
+      required this.itemIndex,
+      required this.width,
+      required this.height});
 
   final String addWalletButtonText = "Add Wallet";
   final String walletDropDownHintText = "Wallet";

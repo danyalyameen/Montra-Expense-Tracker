@@ -51,10 +51,8 @@ class _VerificationUI extends StatelessWidget {
   final double width, height;
   final GlobalKey formKey;
   const _VerificationUI(
-      {required this.width,
-      required this.height,
-      required this.formKey});
-  
+      {required this.width, required this.height, required this.formKey});
+
   final String title = "Enter your Verification Code";
   final String time = "04:59";
   final String descriptionStart = "We send verification code to your email ";
