@@ -1,42 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextFormField extends StatelessWidget {
   final double width;
   final double height;
   final TextEditingController controller;
   final String hintText;
   final Widget? suffixIcon;
-  final VoidCallback? onTap;
-  final TapRegionCallback? onTapOutside;
-  final VoidCallback? onCompleted;
-  final FocusNode? focusNode;
   final double? borderRadius;
-  const CustomTextField({
+  final String? Function(String? value) validator;
+  const CustomTextFormField({
     super.key,
     required this.controller,
     required this.width,
     required this.hintText,
     required this.height,
     this.suffixIcon,
-    this.onTap,
-    this.onTapOutside,
-    this.onCompleted,
     this.borderRadius,
-    this.focusNode,
+    required this.validator,
   });
   @override
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
         width: width * 0.9,
-        child: TextField(
+        child: TextFormField(
           controller: controller,
-          focusNode: focusNode,
-          onTap: onTap,
-          onTapOutside: onTapOutside,
-          onEditingComplete: onCompleted,
           cursorColor: AppColors.primaryBlack,
+          validator: (value) => validator(value),
           style: TextStyle(
             color: AppColors.primaryBlack,
             fontSize: width * 0.04,
@@ -51,6 +42,7 @@ class CustomTextField extends StatelessWidget {
             ),
             hintText: hintText,
             suffixIcon: suffixIcon,
+            errorStyle: TextStyle(fontSize: width * 0.035),
             hintStyle: TextStyle(
               color: AppColors.grey,
               fontSize: width * 0.045,
@@ -67,6 +59,20 @@ class CustomTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(borderRadius ?? width * 0.04),
               borderSide: BorderSide(
                 color: AppColors.light60,
+                width: width * 0.004,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius ?? width * 0.04),
+              borderSide: BorderSide(
+                color: AppColors.primaryRed,
+                width: width * 0.004,
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius ?? width * 0.04),
+              borderSide: BorderSide(
+                color: AppColors.primaryRed,
                 width: width * 0.004,
               ),
             ),

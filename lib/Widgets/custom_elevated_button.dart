@@ -4,17 +4,18 @@ import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 class CustomElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final double width, height;
-  final String text;
+  final String? text;
   final TextStyle? textStyle;
   final Color? backgroundColor;
+  final Widget? child;
   const CustomElevatedButton(
       {super.key,
       this.onPressed,
       required this.width,
       required this.height,
-      required this.text,
+      this.text,
       this.textStyle,
-      this.backgroundColor});
+      this.backgroundColor, this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,8 @@ class CustomElevatedButton extends StatelessWidget {
           ),
         ),
         onPressed: onPressed,
-        child: Text(
-          text,
+        child: child ?? Text(
+          "$text",
           style: textStyle ??
               TextStyle(
                 color: AppColors.primaryLight,

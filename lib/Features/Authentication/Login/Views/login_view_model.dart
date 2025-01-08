@@ -14,32 +14,32 @@ class LoginViewModel extends ViewModel {
 
   bool get isFocus => _isFocus;
 
-  onTap() {
+  void onTap() {
     _isFocus = true;
     notifyListeners();
   }
 
-  onTapOutside(BuildContext context) {
+  void onTapOutside(BuildContext context) {
     _isFocus = false;
     FocusScope.of(context).unfocus();
     notifyListeners();
   }
 
-  onComplete(BuildContext context) {
+  void onComplete(BuildContext context) {
     _isFocus = false;
     FocusScope.of(context).unfocus();
     notifyListeners();
   }
 
-  verificationNavigation() {
+  void verificationNavigation() {
     navigationService.replaceWithVerificationView();
   }
 
-  forgetPasswordNavigation() {
+  void forgetPasswordNavigation() {
     navigationService.navigateToForgetPasswordView();
   }
 
-  signUpNavigation() {
+  void signUpNavigation() {
     navigationService.replaceWithSignUpView();
   }
 }

@@ -6,15 +6,18 @@ class OnBoardingViewModel extends ViewModel {
 
   int get currentIndex => _currentIndex;
 
+  // * Update Index to change dot indicator color & size
   void updateCurrentIndex(int index) {
     _currentIndex = index;
     notifyListeners();
   }
 
+  // * Navigate to SignUp View
   void navigationSignUp() {
     navigationService.replaceWithSignUpView();
   }
 
+  // * Navigate to Login View
   void navigationLogin() {
     navigationService.replaceWithLoginView();
   }

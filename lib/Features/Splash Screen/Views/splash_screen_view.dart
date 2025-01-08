@@ -11,6 +11,7 @@ class SplashScreenView extends StackedView<SplashScreenViewModel> {
 
   @override
   void onViewModelReady(SplashScreenViewModel viewModel) async {
+    // * Navigate to Onboarding View
     await Future.delayed(const Duration(seconds: 3));
     viewModel.navigationService.replaceWithOnBoardingView();
     super.onViewModelReady(viewModel);
@@ -32,6 +33,7 @@ class SplashScreenView extends StackedView<SplashScreenViewModel> {
       SplashScreenViewModel();
 }
 
+// * Main Logo
 class _Logo extends StatelessWidget {
   final double width, height;
   final String appLogo;

@@ -18,6 +18,9 @@ dependencies:
   flutter_xlider: ^3.5.0
   fl_chart: ^0.69.2
   firebase_core: ^3.9.0
+  firebase_auth: ^5.4.0
+  cloud_firestore: ^5.6.1
+  flutter_spinkit: ^5.2.1
 
 # Dev Dependencies
 dev_dependencies:

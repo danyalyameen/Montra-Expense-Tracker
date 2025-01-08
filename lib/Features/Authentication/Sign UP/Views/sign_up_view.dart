@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Sign%20UP/Views/sign_up_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
-import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
+import 'package:montra_expense_tracker/Widgets/custom_text_form_field.dart';
 import 'package:stacked/stacked.dart';
 
 class SignUpView extends StackedView<SignUpViewModel> {
   const SignUpView({super.key});
 
   final String appBarTitle = "Sign Up";
-  final String otherSignUpItemsHintText = "Or with";
+  final String otherSignUpItemsTitle = "Or with";
 
   @override
   Widget builder(
@@ -27,23 +28,22 @@ class SignUpView extends StackedView<SignUpViewModel> {
         height: height,
         leading: const SizedBox(),
       ),
-      body: Column(
+      body: ListView(
         children: [
           _SignUpItems(
             width: width,
             height: height,
-            nameEditingController: viewModel.nameController,
-            emailEditingController: viewModel.emailController,
-            verificationNavigation: viewModel.verificationNavigation,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: height * 0.015),
-            child: Text(
-              otherSignUpItemsHintText,
-              style: TextStyle(
-                color: AppColors.grey,
-                fontSize: width * 0.04,
-                fontWeight: FontWeight.bold,
+            child: Center(
+              child: Text(
+                otherSignUpItemsTitle,
+                style: TextStyle(
+                  color: AppColors.grey,
+                  fontSize: width * 0.04,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
@@ -68,47 +68,77 @@ class SignUpView extends StackedView<SignUpViewModel> {
   bool get reactive => false;
 }
 
-class _SignUpItems extends StatelessWidget {
+class _SignUpItems extends ViewModelWidget<SignUpViewModel> {
   final double width, height;
-  final TextEditingController nameEditingController, emailEditingController;
-  final Function verificationNavigation;
   const _SignUpItems({
     required this.width,
     required this.height,
-    required this.nameEditingController,
-    required this.emailEditingController,
-    required this.verificationNavigation,
   });
 
   final String nameHintText = "Name";
   final String emailHintText = "Email";
+  final String passwordHintText = "Password";
   final String signUpButtonHintText = "Sign Up";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, SignUpViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.only(top: height * 0.06),
       child: Column(
         children: [
-          CustomTextField(
-            width: width,
-            height: height,
-            hintText: nameHintText,
-            controller: nameEditingController,
+          Form(
+            key: viewModel.formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              children: [
+                CustomTextFormField(
+                  width: width,
+                  height: height,
+                  hintText: nameHintText,
+                  controller: viewModel.nameController,
+                  validator: (value) {
+                    return viewModel.validateName(value);
+                  },
+                ),
+                SizedBox(
+                  height: height * 0.02,
+                ),
+                CustomTextFormField(
+                  width: width,
+                  height: height,
+                  hintText: emailHintText,
+                  controller: viewModel.emailController,
+                  validator: (value) {
+                    return viewModel.validateEmail(value);
+                  },
+                ),
+                SizedBox(
+                  height: height * 0.02,
+                ),
+                CustomTextFormField(
+                  width: width,
+                  height: height,
+                  hintText: passwordHintText,
+                  controller: viewModel.passwordController,
+                  validator: (value) {
+                    return viewModel.validatePassword(value);
+                  },
+                  suffixIcon: Container(
+                    width: width * 0.15,
+                    height: width * 0.15,
+                    padding: EdgeInsets.only(right: width * 0.05),
+                    child: SvgPicture.asset(
+                      IconsPath.show,
+                      colorFilter: ColorFilter.mode(
+                        AppColors.grey,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          SizedBox(
-            height: height * 0.02,
-          ),
-          CustomTextField(
-            width: width,
-            height: height,
-            hintText: emailHintText,
-            controller: emailEditingController,
-          ),
-          SizedBox(
-            height: height * 0.02,
-          ),
-          _PasswordTextField(width: width, height: height),
           SizedBox(
             height: height * 0.02,
           ),
@@ -119,44 +149,25 @@ class _SignUpItems extends StatelessWidget {
           CustomElevatedButton(
             width: width,
             height: height,
-            text: signUpButtonHintText,
-            onPressed: () => verificationNavigation(),
+            backgroundColor: viewModel.showLoading
+                ? AppColors.violet20
+                : AppColors.primaryViolet,
+            onPressed: () => viewModel.verificationNavigation(),
+            child: viewModel.showLoading
+                ? SpinKitThreeBounce(
+                    color: AppColors.primaryViolet,
+                    size: width * 0.06,
+                  )
+                : Text(
+                    signUpButtonHintText,
+                    style: TextStyle(
+                      color: AppColors.primaryLight,
+                      fontSize: width * 0.045,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class _PasswordTextField extends ViewModelWidget<SignUpViewModel> {
-  final double width, height;
-  const _PasswordTextField({required this.width, required this.height});
-
-  final String passwordHintText = "Password";
-
-  @override
-  Widget build(BuildContext context, SignUpViewModel viewModel) {
-    return CustomTextField(
-      width: width,
-      height: height,
-      hintText: passwordHintText,
-      controller: viewModel.passwordController,
-      onTap: () => viewModel.onTap(),
-      onTapOutside: (event) => viewModel.onTapOutside(context: context),
-      onCompleted: () => viewModel.onComplete(context: context),
-      suffixIcon: Container(
-        width: width * 0.15,
-        height: width * 0.15,
-        padding: EdgeInsets.only(right: width * 0.05),
-        child: SvgPicture.asset(
-          IconsPath.show,
-          colorFilter: ColorFilter.mode(
-            viewModel.isFocus
-                ? AppColors.primaryViolet
-                : AppColors.grey.withValues(alpha: 0.8),
-            BlendMode.srcIn,
-          ),
-        ),
       ),
     );
   }
@@ -186,7 +197,9 @@ class _PrivacePolicy extends ViewModelWidget<SignUpViewModel> {
               activeColor: AppColors.primaryViolet,
               checkColor: AppColors.primaryLight,
               side: BorderSide(
-                color: AppColors.primaryViolet,
+                color: viewModel.isError
+                    ? AppColors.primaryRed
+                    : AppColors.primaryViolet,
                 width: width * 0.004,
               ),
               shape: RoundedRectangleBorder(

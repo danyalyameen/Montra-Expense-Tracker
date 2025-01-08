@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/App/app.locator.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
@@ -7,6 +8,8 @@ import 'package:stacked_services/stacked_services.dart';
 
 void main() async {
   await setupLocator();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

@@ -18,6 +18,7 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
     return Scaffold(
       body: Column(
         children: [
+          // * Main Onboarding Items
           _OnBardingItem(
             width: width,
             height: height,
@@ -26,10 +27,12 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
               viewModel.updateCurrentIndex(index);
             },
           ),
+          // * Dot Indicators
           _ShowIndicators(
             width: width,
             height: height,
           ),
+          // * Buttons For Navigation
           _AuthenticationButtons(
             width: width,
             height: height,
@@ -59,6 +62,7 @@ class _OnBardingItem extends StatelessWidget {
       required this.data,
       required this.updateCurrentIndex});
 
+  // * Declare Data Keys
   final String iconKey = "Icon";
   final String titleKey = "Title";
   final String descriptionKey = "Description";
