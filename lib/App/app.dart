@@ -1,5 +1,5 @@
 import 'package:montra_expense_tracker/Features/Authentication/All%20Setup/Views/all_setup_view.dart';
-import 'package:montra_expense_tracker/Features/Authentication/Forget%20Password/Attach%20Views/New%20Password/Views/reset_password_view.dart';
+import 'package:montra_expense_tracker/Features/Authentication/Email%20Verified/Views/email_verified_view.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Forget%20Password/Views/forget_password_view.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Login/Views/login_view.dart';
 import 'package:montra_expense_tracker/Features/Authentication/On%20Boarding/Views/onboarding_view.dart';
@@ -31,6 +31,7 @@ import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Detai
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Attach%20Views/Report/Views/report_view.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Views/financial_report_summary_view.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_view.dart';
+import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -41,9 +42,9 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: SignUpView),
     MaterialRoute(page: LoginView),
     MaterialRoute(page: VerificationView),
+    MaterialRoute(page: EmailVerifiedView),
     MaterialRoute(page: SetupPinView),
     MaterialRoute(page: ForgetPasswordView),
-    MaterialRoute(page: ResetPasswordView),
     MaterialRoute(page: SetupAccountView),
     MaterialRoute(page: SetupWalletView),
     MaterialRoute(page: AllSetupView),
@@ -70,6 +71,9 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: AboutView),
     MaterialRoute(page: HelpView),
   ],
-  dependencies: [LazySingleton(classType: NavigationService)],
+  dependencies: [
+    LazySingleton(classType: NavigationService),
+    LazySingleton(classType: Auth)
+  ],
 )
 class App {}

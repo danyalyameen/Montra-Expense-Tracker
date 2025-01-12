@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Splash%20Screen/Views/splash_screen_view_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class SplashScreenView extends StackedView<SplashScreenViewModel> {
@@ -13,7 +14,12 @@ class SplashScreenView extends StackedView<SplashScreenViewModel> {
   void onViewModelReady(SplashScreenViewModel viewModel) async {
     // * Navigate to Onboarding View
     await Future.delayed(const Duration(seconds: 3));
-    viewModel.navigationService.replaceWithOnBoardingView();
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.getBool("Logged-In") == true) {
+      viewModel.navigationService.replaceWithSetupPinView();
+    } else {
+      viewModel.navigationService.replaceWithOnBoardingView();
+    }
     super.onViewModelReady(viewModel);
   }
 

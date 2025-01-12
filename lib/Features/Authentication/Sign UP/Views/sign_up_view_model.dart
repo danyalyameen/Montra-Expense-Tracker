@@ -1,9 +1,7 @@
-import 'dart:math';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 
 class SignUpViewModel extends ViewModel {
   // * Final Fields
@@ -12,7 +10,6 @@ class SignUpViewModel extends ViewModel {
   final TextEditingController _emailEditingController = TextEditingController();
   final TextEditingController _passwordEditingController =
       TextEditingController();
-  final FocusNode _passwordFocusNode = FocusNode();
   final emailValid = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
@@ -20,23 +17,23 @@ class SignUpViewModel extends ViewModel {
   TextEditingController get nameController => _nameEditingController;
   TextEditingController get emailController => _emailEditingController;
   TextEditingController get passwordController => _passwordEditingController;
-  FocusNode get passwordFocusNode => _passwordFocusNode;
 
   // * Non Final Fields
   bool _isCheck = false;
   bool _isError = false;
+  String _error = "";
   bool _showLoading = false;
+  bool _hidePassword = true;
   // * Get Non Final Fields
   bool get isCheck => _isCheck;
   bool get isError => _isError;
+  String get firebaseError => _error;
   bool get showLoading => _showLoading;
+  bool get hidePassword => _hidePassword;
 
-  void changeFocus() {
-    _passwordFocusNode.addListener(
-      () {
-        notifyListeners();
-      },
-    );
+  void showOrHidePassword() {
+    _hidePassword = !_hidePassword;
+    notifyListeners();
   }
 
   String? validateName(String? value) {
@@ -50,6 +47,9 @@ class SignUpViewModel extends ViewModel {
     if (value!.isNotEmpty) {
       if (!emailValid.hasMatch(value)) {
         return "Please Enter valid Email";
+      } else if (firebaseError == "email-already-in-use") {
+        _error = "";
+        return "Email Already used";
       }
       return null;
     } else {
@@ -73,29 +73,23 @@ class SignUpViewModel extends ViewModel {
     notifyListeners();
   }
 
-  void loginNavigation() {
-    navigationService.replaceWithLoginView();
-  }
-
   void verificationNavigation() async {
     if (formKey.currentState!.validate() && isCheck) {
-      _showLoading = true;
-      notifyListeners();
-      final userCredential = await authService.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      Variables.uid = userCredential.user!.uid;
-      await database.collection('users').doc(userCredential.user!.uid).set({
-        'name': nameController.text,
-      }).onError(
-        (error, stackTrace) {
-          print("error: $error");
-        },
-      );
-      log(Variables.uid);
-      _showLoading = false;
-      navigationService.replaceWithVerificationView();
+      try {
+        _showLoading = true;
+        notifyListeners();
+        final userCredentials = await auth.signUp(
+            email: emailController.text, password: passwordController.text);
+        await auth.addUserDetails(
+            id: userCredentials.user!.uid, name: nameController.text);
+        _showLoading = false;
+        notifyListeners();
+        navigationService.navigateToVerificationView();
+      } on FirebaseAuthException catch (e) {
+        _error = e.code;
+        _showLoading = false;
+        notifyListeners();
+      }
     } else if (isCheck) {
       _isError = false;
       notifyListeners();
@@ -103,5 +97,9 @@ class SignUpViewModel extends ViewModel {
       _isError = true;
       notifyListeners();
     }
+  }
+
+  void loginNavigation() {
+    navigationService.replaceWithLoginView();
   }
 }

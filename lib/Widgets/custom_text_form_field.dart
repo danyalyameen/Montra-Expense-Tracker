@@ -8,6 +8,7 @@ class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final Widget? suffixIcon;
   final double? borderRadius;
+  final bool? obscureText;
   final String? Function(String? value) validator;
   const CustomTextFormField({
     super.key,
@@ -18,6 +19,7 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.borderRadius,
     required this.validator,
+    this.obscureText,
   });
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,8 @@ class CustomTextFormField extends StatelessWidget {
         child: TextFormField(
           controller: controller,
           cursorColor: AppColors.primaryBlack,
+          obscureText: obscureText ?? false,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (value) => validator(value),
           style: TextStyle(
             color: AppColors.primaryBlack,

@@ -52,7 +52,7 @@ class SetupAccountView extends StackedView<SetupAccountViewModel> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: height * 0.58),
+              padding: EdgeInsets.only(top: height * 0.55),
               child: CustomElevatedButton(
                 width: width,
                 height: height,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Forget%20Password/Views/forget_password_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
-import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
+import 'package:montra_expense_tracker/Widgets/custom_text_form_field.dart';
 import 'package:stacked/stacked.dart';
 
 class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
@@ -25,7 +26,6 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
         title: appBarTitle,
         width: width,
         height: height,
-        onTap: () => viewModel.back(),
       ),
       body: Column(
         children: [
@@ -47,11 +47,17 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
           SizedBox(
             height: height * 0.04,
           ),
-          CustomTextField(
-            controller: viewModel.emailController,
-            width: width,
-            hintText: textFieldHintText,
-            height: height,
+          Form(
+            key: viewModel.formKey,
+            child: CustomTextFormField(
+              width: width,
+              height: height,
+              hintText: textFieldHintText,
+              controller: viewModel.emailController,
+              validator: (value) {
+                return viewModel.validateEmail(value);
+              },
+            ),
           ),
           SizedBox(
             height: height * 0.04,
@@ -59,9 +65,24 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
           CustomElevatedButton(
             width: width,
             height: height,
-            text: buttonHintText,
-            onPressed: () => viewModel.resetPasswordNavigation(),
-          ),
+            backgroundColor: viewModel.showLoading
+                ? AppColors.violet20
+                : AppColors.primaryViolet,
+            onPressed: () => viewModel.sendResetPasswordLink(),
+            child: viewModel.showLoading
+                ? SpinKitThreeBounce(
+                    color: AppColors.primaryViolet,
+                    size: width * 0.06,
+                  )
+                : Text(
+                    buttonHintText,
+                    style: TextStyle(
+                      color: AppColors.primaryLight,
+                      fontSize: width * 0.045,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+          )
         ],
       ),
     );

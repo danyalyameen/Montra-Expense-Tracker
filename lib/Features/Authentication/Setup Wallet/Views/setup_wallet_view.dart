@@ -10,12 +10,11 @@ import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class SetupWalletView extends StackedView<SetupWalletViewModel> {
-  SetupWalletView({super.key});
+  const SetupWalletView({super.key});
 
-  String appBarTitle = "Add new Account";
-  String continueButtonText = "Continue";
+  final String appBarTitle = "Add new Account";
+  final String continueButtonText = "Continue";
 
   @override
   Widget builder(

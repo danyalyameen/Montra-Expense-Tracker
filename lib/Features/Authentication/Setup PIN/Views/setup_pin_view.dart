@@ -3,12 +3,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Setup%20PIN/Views/setup_pin_view_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class SetupPinView extends StackedView<SetupPinViewModel> {
   const SetupPinView({super.key});
 
-  final String title = "Let's setup your PIN";
+  @override
+  void onViewModelReady(SetupPinViewModel viewModel) async {
+    super.onViewModelReady(viewModel);
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.getBool("Setup-Pin") == true) {
+      viewModel.title = "Enter Pin";
+      viewModel.notifyListeners();
+    }
+  }
 
   @override
   Widget builder(
@@ -23,7 +32,7 @@ class SetupPinView extends StackedView<SetupPinViewModel> {
           children: [
             Center(
               child: Text(
-                title,
+                viewModel.title,
                 style: TextStyle(
                   color: AppColors.primaryLight,
                   fontSize: width * 0.045,
@@ -32,7 +41,7 @@ class SetupPinView extends StackedView<SetupPinViewModel> {
               ),
             ),
             SizedBox(
-              height: height * 0.12,
+              height: height * 0.08,
             ),
             _InputPin(
               width: width,
@@ -45,7 +54,7 @@ class SetupPinView extends StackedView<SetupPinViewModel> {
                 height: height,
                 addPin: (value) => viewModel.addPin(value),
                 removePin: viewModel.removePin,
-                setupAccountNavigation: viewModel.setupAccountNavigation,
+                setupPin: viewModel.storePin,
               ),
             )
           ],
@@ -57,9 +66,6 @@ class SetupPinView extends StackedView<SetupPinViewModel> {
   @override
   SetupPinViewModel viewModelBuilder(BuildContext context) =>
       SetupPinViewModel();
-
-  @override
-  bool get reactive => false;
 }
 
 class _InputPin extends ViewModelWidget<SetupPinViewModel> {
@@ -107,13 +113,13 @@ class _InputPin extends ViewModelWidget<SetupPinViewModel> {
 class _InputDigits extends StatelessWidget {
   final double width, height;
   final Function(String value) addPin;
-  final Function removePin, setupAccountNavigation;
+  final Function removePin, setupPin;
   const _InputDigits(
       {required this.width,
       required this.height,
       required this.addPin,
       required this.removePin,
-      required this.setupAccountNavigation});
+      required this.setupPin});
 
   @override
   Widget build(BuildContext context) {
@@ -159,60 +165,71 @@ class _InputDigits extends StatelessWidget {
         SizedBox(
           height: height * 0.03,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            InkWell(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onTap: () => removePin(),
-              child: Transform.rotate(
-                angle: 3.14,
-                child: SvgPicture.asset(
-                  IconsPath.deleteCharacter,
-                  width: width * 0.12,
-                  height: width * 0.12,
-                  colorFilter:
-                      ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: width * 0.19,
-            ),
-            Center(
-              child: InkWell(
-                onTap: () {
-                  addPin("0");
-                },
-                child: Text(
-                  "0",
-                  style: TextStyle(
-                    color: AppColors.primaryLight,
-                    fontWeight: FontWeight.w600,
-                    fontSize: width * 0.14,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: width * 0.06),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                width: width * 0.12,
+                height: width * 0.12,
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () => removePin(),
+                  child: Transform.rotate(
+                    angle: 3.14,
+                    child: SvgPicture.asset(
+                      IconsPath.deleteCharacter,
+                      width: width * 0.12,
+                      height: width * 0.12,
+                      colorFilter: ColorFilter.mode(
+                          AppColors.primaryLight, BlendMode.srcIn),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              width: width * 0.17,
-            ),
-            Transform.rotate(
-              angle: 3.14,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(width),
-                onTap: () => setupAccountNavigation(),
-                child: SvgPicture.asset(
-                  IconsPath.backArrow,
-                  width: width * 0.14,
-                  height: width * 0.14,
-                  colorFilter:
-                      ColorFilter.mode(AppColors.primaryLight, BlendMode.srcIn),
+              Container(
+                width: width * 0.2,
+                height: width * 0.2,
+                padding: EdgeInsets.symmetric(horizontal: (width * 0.2) / 3),
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () {
+                    addPin("0");
+                  },
+                  child: Text(
+                    "0",
+                    style: TextStyle(
+                      color: AppColors.primaryLight,
+                      fontWeight: FontWeight.w600,
+                      fontSize: width * 0.14,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(
+                width: width * 0.15,
+                height: width * 0.15,
+                child: Transform.rotate(
+                  angle: 3.14,
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () => setupPin(),
+                    child: SvgPicture.asset(
+                      IconsPath.backArrow,
+                      width: width * 0.14,
+                      height: width * 0.14,
+                      colorFilter: ColorFilter.mode(
+                          AppColors.primaryLight, BlendMode.srcIn),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         )
       ],
     );

@@ -44,6 +44,7 @@ class IconsPath {
   static String camera = "assets/Icons/Attachment/camera.svg";
   static String gallery = "assets/Icons/Attachment/gallery.svg";
   static String document = "assets/Icons/Attachment/document.svg";
+  static String verifyEmail = "assets/Icons/Illustrations/Verify Email.svg";
   static String currencyExchange =
       "assets/Icons/Bottom Navigation/currency-exchange.svg";
 }

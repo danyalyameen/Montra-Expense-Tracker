@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Login/Views/login_view_model.dart';
+import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
-import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
+import 'package:montra_expense_tracker/Widgets/custom_text_form_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class LoginView extends StackedView<LoginViewModel> {
   const LoginView({super.key});
@@ -32,7 +37,6 @@ class LoginView extends StackedView<LoginViewModel> {
           _LoginItems(
             width: width,
             height: height,
-            verificationNavigation: viewModel.verificationNavigation,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: height * 0.04),
@@ -51,6 +55,7 @@ class LoginView extends StackedView<LoginViewModel> {
           _OtherLoginItems(
             width: width,
             height: height,
+            navigationService: viewModel.navigationService,
           ),
           _SignUp(
             width: width,
@@ -68,11 +73,7 @@ class LoginView extends StackedView<LoginViewModel> {
 
 class _LoginItems extends ViewModelWidget<LoginViewModel> {
   final double width, height;
-  final Function verificationNavigation;
-  const _LoginItems(
-      {required this.verificationNavigation,
-      required this.width,
-      required this.height});
+  const _LoginItems({required this.width, required this.height});
 
   final String emailHintText = "Email";
   final String passwordHintText = "Password";
@@ -84,36 +85,58 @@ class _LoginItems extends ViewModelWidget<LoginViewModel> {
       padding: EdgeInsets.only(top: height * 0.06),
       child: Column(
         children: [
-          CustomTextField(
-            controller: viewModel.emailController,
-            width: width,
-            hintText: emailHintText,
-            height: height,
-          ),
-          SizedBox(
-            height: height * 0.02,
-          ),
-          CustomTextField(
-            controller: viewModel.passwordController,
-            width: width,
-            hintText: passwordHintText,
-            height: height,
-            onTap: () => viewModel.onTap(),
-            onTapOutside: (event) => viewModel.onTapOutside(context),
-            onCompleted: () => viewModel.onComplete(context),
-            suffixIcon: Container(
-              width: width * 0.15,
-              height: width * 0.15,
-              padding: EdgeInsets.only(right: width * 0.05),
-              child: SvgPicture.asset(
-                IconsPath.show,
-                colorFilter: ColorFilter.mode(
-                  viewModel.isFocus
-                      ? AppColors.primaryViolet
-                      : AppColors.grey.withValues(alpha: 0.8),
-                  BlendMode.srcIn,
+          Form(
+            key: viewModel.formKey,
+            child: Column(
+              children: [
+                CustomTextFormField(
+                  width: width,
+                  height: height,
+                  hintText: emailHintText,
+                  controller: viewModel.emailController,
+                  validator: (value) {
+                    return viewModel.validateEmail(value);
+                  },
                 ),
-              ),
+                SizedBox(
+                  height: height * 0.02,
+                ),
+                CustomTextFormField(
+                  width: width,
+                  height: height,
+                  hintText: passwordHintText,
+                  controller: viewModel.passwordController,
+                  obscureText: viewModel.hidePassword,
+                  validator: (value) {
+                    return viewModel.validatePassword(value);
+                  },
+                  suffixIcon: Container(
+                    width: width * 0.15,
+                    height: width * 0.15,
+                    padding: EdgeInsets.only(
+                        right: width * 0.05,
+                        top: height * 0.01,
+                        bottom: height * 0.01),
+                    child: Center(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(width),
+                        onTap: () => viewModel.showOrHidePassword(),
+                        child: SvgPicture.asset(
+                          IconsPath.show,
+                          width: width * 0.15,
+                          height: width * 0.15,
+                          colorFilter: ColorFilter.mode(
+                            viewModel.hidePassword
+                                ? AppColors.grey
+                                : AppColors.primaryViolet,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(
@@ -122,8 +145,23 @@ class _LoginItems extends ViewModelWidget<LoginViewModel> {
           CustomElevatedButton(
             width: width,
             height: height,
-            text: loginHintText,
-            onPressed: () => verificationNavigation(),
+            backgroundColor: viewModel.showLoading
+                ? AppColors.violet20
+                : AppColors.primaryViolet,
+            onPressed: () => viewModel.verificationNavigation(),
+            child: viewModel.showLoading
+                ? SpinKitThreeBounce(
+                    color: AppColors.primaryViolet,
+                    size: width * 0.06,
+                  )
+                : Text(
+                    loginHintText,
+                    style: TextStyle(
+                      color: AppColors.primaryLight,
+                      fontSize: width * 0.045,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
           )
         ],
       ),
@@ -133,44 +171,62 @@ class _LoginItems extends ViewModelWidget<LoginViewModel> {
 
 class _OtherLoginItems extends StatelessWidget {
   final double width, height;
+  final NavigationService navigationService;
   const _OtherLoginItems({
     required this.width,
-    required this.height,
+    required this.height, required this.navigationService,
   });
   final String googleButtonText = "Login with Google";
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width * 0.9,
-      height: height * 0.07,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(width * 0.04),
-        border: Border.all(
-          color: AppColors.light60,
-          width: width * 0.004,
+    return Center(
+      child: Container(
+        width: width * 0.9,
+        height: height * 0.07,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(width * 0.04),
+          border: Border.all(
+            color: AppColors.light60,
+            width: width * 0.004,
+          ),
         ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            IconsPath.google,
-            width: width * 0.07,
-            height: width * 0.07,
+        child: InkWell(
+          onTap: () async {
+            try {
+              SharedPreferences sharedPreferences =
+                  await SharedPreferences.getInstance();
+              await Auth().googleAuth();
+              sharedPreferences.setBool("Logged-In", true);
+              navigationService.replaceWithSetupPinView();
+            } catch (e) {
+              // ignore: avoid_print
+              print(e.toString());
+            }
+          },
+          borderRadius: BorderRadius.circular(width * 0.04),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                IconsPath.google,
+                width: width * 0.07,
+                height: width * 0.07,
+              ),
+              SizedBox(
+                width: width * 0.04,
+              ),
+              Text(
+                googleButtonText,
+                style: TextStyle(
+                  color: AppColors.black75.withValues(alpha: 0.95),
+                  fontSize: width * 0.05,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
           ),
-          SizedBox(
-            width: width * 0.04,
-          ),
-          Text(
-            googleButtonText,
-            style: TextStyle(
-              color: AppColors.black75.withValues(alpha: 0.95),
-              fontSize: width * 0.05,
-              fontWeight: FontWeight.bold,
-            ),
-          )
-        ],
+        ),
       ),
     );
   }

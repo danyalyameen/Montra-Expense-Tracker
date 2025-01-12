@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Sign%20UP/Views/sign_up_view_model.dart';
+import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_form_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class SignUpView extends StackedView<SignUpViewModel> {
   const SignUpView({super.key});
@@ -50,6 +54,7 @@ class SignUpView extends StackedView<SignUpViewModel> {
           _OtherSignUpItems(
             width: width,
             height: height,
+            navigationService: viewModel.navigationService,
           ),
           _Login(
             width: width,
@@ -88,7 +93,6 @@ class _SignUpItems extends ViewModelWidget<SignUpViewModel> {
         children: [
           Form(
             key: viewModel.formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               children: [
                 CustomTextFormField(
@@ -120,18 +124,32 @@ class _SignUpItems extends ViewModelWidget<SignUpViewModel> {
                   height: height,
                   hintText: passwordHintText,
                   controller: viewModel.passwordController,
+                  obscureText: viewModel.hidePassword,
                   validator: (value) {
                     return viewModel.validatePassword(value);
                   },
                   suffixIcon: Container(
                     width: width * 0.15,
                     height: width * 0.15,
-                    padding: EdgeInsets.only(right: width * 0.05),
-                    child: SvgPicture.asset(
-                      IconsPath.show,
-                      colorFilter: ColorFilter.mode(
-                        AppColors.grey,
-                        BlendMode.srcIn,
+                    padding: EdgeInsets.only(
+                        right: width * 0.05,
+                        top: height * 0.01,
+                        bottom: height * 0.01),
+                    child: Center(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(width),
+                        onTap: () => viewModel.showOrHidePassword(),
+                        child: SvgPicture.asset(
+                          IconsPath.show,
+                          width: width * 0.15,
+                          height: width * 0.15,
+                          colorFilter: ColorFilter.mode(
+                            viewModel.hidePassword
+                                ? AppColors.grey
+                                : AppColors.primaryViolet,
+                            BlendMode.srcIn,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -239,42 +257,63 @@ class _PrivacePolicy extends ViewModelWidget<SignUpViewModel> {
 
 class _OtherSignUpItems extends StatelessWidget {
   final double width, height;
-  const _OtherSignUpItems({required this.width, required this.height});
+  final NavigationService navigationService;
+  const _OtherSignUpItems(
+      {required this.width,
+      required this.height,
+      required this.navigationService});
 
   final String buttonText = "Sign Up with Google";
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width * 0.9,
-      height: height * 0.07,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(width * 0.04),
-        border: Border.all(
-          color: AppColors.light60,
-          width: width * 0.004,
+    return Center(
+      child: Container(
+        width: width * 0.9,
+        height: height * 0.07,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(width * 0.04),
+          border: Border.all(
+            color: AppColors.light60,
+            width: width * 0.004,
+          ),
         ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            IconsPath.google,
-            width: width * 0.07,
-            height: width * 0.07,
+        child: InkWell(
+          onTap: () async {
+            try {
+              SharedPreferences sharedPreferences =
+                  await SharedPreferences.getInstance();
+              await Auth().googleAuth();
+              sharedPreferences.setBool("Logged-In", true);
+              navigationService.replaceWithSetupPinView();
+            } catch (e) {
+              // ignore: avoid_print
+              print(e.toString());
+            }
+          },
+          borderRadius: BorderRadius.circular(width * 0.04),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                IconsPath.google,
+                width: width * 0.07,
+                height: width * 0.07,
+              ),
+              SizedBox(
+                width: width * 0.04,
+              ),
+              Text(
+                buttonText,
+                style: TextStyle(
+                  color: AppColors.black75.withValues(alpha: 0.95),
+                  fontSize: width * 0.05,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
           ),
-          SizedBox(
-            width: width * 0.04,
-          ),
-          Text(
-            buttonText,
-            style: TextStyle(
-              color: AppColors.black75.withValues(alpha: 0.95),
-              fontSize: width * 0.05,
-              fontWeight: FontWeight.bold,
-            ),
-          )
-        ],
+        ),
       ),
     );
   }

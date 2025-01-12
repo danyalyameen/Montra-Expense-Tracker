@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 PreferredSizeWidget? blackAppBar(
     {required String title,
@@ -28,7 +29,7 @@ PreferredSizeWidget? blackAppBar(
         Center(
           child: InkWell(
             borderRadius: BorderRadius.circular(width),
-            onTap: onTap,
+            onTap: onTap ?? () => NavigationService().back(),
             child: SvgPicture.asset(
               IconsPath.backArrow,
               colorFilter:

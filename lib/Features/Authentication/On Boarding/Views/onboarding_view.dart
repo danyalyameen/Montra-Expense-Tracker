@@ -157,7 +157,7 @@ class _ShowIndicators extends ViewModelWidget<OnBoardingViewModel> {
 
 class _AuthenticationButtons extends StatelessWidget {
   final double width, height;
-  final Function navigationLogin,navigationSignUp;
+  final Function navigationLogin, navigationSignUp;
   const _AuthenticationButtons({
     required this.width,
     required this.height,

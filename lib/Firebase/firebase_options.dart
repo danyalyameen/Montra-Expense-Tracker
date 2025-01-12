@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCzDXJybsOevtzvQS5IyG7ZR0vftmO-Frg',
-    appId: '1:381103540402:android:493acdf230428e27e3e1ab',
+    appId: '1:381103540402:android:bc330a590da03f94e3e1ab',
     messagingSenderId: '381103540402',
     projectId: 'montra-expense-tracker-a42d1',
     storageBucket: 'montra-expense-tracker-a42d1.firebasestorage.app',
@@ -63,6 +63,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '381103540402',
     projectId: 'montra-expense-tracker-a42d1',
     storageBucket: 'montra-expense-tracker-a42d1.firebasestorage.app',
+    androidClientId:
+        '381103540402-k9vadnoc51h2s9jrm4p6orbjrr1vr91t.apps.googleusercontent.com',
+    iosClientId:
+        '381103540402-37qk89l6iv9b7c8a1bhkfrp8l3ebjid8.apps.googleusercontent.com',
     iosBundleId: 'com.example.montraExpenseTracker',
   );
 }

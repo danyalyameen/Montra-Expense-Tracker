@@ -7,12 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:381103540402:android:493acdf230428e27e3e1ab",
+        "mobilesdk_app_id": "1:381103540402:android:bc330a590da03f94e3e1ab",
         "android_client_info": {
-          "package_name": "com.example.montra_expense_tracker"
+          "package_name": "com.example.montra"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "381103540402-1uc958l6b6htp6ij8a6vn2bl5da1k4ce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCzDXJybsOevtzvQS5IyG7ZR0vftmO-Frg"
@@ -20,7 +25,63 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "381103540402-1uc958l6b6htp6ij8a6vn2bl5da1k4ce.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "381103540402-37qk89l6iv9b7c8a1bhkfrp8l3ebjid8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.montraExpenseTracker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381103540402:android:493acdf230428e27e3e1ab",
+        "android_client_info": {
+          "package_name": "com.example.montra_expense_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "381103540402-k9vadnoc51h2s9jrm4p6orbjrr1vr91t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.montra_expense_tracker",
+            "certificate_hash": "3d7593edfac68fcac5818445a64fd803c312673f"
+          }
+        },
+        {
+          "client_id": "381103540402-1uc958l6b6htp6ij8a6vn2bl5da1k4ce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzDXJybsOevtzvQS5IyG7ZR0vftmO-Frg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "381103540402-1uc958l6b6htp6ij8a6vn2bl5da1k4ce.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "381103540402-37qk89l6iv9b7c8a1bhkfrp8l3ebjid8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.montraExpenseTracker"
+              }
+            }
+          ]
         }
       }
     }
