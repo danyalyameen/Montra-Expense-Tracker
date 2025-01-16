@@ -92,7 +92,8 @@ class VerificationView extends StackedView<VerificationViewModel> {
 class _VerificationUI extends StatelessWidget {
   final double width, height;
   final String email;
-  const _VerificationUI({required this.width, required this.height, required this.email});
+  const _VerificationUI(
+      {required this.width, required this.height, required this.email});
 
   final String title = "Check Your Inbox For Verify Email";
   final String descriptionStart = "We send verification link to your email ";

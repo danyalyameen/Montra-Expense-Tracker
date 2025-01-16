@@ -1,32 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
-import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Transfer/Views/transfer_view_model.dart';
+import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_bottom_sheet.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
-import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
+import 'package:montra_expense_tracker/Widgets/custom_text_form_field.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class TransferView extends StackedView<TransferViewModel> {
-  TransferView({super.key});
+  const TransferView({super.key});
 
-  String continueButtonText = "Continue";
-  String appBarTitle = "Transfer";
-  String descriptionTextFieldHintText = "Description";
-  String addWalletButtonText = "Add Wallet";
-  String walletDropDownHintText = "Wallet";
-  String walletOptionsBankNameKey = "Wallet";
-  String walletOptionsAccountBalanceKey = "Balance";
-  String walletOptionsAccountTypeKey = "Account Type";
-  String walletOptionsBankPictureKey = "Picture";
-  String fromTextFieldHintText = "From";
-  String toTextFieldHintText = "To";
+  final String continueButtonText = "Continue";
+  final String appBarTitle = "Transfer";
+  final String descriptionTextFieldHintText = "Description";
 
   @override
   Widget builder(
@@ -37,14 +28,20 @@ class TransferView extends StackedView<TransferViewModel> {
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.primaryBlue,
       appBar: whiteAppBar(
-          title: appBarTitle,
-          width: width,
-          height: height,
-          backgroundColor: AppColors.primaryBlue),
+        title: appBarTitle,
+        width: width,
+        height: height,
+        backgroundColor: AppColors.primaryBlue,
+        onTap: () => viewModel.navigationService.back(),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Balance(),
+          _Balance(
+            width: width,
+            height: height,
+            balanceController: viewModel.balanceController,
+          ),
           Expanded(
             child: Container(
               width: double.infinity,
@@ -58,48 +55,25 @@ class TransferView extends StackedView<TransferViewModel> {
               ),
               child: Column(
                 children: [
-                  TransferTextField(
-                    fromController: viewModel.fromController,
-                    toController: viewModel.toController,
-                    fromTextFieldHintText: fromTextFieldHintText,
-                    toTextFieldHintText: toTextFieldHintText,
+                  _TransferTextField(
                     height: height,
                     width: width,
                   ),
-                  CustomTextField(
-                    controller: viewModel.descriptionController,
-                    width: width,
-                    hintText: descriptionTextFieldHintText,
-                    height: height,
+                  Form(
+                    key: viewModel.descriptionFormKey,
+                    child: CustomTextFormField(
+                      width: width,
+                      height: height,
+                      controller: viewModel.descriptionController,
+                      hintText: descriptionTextFieldHintText,
+                      validator: (value) =>
+                          viewModel.validateDescription(value),
+                    ),
                   ),
                   SizedBox(
                     height: height * 0.02,
                   ),
-                  CustomBottomSheet(
-                    buttonsBottomHight: 0,
-                    buttonText: addWalletButtonText,
-                    buttonWidth: width * 0.3,
-                    bottomSheetHight: height * 0.38,
-                    hintText: walletDropDownHintText,
-                    showSelectedItemOnHintText: ShowSelectedWallet(
-                      accountName: viewModel
-                          .storeSelectedWallet[Variables.universalItemKey],
-                      width: width,
-                    ),
-                    storeSelectedItem: viewModel.storeSelectedWallet,
-                    showItems: ShowItemsForWallet(
-                      accountBalanceKey: walletOptionsAccountBalanceKey,
-                      accountTypeKey: walletOptionsAccountTypeKey,
-                      bankNamekey: walletOptionsBankNameKey,
-                      walletPictureKey: walletOptionsBankPictureKey,
-                      updateHintText: (index) {
-                        viewModel.updateWalletHintText(index: index);
-                      },
-                      width: width,
-                      height: height,
-                      walletOptions: Database.walletOptions,
-                    ),
-                  ),
+                  _Wallet(width: width, height: height),
                   SizedBox(
                     height: height * 0.04,
                   ),
@@ -108,7 +82,27 @@ class TransferView extends StackedView<TransferViewModel> {
                     height: height * 0.04,
                   ),
                   CustomElevatedButton(
-                      width: width, height: height, text: continueButtonText)
+                    width: width,
+                    height: height,
+                    backgroundColor: viewModel.showLoading
+                        ? AppColors.violet20
+                        : AppColors.primaryViolet,
+                    onPressed: () =>
+                        viewModel.addTransferTransactionCompleted(),
+                    child: viewModel.showLoading
+                        ? SpinKitThreeBounce(
+                            color: AppColors.primaryViolet,
+                            size: width * 0.06,
+                          )
+                        : Text(
+                            continueButtonText,
+                            style: TextStyle(
+                              color: AppColors.primaryLight,
+                              fontSize: width * 0.045,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                  )
                 ],
               ),
             ),
@@ -123,16 +117,18 @@ class TransferView extends StackedView<TransferViewModel> {
       TransferViewModel();
 }
 
-// ignore: must_be_immutable
-class Balance extends StatelessWidget {
-  Balance({super.key});
+class _Balance extends StatelessWidget {
+  final double width, height;
+  final TextEditingController balanceController;
+  const _Balance(
+      {required this.width,
+      required this.height,
+      required this.balanceController});
 
-  String inputHintText = "How much?";
+  final String inputHintText = "How much?";
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     return Padding(
       padding: EdgeInsets.only(top: height * 0.15, left: width * 0.05),
       child: Column(
@@ -141,9 +137,10 @@ class Balance extends StatelessWidget {
           Text(
             inputHintText,
             style: TextStyle(
-                fontSize: width * 0.05,
-                fontWeight: FontWeight.w600,
-                color: AppColors.light80.withValues(alpha: 0.6)),
+              fontSize: width * 0.05,
+              fontWeight: FontWeight.w600,
+              color: AppColors.light80.withValues(alpha: 0.6),
+            ),
           ),
           Row(
             children: [
@@ -157,7 +154,8 @@ class Balance extends StatelessWidget {
               Expanded(
                 child: TextField(
                   showCursor: false,
-                  keyboardType: const TextInputType.numberWithOptions(),
+                  controller: balanceController,
+                  keyboardType: TextInputType.number,
                   style: TextStyle(
                     fontSize: width * 0.16,
                     fontWeight: FontWeight.w600,
@@ -167,7 +165,7 @@ class Balance extends StatelessWidget {
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
-                    hintText: "${Variables.balance.ceil()}",
+                    hintText: "0",
                     hintStyle: TextStyle(
                       fontSize: width * 0.16,
                       fontWeight: FontWeight.w600,
@@ -184,65 +182,65 @@ class Balance extends StatelessWidget {
   }
 }
 
-class TransferTextField extends StatelessWidget {
+class _TransferTextField extends ViewModelWidget<TransferViewModel> {
   final double width, height;
-  final TextEditingController fromController, toController;
-  final String toTextFieldHintText, fromTextFieldHintText;
-  const TransferTextField(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.fromController,
-      required this.toController,
-      required this.toTextFieldHintText,
-      required this.fromTextFieldHintText});
+  const _TransferTextField({
+    required this.width,
+    required this.height,
+  });
+
+  final String fromText = "From";
+  final String toText = "To";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, TransferViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.only(top: height * 0.05),
       child: Stack(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
+          Form(
+            key: viewModel.transferFormKey,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
                   width: width * 0.42,
                   height: height * 0.1,
-                  child: CustomTextField(
-                      controller: fromController,
-                      width: width,
-                      hintText: fromTextFieldHintText,
-                      height: height)),
-              SizedBox(
-                width: width * 0.05,
-              ),
-              SizedBox(
+                  child: CustomTextFormField(
+                    width: width,
+                    height: height,
+                    hintText: fromText,
+                    controller: viewModel.fromController,
+                    validator: (value) => viewModel.validateFrom(value),
+                  ),
+                ),
+                SizedBox(
+                  width: width * 0.05,
+                ),
+                SizedBox(
                   width: width * 0.42,
                   height: height * 0.1,
-                  child: CustomTextField(
-                      controller: toController,
-                      width: width,
-                      hintText: toTextFieldHintText,
-                      height: height)),
-            ],
+                  child: CustomTextFormField(
+                    width: width,
+                    height: height,
+                    hintText: toText,
+                    controller: viewModel.toController,
+                    validator: (value) => viewModel.validateTo(value),
+                  ),
+                ),
+              ],
+            ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: height * 0.01),
+            padding: EdgeInsets.only(top: height * 0.025),
             child: Center(
               child: Container(
                 decoration: BoxDecoration(
-                    color: AppColors.light80,
-                    border: Border.all(
-                        color: AppColors.light60, width: width * 0.02),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primaryBlack,
-                        blurRadius: width * 0.001,
-                        blurStyle: BlurStyle.outer,
-                      )
-                    ]),
+                  color: AppColors.light80,
+                  border:
+                      Border.all(color: AppColors.light60, width: width * 0.02),
+                  shape: BoxShape.circle,
+                ),
                 child: SvgPicture.asset(
                   IconsPath.transaction,
                   width: width * 0.03,
@@ -257,11 +255,57 @@ class TransferTextField extends StatelessWidget {
   }
 }
 
-class ShowSelectedWallet extends StatelessWidget {
+class _Wallet extends ViewModelWidget<TransferViewModel> {
+  final double width, height;
+  const _Wallet({required this.width, required this.height});
+
+  final String addWalletButtonText = "Add Wallet";
+  final String walletDropDownHintText = "Wallet";
+
+  @override
+  Widget build(BuildContext context, TransferViewModel viewModel) {
+    return CustomBottomSheet(
+      buttonsBottomHight: 0,
+      buttonWidth: width * 0.3,
+      bottomSheetHight: height * 0.42,
+      buttonText: addWalletButtonText,
+      hintText: walletDropDownHintText,
+      storeSelectedItem: viewModel.storeSelectedWallet,
+      onPressed: () => viewModel.addTransferTransactionCompleted(),
+      showSelectedItemOnHintText: _ShowSelectedWallet(
+        accountName: viewModel.storeSelectedWallet["option"],
+        width: width,
+      ),
+      showItems: SizedBox(
+        height: height * 0.3,
+        child: Column(
+          children: [
+            _ShowItemsForWallet(
+              width: width,
+              height: height,
+              data: viewModel.fetchingWalletOptions(),
+              updateIndex: (value) => viewModel.onPageChanged(value),
+              updateHintText: (index) {
+                viewModel.updateWalletHintText(index: index);
+              },
+            ),
+            _Indicators(
+              itemIndex: viewModel.itemIndex,
+              width: width,
+              height: height,
+              viewModel.fetchingWalletOptions(),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ShowSelectedWallet extends StatelessWidget {
   final String accountName;
   final double width;
-  const ShowSelectedWallet({
-    super.key,
+  const _ShowSelectedWallet({
     required this.accountName,
     required this.width,
   });
@@ -279,90 +323,78 @@ class ShowSelectedWallet extends StatelessWidget {
   }
 }
 
-class ShowItemsForWallet extends StatefulWidget {
+class _ShowItemsForWallet extends StatelessWidget {
   final double width, height;
-  final List<Map<String, dynamic>> walletOptions;
+  final Future<PersonData> data;
   final Function(int index) updateHintText;
-  final String bankNamekey;
-  final String accountBalanceKey;
-  final String walletPictureKey;
-  final String accountTypeKey;
-  const ShowItemsForWallet(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.walletOptions,
-      required this.updateHintText,
-      required this.bankNamekey,
-      required this.accountBalanceKey,
-      required this.walletPictureKey,
-      required this.accountTypeKey});
+  final Function(int value) updateIndex;
+  const _ShowItemsForWallet({
+    required this.width,
+    required this.height,
+    required this.updateHintText,
+    required this.updateIndex,
+    required this.data,
+  });
 
-  @override
-  State<ShowItemsForWallet> createState() => _ShowItemsForWalletState();
-}
-
-class _ShowItemsForWalletState extends State<ShowItemsForWallet> {
-  int itemIndex = 0;
-  String bankBalanceText = "Balance";
+  final String bankBalanceText = "Balance";
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: widget.height * 0.3,
-      child: Column(
-        children: [
-          Expanded(
-            flex: 3,
-            child: PageView.builder(
+    return Expanded(
+      flex: 3,
+      child: FutureBuilder<PersonData>(
+          future: data,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return PageView.builder(
               onPageChanged: (value) {
-                setState(() {
-                  itemIndex = value;
-                });
+                updateIndex(value);
               },
-              itemCount: widget.walletOptions.length,
+              itemCount: snapshot.data!.wallets!.length,
               itemBuilder: (context, index) {
+                final data = snapshot.data!.wallets![index];
                 return Center(
                   child: InkWell(
                     onTap: () {
-                      widget.updateHintText(index);
+                      updateHintText(index);
                     },
                     child: SizedBox(
-                      height: widget.height * 0.2,
-                      width: widget.width * 0.7,
+                      height: height * 0.2,
+                      width: width * 0.7,
                       child: Card(
-                        elevation: widget.width * 0.02,
+                        elevation: width * 0.02,
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(widget.width * 0.05),
+                          borderRadius: BorderRadius.circular(width * 0.05),
                           side: BorderSide(
                             color: AppColors.light20,
-                            width: widget.width * 0.0015,
+                            width: width * 0.0015,
                           ),
                         ),
                         child: Column(
                           children: [
                             Padding(
-                              padding:
-                                  EdgeInsets.only(top: widget.height * 0.01),
+                              padding: EdgeInsets.only(top: height * 0.01),
                               child: Text(
-                                widget.walletOptions[index][widget.bankNamekey],
+                                data.walletName!,
                                 style: TextStyle(
                                   color: AppColors.primaryBlack,
-                                  fontSize: widget.width * 0.06,
+                                  fontSize: width * 0.06,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
                             SizedBox(
-                              height: widget.height * 0.04,
+                              height: height * 0.04,
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(
-                                      left: widget.width * 0.07),
+                                  padding: EdgeInsets.only(left: width * 0.07),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -371,19 +403,19 @@ class _ShowItemsForWalletState extends State<ShowItemsForWallet> {
                                         bankBalanceText,
                                         style: TextStyle(
                                           color: Colors.grey,
-                                          fontSize: widget.width * 0.04,
+                                          fontSize: width * 0.04,
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            right: widget.width * 0.07),
+                                            right: width * 0.07),
                                         child: Text(
-                                          "${widget.walletOptions[index][widget.accountBalanceKey]}",
+                                          "${data.balance}",
                                           style: TextStyle(
                                             color: AppColors.black50,
                                             fontWeight: FontWeight.w400,
-                                            fontSize: widget.width * 0.04,
+                                            fontSize: width * 0.04,
                                           ),
                                         ),
                                       ),
@@ -391,32 +423,29 @@ class _ShowItemsForWalletState extends State<ShowItemsForWallet> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: widget.height * 0.025,
+                                  height: height * 0.025,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(
-                                      left: widget.width * 0.07),
+                                  padding: EdgeInsets.only(left: width * 0.07),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        widget.walletOptions[index]
-                                            [widget.accountTypeKey],
+                                        data.accountType!,
                                         style: TextStyle(
                                           color: Colors.grey,
-                                          fontSize: widget.width * 0.04,
+                                          fontSize: width * 0.04,
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            right: widget.width * 0.06),
+                                            right: width * 0.06),
                                         child: SvgPicture.asset(
-                                          widget.walletOptions[index]
-                                              [widget.walletPictureKey],
-                                          width: widget.width * 0.025,
-                                          height: widget.height * 0.025,
+                                          IconsPath.easypaisa,
+                                          width: width * 0.025,
+                                          height: height * 0.025,
                                         ),
                                       ),
                                     ],
@@ -431,32 +460,64 @@ class _ShowItemsForWalletState extends State<ShowItemsForWallet> {
                   ),
                 );
               },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-                top: widget.height * 0.01, bottom: widget.height * 0.01),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                widget.walletOptions.length,
-                (index) => Padding(
-                  padding: EdgeInsets.all(index == itemIndex
-                      ? widget.width * 0.01
-                      : widget.width * 0.008),
-                  child: CircleAvatar(
-                    backgroundColor: index == itemIndex
-                        ? AppColors.primaryViolet
-                        : AppColors.violet20,
-                    minRadius: index == itemIndex
-                        ? widget.width * 0.015
-                        : widget.width * 0.01,
+            );
+          }),
+    );
+  }
+}
+
+class _Indicators extends StatefulWidget {
+  final double width, height;
+  final Future<PersonData> data;
+  final ValueNotifier itemIndex;
+  const _Indicators(this.data,
+      {required this.itemIndex, required this.width, required this.height});
+
+  @override
+  State<_Indicators> createState() => _IndicatorsState();
+}
+
+class _IndicatorsState extends State<_Indicators> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: widget.height * 0.04,
+      child: FutureBuilder<PersonData>(
+        future: widget.data,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ValueListenableBuilder(
+              valueListenable: widget.itemIndex,
+              builder: (context, _, child) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                      top: widget.height * 0.01, bottom: widget.height * 0.01),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      snapshot.data!.wallets!.length,
+                      (index) => Padding(
+                        padding: EdgeInsets.all(index == widget.itemIndex.value
+                            ? widget.width * 0.01
+                            : widget.width * 0.008),
+                        child: CircleAvatar(
+                          backgroundColor: index == widget.itemIndex.value
+                              ? AppColors.primaryViolet
+                              : AppColors.violet20,
+                          minRadius: index == widget.itemIndex.value
+                              ? widget.width * 0.015
+                              : widget.width * 0.01,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ),
-        ],
+                );
+              });
+        },
       ),
     );
   }

@@ -1,181 +1,111 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
-import 'package:montra_expense_tracker/Constants/Variables/database.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
+import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view_model.dart';
+import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_bottom_sheet.dart';
-import 'package:montra_expense_tracker/Widgets/custom_drop_down.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
-import 'package:montra_expense_tracker/Widgets/custom_text_field.dart';
-import 'package:montra_expense_tracker/Widgets/switch_tile.dart';
+import 'package:montra_expense_tracker/Widgets/custom_text_form_field.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class ExpenseView extends StackedView<ExpenseViewModel> {
-  ExpenseView({super.key});
+  const ExpenseView({super.key});
 
-  String continueButtonText = "Continue";
-  String appBarTitle = "Expense";
-  String createCategoryButtonText = "Create Category";
-  String categoryDropDownHintText = "Category";
-  String descriptionTextFieldHintText = "Description";
-  String addWalletButtonText = "Add Wallet";
-  String walletDropDownHintText = "Wallet";
-  String categoryOptionsCategoryKey = "Category";
-  String categoryOptionsColorKey = "Colors";
-  String walletOptionsBankNameKey = "Wallet";
-  String walletOptionsAccountBalanceKey = "Balance";
-  String walletOptionsAccountTypeKey = "Account Type";
-  String walletOptionsBankPictureKey = "Picture";
-  String switchTitleText = "Repeat";
-  String switchSubTitleText = "Repeat transaction";
-  String hintTextForFrequency = "Frequency";
-  String hintTextForMonth = "Month";
-  String hintTextForDate = "Date";
+  final String appBarTitle = "Expense";
+  final String continueButtonText = "Continue";
+  final String descriptionText = "Description";
 
   @override
   Widget builder(
       BuildContext context, ExpenseViewModel viewModel, Widget? child) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: AppColors.primaryRed,
+      appBar: whiteAppBar(
+        title: appBarTitle,
+        width: width,
+        height: height,
         backgroundColor: AppColors.primaryRed,
-        appBar: whiteAppBar(
-          title: appBarTitle,
-          width: width,
-          height: height,
-          backgroundColor: AppColors.primaryRed,
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Balance(),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                height: height * 0.6,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryLight,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(width * 0.1),
-                    topRight: Radius.circular(width * 0.1),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: height * 0.05),
-                      child: CustomBottomSheet(
-                        buttonsBottomHight: height * 0.035,
-                        buttonText: createCategoryButtonText,
-                        buttonWidth: width * 0.38,
-                        bottomSheetHight: height * 0.25,
-                        hintText: categoryDropDownHintText,
-                        showItems: ShowItemsForCategory(
-                          categoryKey: categoryOptionsCategoryKey,
-                          colorsKey: categoryOptionsColorKey,
-                          width: width,
-                          height: height,
-                          categoryOptions: Database.categoryOptions,
-                          updateCategory: (index) {
-                            viewModel.updateCategoryHintText(index: index);
-                          },
-                        ),
-                        showSelectedItemOnHintText: ShowSelectedCategory(
-                          colorsKey: categoryOptionsColorKey,
-                          width: width,
-                          height: height,
-                          storeSelectedCategory:
-                              viewModel.storeSelectedCategory,
-                        ),
-                        storeSelectedItem: viewModel.storeSelectedCategory,
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    CustomTextField(
-                      controller: viewModel.descriptionController,
-                      width: width,
-                      hintText: descriptionTextFieldHintText,
-                      height: height,
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    CustomBottomSheet(
-                      buttonsBottomHight: 0,
-                      buttonText: addWalletButtonText,
-                      buttonWidth: width * 0.3,
-                      bottomSheetHight: height * 0.38,
-                      hintText: walletDropDownHintText,
-                      showSelectedItemOnHintText: ShowSelectedWallet(
-                        accountName: viewModel
-                            .storeSelectedWallet[Variables.universalItemKey],
-                        width: width,
-                      ),
-                      storeSelectedItem: viewModel.storeSelectedWallet,
-                      showItems: ShowItemsForWallet(
-                        accountBalanceKey: walletOptionsAccountBalanceKey,
-                        accountTypeKey: walletOptionsAccountTypeKey,
-                        bankNamekey: walletOptionsBankNameKey,
-                        walletPictureKey: walletOptionsBankPictureKey,
-                        updateHintText: (index) {
-                          viewModel.updateWalletHintText(index: index);
-                        },
-                        width: width,
-                        height: height,
-                        walletOptions: Database.walletOptions,
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    FileInserter(),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    SwitchTile(
-                      title: switchTitleText,
-                      subtitle: switchSubTitleText,
-                      value: viewModel.isRepeat,
-                      onChanged: (value) {
-                        Database.addDataToDates();
-                        viewModel.toggleSwitch(value);
-                        RepeatDialog.bottomSheet(
-                          context: context,
-                          width: width,
-                          height: height,
-                          selectedItemForFrequency:
-                              viewModel.selectedItemForFrequency,
-                          selectedItemForMonth: viewModel.selectedItemForMonth,
-                          selectedItemForDates: viewModel.selectedItemForDate,
-                          hintTextForFrequency: hintTextForFrequency,
-                          hintTextForMonth: hintTextForMonth,
-                          hintTextForDate: hintTextForDate,
-                          continueButtonHintText: continueButtonText,
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    CustomElevatedButton(
-                      width: width,
-                      height: height,
-                      text: continueButtonText,
-                    )
-                  ],
+        onTap: () => viewModel.navigationService.back(),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _Balance(
+            width: width,
+            balanceController: viewModel.balanceController,
+          ),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              height: height * 0.6,
+              decoration: BoxDecoration(
+                color: AppColors.primaryLight,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(width * 0.1),
+                  topRight: Radius.circular(width * 0.1),
                 ),
               ),
+              child: Column(
+                children: [
+                  _Category(width: width, height: height),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  Form(
+                    key: viewModel.descriptionFormKey,
+                    child: CustomTextFormField(
+                      width: width,
+                      height: height,
+                      controller: viewModel.descriptionController,
+                      hintText: descriptionText,
+                      validator: (value) => viewModel.validateDescription(value),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  _Wallet(width: width, height: height),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  FileInserter(),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  CustomElevatedButton(
+                    width: width,
+                    height: height,
+                    backgroundColor: viewModel.showLoading
+                        ? AppColors.violet20
+                        : AppColors.primaryViolet,
+                    onPressed: () => viewModel.addExpenseTransactionCompleted(),
+                    child: viewModel.showLoading
+                        ? SpinKitThreeBounce(
+                            color: AppColors.primaryViolet,
+                            size: width * 0.06,
+                          )
+                        : Text(
+                            continueButtonText,
+                            style: TextStyle(
+                              color: AppColors.primaryLight,
+                              fontSize: width * 0.045,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                  )
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -184,15 +114,15 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
   ExpenseViewModel viewModelBuilder(BuildContext context) => ExpenseViewModel();
 }
 
-// ignore: must_be_immutable
-class Balance extends StatelessWidget {
-  Balance({super.key});
+class _Balance extends StatelessWidget {
+  final double width;
+  final TextEditingController balanceController;
+  const _Balance({required this.width, required this.balanceController});
 
-  String inputHintText = "How much?";
+  final String inputHintText = "How much?";
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Padding(
       padding: EdgeInsets.only(top: width * 0.3, left: width * 0.05),
       child: Column(
@@ -201,9 +131,10 @@ class Balance extends StatelessWidget {
           Text(
             inputHintText,
             style: TextStyle(
-                fontSize: width * 0.05,
-                fontWeight: FontWeight.w600,
-                color: AppColors.light80.withValues(alpha: 0.6)),
+              fontSize: width * 0.05,
+              fontWeight: FontWeight.w600,
+              color: AppColors.light80.withValues(alpha: 0.6),
+            ),
           ),
           Row(
             children: [
@@ -216,8 +147,9 @@ class Balance extends StatelessWidget {
               ),
               Expanded(
                 child: TextField(
+                  controller: balanceController,
                   showCursor: false,
-                  keyboardType: const TextInputType.numberWithOptions(),
+                  keyboardType: TextInputType.number,
                   style: TextStyle(
                     fontSize: width * 0.16,
                     fontWeight: FontWeight.w600,
@@ -227,7 +159,7 @@ class Balance extends StatelessWidget {
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
-                    hintText: "${Variables.balance.ceil()}",
+                    hintText: "0",
                     hintStyle: TextStyle(
                       fontSize: width * 0.16,
                       fontWeight: FontWeight.w600,
@@ -244,16 +176,50 @@ class Balance extends StatelessWidget {
   }
 }
 
-class ShowSelectedCategory extends StatelessWidget {
+class _Category extends ViewModelWidget<ExpenseViewModel> {
+  final double width, height;
+  const _Category({required this.width, required this.height});
+
+  final String createCategory = "Create Category";
+  final String dropDownText = "Category";
+
+  @override
+  Widget build(BuildContext context, ExpenseViewModel viewModel) {
+    return Padding(
+      padding: EdgeInsets.only(top: height * 0.05),
+      child: CustomBottomSheet(
+        buttonsBottomHight: height * 0.08,
+        buttonText: createCategory,
+        buttonWidth: width * 0.38,
+        bottomSheetHight: height * 0.29,
+        hintText: dropDownText,
+        storeSelectedItem: viewModel.storeSelectedCategory,
+        showItems: _ShowItemsForCategory(
+          width: width,
+          height: height,
+          data: viewModel.fetchingCategoryOptions(),
+          updateCategory: (index) {
+            viewModel.updateCategoryHintText(index: index);
+          },
+        ),
+        showSelectedItemOnHintText: _ShowSelectedCategory(
+          width: width,
+          height: height,
+          storeSelectedCategory: viewModel.storeSelectedCategory,
+        ),
+      ),
+    );
+  }
+}
+
+class _ShowSelectedCategory extends StatelessWidget {
   final double width, height;
   final Map<String, dynamic> storeSelectedCategory;
-  final String colorsKey;
-  const ShowSelectedCategory(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.storeSelectedCategory,
-      required this.colorsKey});
+  const _ShowSelectedCategory({
+    required this.width,
+    required this.height,
+    required this.storeSelectedCategory,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -271,9 +237,9 @@ class ShowSelectedCategory extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(width * 0.02),
               child: Text(
-                storeSelectedCategory[Variables.universalItemKey],
+                storeSelectedCategory["option"],
                 style: TextStyle(
                     color: AppColors.primaryBlack, fontWeight: FontWeight.w500),
               ),
@@ -285,7 +251,8 @@ class ShowSelectedCategory extends StatelessWidget {
               padding: EdgeInsets.only(right: width * 0.04),
               child: CircleAvatar(
                 maxRadius: width * 0.01,
-                backgroundColor: storeSelectedCategory[colorsKey],
+                backgroundColor:
+                    Color(int.parse(storeSelectedCategory["color"])),
               ),
             )
           ],
@@ -295,70 +262,77 @@ class ShowSelectedCategory extends StatelessWidget {
   }
 }
 
-class ShowItemsForCategory extends StatelessWidget {
+class _ShowItemsForCategory extends StatelessWidget {
   final double width, height;
-  final List<Map<String, dynamic>> categoryOptions;
   final Function(int index) updateCategory;
-  final String colorsKey;
-  final String categoryKey;
-  const ShowItemsForCategory({
-    super.key,
+  final Future<PersonData> data;
+  const _ShowItemsForCategory({
     required this.width,
     required this.height,
-    required this.categoryOptions,
     required this.updateCategory,
-    required this.colorsKey,
-    required this.categoryKey,
+    required this.data,
   });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       flex: 3,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: categoryOptions.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: width * 0.1, vertical: height * 0.057),
-            child: InkWell(
-              onTap: () {
-                updateCategory(index);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColors.primaryBlack,
-                      width: width * 0.002,
+      child: FutureBuilder<PersonData>(
+        future: data,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: snapshot.data!.expenseOptions!.length,
+            itemBuilder: (context, index) {
+              final data = snapshot.data!.expenseOptions![index];
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.1, vertical: height * 0.057),
+                child: InkWell(
+                  onTap: () {
+                    updateCategory(index);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColors.primaryBlack,
+                        width: width * 0.002,
+                      ),
+                      borderRadius: BorderRadius.circular(width * 0.08),
                     ),
-                    borderRadius: BorderRadius.circular(width * 0.08)),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        categoryOptions[index]["Category"],
-                        style: TextStyle(
-                          color: AppColors.primaryBlack,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            data.option!,
+                            style: TextStyle(
+                              color: AppColors.primaryBlack,
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          width: width * 0.02,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: width * 0.04),
+                          child: CircleAvatar(
+                            maxRadius: width * 0.01,
+                            backgroundColor: Color(int.parse(data.color!)),
+                          ),
+                        )
+                      ],
                     ),
-                    SizedBox(
-                      width: width * 0.02,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: width * 0.04),
-                      child: CircleAvatar(
-                        maxRadius: width * 0.01,
-                        backgroundColor: categoryOptions[index][colorsKey],
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),
@@ -366,11 +340,57 @@ class ShowItemsForCategory extends StatelessWidget {
   }
 }
 
-class ShowSelectedWallet extends StatelessWidget {
+class _Wallet extends ViewModelWidget<ExpenseViewModel> {
+  final double width, height;
+  const _Wallet({required this.width, required this.height});
+
+  final String createWallet = "Add Wallet";
+  final String dropDownText = "Wallet";
+
+  @override
+  Widget build(BuildContext context, ExpenseViewModel viewModel) {
+    return CustomBottomSheet(
+      buttonsBottomHight: 0,
+      buttonText: createWallet,
+      buttonWidth: width * 0.3,
+      bottomSheetHight: height * 0.44,
+      hintText: dropDownText,
+      storeSelectedItem: viewModel.storeSelectedWallet,
+      showSelectedItemOnHintText: _ShowSelectedWallet(
+        accountName: viewModel.storeSelectedWallet["option"],
+        width: width,
+      ),
+      onPressed: () => viewModel.navigationService.navigateToSetupWalletView(),
+      showItems: SizedBox(
+        height: height * 0.3,
+        child: Column(
+          children: [
+            _ShowItemsForWallet(
+              width: width,
+              height: height,
+              data: viewModel.fetchingWalletOptions(),
+              updateIndex: (value) => viewModel.onPageChanged(value),
+              updateHintText: (index) {
+                viewModel.updateWalletHintText(index: index);
+              },
+            ),
+            _Indicators(
+              itemIndex: viewModel.itemIndex,
+              width: width,
+              height: height,
+              viewModel.fetchingWalletOptions(),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ShowSelectedWallet extends StatelessWidget {
   final String accountName;
   final double width;
-  const ShowSelectedWallet({
-    super.key,
+  const _ShowSelectedWallet({
     required this.accountName,
     required this.width,
   });
@@ -388,90 +408,78 @@ class ShowSelectedWallet extends StatelessWidget {
   }
 }
 
-class ShowItemsForWallet extends StatefulWidget {
+class _ShowItemsForWallet extends StatelessWidget {
   final double width, height;
-  final List<Map<String, dynamic>> walletOptions;
+  final Future<PersonData> data;
   final Function(int index) updateHintText;
-  final String bankNamekey;
-  final String accountBalanceKey;
-  final String walletPictureKey;
-  final String accountTypeKey;
-  const ShowItemsForWallet(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.walletOptions,
-      required this.updateHintText,
-      required this.bankNamekey,
-      required this.accountBalanceKey,
-      required this.walletPictureKey,
-      required this.accountTypeKey});
+  final Function(int value) updateIndex;
+  const _ShowItemsForWallet({
+    required this.width,
+    required this.height,
+    required this.updateHintText,
+    required this.updateIndex,
+    required this.data,
+  });
 
-  @override
-  State<ShowItemsForWallet> createState() => _ShowItemsForWalletState();
-}
-
-class _ShowItemsForWalletState extends State<ShowItemsForWallet> {
-  int itemIndex = 0;
-  String bankBalanceText = "Balance";
+  final String bankBalanceText = "Balance";
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: widget.height * 0.3,
-      child: Column(
-        children: [
-          Expanded(
-            flex: 3,
-            child: PageView.builder(
+    return Expanded(
+      flex: 3,
+      child: FutureBuilder<PersonData>(
+          future: data,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return PageView.builder(
               onPageChanged: (value) {
-                setState(() {
-                  itemIndex = value;
-                });
+                updateIndex(value);
               },
-              itemCount: widget.walletOptions.length,
+              itemCount: snapshot.data!.wallets!.length,
               itemBuilder: (context, index) {
+                final data = snapshot.data!.wallets![index];
                 return Center(
                   child: InkWell(
                     onTap: () {
-                      widget.updateHintText(index);
+                      updateHintText(index);
                     },
                     child: SizedBox(
-                      height: widget.height * 0.2,
-                      width: widget.width * 0.7,
+                      height: height * 0.2,
+                      width: width * 0.7,
                       child: Card(
-                        elevation: widget.width * 0.02,
+                        elevation: width * 0.02,
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(widget.width * 0.05),
+                          borderRadius: BorderRadius.circular(width * 0.05),
                           side: BorderSide(
                             color: AppColors.light20,
-                            width: widget.width * 0.0015,
+                            width: width * 0.0015,
                           ),
                         ),
                         child: Column(
                           children: [
                             Padding(
-                              padding:
-                                  EdgeInsets.only(top: widget.height * 0.01),
+                              padding: EdgeInsets.only(top: height * 0.01),
                               child: Text(
-                                widget.walletOptions[index][widget.bankNamekey],
+                                data.walletName!,
                                 style: TextStyle(
                                   color: AppColors.primaryBlack,
-                                  fontSize: widget.width * 0.06,
+                                  fontSize: width * 0.06,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
                             SizedBox(
-                              height: widget.height * 0.04,
+                              height: height * 0.04,
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(
-                                      left: widget.width * 0.07),
+                                  padding: EdgeInsets.only(left: width * 0.07),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -480,19 +488,19 @@ class _ShowItemsForWalletState extends State<ShowItemsForWallet> {
                                         bankBalanceText,
                                         style: TextStyle(
                                           color: Colors.grey,
-                                          fontSize: widget.width * 0.04,
+                                          fontSize: width * 0.04,
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            right: widget.width * 0.07),
+                                            right: width * 0.07),
                                         child: Text(
-                                          "${widget.walletOptions[index][widget.accountBalanceKey]}",
+                                          "${data.balance}",
                                           style: TextStyle(
                                             color: AppColors.black50,
                                             fontWeight: FontWeight.w400,
-                                            fontSize: widget.width * 0.04,
+                                            fontSize: width * 0.04,
                                           ),
                                         ),
                                       ),
@@ -500,32 +508,29 @@ class _ShowItemsForWalletState extends State<ShowItemsForWallet> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: widget.height * 0.025,
+                                  height: height * 0.025,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(
-                                      left: widget.width * 0.07),
+                                  padding: EdgeInsets.only(left: width * 0.07),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        widget.walletOptions[index]
-                                            [widget.accountTypeKey],
+                                        data.accountType!,
                                         style: TextStyle(
                                           color: Colors.grey,
-                                          fontSize: widget.width * 0.04,
+                                          fontSize: width * 0.04,
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            right: widget.width * 0.06),
+                                            right: width * 0.06),
                                         child: SvgPicture.asset(
-                                          widget.walletOptions[index]
-                                              [widget.walletPictureKey],
-                                          width: widget.width * 0.025,
-                                          height: widget.height * 0.025,
+                                          IconsPath.easypaisa,
+                                          width: width * 0.025,
+                                          height: height * 0.025,
                                         ),
                                       ),
                                     ],
@@ -540,106 +545,65 @@ class _ShowItemsForWalletState extends State<ShowItemsForWallet> {
                   ),
                 );
               },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-                top: widget.height * 0.01, bottom: widget.height * 0.01),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                widget.walletOptions.length,
-                (index) => Padding(
-                  padding: EdgeInsets.all(index == itemIndex
-                      ? widget.width * 0.01
-                      : widget.width * 0.008),
-                  child: CircleAvatar(
-                    backgroundColor: index == itemIndex
-                        ? AppColors.primaryViolet
-                        : AppColors.violet20,
-                    minRadius: index == itemIndex
-                        ? widget.width * 0.015
-                        : widget.width * 0.01,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+            );
+          }),
     );
   }
 }
 
-class RepeatDialog {
-  static void bottomSheet({
-    required BuildContext context,
-    required double width,
-    required double height,
-    required String selectedItemForFrequency,
-    required String selectedItemForMonth,
-    required String selectedItemForDates,
-    required String hintTextForFrequency,
-    required String hintTextForMonth,
-    required String hintTextForDate,
-    required String continueButtonHintText,
-  }) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return BottomSheet(
-          showDragHandle: true,
-          dragHandleColor: AppColors.violet40,
-          dragHandleSize: Size(width * 0.2, height * 0.005),
-          backgroundColor: AppColors.primaryLight,
-          constraints: BoxConstraints(maxHeight: height * 0.4, minWidth: width),
-          onClosing: () {},
-          builder: (context) {
-            return Column(
-              children: [
-                DropDown(
-                  height: height,
-                  width: width,
-                  hintText: hintTextForFrequency,
-                  items: Database.frequencyData,
-                  onChanged: (value) {},
-                  selectedItem: selectedItemForFrequency,
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                DropDown(
-                  height: height,
-                  width: width,
-                  hintText: hintTextForMonth,
-                  items: Database.months,
-                  onChanged: (value) {},
-                  selectedItem: selectedItemForMonth,
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                DropDown(
-                  height: height,
-                  width: width,
-                  hintText: hintTextForDate,
-                  items: Database.dates,
-                  onChanged: (value) {},
-                  selectedItem: selectedItemForDates,
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                CustomElevatedButton(
-                  width: width,
-                  height: height,
-                  text: continueButtonHintText,
-                ),
-              ],
+class _Indicators extends StatefulWidget {
+  final double width, height;
+  final Future<PersonData> data;
+  final ValueNotifier itemIndex;
+  const _Indicators(this.data,
+      {required this.itemIndex, required this.width, required this.height});
+
+  @override
+  State<_Indicators> createState() => _IndicatorsState();
+}
+
+class _IndicatorsState extends State<_Indicators> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: widget.height * 0.04,
+      child: FutureBuilder<PersonData>(
+        future: widget.data,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          },
-        );
-      },
+          }
+          return ValueListenableBuilder(
+              valueListenable: widget.itemIndex,
+              builder: (context, _, child) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                      top: widget.height * 0.01, bottom: widget.height * 0.01),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      snapshot.data!.wallets!.length,
+                      (index) => Padding(
+                        padding: EdgeInsets.all(index == widget.itemIndex.value
+                            ? widget.width * 0.01
+                            : widget.width * 0.008),
+                        child: CircleAvatar(
+                          backgroundColor: index == widget.itemIndex.value
+                              ? AppColors.primaryViolet
+                              : AppColors.violet20,
+                          minRadius: index == widget.itemIndex.value
+                              ? widget.width * 0.015
+                              : widget.width * 0.01,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              });
+        },
+      ),
     );
   }
 }

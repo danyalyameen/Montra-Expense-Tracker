@@ -10,7 +10,7 @@ import 'dart:ui' as _i37;
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as _i36;
 import 'package:montra_expense_tracker/Features/Authentication/All%20Setup/Views/all_setup_view.dart'
-    as _i13;
+    as _i12;
 import 'package:montra_expense_tracker/Features/Authentication/Email%20Verified/Views/email_verified_view.dart'
     as _i7;
 import 'package:montra_expense_tracker/Features/Authentication/Forget%20Password/Views/forget_password_view.dart'
@@ -20,11 +20,11 @@ import 'package:montra_expense_tracker/Features/Authentication/Login/Views/login
 import 'package:montra_expense_tracker/Features/Authentication/On%20Boarding/Views/onboarding_view.dart'
     as _i3;
 import 'package:montra_expense_tracker/Features/Authentication/Setup%20Account/Views/setup_account_view.dart'
-    as _i11;
+    as _i10;
 import 'package:montra_expense_tracker/Features/Authentication/Setup%20PIN/Views/setup_pin_view.dart'
     as _i8;
 import 'package:montra_expense_tracker/Features/Authentication/Setup%20Wallet/Views/setup_wallet_view.dart'
-    as _i12;
+    as _i11;
 import 'package:montra_expense_tracker/Features/Authentication/Sign%20UP/Views/sign_up_view.dart'
     as _i4;
 import 'package:montra_expense_tracker/Features/Authentication/Verification/Views/verification_view.dart'
@@ -75,6 +75,7 @@ import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Finan
     as _i17;
 import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_view.dart'
     as _i16;
+import 'package:montra_expense_tracker/Widgets/successfully_done.dart' as _i13;
 import 'package:stacked/stacked.dart' as _i1;
 import 'package:stacked_services/stacked_services.dart' as _i38;
 
@@ -95,13 +96,13 @@ class Routes {
 
   static const forgetPasswordView = '/forget-password-view';
 
-  static const resetPasswordView = '/reset-password-view';
-
   static const setupAccountView = '/setup-account-view';
 
   static const setupWalletView = '/setup-wallet-view';
 
   static const allSetupView = '/all-setup-view';
+
+  static const successfullyDone = '/successfully-done';
 
   static const dashboardView = '/dashboard-view';
 
@@ -156,10 +157,10 @@ class Routes {
     emailVerifiedView,
     setupPinView,
     forgetPasswordView,
-    resetPasswordView,
     setupAccountView,
     setupWalletView,
     allSetupView,
+    successfullyDone,
     dashboardView,
     notificationView,
     transactionView,
@@ -221,15 +222,19 @@ class StackedRouter extends _i1.RouterBase {
     ),
     _i1.RouteDef(
       Routes.setupAccountView,
-      page: _i11.SetupAccountView,
+      page: _i10.SetupAccountView,
     ),
     _i1.RouteDef(
       Routes.setupWalletView,
-      page: _i12.SetupWalletView,
+      page: _i11.SetupWalletView,
     ),
     _i1.RouteDef(
       Routes.allSetupView,
-      page: _i13.AllSetupView,
+      page: _i12.AllSetupView,
+    ),
+    _i1.RouteDef(
+      Routes.successfullyDone,
+      page: _i13.SuccessfullyDone,
     ),
     _i1.RouteDef(
       Routes.dashboardView,
@@ -370,24 +375,29 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
-    _i11.SetupAccountView: (data) {
+    _i10.SetupAccountView: (data) {
       return _i36.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i11.SetupAccountView(),
+        builder: (context) => const _i10.SetupAccountView(),
         settings: data,
       );
     },
-    _i12.SetupWalletView: (data) {
-      final args = data.getArgs<SetupWalletViewArguments>(
-        orElse: () => const SetupWalletViewArguments(),
-      );
+    _i11.SetupWalletView: (data) {
       return _i36.MaterialPageRoute<dynamic>(
-        builder: (context) => _i12.SetupWalletView(key: args.key),
+        builder: (context) => const _i11.SetupWalletView(),
         settings: data,
       );
     },
-    _i13.AllSetupView: (data) {
+    _i12.AllSetupView: (data) {
       return _i36.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i13.AllSetupView(),
+        builder: (context) => const _i12.AllSetupView(),
+        settings: data,
+      );
+    },
+    _i13.SuccessfullyDone: (data) {
+      final args = data.getArgs<SuccessfullyDoneArguments>(nullOk: false);
+      return _i36.MaterialPageRoute<dynamic>(
+        builder: (context) => _i13.SuccessfullyDone(
+            key: args.key, msg: args.msg, className: args.className),
         settings: data,
       );
     },
@@ -571,25 +581,33 @@ class StackedRouter extends _i1.RouterBase {
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
 }
 
-class SetupWalletViewArguments {
-  const SetupWalletViewArguments({this.key});
+class SuccessfullyDoneArguments {
+  const SuccessfullyDoneArguments({
+    this.key,
+    required this.msg,
+    this.className,
+  });
 
   final _i36.Key? key;
 
+  final String msg;
+
+  final dynamic className;
+
   @override
   String toString() {
-    return '{"key": "$key"}';
+    return '{"key": "$key", "msg": "$msg", "className": "$className"}';
   }
 
   @override
-  bool operator ==(covariant SetupWalletViewArguments other) {
+  bool operator ==(covariant SuccessfullyDoneArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key;
+    return other.key == key && other.msg == msg && other.className == className;
   }
 
   @override
   int get hashCode {
-    return key.hashCode;
+    return key.hashCode ^ msg.hashCode ^ className.hashCode;
   }
 }
 
@@ -995,20 +1013,6 @@ extension NavigatorStateExtension on _i38.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToResetPasswordView([
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  ]) async {
-    return navigateTo<dynamic>(Routes.resetPasswordView,
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
   Future<dynamic> navigateToSetupAccountView([
     int? routerId,
     bool preventDuplicates = true,
@@ -1023,16 +1027,14 @@ extension NavigatorStateExtension on _i38.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToSetupWalletView({
-    _i36.Key? key,
+  Future<dynamic> navigateToSetupWalletView([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  }) async {
+  ]) async {
     return navigateTo<dynamic>(Routes.setupWalletView,
-        arguments: SetupWalletViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1047,6 +1049,25 @@ extension NavigatorStateExtension on _i38.NavigationService {
         transition,
   ]) async {
     return navigateTo<dynamic>(Routes.allSetupView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToSuccessfullyDone({
+    _i36.Key? key,
+    required String msg,
+    dynamic className,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.successfullyDone,
+        arguments:
+            SuccessfullyDoneArguments(key: key, msg: msg, className: className),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1528,20 +1549,6 @@ extension NavigatorStateExtension on _i38.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithResetPasswordView([
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  ]) async {
-    return replaceWith<dynamic>(Routes.resetPasswordView,
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
   Future<dynamic> replaceWithSetupAccountView([
     int? routerId,
     bool preventDuplicates = true,
@@ -1556,16 +1563,14 @@ extension NavigatorStateExtension on _i38.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithSetupWalletView({
-    _i36.Key? key,
+  Future<dynamic> replaceWithSetupWalletView([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  }) async {
+  ]) async {
     return replaceWith<dynamic>(Routes.setupWalletView,
-        arguments: SetupWalletViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1580,6 +1585,25 @@ extension NavigatorStateExtension on _i38.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.allSetupView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithSuccessfullyDone({
+    _i36.Key? key,
+    required String msg,
+    dynamic className,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.successfullyDone,
+        arguments:
+            SuccessfullyDoneArguments(key: key, msg: msg, className: className),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

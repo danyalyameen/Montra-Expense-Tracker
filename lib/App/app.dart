@@ -32,6 +32,7 @@ import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Finan
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Views/financial_report_summary_view.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_view.dart';
 import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
+import 'package:montra_expense_tracker/Widgets/successfully_done.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -48,6 +49,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: SetupAccountView),
     MaterialRoute(page: SetupWalletView),
     MaterialRoute(page: AllSetupView),
+    MaterialRoute(page: SuccessfullyDone),
     MaterialRoute(page: DashboardView),
     MaterialRoute(page: NotificationView),
     MaterialRoute(page: TransactionView),

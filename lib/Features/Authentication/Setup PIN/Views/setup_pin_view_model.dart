@@ -30,7 +30,11 @@ class SetupPinViewModel extends ViewModel {
     if (sharedPreferences.getBool("Setup-Pin") == true &&
         _enteredPin == sharedPreferences.getString("Entered-Pin") &&
         _enteredPin.length == 4) {
-      navigationService.replaceWithSetupAccountView();
+      if (sharedPreferences.getBool("Wallet-Setup") == true) {
+        navigationService.replaceWithDashboardView();
+      } else {
+        navigationService.replaceWithSetupAccountView();
+      }
     } else if (sharedPreferences.getBool("Setup-Pin") == true &&
         _enteredPin != sharedPreferences.getString("Entered-Pin") &&
         _enteredPin.length == 4) {
@@ -50,7 +54,6 @@ class SetupPinViewModel extends ViewModel {
     } else if (_enteredPin.length == 4 && retypePin) {
       if (_enteredPin == sharedPreferences.getString("Entered-Pin")) {
         sharedPreferences.setBool("Setup-Pin", true);
-        navigationService.replaceWithSetupAccountView();
       } else {
         Fluttertoast.showToast(
           msg: "Please Enter the Same Pin.",

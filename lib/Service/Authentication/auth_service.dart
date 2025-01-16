@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:montra_expense_tracker/Models/person_model.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -38,9 +39,10 @@ class Auth {
   }
 
   addUserDetails({required String id, required String name}) async {
-    await _database.collection('users').doc(id).set({
-      'name': name,
-    });
+    await _database
+        .collection('users')
+        .doc(id)
+        .set(PersonData(name: name).receive());
   }
 
   User? getUser() {

@@ -10,6 +10,9 @@ class CustomTextFormField extends StatelessWidget {
   final double? borderRadius;
   final bool? obscureText;
   final String? Function(String? value) validator;
+  final GestureTapCallback? onTap;
+  final TapRegionCallback? onTapOutside;
+  final VoidCallback? onComplete;
   const CustomTextFormField({
     super.key,
     required this.controller,
@@ -20,6 +23,9 @@ class CustomTextFormField extends StatelessWidget {
     this.borderRadius,
     required this.validator,
     this.obscureText,
+    this.onTap,
+    this.onTapOutside,
+    this.onComplete,
   });
   @override
   Widget build(BuildContext context) {
@@ -31,6 +37,9 @@ class CustomTextFormField extends StatelessWidget {
           cursorColor: AppColors.primaryBlack,
           obscureText: obscureText ?? false,
           autovalidateMode: AutovalidateMode.onUserInteraction,
+          onTap: onTap,
+          onTapOutside: onTapOutside,
+          onEditingComplete: onComplete,
           validator: (value) => validator(value),
           style: TextStyle(
             color: AppColors.primaryBlack,

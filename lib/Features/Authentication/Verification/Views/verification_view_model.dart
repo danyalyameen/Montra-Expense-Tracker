@@ -34,7 +34,8 @@ class VerificationViewModel extends ViewModel {
 
   String getEmail() {
     String? userEmail = auth.getUser()!.email;
-    String displayEmail = "${userEmail!.substring(0, 10)}*****${userEmail.substring(userEmail.length - 10, userEmail.length - 1)}";
+    String displayEmail =
+        "${userEmail!.substring(0, 10)}*****${userEmail.substring(userEmail.length - 10, userEmail.length - 1)}";
     return displayEmail;
   }
 

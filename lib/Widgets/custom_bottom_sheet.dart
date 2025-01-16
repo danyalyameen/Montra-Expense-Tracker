@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 
 class CustomBottomSheet extends StatefulWidget {
   final Widget showItems;
@@ -10,6 +9,7 @@ class CustomBottomSheet extends StatefulWidget {
   final Widget showSelectedItemOnHintText;
   final double bottomSheetHight, buttonWidth, buttonsBottomHight;
   final Map<String, dynamic> storeSelectedItem;
+  final VoidCallback? onPressed;
   const CustomBottomSheet({
     super.key,
     required this.hintText,
@@ -20,6 +20,7 @@ class CustomBottomSheet extends StatefulWidget {
     required this.buttonText,
     required this.buttonWidth,
     required this.buttonsBottomHight,
+    this.onPressed,
   });
 
   @override
@@ -42,6 +43,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
           height: widget.bottomSheetHight,
           context: context,
           selectedCategory: widget.storeSelectedItem,
+          onPressed: widget.onPressed,
         );
       },
       child: Container(
@@ -57,8 +59,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
           children: [
             Padding(
               padding: EdgeInsets.only(left: width * 0.04),
-              child: widget.storeSelectedItem[Variables.universalItemKey] ==
-                      widget.hintText
+              child: widget.storeSelectedItem["option"] == widget.hintText
                   ? Text(
                       widget.hintText,
                       style: TextStyle(
@@ -94,6 +95,7 @@ class CategoryBottomSheet {
     required BuildContext context,
     required Map<String, dynamic> selectedCategory,
     required Widget showItems,
+    VoidCallback? onPressed,
   }) {
     showModalBottomSheet(
       context: context,
@@ -145,7 +147,7 @@ class CategoryBottomSheet {
                             AppColors.primaryViolet,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: onPressed,
                         child: Text(
                           buttonText,
                           style: TextStyle(color: AppColors.primaryLight),

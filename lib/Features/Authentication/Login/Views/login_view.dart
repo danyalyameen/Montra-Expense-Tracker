@@ -174,7 +174,8 @@ class _OtherLoginItems extends StatelessWidget {
   final NavigationService navigationService;
   const _OtherLoginItems({
     required this.width,
-    required this.height, required this.navigationService,
+    required this.height,
+    required this.navigationService,
   });
   final String googleButtonText = "Login with Google";
 
