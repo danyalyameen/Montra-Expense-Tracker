@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:montra_expense_tracker/App/app.locator.dart';
 import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
+import 'package:montra_expense_tracker/Service/Transactions/fetching_transactions_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -15,4 +16,6 @@ class ViewModel extends BaseViewModel {
   DocumentReference expenseOptions = FirebaseFirestore.instance
       .collection("default options")
       .doc("expense options");
+  FetchingTransactionsService transactionsService =
+      locator<FetchingTransactionsService>();
 }

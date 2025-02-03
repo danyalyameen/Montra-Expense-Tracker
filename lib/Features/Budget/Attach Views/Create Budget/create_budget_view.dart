@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Create%20Budget/create_budget_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_bottom_sheet.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
@@ -186,7 +185,6 @@ class _ShowCategory extends ViewModelWidget<CreateBudgetViewModel> {
         showSelectedItemOnHintText: _ShowSelectedCategory(
           width: width,
           height: height,
-          colorKey: categoryOptionsColorKey,
           storeSelectedCategory: viewModel.storeSelectedCategory,
         ),
         storeSelectedItem: viewModel.storeSelectedCategory,
@@ -198,12 +196,10 @@ class _ShowCategory extends ViewModelWidget<CreateBudgetViewModel> {
 class _ShowSelectedCategory extends StatelessWidget {
   final double width, height;
   final Map<String, dynamic> storeSelectedCategory;
-  final String colorKey;
   const _ShowSelectedCategory({
     required this.width,
     required this.height,
     required this.storeSelectedCategory,
-    required this.colorKey,
   });
 
   @override
@@ -222,9 +218,9 @@ class _ShowSelectedCategory extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(width * 0.02),
               child: Text(
-                storeSelectedCategory[Variables.universalItemKey],
+                storeSelectedCategory["option"],
                 style: TextStyle(
                     color: AppColors.primaryBlack, fontWeight: FontWeight.w500),
               ),
@@ -236,7 +232,7 @@ class _ShowSelectedCategory extends StatelessWidget {
               padding: EdgeInsets.only(right: width * 0.04),
               child: CircleAvatar(
                 maxRadius: width * 0.01,
-                backgroundColor: storeSelectedCategory[colorKey],
+                backgroundColor: storeSelectedCategory["color"],
               ),
             )
           ],

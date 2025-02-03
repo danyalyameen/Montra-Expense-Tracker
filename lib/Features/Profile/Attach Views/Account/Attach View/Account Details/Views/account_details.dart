@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
-import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Attach%20View/Account%20Details/Views/account_details_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
-import 'package:montra_expense_tracker/Widgets/expense_item.dart';
+import 'package:montra_expense_tracker/Widgets/user_transactions.dart';
 import 'package:stacked/stacked.dart';
 
 class AccountDetails extends StackedView<AccountDetailsViewModel> {
@@ -73,27 +72,9 @@ class AccountDetails extends StackedView<AccountDetailsViewModel> {
                   ),
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: Database.todayExpenseDatabase.length,
-                  itemBuilder: (context, index) {
-                    return Center(
-                      child: ExpenseItem(
-                        width: width,
-                        height: height,
-                        titleKey: titleKey,
-                        descriptionKey: descriptionKey,
-                        timeKey: timeKey,
-                        priceKey: priceKey,
-                        iconKey: iconKey,
-                        iconColorKey: iconColorKey,
-                        iconBackgroundColor: iconBackgroundColor,
-                        index: index,
-                        data: Database.todayExpenseDatabase,
-                      ),
-                    );
-                  },
-                ),
+              UserTransactions(
+                icons: viewModel.transactionsService.transactionIcons(),
+                transactions: viewModel.transactionsService.fetchTransactions(),
               ),
             ],
           ),

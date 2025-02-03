@@ -4,7 +4,8 @@ class PersonData {
   List<IncomeOptions>? incomeOptions;
   List<ExpenseOptions>? expenseOptions;
 
-  PersonData({this.name, this.wallets, this.incomeOptions, this.expenseOptions});
+  PersonData(
+      {this.name, this.wallets, this.incomeOptions, this.expenseOptions});
 
   PersonData.store(Map<String, dynamic> json) {
     name = json['name'];
@@ -44,7 +45,8 @@ class PersonData {
       data['income options'] = incomeOptions!.map((v) => v.recieve()).toList();
     }
     if (expenseOptions != null) {
-      data['expense options'] = expenseOptions!.map((v) => v.recieve()).toList();
+      data['expense options'] =
+          expenseOptions!.map((v) => v.recieve()).toList();
     }
     return data;
   }

@@ -53,15 +53,15 @@ class TransferView extends StackedView<TransferViewModel> {
                   topRight: Radius.circular(width * 0.1),
                 ),
               ),
-              child: Column(
-                children: [
-                  _TransferTextField(
-                    height: height,
-                    width: width,
-                  ),
-                  Form(
-                    key: viewModel.descriptionFormKey,
-                    child: CustomTextFormField(
+              child: Form(
+                key: viewModel.formKey,
+                child: Column(
+                  children: [
+                    _TransferTextField(
+                      height: height,
+                      width: width,
+                    ),
+                    CustomTextFormField(
                       width: width,
                       height: height,
                       controller: viewModel.descriptionController,
@@ -69,41 +69,41 @@ class TransferView extends StackedView<TransferViewModel> {
                       validator: (value) =>
                           viewModel.validateDescription(value),
                     ),
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  _Wallet(width: width, height: height),
-                  SizedBox(
-                    height: height * 0.04,
-                  ),
-                  FileInserter(),
-                  SizedBox(
-                    height: height * 0.04,
-                  ),
-                  CustomElevatedButton(
-                    width: width,
-                    height: height,
-                    backgroundColor: viewModel.showLoading
-                        ? AppColors.violet20
-                        : AppColors.primaryViolet,
-                    onPressed: () =>
-                        viewModel.addTransferTransactionCompleted(),
-                    child: viewModel.showLoading
-                        ? SpinKitThreeBounce(
-                            color: AppColors.primaryViolet,
-                            size: width * 0.06,
-                          )
-                        : Text(
-                            continueButtonText,
-                            style: TextStyle(
-                              color: AppColors.primaryLight,
-                              fontSize: width * 0.045,
-                              fontWeight: FontWeight.w600,
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    _Wallet(width: width, height: height),
+                    SizedBox(
+                      height: height * 0.04,
+                    ),
+                    FileInserter(),
+                    SizedBox(
+                      height: height * 0.04,
+                    ),
+                    CustomElevatedButton(
+                      width: width,
+                      height: height,
+                      backgroundColor: viewModel.showLoading
+                          ? AppColors.violet20
+                          : AppColors.primaryViolet,
+                      onPressed: () =>
+                          viewModel.addTransferTransactionCompleted(),
+                      child: viewModel.showLoading
+                          ? SpinKitThreeBounce(
+                              color: AppColors.primaryViolet,
+                              size: width * 0.06,
+                            )
+                          : Text(
+                              continueButtonText,
+                              style: TextStyle(
+                                color: AppColors.primaryLight,
+                                fontSize: width * 0.045,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -195,60 +195,44 @@ class _TransferTextField extends ViewModelWidget<TransferViewModel> {
   @override
   Widget build(BuildContext context, TransferViewModel viewModel) {
     return Padding(
-      padding: EdgeInsets.only(top: height * 0.05),
-      child: Stack(
+      padding: EdgeInsets.only(top: height * 0.02),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Form(
-            key: viewModel.transferFormKey,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: width * 0.42,
-                  height: height * 0.1,
-                  child: CustomTextFormField(
-                    width: width,
-                    height: height,
-                    hintText: fromText,
-                    controller: viewModel.fromController,
-                    validator: (value) => viewModel.validateFrom(value),
-                  ),
-                ),
-                SizedBox(
-                  width: width * 0.05,
-                ),
-                SizedBox(
-                  width: width * 0.42,
-                  height: height * 0.1,
-                  child: CustomTextFormField(
-                    width: width,
-                    height: height,
-                    hintText: toText,
-                    controller: viewModel.toController,
-                    validator: (value) => viewModel.validateTo(value),
-                  ),
-                ),
-              ],
+          SizedBox(
+            width: width * 0.4,
+            height: height * 0.1,
+            child: CustomTextFormField(
+              width: width,
+              height: height,
+              hintText: fromText,
+              controller: viewModel.fromController,
+              validator: (value) => viewModel.validateFrom(value),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: height * 0.025),
-            child: Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.light80,
-                  border:
-                      Border.all(color: AppColors.light60, width: width * 0.02),
-                  shape: BoxShape.circle,
-                ),
-                child: SvgPicture.asset(
-                  IconsPath.transaction,
-                  width: width * 0.03,
-                  height: height * 0.03,
-                ),
-              ),
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.light80,
+              border: Border.all(color: AppColors.light60, width: width * 0.02),
+              shape: BoxShape.circle,
             ),
-          )
+            child: SvgPicture.asset(
+              IconsPath.transaction,
+              width: width * 0.03,
+              height: height * 0.03,
+            ),
+          ),
+          SizedBox(
+            width: width * 0.4,
+            height: height * 0.1,
+            child: CustomTextFormField(
+              width: width,
+              height: height,
+              hintText: toText,
+              controller: viewModel.toController,
+              validator: (value) => viewModel.validateTo(value),
+            ),
+          ),
         ],
       ),
     );
@@ -343,125 +327,126 @@ class _ShowItemsForWallet extends StatelessWidget {
     return Expanded(
       flex: 3,
       child: FutureBuilder<PersonData>(
-          future: data,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return PageView.builder(
-              onPageChanged: (value) {
-                updateIndex(value);
-              },
-              itemCount: snapshot.data!.wallets!.length,
-              itemBuilder: (context, index) {
-                final data = snapshot.data!.wallets![index];
-                return Center(
-                  child: InkWell(
-                    onTap: () {
-                      updateHintText(index);
-                    },
-                    child: SizedBox(
-                      height: height * 0.2,
-                      width: width * 0.7,
-                      child: Card(
-                        elevation: width * 0.02,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(width * 0.05),
-                          side: BorderSide(
-                            color: AppColors.light20,
-                            width: width * 0.0015,
-                          ),
+        future: data,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return PageView.builder(
+            onPageChanged: (value) {
+              updateIndex(value);
+            },
+            itemCount: snapshot.data!.wallets!.length,
+            itemBuilder: (context, index) {
+              final data = snapshot.data!.wallets![index];
+              return Center(
+                child: InkWell(
+                  onTap: () {
+                    updateHintText(index);
+                  },
+                  child: SizedBox(
+                    height: height * 0.2,
+                    width: width * 0.7,
+                    child: Card(
+                      elevation: width * 0.02,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(width * 0.05),
+                        side: BorderSide(
+                          color: AppColors.light20,
+                          width: width * 0.0015,
                         ),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: height * 0.01),
-                              child: Text(
-                                data.walletName!,
-                                style: TextStyle(
-                                  color: AppColors.primaryBlack,
-                                  fontSize: width * 0.06,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: height * 0.01),
+                            child: Text(
+                              data.walletName!,
+                              style: TextStyle(
+                                color: AppColors.primaryBlack,
+                                fontSize: width * 0.06,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(
-                              height: height * 0.04,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: width * 0.07),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        bankBalanceText,
+                          ),
+                          SizedBox(
+                            height: height * 0.04,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: width * 0.07),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      bankBalanceText,
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: width * 0.04,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(right: width * 0.07),
+                                      child: Text(
+                                        "${data.balance}",
                                         style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: width * 0.04,
+                                          color: AppColors.black50,
                                           fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            right: width * 0.07),
-                                        child: Text(
-                                          "${data.balance}",
-                                          style: TextStyle(
-                                            color: AppColors.black50,
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: width * 0.04,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: height * 0.025,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: width * 0.07),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        data.accountType!,
-                                        style: TextStyle(
-                                          color: Colors.grey,
                                           fontSize: width * 0.04,
-                                          fontWeight: FontWeight.w400,
                                         ),
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            right: width * 0.06),
-                                        child: SvgPicture.asset(
-                                          IconsPath.easypaisa,
-                                          width: width * 0.025,
-                                          height: height * 0.025,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            )
-                          ],
-                        ),
+                              ),
+                              SizedBox(
+                                height: height * 0.025,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: width * 0.07),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      data.accountType!,
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: width * 0.04,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(right: width * 0.06),
+                                      child: SvgPicture.asset(
+                                        IconsPath.easypaisa,
+                                        width: width * 0.025,
+                                        height: height * 0.025,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
                   ),
-                );
-              },
-            );
-          }),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -491,32 +476,33 @@ class _IndicatorsState extends State<_Indicators> {
             );
           }
           return ValueListenableBuilder(
-              valueListenable: widget.itemIndex,
-              builder: (context, _, child) {
-                return Padding(
-                  padding: EdgeInsets.only(
-                      top: widget.height * 0.01, bottom: widget.height * 0.01),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      snapshot.data!.wallets!.length,
-                      (index) => Padding(
-                        padding: EdgeInsets.all(index == widget.itemIndex.value
-                            ? widget.width * 0.01
-                            : widget.width * 0.008),
-                        child: CircleAvatar(
-                          backgroundColor: index == widget.itemIndex.value
-                              ? AppColors.primaryViolet
-                              : AppColors.violet20,
-                          minRadius: index == widget.itemIndex.value
-                              ? widget.width * 0.015
-                              : widget.width * 0.01,
-                        ),
+            valueListenable: widget.itemIndex,
+            builder: (context, _, child) {
+              return Padding(
+                padding: EdgeInsets.only(
+                    top: widget.height * 0.01, bottom: widget.height * 0.01),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    snapshot.data!.wallets!.length,
+                    (index) => Padding(
+                      padding: EdgeInsets.all(index == widget.itemIndex.value
+                          ? widget.width * 0.01
+                          : widget.width * 0.008),
+                      child: CircleAvatar(
+                        backgroundColor: index == widget.itemIndex.value
+                            ? AppColors.primaryViolet
+                            : AppColors.violet20,
+                        minRadius: index == widget.itemIndex.value
+                            ? widget.width * 0.015
+                            : widget.width * 0.01,
                       ),
                     ),
                   ),
-                );
-              });
+                ),
+              );
+            },
+          );
         },
       ),
     );

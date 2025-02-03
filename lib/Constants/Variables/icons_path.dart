@@ -24,7 +24,7 @@ class IconsPath {
   static String warning = "assets/Icons/Operations/warning.svg";
   static String delete = "assets/Icons/Operations/delete.svg";
   static String filter = "assets/Icons/Operations/filter.svg";
-  static String salary = "assets/Icons/Finance/salary.svg";
+  static String money = "assets/Icons/Finance/salary.svg";
   static String lineChart = "assets/Icons/Graph/Line Chart/line-chart.svg";
   static String pieChart = "assets/Icons/Graph/Pie Chart/pie-chart.svg";
   static String notification = "assets/Icons/Operations/notification.svg";

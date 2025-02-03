@@ -66,7 +66,8 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                       height: height,
                       controller: viewModel.descriptionController,
                       hintText: descriptionText,
-                      validator: (value) => viewModel.validateDescription(value),
+                      validator: (value) =>
+                          viewModel.validateDescription(value),
                     ),
                   ),
                   SizedBox(

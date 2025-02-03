@@ -11,8 +11,7 @@ class TransferViewModel extends ViewModel {
   final TextEditingController _fromController = TextEditingController();
   final TextEditingController _toController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final GlobalKey<FormState> transferFormKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> descriptionFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController get balanceController => _balanceController;
   TextEditingController get fromController => _fromController;
@@ -20,6 +19,7 @@ class TransferViewModel extends ViewModel {
   TextEditingController get descriptionController => _descriptionController;
 
   final ValueNotifier _itemIndex = ValueNotifier(0);
+  final ValueNotifier errorValueNotifier = ValueNotifier("");
   ValueNotifier get itemIndex => _itemIndex;
   bool _showLoading = false;
   bool get showLoading => _showLoading;
@@ -40,24 +40,27 @@ class TransferViewModel extends ViewModel {
   }
 
   String? validateFrom(String? value) {
-    if (value!.isEmpty) {
+    if (value!.isNotEmpty) {
+      return null;
+    } else {
       return "Please Fill this";
     }
-    return null;
   }
 
   String? validateTo(String? value) {
-    if (value!.isEmpty) {
+    if (value!.isNotEmpty) {
+      return null;
+    } else {
       return "Please Fill this";
     }
-    return null;
   }
 
   String? validateDescription(String? value) {
-    if (value!.isEmpty) {
-      return "Please Enter Your Description";
+    if (value!.isNotEmpty) {
+      return null;
+    } else {
+      return "Please Enter Description";
     }
-    return null;
   }
 
   validateWallet() {
@@ -90,9 +93,8 @@ class TransferViewModel extends ViewModel {
   void addTransferTransactionCompleted() async {
     validateBalance();
     validateWallet();
-    if (_balanceController.text.isNotEmpty &&
-        transferFormKey.currentState!.validate() &&
-        descriptionFormKey.currentState!.validate() &&
+    if (formKey.currentState!.validate() &&
+        _balanceController.text.isNotEmpty &&
         storeSelectedWallet["option"] != "Wallet") {
       try {
         _showLoading = true;

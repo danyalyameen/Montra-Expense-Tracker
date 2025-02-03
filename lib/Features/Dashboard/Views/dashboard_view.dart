@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
@@ -7,7 +6,7 @@ import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/image_path.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view_model.dart';
-import 'package:montra_expense_tracker/Widgets/expense_item.dart';
+import 'package:montra_expense_tracker/Widgets/user_transactions.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -89,13 +88,6 @@ class DashboardUI extends ViewModelWidget<DashboardViewModel> {
               ),
               SizedBox(
                 height: height * 0.03,
-              ),
-              _ShowGraph(
-                width: width,
-                height: height,
-              ),
-              SizedBox(
-                height: height * 0.015,
               ),
               _RecentTransactions(
                 width: width,
@@ -384,147 +376,7 @@ class _ShowAcccount extends StatelessWidget {
   }
 }
 
-class _ShowGraph extends ViewModelWidget<DashboardViewModel> {
-  final double width, height;
-  _ShowGraph({
-    required this.width,
-    required this.height,
-  });
-
-  final String title = "Spend Frequency";
-  final List<String> data = Database.time;
-
-  @override
-  Widget build(BuildContext context, DashboardViewModel viewModel) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: width * 0.05),
-          child: Text(
-            title,
-            style: TextStyle(
-              color: AppColors.primaryBlack,
-              fontSize: width * 0.05,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-        SizedBox(
-          height: height * 0.04,
-        ),
-        SizedBox(
-          width: double.infinity,
-          height: height * 0.2,
-          child: LineChart(
-            LineChartData(
-              minX: 0,
-              maxX: 11,
-              minY: 0,
-              maxY: 6,
-              backgroundColor: Colors.transparent,
-              gridData: const FlGridData(show: false),
-              titlesData: const FlTitlesData(show: false),
-              borderData: FlBorderData(
-                show: false,
-              ),
-              lineBarsData: [
-                LineChartBarData(
-                  dotData: const FlDotData(
-                    show: false,
-                  ),
-                  spots: const [
-                    FlSpot(0, 3),
-                    FlSpot(2.6, 2),
-                    FlSpot(4.9, 5),
-                    FlSpot(6.8, 3.1),
-                    FlSpot(8, 4),
-                    FlSpot(9.5, 3),
-                    FlSpot(11, 4),
-                  ],
-                  barWidth: width * 0.015,
-                  color: AppColors.primaryViolet,
-                  isCurved: true,
-                  belowBarData: BarAreaData(
-                    show: true,
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        AppColors.violet40.withValues(alpha: 0.8),
-                        AppColors.primaryLight,
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-              lineTouchData: LineTouchData(
-                touchTooltipData: LineTouchTooltipData(
-                  getTooltipColor: (touchedSpot) => AppColors.primaryViolet,
-                  getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
-                    return touchedBarSpots.map((barSpot) {
-                      return LineTooltipItem(
-                        '${barSpot.y.toInt()}',
-                        TextStyle(
-                          color: AppColors.primaryLight,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      );
-                    }).toList();
-                  },
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: height * 0.02,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
-              data.length,
-              (index) {
-                return InkWell(
-                  onTap: () => viewModel.updateIndex(index),
-                  borderRadius: BorderRadius.circular(width * 0.06),
-                  child: Container(
-                    width: width * 0.2,
-                    height: height * 0.05,
-                    decoration: BoxDecoration(
-                      color: index == viewModel.currentIndex
-                          ? AppColors.yellow20
-                          : Colors.transparent,
-                      borderRadius: index == viewModel.currentIndex
-                          ? BorderRadius.circular(width * 0.06)
-                          : BorderRadius.zero,
-                    ),
-                    child: Center(
-                      child: Text(
-                        data[index],
-                        style: TextStyle(
-                          color: index == viewModel.currentIndex
-                              ? AppColors.primaryYellow
-                              : AppColors.grey,
-                          fontSize: width * 0.045,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class _RecentTransactions extends StatelessWidget {
+class _RecentTransactions extends ViewModelWidget<DashboardViewModel> {
   final double width, height;
   const _RecentTransactions({
     required this.width,
@@ -533,16 +385,9 @@ class _RecentTransactions extends StatelessWidget {
 
   final String transactionsTitle = "Recent Transactions";
   final String seeAllTransactionsText = "See All";
-  final String titleKey = "Category";
-  final String descriptionKey = "Description";
-  final String timeKey = "Time";
-  final String priceKey = "Expense";
-  final String iconKey = "Icon";
-  final String iconColorKey = "Icon-Color";
-  final String iconBackgroundColorKey = "Icon-Background";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, DashboardViewModel viewModel) {
     return Column(
       children: [
         Padding(
@@ -579,28 +424,10 @@ class _RecentTransactions extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(
-          height: height * 0.5,
-          width: width * 0.9,
-          child: ListView.builder(
-            itemCount: Database.todayExpenseDatabase.length,
-            itemBuilder: (context, index) {
-              return ExpenseItem(
-                width: width,
-                height: height,
-                titleKey: titleKey,
-                descriptionKey: descriptionKey,
-                timeKey: timeKey,
-                priceKey: priceKey,
-                iconKey: iconKey,
-                iconColorKey: iconColorKey,
-                iconBackgroundColor: iconBackgroundColorKey,
-                index: index,
-                data: Database.todayExpenseDatabase,
-              );
-            },
-          ),
-        )
+        UserTransactions(
+            itemCount: 5,
+            transactions: viewModel.transactionsService.fetchTransactions(),
+            icons: viewModel.transactionsService.transactionIcons()),
       ],
     );
   }

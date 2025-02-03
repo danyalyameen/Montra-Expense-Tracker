@@ -125,7 +125,8 @@ class ExpenseViewModel extends ViewModel {
                 );
               }
               if (wallet.balance != null) {
-                wallet.balance = wallet.balance! - int.parse(balanceController.text);
+                wallet.balance =
+                    wallet.balance! - int.parse(balanceController.text);
               }
             }
           }

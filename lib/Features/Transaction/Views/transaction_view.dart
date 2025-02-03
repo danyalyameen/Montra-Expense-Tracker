@@ -6,14 +6,14 @@ import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
-import 'package:montra_expense_tracker/Widgets/expense_item.dart';
+import 'package:montra_expense_tracker/Widgets/user_transactions.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class TransactionView extends StackedView<TransactionViewModel> {
   const TransactionView({super.key});
 
-  final String title = "Today";
+  final String title = "Transactions";
 
   @override
   Widget builder(
@@ -46,10 +46,15 @@ class TransactionView extends StackedView<TransactionViewModel> {
               ),
             ),
           ),
-          _ExpenseItems(
-            width: width,
-            height: height,
-            navigationService: viewModel.navigationService,
+          Center(
+            child: InkWell(
+              onTap: () {},
+              child: UserTransactions(
+                height: height * 0.62,
+                icons: viewModel.transactionsService.transactionIcons(),
+                transactions: viewModel.transactionsService.fetchTransactions(),
+              ),
+            ),
           ),
         ],
       ),
@@ -59,9 +64,6 @@ class TransactionView extends StackedView<TransactionViewModel> {
   @override
   TransactionViewModel viewModelBuilder(BuildContext context) =>
       TransactionViewModel();
-
-  @override
-  bool get reactive => false;
 }
 
 class _TopNavigation extends StatelessWidget {
@@ -453,64 +455,6 @@ class _SeeFinancialReport extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _ExpenseItems extends StatelessWidget {
-  final double width, height;
-  final NavigationService navigationService;
-  _ExpenseItems(
-      {required this.width,
-      required this.height,
-      required this.navigationService});
-
-  final List<Map<String, dynamic>> data = Database.todayExpenseDatabase;
-  final String titleKey = "Category";
-  final String descriptionKey = "Description";
-  final String timeKey = "Time";
-  final String priceKey = "Expense";
-  final String iconKey = "Icon";
-  final String iconColorKey = "Icon-Color";
-  final String iconBackgroundColor = "Icon-Background";
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: Database.todayExpenseDatabase.length,
-        itemBuilder: (context, index) {
-          return Center(
-            child: InkWell(
-              onTap: () {
-                navigationService.navigateToDetailsTransactionView(
-                  balance: Database.todayExpenseDatabase[index][priceKey],
-                  description: Database.todayExpenseDatabase[index]
-                      [descriptionKey],
-                  time: Database.todayExpenseDatabase[index][timeKey],
-                  category: Database.todayExpenseDatabase[index][titleKey],
-                  type: Database.todayExpenseDatabase[index][titleKey],
-                  accountType: "Wallet",
-                  color: AppColors.primaryRed,
-                );
-              },
-              child: ExpenseItem(
-                data: data,
-                width: width,
-                height: height,
-                index: index,
-                titleKey: titleKey,
-                descriptionKey: descriptionKey,
-                timeKey: timeKey,
-                priceKey: priceKey,
-                iconKey: iconKey,
-                iconColorKey: iconColorKey,
-                iconBackgroundColor: iconBackgroundColor,
-              ),
-            ),
-          );
-        },
       ),
     );
   }

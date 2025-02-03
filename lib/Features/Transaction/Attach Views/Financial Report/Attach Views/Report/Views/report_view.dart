@@ -6,7 +6,7 @@ import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Attach%20Views/Report/Views/report_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
-import 'package:montra_expense_tracker/Widgets/expense_item.dart';
+import 'package:montra_expense_tracker/Widgets/user_transactions.dart';
 import 'package:stacked/stacked.dart';
 
 class ReportView extends StackedView<ReportViewModel> {
@@ -326,7 +326,7 @@ class _CicleGraph extends StatelessWidget {
   }
 }
 
-class _ReportDetails extends StatelessWidget {
+class _ReportDetails extends ViewModelWidget<ReportViewModel> {
   final double width, height;
   final int indexForButtons;
   final Function onTapExpense, onTapIncome;
@@ -350,7 +350,7 @@ class _ReportDetails extends StatelessWidget {
   final String iconBackgroundColorKey = "Icon-Background";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ReportViewModel viewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -466,28 +466,12 @@ class _ReportDetails extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  UserTransactions(
                     width: width * 0.9,
                     height: height * 0.34,
-                    child: ListView.builder(
-                      itemCount: Database.todayExpenseDatabase.length,
-                      itemBuilder: (context, index) {
-                        return ExpenseItem(
-                          width: width,
-                          height: height,
-                          index: index,
-                          data: Database.todayExpenseDatabase,
-                          titleKey: titleKey,
-                          descriptionKey: descriptionKey,
-                          timeKey: timeKey,
-                          priceKey: priceKey,
-                          iconKey: iconKey,
-                          iconColorKey: iconColorKey,
-                          iconBackgroundColor: iconBackgroundColorKey,
-                        );
-                      },
-                    ),
-                  )
+                icons: viewModel.transactionsService.transactionIcons(),
+                transactions: viewModel.transactionsService.fetchTransactions(),
+              ),
                 ],
               )
             : Column(
@@ -532,29 +516,12 @@ class _ReportDetails extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  UserTransactions(
                     width: width * 0.9,
                     height: height * 0.34,
-                    child: ListView.builder(
-                      itemCount: Database.incomeDatabase.length,
-                      itemBuilder: (context, index) {
-                        return ExpenseItem(
-                          width: width,
-                          height: height,
-                          titleKey: titleKey,
-                          descriptionKey: descriptionKey,
-                          timeKey: timeKey,
-                          priceKey: priceKey,
-                          iconKey: iconKey,
-                          iconColorKey: iconColorKey,
-                          iconBackgroundColor: iconBackgroundColorKey,
-                          index: index,
-                          data: Database.incomeDatabase,
-                          priceColor: AppColors.primaryGreen,
-                        );
-                      },
-                    ),
-                  )
+                icons: viewModel.transactionsService.transactionIcons(),
+                transactions: viewModel.transactionsService.fetchTransactions(),
+              ),
                 ],
               ),
       ],

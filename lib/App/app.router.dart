@@ -453,20 +453,14 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i21.TransferView: (data) {
-      final args = data.getArgs<TransferViewArguments>(
-        orElse: () => const TransferViewArguments(),
-      );
       return _i36.MaterialPageRoute<dynamic>(
-        builder: (context) => _i21.TransferView(key: args.key),
+        builder: (context) => const _i21.TransferView(),
         settings: data,
       );
     },
     _i22.ExpenseView: (data) {
-      final args = data.getArgs<ExpenseViewArguments>(
-        orElse: () => const ExpenseViewArguments(),
-      );
       return _i36.MaterialPageRoute<dynamic>(
-        builder: (context) => _i22.ExpenseView(key: args.key),
+        builder: (context) => const _i22.ExpenseView(),
         settings: data,
       );
     },
@@ -667,50 +661,6 @@ class DetailsTransactionViewArguments {
         accountType.hashCode ^
         color.hashCode ^
         key.hashCode;
-  }
-}
-
-class TransferViewArguments {
-  const TransferViewArguments({this.key});
-
-  final _i36.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant TransferViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class ExpenseViewArguments {
-  const ExpenseViewArguments({this.key});
-
-  final _i36.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant ExpenseViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
   }
 }
 
@@ -1189,32 +1139,28 @@ extension NavigatorStateExtension on _i38.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToTransferView({
-    _i36.Key? key,
+  Future<dynamic> navigateToTransferView([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  }) async {
+  ]) async {
     return navigateTo<dynamic>(Routes.transferView,
-        arguments: TransferViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> navigateToExpenseView({
-    _i36.Key? key,
+  Future<dynamic> navigateToExpenseView([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  }) async {
+  ]) async {
     return navigateTo<dynamic>(Routes.expenseView,
-        arguments: ExpenseViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1725,32 +1671,28 @@ extension NavigatorStateExtension on _i38.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithTransferView({
-    _i36.Key? key,
+  Future<dynamic> replaceWithTransferView([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  }) async {
+  ]) async {
     return replaceWith<dynamic>(Routes.transferView,
-        arguments: TransferViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> replaceWithExpenseView({
-    _i36.Key? key,
+  Future<dynamic> replaceWithExpenseView([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  }) async {
+  ]) async {
     return replaceWith<dynamic>(Routes.expenseView,
-        arguments: ExpenseViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
