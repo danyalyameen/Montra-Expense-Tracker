@@ -7,8 +7,6 @@ import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_settings_view.dart';
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Security/Views/security_view.dart';
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Theme/Views/theme_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Views/settings_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_view.dart';
@@ -33,26 +31,6 @@ class Database {
     },
   ];
 
-  static List<Map<String, dynamic>> walletOptions = [
-    {
-      "Wallet": "Jazz Cash",
-      "Balance": 1000,
-      "Account Type": "Wallet",
-      "Picture": IconsPath.jazzcash
-    },
-    {
-      "Wallet": "Easypaisa",
-      "Balance": 100,
-      "Account Type": "Wallet",
-      "Picture": IconsPath.easypaisa
-    },
-    {
-      "Wallet": "UBL",
-      "Balance": 9899,
-      "Account Type": "Bank",
-      "Picture": IconsPath.ubl
-    },
-  ];
   static List<Map<String, dynamic>> categoryOptions = [
     {
       "Category": "Grocery",
@@ -151,14 +129,6 @@ class Database {
       "Default-Selection": "USD",
     },
     {
-      "Title": "Theme",
-      "Default-Selection": "Light",
-    },
-    {
-      "Title": "Security",
-      "Default-Selection": "Pin",
-    },
-    {
       "Title": "Notification",
       "Default-Selection": "",
     },
@@ -181,20 +151,9 @@ class Database {
     {"Currency": "Germany (EUR)", "isSelect": false, "Symbol": "EUR"},
     {"Currency": "Korea (WON)", "isSelect": false, "Symbol": "WON"},
   ];
-  static List<Map<String, dynamic>> themeData = [
-    {"Theme": "Light", "isSelect": true},
-    {"Theme": "Dark", "isSelect": false},
-  ];
-  static List<Map<String, dynamic>> securityData = [
-    {"Security": "Pin", "isSelect": true},
-    {"Security": "Fingerprint", "isSelect": false},
-    {"Security": "Face ID", "isSelect": false},
-  ];
 
   static List navigationViewsForSettings = [
     CurrencyView(),
-    const ThemeView(),
-    const SecurityView(),
     const NotificationSettingsView(),
     AboutView(),
     HelpView(),
@@ -297,21 +256,6 @@ class Database {
     },
   ];
 
-  static List<Map<String, dynamic>> graphData = [
-    {
-      "Drop-Down-Arrow": IconsPath.dropdownArrow,
-      "Icon": IconsPath.lineChart,
-      "Spend": 332,
-      "Income": 332,
-    },
-    {
-      "Drop-Down-Arrow": IconsPath.dropdownArrow,
-      "Icon": IconsPath.pieChart,
-      "Spend": 332,
-      "Income": 332,
-    },
-  ];
-
   static List<String> time = [
     "Today",
     "Week",
@@ -329,7 +273,7 @@ class Database {
       "Title": "Transaction",
     },
     {
-      "Icon": IconsPath.pieChart,
+      "Icon": IconsPath.budget,
       "Title": "Budget",
     },
     {

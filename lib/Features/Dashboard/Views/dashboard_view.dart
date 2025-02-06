@@ -425,9 +425,10 @@ class _RecentTransactions extends ViewModelWidget<DashboardViewModel> {
           ),
         ),
         UserTransactions(
-            itemCount: 5,
-            transactions: viewModel.transactionsService.fetchTransactions(),
-            icons: viewModel.transactionsService.transactionIcons()),
+          itemCount: 4,
+          transactions: viewModel.transactionsService.fetchTransactions(),
+          icons: viewModel.transactionsService.transactionIcons(),
+        ),
       ],
     );
   }

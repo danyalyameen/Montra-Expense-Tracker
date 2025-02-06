@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
+import 'package:montra_expense_tracker/Models/default_options_model.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
 
 class IncomeViewModel extends ViewModel {
@@ -68,9 +70,10 @@ class IncomeViewModel extends ViewModel {
     }
   }
 
-  Future<PersonData> fetchingIncomeOptions() async {
+  Future<List> fetchingIncomeOptions() async {
     var data = await incomeOptions.get();
-    return PersonData.store(data.data() as Map<String, dynamic>);
+    var defaultOptions = DefaultOptionsModel.store(data.data() as Map<String, dynamic>);
+    return defaultOptions.defaultIncomeOptions!;
   }
 
   Future<PersonData> fetchingWalletOptions() async {
@@ -79,9 +82,9 @@ class IncomeViewModel extends ViewModel {
   }
 
   void updateIncomeHintText({required int index}) async {
-    PersonData personData = await fetchingIncomeOptions();
-    storeSelectedIncome["option"] = personData.incomeOptions![index].option;
-    storeSelectedIncome["color"] = personData.incomeOptions![index].color;
+    List data = await fetchingIncomeOptions();
+    storeSelectedIncome["option"] = data[index].option;
+    storeSelectedIncome["color"] = data[index].color;
     navigationService.back();
     notifyListeners();
   }
@@ -118,10 +121,11 @@ class IncomeViewModel extends ViewModel {
                 wallet.transactions!.insert(
                   0,
                   Transactions(
+                    type: "Income",
                     category: storeSelectedIncome["option"],
                     description: descriptionController.text,
                     transactionPrice: int.parse(balanceController.text),
-                    type: "Income",
+                    time: Timestamp.now(),
                   ),
                 );
               }

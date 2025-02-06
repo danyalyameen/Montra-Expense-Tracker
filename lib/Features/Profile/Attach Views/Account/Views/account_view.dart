@@ -2,15 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
-import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 class AccountView extends StackedView<AccountViewModel> {
   const AccountView({super.key});
@@ -41,11 +38,11 @@ class AccountView extends StackedView<AccountViewModel> {
             SizedBox(
               height: height * 0.04,
             ),
-            _AddedWallets(
-              width: width,
-              height: height,
-              navigationService: viewModel.navigationService,
-            ),
+            // _AddedWallets(
+            //   width: width,
+            //   height: height,
+            //   navigationService: viewModel.navigationService,
+            // ),
             SizedBox(
               height: height * 0.04,
             ),
@@ -132,87 +129,87 @@ class _AccountBalance extends StatelessWidget {
   }
 }
 
-class _AddedWallets extends StatelessWidget {
-  final double width, height;
-  final NavigationService navigationService;
-  _AddedWallets(
-      {required this.width,
-      required this.height,
-      required this.navigationService});
+// class _AddedWallets extends StatelessWidget {
+//   final double width, height;
+//   final NavigationService navigationService;
+//   _AddedWallets(
+//       {required this.width,
+//       required this.height,
+//       required this.navigationService});
 
-  final String walletNameKey = "Wallet";
-  final String walletPictureKey = "Picture";
-  final String walletBalanceKey = "Balance";
-  final List<Map<String, dynamic>> data = Database.walletOptions;
+//   final String walletNameKey = "Wallet";
+//   final String walletPictureKey = "Picture";
+//   final String walletBalanceKey = "Balance";
+//   final List<Map<String, dynamic>> data = Database.walletOptions;
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: width * 0.9,
-      height: height * 0.4,
-      child: ListView.separated(
-        itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () {
-              navigationService.navigateToAccountDetails(
-                  walletName: data[index][walletNameKey],
-                  walletBalance: data[index][walletBalanceKey],
-                  icon: data[index][walletPictureKey]);
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: height * 0.02),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: width * 0.12,
-                    height: width * 0.12,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(width * 0.04),
-                      color: AppColors.walletIconBackgroundColorProfile,
-                    ),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        data[index][walletPictureKey],
-                        width: width * 0.04,
-                        height: width * 0.04,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: width * 0.04,
-                  ),
-                  Text(
-                    data[index][walletNameKey],
-                    style: TextStyle(
-                      color: AppColors.primaryBlack,
-                      fontSize: width * 0.045,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    "\$${data[index][walletBalanceKey]}",
-                    style: TextStyle(
-                      color: AppColors.primaryBlack,
-                      fontSize: width * 0.045,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return Divider(
-            thickness: width * 0.001,
-            color: AppColors.light20,
-            height: height * 0.001,
-          );
-        },
-        itemCount: data.length,
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       width: width * 0.9,
+//       height: height * 0.4,
+//       child: ListView.separated(
+//         itemBuilder: (context, index) {
+//           return InkWell(
+//             onTap: () {
+//               navigationService.navigateToAccountDetails(
+//                   walletName: data[index][walletNameKey],
+//                   walletBalance: data[index][walletBalanceKey],
+//                   icon: data[index][walletPictureKey]);
+//             },
+//             child: Padding(
+//               padding: EdgeInsets.symmetric(vertical: height * 0.02),
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Container(
+//                     width: width * 0.12,
+//                     height: width * 0.12,
+//                     decoration: BoxDecoration(
+//                       borderRadius: BorderRadius.circular(width * 0.04),
+//                       color: AppColors.walletIconBackgroundColorProfile,
+//                     ),
+//                     child: Center(
+//                       child: SvgPicture.asset(
+//                         data[index][walletPictureKey],
+//                         width: width * 0.04,
+//                         height: width * 0.04,
+//                       ),
+//                     ),
+//                   ),
+//                   SizedBox(
+//                     width: width * 0.04,
+//                   ),
+//                   Text(
+//                     data[index][walletNameKey],
+//                     style: TextStyle(
+//                       color: AppColors.primaryBlack,
+//                       fontSize: width * 0.045,
+//                       fontWeight: FontWeight.w600,
+//                     ),
+//                   ),
+//                   const Spacer(),
+//                   Text(
+//                     "\$${data[index][walletBalanceKey]}",
+//                     style: TextStyle(
+//                       color: AppColors.primaryBlack,
+//                       fontSize: width * 0.045,
+//                       fontWeight: FontWeight.bold,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           );
+//         },
+//         separatorBuilder: (context, index) {
+//           return Divider(
+//             thickness: width * 0.001,
+//             color: AppColors.light20,
+//             height: height * 0.001,
+//           );
+//         },
+//         itemCount: data.length,
+//       ),
+//     );
+//   }
+// }

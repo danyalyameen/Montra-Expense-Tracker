@@ -427,7 +427,7 @@ class _ShowItemsForWallet extends StatelessWidget {
                                       padding:
                                           EdgeInsets.only(right: width * 0.06),
                                       child: SvgPicture.asset(
-                                        IconsPath.easypaisa,
+                                        IconsPath.wallet,
                                         width: width * 0.025,
                                         height: height * 0.025,
                                       ),

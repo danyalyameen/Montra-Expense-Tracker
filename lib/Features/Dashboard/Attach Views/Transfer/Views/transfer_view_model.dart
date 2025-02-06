@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
@@ -112,6 +113,7 @@ class TransferViewModel extends ViewModel {
                     category: "${fromController.text},${toController.text}",
                     description: descriptionController.text,
                     transactionPrice: int.parse(balanceController.text),
+                    time: Timestamp.now(),
                   ),
                 );
               }

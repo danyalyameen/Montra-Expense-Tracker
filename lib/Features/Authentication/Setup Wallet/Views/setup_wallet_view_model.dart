@@ -10,19 +10,20 @@ class SetupWalletViewModel extends ViewModel {
   final TextEditingController _balanceEditingController =
       TextEditingController();
   final TextEditingController _nameEditingController = TextEditingController();
-  final GlobalKey<FormState> balanceFormKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> nameFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController get balanceController => _balanceEditingController;
   TextEditingController get nameController => _nameEditingController;
 
   bool _isFocus = false;
   bool _showLoading = false;
+  bool _error = false;
   String _selectedAccountType = "";
   int _currentIndex = 0;
 
   bool get isFocus => _isFocus;
   bool get showLoading => _showLoading;
+  bool get walletError => _error;
   String get selectedAccountType => _selectedAccountType;
   int get currentIndex => _currentIndex;
 
@@ -40,6 +41,10 @@ class SetupWalletViewModel extends ViewModel {
   String? validateName(String? value) {
     if (value!.isEmpty) {
       return "Please Enter Your Name";
+    }
+    if (_error) {
+      _error = false;
+      return "Name Already Used";
     }
     return null;
   }
@@ -86,29 +91,24 @@ class SetupWalletViewModel extends ViewModel {
     validateBalance();
     validateDropDown();
     try {
-      if (nameFormKey.currentState!.validate() &&
-          balanceFormKey.currentState!.validate() &&
+      if (formKey.currentState!.validate() &&
           _balanceEditingController.text.isNotEmpty &&
           _selectedAccountType.isNotEmpty) {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         _showLoading = true;
         notifyListeners();
-        var firebaseData = await firestore.doc(auth.getUser()!.uid).get();
-        var data =
-            PersonData.store(firebaseData.data() as Map<String, dynamic>);
-        data.wallets ??= [];
-
-        data.wallets!.insert(
-            0,
-            Wallets(
-              walletName: nameController.text,
-              balance: int.parse(balanceController.text),
-              accountType: selectedAccountType,
-            ));
-        await firestore
-            .doc(auth.getUser()!.uid)
-            .update(PersonData(wallets: data.wallets!).receive());
+        _error = await walletService.addWallet(
+            wallet: Wallets(
+          balance: int.parse(_balanceEditingController.text),
+          walletName: _nameEditingController.text,
+          accountType: _selectedAccountType,
+        ));
+        if (_error) {
+          _showLoading = false;
+          notifyListeners();
+          return;
+        }
         _showLoading = false;
         notifyListeners();
         sharedPreferences.setBool("Wallet-Setup", true);

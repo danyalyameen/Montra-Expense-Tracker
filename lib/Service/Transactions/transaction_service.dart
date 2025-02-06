@@ -5,11 +5,11 @@ import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
 
-class FetchingTransactionsService {
+class TransactionService {
   Future<List<Transactions>> fetchTransactions() async {
     List<Transactions> transactions = [];
     final firestore = FirebaseFirestore.instance;
-    final auth = locator<Auth>();
+    final auth = locator<AuthService>();
     final data =
         await firestore.collection('users').doc(auth.getUser()!.uid).get();
     final personData = PersonData.store(data.data() as Map<String, dynamic>);
@@ -27,6 +27,9 @@ class FetchingTransactionsService {
 
   Future<List<Map<String, dynamic>>> transactionIcons() async {
     final transactions = await fetchTransactions();
+    if (transactions.isEmpty) {
+      return [];
+    }
     List<Map<String, dynamic>> iconData = [];
     for (var transaction in transactions) {
       switch (transaction.type) {

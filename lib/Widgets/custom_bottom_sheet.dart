@@ -34,7 +34,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
     double height = MediaQuery.of(context).size.height;
     return InkWell(
       onTap: () {
-        CategoryBottomSheet.showBottomSheet(
+        BottomSheet.showBottomSheet(
           buttonsBottomHight: widget.buttonsBottomHight,
           buttonText: widget.buttonText,
           buttonWidth: widget.buttonWidth,
@@ -85,7 +85,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
   }
 }
 
-class CategoryBottomSheet {
+class BottomSheet {
   static void showBottomSheet({
     required double width,
     required double height,

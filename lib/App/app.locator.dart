@@ -10,7 +10,9 @@ import 'package:stacked_services/src/navigation/navigation_service.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
 import '../Service/Authentication/auth_service.dart';
-import '../Service/Transactions/fetching_transactions_service.dart';
+import '../Service/Budgets/budget_service.dart';
+import '../Service/Transactions/transaction_service.dart';
+import '../Service/Wallets/wallet_service.dart';
 
 final locator = StackedLocator.instance;
 
@@ -24,6 +26,8 @@ Future<void> setupLocator({
 
 // Register dependencies
   locator.registerLazySingleton(() => NavigationService());
-  locator.registerLazySingleton(() => Auth());
-  locator.registerLazySingleton(() => FetchingTransactionsService());
+  locator.registerLazySingleton(() => AuthService());
+  locator.registerLazySingleton(() => TransactionService());
+  locator.registerLazySingleton(() => BudgetService());
+  locator.registerLazySingleton(() => WalletService());
 }

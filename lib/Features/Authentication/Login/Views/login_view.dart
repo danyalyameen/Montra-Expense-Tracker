@@ -197,7 +197,7 @@ class _OtherLoginItems extends StatelessWidget {
             try {
               SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();
-              await Auth().googleAuth();
+              await AuthService().googleAuth();
               sharedPreferences.setBool("Logged-In", true);
               navigationService.replaceWithSetupPinView();
             } catch (e) {

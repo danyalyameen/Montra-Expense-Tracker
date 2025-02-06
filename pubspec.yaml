@@ -41,13 +41,9 @@ flutter:
     - assets/Icons/Arrows/
     - assets/Icons/Attachment/
     - assets/Icons/Backgrounds/
-    - assets/Icons/Bank/
     - assets/Icons/Bottom Navigation/
     - assets/Icons/Expanses/
     - assets/Icons/Finance/
-    - assets/Icons/Graph/
-    - assets/Icons/Graph/Line Chart/
-    - assets/Icons/Graph/Pie Chart/
     - assets/Icons/Illustrations/
     - assets/Icons/Operations/
 # Images

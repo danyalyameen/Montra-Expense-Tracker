@@ -1,14 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class PersonData {
   String? name;
   List<Wallets>? wallets;
-  List<IncomeOptions>? incomeOptions;
-  List<ExpenseOptions>? expenseOptions;
+  List<UserIncomeOptions>? userIncomeOptions;
+  List<UserExpenseOptions>? userExpenseOptions;
+  List<Budget>? budget;
 
   PersonData(
-      {this.name, this.wallets, this.incomeOptions, this.expenseOptions});
+      {this.name,
+      this.wallets,
+      this.userIncomeOptions,
+      this.userExpenseOptions,
+      this.budget});
 
   PersonData.store(Map<String, dynamic> json) {
-    name = json['name'];
+    name = json['Name'];
     if (json['Wallets'] != null) {
       wallets = <Wallets>[];
       json['Wallets'].forEach(
@@ -18,18 +25,26 @@ class PersonData {
       );
     }
     if (json['income options'] != null) {
-      incomeOptions = <IncomeOptions>[];
+      userIncomeOptions = <UserIncomeOptions>[];
       json['income options'].forEach(
         (v) {
-          incomeOptions!.add(IncomeOptions.store(v));
+          userIncomeOptions!.add(UserIncomeOptions.store(v));
         },
       );
     }
     if (json['expense options'] != null) {
-      expenseOptions = <ExpenseOptions>[];
+      userExpenseOptions = <UserExpenseOptions>[];
       json['expense options'].forEach(
         (v) {
-          expenseOptions!.add(ExpenseOptions.store(v));
+          userExpenseOptions!.add(UserExpenseOptions.store(v));
+        },
+      );
+    }
+    if (json['Budgets'] != null) {
+      budget = <Budget>[];
+      json['Budgets'].forEach(
+        (v) {
+          budget!.add(Budget.store(v));
         },
       );
     }
@@ -37,16 +52,20 @@ class PersonData {
 
   Map<String, dynamic> receive() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (name != null) data['name'] = name;
+    if (name != null) data['Name'] = name;
     if (wallets != null) {
       data['Wallets'] = wallets!.map((v) => v.receive()).toList();
     }
-    if (incomeOptions != null) {
-      data['income options'] = incomeOptions!.map((v) => v.recieve()).toList();
+    if (userIncomeOptions != null) {
+      data['income options'] =
+          userIncomeOptions!.map((v) => v.recieve()).toList();
     }
-    if (expenseOptions != null) {
+    if (userExpenseOptions != null) {
       data['expense options'] =
-          expenseOptions!.map((v) => v.recieve()).toList();
+          userExpenseOptions!.map((v) => v.recieve()).toList();
+    }
+    if (budget != null) {
+      data['Budgets'] = budget!.map((v) => v.recieve()).toList();
     }
     return data;
   }
@@ -89,15 +108,21 @@ class Transactions {
   String? category;
   int? transactionPrice;
   String? description;
+  Timestamp? time;
 
   Transactions(
-      {this.type, this.category, this.transactionPrice, this.description});
+      {this.type,
+      this.category,
+      this.transactionPrice,
+      this.description,
+      this.time});
 
   Transactions.store(Map<String, dynamic> json) {
     type = json['type'];
     category = json['category'];
     transactionPrice = json['transactionPrice'];
     description = json['description'];
+    time = json['time'];
   }
 
   Map<String, dynamic> recieve() {
@@ -106,17 +131,18 @@ class Transactions {
     data['category'] = category;
     data['transactionPrice'] = transactionPrice;
     data['description'] = description;
+    data['time'] = time;
     return data;
   }
 }
 
-class IncomeOptions {
+class UserIncomeOptions {
   String? option;
   String? color;
 
-  IncomeOptions({this.option, this.color});
+  UserIncomeOptions({this.option, this.color});
 
-  IncomeOptions.store(Map<String, dynamic> json) {
+  UserIncomeOptions.store(Map<String, dynamic> json) {
     option = json['option'];
     color = json['color'];
   }
@@ -129,13 +155,13 @@ class IncomeOptions {
   }
 }
 
-class ExpenseOptions {
+class UserExpenseOptions {
   String? option;
   String? color;
 
-  ExpenseOptions({this.option, this.color});
+  UserExpenseOptions({this.option, this.color});
 
-  ExpenseOptions.store(Map<String, dynamic> json) {
+  UserExpenseOptions.store(Map<String, dynamic> json) {
     option = json['option'];
     color = json['color'];
   }
@@ -143,6 +169,33 @@ class ExpenseOptions {
   Map<String, dynamic> recieve() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['option'] = option;
+    data['color'] = color;
+    return data;
+  }
+}
+
+class Budget {
+  String? category, color;
+  int? balance, alertLimit;
+  Timestamp? month;
+
+  Budget(
+      {this.balance, this.category, this.alertLimit, this.month, this.color});
+
+  Budget.store(Map<String, dynamic> json) {
+    color = json['color'];
+    balance = json['balance'];
+    category = json['category'];
+    alertLimit = json['alertLimit'];
+    month = json['month'];
+  }
+
+  Map<String, dynamic> recieve() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['balance'] = balance;
+    data['category'] = category;
+    data['alertLimit'] = alertLimit;
+    data['month'] = month;
     data['color'] = color;
     return data;
   }

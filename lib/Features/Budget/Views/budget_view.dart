@@ -5,6 +5,7 @@ import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Budget/Views/budget_view_model.dart';
+import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
 import 'package:stacked/stacked.dart';
@@ -77,10 +78,8 @@ class BudgetView extends StackedView<BudgetViewModel> {
               child: _BudgetItemUI(
                 height: height,
                 width: width,
+                data: viewModel.budgetService.fetchBudget(),
                 navigationService: viewModel.navigationService,
-                percentage: (index) {
-                  return viewModel.percentage(index: index);
-                },
               ),
             ),
             Padding(
@@ -104,216 +103,258 @@ class BudgetView extends StackedView<BudgetViewModel> {
   BudgetViewModel viewModelBuilder(BuildContext context) => BudgetViewModel();
 }
 
-class _BudgetItemUI extends StatelessWidget {
+class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
   final double width, height;
-  final double Function(int index) percentage;
   final NavigationService navigationService;
-  _BudgetItemUI({
+  final Future<List<Budget>> data;
+  const _BudgetItemUI({
+    required this.data,
     required this.width,
     required this.height,
-    required this.percentage,
     required this.navigationService,
   });
 
-  final String categoryKey = "Category";
-  final String colorKey = "Color";
-  final String limitKey = "Limit";
-  final String spendKey = "Spend";
-  final String iconKey = "Icon";
-  final String iconColorKey = "Icon-Color";
-  final String iconBackgroundColorKey = "Icon-Background";
   final String titleOnEmptyList =
       "You don't have a budget. \n Let's make one so you in control.";
   final String warning = "You've exceed the limit";
 
-  final List<Map<String, dynamic>> data = Database.budgetData;
-
   @override
-  Widget build(BuildContext context) {
-    return data.isEmpty
-        ? Center(
+  Widget build(BuildContext context, BudgetViewModel viewModel) {
+    return FutureBuilder(
+      future: data,
+      builder: (context, budgets) {
+        if (budgets.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: AppColors.primaryViolet,
+            ),
+          );
+        }
+        if (budgets.data == null) {
+          return Center(
             child: Text(
               titleOnEmptyList,
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: AppColors.grey,
-                  fontSize: width * 0.05,
-                  fontWeight: FontWeight.w500),
+                color: AppColors.grey,
+                fontSize: width * 0.05,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          )
-        : ListView.builder(
-            itemCount: data.length,
+          );
+        } else {
+          return ListView.builder(
+            itemCount: budgets.data!.length,
             itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.only(
-                  top: index == 0 ? height * 0.04 : height * 0.02,
-                  bottom: height * 0.02,
+              final budget = budgets.data![index];
+              return FutureBuilder(
+                future: viewModel.budgetService.spend(
+                  category: budget.category!,
+                  month: viewModel.index + 1,
                 ),
-                child: Center(
-                  child: SizedBox(
-                    width: width * 0.9,
-                    height: data[index][spendKey] > data[index][limitKey]
-                        ? height * 0.24
-                        : height * 0.2,
-                    child: InkWell(
-                      onTap: () {
-                        navigationService.navigateToEditBudgetView(
-                            color: data[index][colorKey],
-                            category: data[index][categoryKey],
-                            spendBalance: data[index][spendKey],
-                            limitBalance: data[index][limitKey],
-                            backgroundColor: data[index]
-                                [iconBackgroundColorKey],
-                            icon: data[index][iconKey],
-                            iconColor: data[index][iconColorKey]);
-                      },
-                      child: Card(
-                        color: AppColors.light80,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(width * 0.06),
-                        ),
-                        elevation: width * 0.002,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: height * 0.02,
-                                left: width * 0.04,
-                                right: width * 0.04,
-                                bottom: height * 0.01,
+                builder: (context, spend) {
+                  if (budgets.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.primaryViolet,
+                      ),
+                    );
+                  }
+                  if (spend.data != null) {
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        top: index == 0 ? height * 0.04 : height * 0.02,
+                        bottom: height * 0.02,
+                      ),
+                      child: Center(
+                        child: SizedBox(
+                          width: width * 0.9,
+                          height: spend.data! > budget.balance!
+                              ? height * 0.24
+                              : height * 0.2,
+                          child: InkWell(
+                            onTap: () {
+                              // navigationService.navigateToEditBudgetView(
+                              //     color: data[index][colorKey],
+                              //     category: data[index][categoryKey],
+                              //     spendBalance: data[index][spendKey],
+                              //     limitBalance: data[index][limitKey],
+                              //     backgroundColor: data[index]
+                              //         [iconBackgroundColorKey],
+                              //     icon: data[index][iconKey],
+                              //     iconColor: data[index][iconColorKey]);
+                            },
+                            child: Card(
+                              color: AppColors.light80,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(width * 0.06),
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              elevation: width * 0.002,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: width * 0.001,
-                                        color: AppColors.primaryBlack,
-                                      ),
-                                      borderRadius:
-                                          BorderRadius.circular(width * 0.04),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: height * 0.02,
+                                      left: width * 0.04,
+                                      right: width * 0.04,
+                                      bottom: height * 0.01,
                                     ),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: width * 0.001,
-                                          horizontal: width * 0.03),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          SizedBox(
-                                            width: width * 0.035,
-                                            height: height * 0.035,
-                                            child: CircleAvatar(
-                                              backgroundColor: Database
-                                                  .budgetData[index][colorKey],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: width * 0.02,
-                                          ),
-                                          Text(
-                                            data[index][categoryKey],
-                                            style: TextStyle(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              width: width * 0.001,
                                               color: AppColors.primaryBlack,
-                                              fontSize: width * 0.038,
-                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                                width * 0.04),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: width * 0.001,
+                                                horizontal: width * 0.03),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                SizedBox(
+                                                  width: width * 0.035,
+                                                  height: height * 0.035,
+                                                  child: CircleAvatar(
+                                                    backgroundColor: Color(
+                                                      int.parse(
+                                                        budget.color!,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: width * 0.02,
+                                                ),
+                                                Text(
+                                                  budget.category!,
+                                                  style: TextStyle(
+                                                    color:
+                                                        AppColors.primaryBlack,
+                                                    fontSize: width * 0.038,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
+                                        ),
+                                        spend.data! > budget.balance!
+                                            ? SvgPicture.asset(
+                                                IconsPath.warning,
+                                                colorFilter: ColorFilter.mode(
+                                                    AppColors.primaryRed,
+                                                    BlendMode.srcIn),
+                                              )
+                                            : const Spacer(),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: width * 0.04),
+                                    child: Text(
+                                      spend.data! > budget.balance!
+                                          ? "Remaining \$0"
+                                          : "Remaining \$${budget.balance! - spend.data!}",
+                                      style: TextStyle(
+                                        color: AppColors.primaryBlack,
+                                        fontSize: width * 0.06,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.01,
+                                  ),
+                                  Center(
+                                    child: SizedBox(
+                                      width: width * 0.8,
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            width: width * 0.8,
+                                            height: height * 0.018,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      width * 0.06),
+                                              color: AppColors.light40,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: width *
+                                                0.8 *
+                                                viewModel.percentage(
+                                                    index: index,
+                                                    spend: spend.data!,
+                                                    limit: budget.balance!),
+                                            height: height * 0.018,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      width * 0.06),
+                                              color: Color(
+                                                int.parse(budget.color!),
+                                              ),
+                                            ),
+                                          )
                                         ],
                                       ),
                                     ),
                                   ),
-                                  data[index][spendKey] > data[index][limitKey]
-                                      ? SvgPicture.asset(
-                                          IconsPath.warning,
-                                          colorFilter: ColorFilter.mode(
-                                              AppColors.primaryRed,
-                                              BlendMode.srcIn),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top: height * 0.01, left: width * 0.04),
+                                    child: Text(
+                                      "\$${spend.data} of \$${budget.balance}",
+                                      style: TextStyle(
+                                        color: AppColors.grey,
+                                        fontSize: width * 0.045,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  spend.data! > budget.balance!
+                                      ? Padding(
+                                          padding: EdgeInsets.only(
+                                              left: width * 0.04,
+                                              top: height * 0.01),
+                                          child: Text(
+                                            warning,
+                                            style: TextStyle(
+                                                color: AppColors.primaryRed,
+                                                fontSize: width * 0.04,
+                                                fontWeight: FontWeight.w400),
+                                          ),
                                         )
                                       : const Spacer(),
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(left: width * 0.04),
-                              child: Text(
-                                data[index][spendKey] > data[index][limitKey]
-                                    ? "Remaining \$0"
-                                    : "Remaining \$${data[index][limitKey] - data[index][spendKey]}",
-                                style: TextStyle(
-                                  color: AppColors.primaryBlack,
-                                  fontSize: width * 0.06,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.01,
-                            ),
-                            Center(
-                              child: SizedBox(
-                                width: width * 0.8,
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      width: width * 0.8,
-                                      height: height * 0.018,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(width * 0.06),
-                                        color: AppColors.light40,
-                                      ),
-                                    ),
-                                    Container(
-                                      width: width * 0.8 * percentage(index),
-                                      height: height * 0.018,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(width * 0.06),
-                                        color: data[index][colorKey],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  top: height * 0.01, left: width * 0.04),
-                              child: Text(
-                                "\$${data[index][spendKey]} of \$${data[index][limitKey]}",
-                                style: TextStyle(
-                                  color: AppColors.grey,
-                                  fontSize: width * 0.045,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            data[index][spendKey] > data[index][limitKey]
-                                ? Padding(
-                                    padding: EdgeInsets.only(
-                                        left: width * 0.04, top: height * 0.01),
-                                    child: Text(
-                                      warning,
-                                      style: TextStyle(
-                                          color: AppColors.primaryRed,
-                                          fontSize: width * 0.04,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  )
-                                : const Spacer(),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                },
               );
             },
           );
+        }
+      },
+    );
   }
 }

@@ -1,20 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
+import 'package:montra_expense_tracker/Models/default_options_model.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
 
 class ExpenseViewModel extends ViewModel {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _balanceController = TextEditingController();
-  final ValueNotifier _itemIndex = ValueNotifier<int>(0);
   final GlobalKey<FormState> descriptionFormKey = GlobalKey<FormState>();
 
   TextEditingController get descriptionController => _descriptionController;
   TextEditingController get balanceController => _balanceController;
-  ValueNotifier get itemIndex => _itemIndex;
 
   Map<String, dynamic> storeSelectedCategory = {
     "option": "Category",
@@ -68,9 +68,11 @@ class ExpenseViewModel extends ViewModel {
     }
   }
 
-  Future<PersonData> fetchingCategoryOptions() async {
+  Future<List> fetchingCategoryOptions() async {
     var data = await expenseOptions.get();
-    return PersonData.store(data.data() as Map<String, dynamic>);
+    var defaultOptions =
+        DefaultOptionsModel.store(data.data() as Map<String, dynamic>);
+    return defaultOptions.defaultExpenseOptions!;
   }
 
   Future<PersonData> fetchingWalletOptions() async {
@@ -80,8 +82,8 @@ class ExpenseViewModel extends ViewModel {
 
   void updateCategoryHintText({required int index}) async {
     var data = await fetchingCategoryOptions();
-    storeSelectedCategory["option"] = data.expenseOptions![index].option;
-    storeSelectedCategory["color"] = data.expenseOptions![index].color;
+    storeSelectedCategory["option"] = data[index].option;
+    storeSelectedCategory["color"] = data[index].color;
     navigationService.back();
     notifyListeners();
   }
@@ -91,10 +93,6 @@ class ExpenseViewModel extends ViewModel {
     storeSelectedWallet["option"] = data.wallets![index].walletName;
     navigationService.back();
     notifyListeners();
-  }
-
-  void onPageChanged(int value) {
-    _itemIndex.value = value;
   }
 
   void addExpenseTransactionCompleted() async {
@@ -117,10 +115,11 @@ class ExpenseViewModel extends ViewModel {
                 wallet.transactions!.insert(
                   0,
                   Transactions(
+                    type: "Expense",
                     category: storeSelectedCategory["option"],
                     description: descriptionController.text,
                     transactionPrice: int.parse(balanceController.text),
-                    type: "Expense",
+                    time: Timestamp.now(),
                   ),
                 );
               }

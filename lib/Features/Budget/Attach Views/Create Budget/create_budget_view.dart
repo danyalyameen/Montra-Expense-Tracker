@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
-import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Create%20Budget/create_budget_view_model.dart';
+import 'package:montra_expense_tracker/Models/default_options_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_bottom_sheet.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/switch_tile.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class CreateBudgetView extends StackedView<CreateBudgetViewModel> {
-  CreateBudgetView({super.key});
+  const CreateBudgetView({super.key});
 
-  String appBarTitle = "Create Budget";
-  String buttonText = "Continue";
+  final String appBarTitle = "Create Budget";
+  final String buttonText = "Continue";
 
   @override
   Widget builder(
@@ -31,56 +31,74 @@ class CreateBudgetView extends StackedView<CreateBudgetViewModel> {
         backgroundColor: AppColors.primaryViolet,
         onTap: () => viewModel.navigationService.back(),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _BudgetBalance(
-            isOn: viewModel.isOn,
-            height: height,
-            width: width,
-          ),
-          Expanded(
-            child: Container(
-              height: height * 0.3,
-              decoration: BoxDecoration(
-                color: AppColors.primaryLight,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(width * 0.1),
-                  topRight: Radius.circular(width * 0.1),
+      body: Form(
+        key: viewModel.formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _BudgetBalance(
+              isOn: viewModel.isOn,
+              height: height,
+              width: width,
+            ),
+            Expanded(
+              child: Container(
+                height: height * 0.3,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryLight,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(width * 0.1),
+                    topRight: Radius.circular(width * 0.1),
+                  ),
                 ),
-              ),
-              child: Column(
-                children: [
-                  _ShowCategory(
-                    width: width,
-                    height: height,
-                  ),
-                  _SwitchTile(
-                    width: width,
-                    height: height,
-                    isOn: viewModel.isOn,
-                    updateSwitch: (value) => viewModel.updateSwitch(value),
-                  ),
-                  viewModel.isOn
-                      ? _Slider(
-                          width: width,
-                          height: height,
-                        )
-                      : const SizedBox(),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: height * 0.05),
-                    child: CustomElevatedButton(
+                child: Column(
+                  children: [
+                    _Category(
                       width: width,
                       height: height,
-                      text: buttonText,
-                      onPressed: () {},
                     ),
-                  )
-                ],
+                    _SwitchTile(
+                      width: width,
+                      height: height,
+                      isOn: viewModel.isOn,
+                      updateSwitch: (value) => viewModel.updateSwitch(value),
+                    ),
+                    viewModel.isOn
+                        ? _Slider(
+                            width: width,
+                            height: height,
+                          )
+                        : const SizedBox(),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: height * 0.05),
+                      child: CustomElevatedButton(
+                        width: width,
+                        height: height,
+                        backgroundColor: viewModel.showLoading
+                            ? AppColors.violet20
+                            : AppColors.primaryViolet,
+                        onPressed: () => viewModel.addBudgetCompleted(),
+                        child: viewModel.showLoading
+                            ? SpinKitThreeBounce(
+                                color: AppColors.primaryViolet,
+                                size: width * 0.06,
+                              )
+                            : Text(
+                                buttonText,
+                                style: TextStyle(
+                                  color: AppColors.primaryLight,
+                                  fontSize: width * 0.045,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -90,17 +108,17 @@ class CreateBudgetView extends StackedView<CreateBudgetViewModel> {
       CreateBudgetViewModel();
 }
 
-class _BudgetBalance extends StatelessWidget {
+class _BudgetBalance extends ViewModelWidget<CreateBudgetViewModel> {
   final double height, width;
   final bool isOn;
   const _BudgetBalance(
       {required this.height, required this.width, required this.isOn});
 
   final String inputHintText = "How much do you want to spend?";
-  final String balance = "0";
+  final String balanceHintText = "0";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, CreateBudgetViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.only(
           top: isOn ? height * 0.28 : height * 0.35, left: width * 0.05),
@@ -124,9 +142,10 @@ class _BudgetBalance extends StatelessWidget {
                     color: AppColors.light80),
               ),
               Expanded(
-                child: TextField(
+                child: TextFormField(
                   showCursor: false,
-                  keyboardType: const TextInputType.numberWithOptions(),
+                  keyboardType: TextInputType.number,
+                  controller: viewModel.balanceController,
                   style: TextStyle(
                     fontSize: width * 0.16,
                     fontWeight: FontWeight.w600,
@@ -136,7 +155,7 @@ class _BudgetBalance extends StatelessWidget {
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
-                    hintText: balance,
+                    hintText: balanceHintText,
                     hintStyle: TextStyle(
                       fontSize: width * 0.16,
                       fontWeight: FontWeight.w600,
@@ -144,7 +163,7 @@ class _BudgetBalance extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
+              )
             ],
           )
         ],
@@ -153,31 +172,28 @@ class _BudgetBalance extends StatelessWidget {
   }
 }
 
-class _ShowCategory extends ViewModelWidget<CreateBudgetViewModel> {
+class _Category extends ViewModelWidget<CreateBudgetViewModel> {
   final double width, height;
-  const _ShowCategory({required this.width, required this.height});
+  const _Category({required this.width, required this.height});
 
-  final String hintTextForDropDown = "Category";
-  final String createCategoryText = "Create Category";
-  final String categoryOptionsCategoryKey = "Category";
-  final String categoryOptionsColorKey = "Colors";
+  final String createCategory = "Create Category";
+  final String dropDownText = "Category";
 
   @override
   Widget build(BuildContext context, CreateBudgetViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.only(top: height * 0.05),
       child: CustomBottomSheet(
-        hintText: hintTextForDropDown,
-        bottomSheetHight: height * 0.3,
-        buttonText: createCategoryText,
-        buttonsBottomHight: height * 0.09,
+        buttonsBottomHight: height * 0.08,
+        buttonText: createCategory,
         buttonWidth: width * 0.38,
+        bottomSheetHight: height * 0.29,
+        hintText: dropDownText,
+        storeSelectedItem: viewModel.storeSelectedCategory,
         showItems: _ShowItemsForCategory(
-          categoryKey: categoryOptionsCategoryKey,
-          colorsKey: categoryOptionsColorKey,
           width: width,
           height: height,
-          categoryOptions: Database.categoryOptions,
+          data: viewModel.fetchingCategoryOptions(),
           updateCategory: (index) {
             viewModel.updateCategoryHintText(index: index);
           },
@@ -187,7 +203,6 @@ class _ShowCategory extends ViewModelWidget<CreateBudgetViewModel> {
           height: height,
           storeSelectedCategory: viewModel.storeSelectedCategory,
         ),
-        storeSelectedItem: viewModel.storeSelectedCategory,
       ),
     );
   }
@@ -232,7 +247,8 @@ class _ShowSelectedCategory extends StatelessWidget {
               padding: EdgeInsets.only(right: width * 0.04),
               child: CircleAvatar(
                 maxRadius: width * 0.01,
-                backgroundColor: storeSelectedCategory["color"],
+                backgroundColor:
+                    Color(int.parse(storeSelectedCategory["color"])),
               ),
             )
           ],
@@ -244,67 +260,75 @@ class _ShowSelectedCategory extends StatelessWidget {
 
 class _ShowItemsForCategory extends StatelessWidget {
   final double width, height;
-  final List<Map<String, dynamic>> categoryOptions;
   final Function(int index) updateCategory;
-  final String colorsKey;
-  final String categoryKey;
+  final Future<DefaultOptionsModel> data;
   const _ShowItemsForCategory({
     required this.width,
     required this.height,
-    required this.categoryOptions,
     required this.updateCategory,
-    required this.colorsKey,
-    required this.categoryKey,
+    required this.data,
   });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       flex: 3,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: categoryOptions.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: width * 0.1, vertical: height * 0.057),
-            child: InkWell(
-              onTap: () {
-                updateCategory(index);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColors.primaryBlack,
-                      width: width * 0.002,
+      child: FutureBuilder<DefaultOptionsModel>(
+        future: data,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: snapshot.data!.defaultExpenseOptions!.length,
+            itemBuilder: (context, index) {
+              final data = snapshot.data!.defaultExpenseOptions![index];
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.1, vertical: height * 0.057),
+                child: InkWell(
+                  onTap: () {
+                    updateCategory(index);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColors.primaryBlack,
+                        width: width * 0.002,
+                      ),
+                      borderRadius: BorderRadius.circular(width * 0.08),
                     ),
-                    borderRadius: BorderRadius.circular(width * 0.08)),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        categoryOptions[index][categoryKey],
-                        style: TextStyle(
-                          color: AppColors.primaryBlack,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            data.option!,
+                            style: TextStyle(
+                              color: AppColors.primaryBlack,
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          width: width * 0.02,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: width * 0.04),
+                          child: CircleAvatar(
+                            maxRadius: width * 0.01,
+                            backgroundColor: Color(int.parse(data.color!)),
+                          ),
+                        )
+                      ],
                     ),
-                    SizedBox(
-                      width: width * 0.02,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: width * 0.04),
-                      child: CircleAvatar(
-                        maxRadius: width * 0.01,
-                        backgroundColor: categoryOptions[index][colorsKey],
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),
@@ -353,6 +377,19 @@ class _Slider extends ViewModelWidget<CreateBudgetViewModel> {
       min: 0,
       handlerHeight: height * 0.04,
       handlerWidth: width * 0.14,
+      tooltip: FlutterSliderTooltip(
+        textStyle: TextStyle(
+          color: AppColors.primaryLight,
+          fontSize: width * 0.0,
+          fontWeight: FontWeight.w500,
+        ),
+        boxStyle: FlutterSliderTooltipBox(
+          decoration: BoxDecoration(
+            color: AppColors.primaryLight,
+            borderRadius: BorderRadius.circular(width * 0.06),
+          ),
+        ),
+      ),
       handler: FlutterSliderHandler(
         decoration: BoxDecoration(
           color: AppColors.primaryViolet,

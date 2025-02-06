@@ -16,7 +16,7 @@ class FinancialReportSummaryViewModel extends ViewModel {
       {required TapUpDetails details, required double deviceWidth}) {
     if (_currentIndex == Database.financialReport.length - 1 &&
         details.localPosition.dx > deviceWidth / 2) {
-      navigationService.replaceWithReportView();
+      navigationService.replaceWithTransactionView();
     } else if (details.localPosition.dx > deviceWidth / 2) {
       _currentIndex++;
       notifyListeners();

@@ -35,7 +35,7 @@ class TransactionView extends StackedView<TransactionViewModel> {
           Padding(
             padding: EdgeInsets.only(
               top: height * 0.03,
-              right: width * 0.72,
+              right: width * 0.6,
             ),
             child: Text(
               title,
@@ -46,14 +46,12 @@ class TransactionView extends StackedView<TransactionViewModel> {
               ),
             ),
           ),
-          Center(
-            child: InkWell(
-              onTap: () {},
-              child: UserTransactions(
-                height: height * 0.62,
-                icons: viewModel.transactionsService.transactionIcons(),
-                transactions: viewModel.transactionsService.fetchTransactions(),
-              ),
+          InkWell(
+            onTap: () {},
+            child: UserTransactions(
+              height: height * 0.62,
+              icons: viewModel.transactionsService.transactionIcons(),
+              transactions: viewModel.transactionsService.fetchTransactions(),
             ),
           ),
         ],

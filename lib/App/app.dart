@@ -21,18 +21,17 @@ import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_settings_view.dart';
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Security/Views/security_view.dart';
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Theme/Views/theme_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Views/settings_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Transfer/Views/transfer_view.dart';
 import 'package:montra_expense_tracker/Features/Splash%20Screen/Views/splash_screen_view.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Details%20Transaction/Views/details_transaction_view.dart';
-import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Attach%20Views/Report/Views/report_view.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Views/financial_report_summary_view.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_view.dart';
 import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
-import 'package:montra_expense_tracker/Service/Transactions/fetching_transactions_service.dart';
+import 'package:montra_expense_tracker/Service/Budgets/budget_service.dart';
+import 'package:montra_expense_tracker/Service/Transactions/transaction_service.dart';
+import 'package:montra_expense_tracker/Service/Wallets/wallet_service.dart';
 import 'package:montra_expense_tracker/Widgets/successfully_done.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -55,7 +54,6 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: NotificationView),
     MaterialRoute(page: TransactionView),
     MaterialRoute(page: FinancialReportSummaryView),
-    MaterialRoute(page: ReportView),
     MaterialRoute(page: DetailsTransactionView),
     MaterialRoute(page: IncomeView),
     MaterialRoute(page: TransferView),
@@ -68,16 +66,16 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: AccountDetails),
     MaterialRoute(page: SettingsView),
     MaterialRoute(page: CurrencyView),
-    MaterialRoute(page: ThemeView),
-    MaterialRoute(page: SecurityView),
     MaterialRoute(page: NotificationSettingsView),
     MaterialRoute(page: AboutView),
     MaterialRoute(page: HelpView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
-    LazySingleton(classType: Auth),
-    LazySingleton(classType: FetchingTransactionsService),
+    LazySingleton(classType: AuthService),
+    LazySingleton(classType: TransactionService),
+    LazySingleton(classType: BudgetService),
+    LazySingleton(classType: WalletService),
   ],
 )
 class App {}
