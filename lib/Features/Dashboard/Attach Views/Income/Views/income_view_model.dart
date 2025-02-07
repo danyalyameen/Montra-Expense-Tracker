@@ -72,7 +72,8 @@ class IncomeViewModel extends ViewModel {
 
   Future<List> fetchingIncomeOptions() async {
     var data = await incomeOptions.get();
-    var defaultOptions = DefaultOptionsModel.store(data.data() as Map<String, dynamic>);
+    var defaultOptions =
+        DefaultOptionsModel.store(data.data() as Map<String, dynamic>);
     return defaultOptions.defaultIncomeOptions!;
   }
 

@@ -76,7 +76,7 @@ class TransferView extends StackedView<TransferViewModel> {
                     SizedBox(
                       height: height * 0.04,
                     ),
-                    FileInserter(),
+                    const FileInserter(),
                     SizedBox(
                       height: height * 0.04,
                     ),

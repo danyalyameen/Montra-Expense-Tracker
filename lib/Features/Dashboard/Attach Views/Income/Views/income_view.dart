@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Income/Views/income_view_model.dart';
+import 'package:montra_expense_tracker/Widgets/add_options.dart';
 import 'package:montra_expense_tracker/Widgets/category_bottom_sheet.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
@@ -53,8 +54,18 @@ class IncomeView extends StackedView<IncomeViewModel> {
               child: Column(
                 children: [
                   CategoryBottomSheet(
-                      fetchingCategoryOptions:
-                          viewModel.fetchingIncomeOptions()),
+                    fetchingCategoryOptions:
+                        viewModel.optionService.getIncomeOptions(),
+                    onPressed: () {
+                      addOption(
+                        width: width,
+                        height: height,
+                        title: "Income Source",
+                        context: context,
+                        addExpense: false,
+                      );
+                    },
+                  ),
                   SizedBox(
                     height: height * 0.02,
                   ),
@@ -76,7 +87,7 @@ class IncomeView extends StackedView<IncomeViewModel> {
                   SizedBox(
                     height: height * 0.02,
                   ),
-                  FileInserter(),
+                  const FileInserter(),
                   SizedBox(
                     height: height * 0.02,
                   ),

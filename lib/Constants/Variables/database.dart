@@ -348,10 +348,6 @@ class Database {
       "Icon": IconsPath.gallery,
       "Title": "Gallery",
     },
-    {
-      "Icon": IconsPath.document,
-      "Title": "Document",
-    },
   ];
 
   static int i = 1;

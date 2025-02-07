@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view_model.dart';
+import 'package:montra_expense_tracker/Widgets/add_options.dart';
 import 'package:montra_expense_tracker/Widgets/category_bottom_sheet.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
@@ -52,7 +53,19 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
               ),
               child: Column(
                 children: [
-                  CategoryBottomSheet(fetchingCategoryOptions: viewModel.fetchingCategoryOptions(),),
+                  CategoryBottomSheet(
+                    fetchingCategoryOptions:
+                        viewModel.optionService.getExpenseOptions(),
+                    onPressed: () {
+                      addOption(
+                        width: width,
+                        height: height,
+                        context: context,
+                        title: "Create Category",
+                        addExpense: true,
+                      );
+                    },
+                  ),
                   SizedBox(
                     height: height * 0.02,
                   ),
@@ -74,7 +87,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                   SizedBox(
                     height: height * 0.02,
                   ),
-                  FileInserter(),
+                  const FileInserter(),
                   SizedBox(
                     height: height * 0.02,
                   ),
@@ -84,7 +97,6 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                     backgroundColor: viewModel.showLoading
                         ? AppColors.violet20
                         : AppColors.primaryViolet,
-                    onPressed: () => viewModel.addExpenseTransactionCompleted(),
                     child: viewModel.showLoading
                         ? SpinKitThreeBounce(
                             color: AppColors.primaryViolet,
@@ -98,6 +110,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
+                    onPressed: () => viewModel.addExpenseTransactionCompleted(),
                   )
                 ],
               ),

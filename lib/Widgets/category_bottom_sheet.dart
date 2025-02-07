@@ -6,7 +6,11 @@ import 'package:stacked_services/stacked_services.dart';
 
 class CategoryBottomSheet extends StatefulWidget {
   final Future<List> fetchingCategoryOptions;
-  const CategoryBottomSheet({super.key, required this.fetchingCategoryOptions});
+  final VoidCallback onPressed;
+  const CategoryBottomSheet(
+      {super.key,
+      required this.fetchingCategoryOptions,
+      required this.onPressed});
   @override
   State<CategoryBottomSheet> createState() => _CategoryState();
 }
@@ -50,6 +54,10 @@ class _CategoryState extends State<CategoryBottomSheet> {
           height: height,
           storeSelectedCategory: storeSelectedCategory,
         ),
+        onPressed: () {
+          Navigator.pop(context);
+          widget.onPressed();
+        },
       ),
     );
   }

@@ -8,6 +8,7 @@ class CustomElevatedButton extends StatelessWidget {
   final TextStyle? textStyle;
   final Color? backgroundColor;
   final Widget? child;
+  final double? borderRadius;
   const CustomElevatedButton(
       {super.key,
       this.onPressed,
@@ -16,7 +17,8 @@ class CustomElevatedButton extends StatelessWidget {
       this.text,
       this.textStyle,
       this.backgroundColor,
-      this.child});
+      this.child,
+      this.borderRadius});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class CustomElevatedButton extends StatelessWidget {
               : WidgetStatePropertyAll(backgroundColor),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(width * 0.04),
+              borderRadius: BorderRadius.circular(borderRadius ?? width * 0.04),
             ),
           ),
         ),
