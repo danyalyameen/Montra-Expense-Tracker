@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Splash%20Screen/Views/splash_screen_view_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class SplashScreenView extends StackedView<SplashScreenViewModel> {
   const SplashScreenView({super.key});
 
+  // App Logo means Montra Text
   final String appLogo = "montra";
 
+  // This Function is Called when the Screen is Ready to View
   @override
-  void onViewModelReady(SplashScreenViewModel viewModel) async {
-    // * Navigate to Onboarding View
-    await Future.delayed(const Duration(seconds: 3));
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.getBool("Logged-In") == true) {
-      viewModel.navigationService.replaceWithSetupPinView();
-    } else {
-      viewModel.navigationService.replaceWithOnBoardingView();
-    }
+  void onViewModelReady(SplashScreenViewModel viewModel) {
+    viewModel.navigation();
     super.onViewModelReady(viewModel);
   }
 
@@ -29,7 +22,11 @@ class SplashScreenView extends StackedView<SplashScreenViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      // Prevent the UI Disturbance when Keyboard is Open
+      resizeToAvoidBottomInset: false,
+      // Background Color of Screen
       backgroundColor: AppColors.primaryViolet,
+      // Main Logo of Splash Screen
       body: _Logo(width: width, height: height, appLogo: appLogo),
     );
   }
@@ -39,7 +36,7 @@ class SplashScreenView extends StackedView<SplashScreenViewModel> {
       SplashScreenViewModel();
 }
 
-// * Main Logo
+// Main Logo
 class _Logo extends StatelessWidget {
   final double width, height;
   final String appLogo;
@@ -48,8 +45,10 @@ class _Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Use Stack for Placing widgets on top of each other
     return Stack(
       children: [
+        // Glowing Circle behind the Logo of App or Splash Screen
         Padding(
           padding: EdgeInsets.only(
             top: height * 0.458,
@@ -61,6 +60,7 @@ class _Logo extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               boxShadow: [
+                // Glowing Effect means shadow of App
                 BoxShadow(
                   color: Colors.pinkAccent.withValues(alpha: 0.6),
                   spreadRadius: width * 0.014,
@@ -70,6 +70,7 @@ class _Logo extends StatelessWidget {
             ),
           ),
         ),
+        // App Logo or App Name Text
         Center(
           child: Text(
             appLogo,
