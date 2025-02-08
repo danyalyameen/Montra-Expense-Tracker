@@ -10,19 +10,23 @@ import 'package:stacked/stacked.dart';
 class VerificationView extends StackedView<VerificationViewModel> {
   const VerificationView({super.key});
 
+  // Variables
   final String appBarTitle = "Verification";
   final String verifyButtonText = "Check";
 
   @override
   void onViewModelReady(VerificationViewModel viewModel) async {
     super.onViewModelReady(viewModel);
+    // Send Email Verification Link When Screen Loaded Completely
     await viewModel.auth.sendEmailVerificationLink();
+    // Start Resend Timer Function
     viewModel.startResendTimer();
   }
 
   @override
   Widget builder(
       BuildContext context, VerificationViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -37,6 +41,7 @@ class VerificationView extends StackedView<VerificationViewModel> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Icon For Verify Email
           Padding(
             padding: EdgeInsets.only(top: height * 0.08),
             child: Center(
@@ -51,11 +56,13 @@ class VerificationView extends StackedView<VerificationViewModel> {
               ),
             ),
           ),
+          // Main Verificaiton UI
           _VerificationUI(
             width: width,
             height: height,
             email: viewModel.getEmail(),
           ),
+          // Resend Verification Button and Timer
           Padding(
             padding: EdgeInsets.only(left: width * 0.06),
             child: _ResendVerification(
@@ -63,9 +70,11 @@ class VerificationView extends StackedView<VerificationViewModel> {
               height: height,
             ),
           ),
+          // For Spacing
           SizedBox(
             height: height * 0.03,
           ),
+          // Check Button
           Center(
             child: CustomElevatedButton(
               width: width,
@@ -95,6 +104,7 @@ class _VerificationUI extends StatelessWidget {
   const _VerificationUI(
       {required this.width, required this.height, required this.email});
 
+  // Variables
   final String title = "Check Your Inbox For Verify Email";
   final String descriptionStart = "We send verification link to your email ";
   final String descriptionEnd = "You can check your inbox";
@@ -111,6 +121,7 @@ class _VerificationUI extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Title
             Text(
               title,
               style: TextStyle(
@@ -119,9 +130,11 @@ class _VerificationUI extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
+            // For Spacing
             SizedBox(
               height: height * 0.02,
             ),
+            // Description
             SizedBox(
               width: width * 0.9,
               child: RichText(
@@ -165,7 +178,7 @@ class _VerificationUI extends StatelessWidget {
 class _ResendVerification extends ViewModelWidget<VerificationViewModel> {
   final double width, height;
   const _ResendVerification({required this.width, required this.height});
-
+  // Variables
   final String noReceiveCodeText = "I didn't received the Link? Send again";
 
   @override

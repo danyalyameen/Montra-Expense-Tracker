@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginViewModel extends ViewModel {
   // Final Fields
@@ -73,7 +74,9 @@ class LoginViewModel extends ViewModel {
         _showLoading = false;
         notifyListeners();
         // Navigate to Verification View
-        navigationService.navigateToVerificationView();
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        sharedPreferences.setBool("Logged-In", true);
+        navigationService.replaceWithSetupPinView();
       } on FirebaseAuthException catch (e) {
         _error = e.code;
         _showLoading = false;
