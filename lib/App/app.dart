@@ -1,5 +1,3 @@
-import 'package:montra_expense_tracker/Features/Authentication/All%20Setup/Views/all_setup_view.dart';
-import 'package:montra_expense_tracker/Features/Authentication/Email%20Verified/Views/email_verified_view.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Forget%20Password/Views/forget_password_view.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Login/Views/login_view.dart';
 import 'package:montra_expense_tracker/Features/Authentication/On%20Boarding/Views/onboarding_view.dart';
@@ -45,12 +43,10 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: SignUpView),
     MaterialRoute(page: LoginView),
     MaterialRoute(page: VerificationView),
-    MaterialRoute(page: EmailVerifiedView),
     MaterialRoute(page: SetupPinView),
     MaterialRoute(page: ForgetPasswordView),
     MaterialRoute(page: SetupAccountView),
     MaterialRoute(page: SetupWalletView),
-    MaterialRoute(page: AllSetupView),
     MaterialRoute(page: SuccessfullyDone),
     MaterialRoute(page: DashboardView),
     MaterialRoute(page: NotificationView),

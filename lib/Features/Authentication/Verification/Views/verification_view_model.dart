@@ -7,6 +7,7 @@ import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
+import 'package:montra_expense_tracker/Features/Authentication/Setup%20PIN/Views/setup_pin_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VerificationViewModel extends ViewModel {
@@ -57,7 +58,7 @@ class VerificationViewModel extends ViewModel {
     if (FirebaseAuth.instance.currentUser!.emailVerified) {
       sharedPreferences.setBool(Variables.loggedInKey, true);
       sharedPreferences.setBool(Variables.redirectFromLoginKey, false);
-      navigationService.replaceWithEmailVerifiedView();
+      navigationService.replaceWithSuccessfullyDone(msg: "Email Verified", className: const SetupPinView());
     } else {
       Fluttertoast.showToast(
         msg: "Email is Not Yet Verified. Please Check Inbox",

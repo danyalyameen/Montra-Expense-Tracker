@@ -19,7 +19,7 @@ class ForgetPasswordViewModel extends ViewModel {
   // Get Non Final Fields
   bool get showLoading => _showLoading;
 
-    String? validateEmail(String? value) {
+  String? validateEmail(String? value) {
     if (value!.isNotEmpty) {
       if (!emailValid.hasMatch(value)) {
         return "Please Enter valid Email";

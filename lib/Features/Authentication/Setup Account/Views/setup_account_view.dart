@@ -7,6 +7,7 @@ import 'package:stacked/stacked.dart';
 class SetupAccountView extends StackedView<SetupAccountViewModel> {
   const SetupAccountView({super.key});
 
+  // Variables
   final String title = "Let's setup your account!";
   final String description =
       "Account can be your bank, credit card or your wallet.";
@@ -15,6 +16,7 @@ class SetupAccountView extends StackedView<SetupAccountViewModel> {
   @override
   Widget builder(
       BuildContext context, SetupAccountViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -22,6 +24,7 @@ class SetupAccountView extends StackedView<SetupAccountViewModel> {
         padding: EdgeInsets.only(top: height * 0.1),
         child: Column(
           children: [
+            // Title and Description
             Padding(
               padding: EdgeInsets.only(
                 left: width * 0.05,
@@ -29,6 +32,7 @@ class SetupAccountView extends StackedView<SetupAccountViewModel> {
               ),
               child: Column(
                 children: [
+                  // Title
                   Text(
                     title,
                     style: TextStyle(
@@ -37,9 +41,11 @@ class SetupAccountView extends StackedView<SetupAccountViewModel> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.02,
                   ),
+                  // Description
                   Text(
                     description,
                     style: TextStyle(
@@ -51,6 +57,7 @@ class SetupAccountView extends StackedView<SetupAccountViewModel> {
                 ],
               ),
             ),
+            // Continue Button
             Padding(
               padding: EdgeInsets.only(top: height * 0.55),
               child: CustomElevatedButton(

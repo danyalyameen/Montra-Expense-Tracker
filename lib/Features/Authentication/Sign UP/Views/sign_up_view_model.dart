@@ -38,7 +38,7 @@ class SignUpViewModel extends ViewModel {
     _hidePassword = !_hidePassword;
     notifyListeners();
   }
-  
+
   // Validate Name
   String? validateName(String? value) {
     if (value!.isEmpty) {
@@ -46,7 +46,7 @@ class SignUpViewModel extends ViewModel {
     }
     return null;
   }
-  
+
   // Validate Email
   String? validateEmail(String? value) {
     if (value!.isNotEmpty) {
@@ -73,7 +73,7 @@ class SignUpViewModel extends ViewModel {
       return "Please Enter Your Password";
     }
   }
-  
+
   // Privacy Policy Check Box Toggle
   void toggleCheck(bool? value) {
     value == null ? _isCheck : _isCheck = value;
@@ -88,8 +88,10 @@ class SignUpViewModel extends ViewModel {
         _showLoading = true;
         notifyListeners();
         // Sign Up User
-        await auth.signUp(name: emailController.text,
-            email: emailController.text, password: passwordController.text);
+        await auth.signUp(
+            name: emailController.text,
+            email: emailController.text,
+            password: passwordController.text);
         // Hide Loading
         _showLoading = false;
         notifyListeners();
