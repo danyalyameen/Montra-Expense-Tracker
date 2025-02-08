@@ -4,30 +4,35 @@ import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 
 class LoginViewModel extends ViewModel {
+  // Final Fields
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailEditingController = TextEditingController();
   final TextEditingController _passwordEditingController =
       TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final emailValid = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
+  //  Get Final Fields
+  GlobalKey<FormState> get formKey => _formKey;
   TextEditingController get emailController => _emailEditingController;
   TextEditingController get passwordController => _passwordEditingController;
 
-  // * Non Final Fields
+  // Non Final Fields
   String _error = "";
-  bool _showLoading = false;
   bool _hidePassword = true;
-  // * Get Non Final Fields
-  bool get hidePassword => _hidePassword;
+  bool _showLoading = false;
+  // Get Non Final Fields
   String get firebaseError => _error;
+  bool get hidePassword => _hidePassword;
   bool get showLoading => _showLoading;
 
+  // Show Or Hide Password Function
   void showOrHidePassword() {
     _hidePassword = !_hidePassword;
     notifyListeners();
   }
-
+ 
+  // Validate Email
   String? validateEmail(String? value) {
     if (value!.isNotEmpty) {
       if (!emailValid.hasMatch(value)) {
@@ -40,7 +45,8 @@ class LoginViewModel extends ViewModel {
       return "Please Enter Your Email";
     }
   }
-
+  
+  // Validate Password
   String? validatePassword(String? value) {
     if (value!.isNotEmpty) {
       if (value.length < 8) {
@@ -58,12 +64,15 @@ class LoginViewModel extends ViewModel {
   void verificationNavigation() async {
     if (formKey.currentState!.validate()) {
       try {
+        // Show Loading Means Bouncing Balls
         _showLoading = true;
         notifyListeners();
         await auth.login(
             email: emailController.text, password: passwordController.text);
+        // Hide Loading
         _showLoading = false;
         notifyListeners();
+        // Navigate to Verification View
         navigationService.navigateToVerificationView();
       } on FirebaseAuthException catch (e) {
         _error = e.code;
@@ -71,13 +80,5 @@ class LoginViewModel extends ViewModel {
         notifyListeners();
       }
     }
-  }
-
-  void forgetPasswordNavigation() {
-    navigationService.navigateToForgetPasswordView();
-  }
-
-  void signUpNavigation() {
-    navigationService.replaceWithSignUpView();
   }
 }

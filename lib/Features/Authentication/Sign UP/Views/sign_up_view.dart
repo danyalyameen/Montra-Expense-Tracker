@@ -77,6 +77,14 @@ class SignUpView extends StackedView<SignUpViewModel> {
   SignUpViewModel viewModelBuilder(BuildContext context) => SignUpViewModel();
 
   @override
+  void onDispose(SignUpViewModel viewModel) {
+    viewModel.nameController.dispose();
+    viewModel.emailController.dispose();
+    viewModel.passwordController.dispose();
+    super.onDispose(viewModel);
+  }
+
+  @override
   bool get reactive => false;
 }
 
@@ -358,7 +366,7 @@ class _Login extends StatelessWidget {
       {required this.width,
       required this.height,
       required this.navigationService});
-  
+
   // Variables
   final String loginTextTitle = "Already have an account? ";
   final String loginText = "Login ";

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,12 +17,14 @@ import 'package:stacked_services/stacked_services.dart';
 class LoginView extends StackedView<LoginViewModel> {
   const LoginView({super.key});
 
+  // Variables
   final String appBarTitle = "Login";
   final String forgetPasswordHintText = "Forget Password?";
 
   @override
   Widget builder(
       BuildContext context, LoginViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -34,14 +37,17 @@ class LoginView extends StackedView<LoginViewModel> {
       ),
       body: Column(
         children: [
-          _LoginItems(
+          // Login UI
+          _LoginUI(
             width: width,
             height: height,
           ),
+          // Other Login Items Text
           Padding(
             padding: EdgeInsets.symmetric(vertical: height * 0.04),
             child: InkWell(
-              onTap: () => viewModel.forgetPasswordNavigation(),
+              onTap: () =>
+                  viewModel.navigationService.navigateToForgetPasswordView(),
               child: Text(
                 forgetPasswordHintText,
                 style: TextStyle(
@@ -52,15 +58,17 @@ class LoginView extends StackedView<LoginViewModel> {
               ),
             ),
           ),
+          // Other Login Items Means Google Sign In
           _OtherLoginItems(
             width: width,
             height: height,
             navigationService: viewModel.navigationService,
           ),
+          // Sign Up Text Button
           _SignUp(
             width: width,
             height: height,
-            signUpNavigation: viewModel.signUpNavigation,
+            navigationService: viewModel.navigationService,
           ),
         ],
       ),
@@ -69,12 +77,20 @@ class LoginView extends StackedView<LoginViewModel> {
 
   @override
   LoginViewModel viewModelBuilder(BuildContext context) => LoginViewModel();
+
+  @override
+  void onDispose(LoginViewModel viewModel) {
+    viewModel.emailController.dispose();
+    viewModel.passwordController.dispose();
+    super.onDispose(viewModel);
+  }
 }
 
-class _LoginItems extends ViewModelWidget<LoginViewModel> {
+class _LoginUI extends ViewModelWidget<LoginViewModel> {
   final double width, height;
-  const _LoginItems({required this.width, required this.height});
+  const _LoginUI({required this.width, required this.height});
 
+  // Variables
   final String emailHintText = "Email";
   final String passwordHintText = "Password";
   final String loginHintText = "Login";
@@ -85,10 +101,12 @@ class _LoginItems extends ViewModelWidget<LoginViewModel> {
       padding: EdgeInsets.only(top: height * 0.06),
       child: Column(
         children: [
+          // Text Fields
           Form(
             key: viewModel.formKey,
             child: Column(
               children: [
+                // Email Text Field
                 CustomTextFormField(
                   width: width,
                   height: height,
@@ -98,9 +116,11 @@ class _LoginItems extends ViewModelWidget<LoginViewModel> {
                     return viewModel.validateEmail(value);
                   },
                 ),
+                // For Spacing
                 SizedBox(
                   height: height * 0.02,
                 ),
+                // Password Text Field
                 CustomTextFormField(
                   width: width,
                   height: height,
@@ -139,9 +159,11 @@ class _LoginItems extends ViewModelWidget<LoginViewModel> {
               ],
             ),
           ),
+          // For Spacing
           SizedBox(
             height: height * 0.02,
           ),
+          // Login Button
           CustomElevatedButton(
             width: width,
             height: height,
@@ -177,6 +199,8 @@ class _OtherLoginItems extends StatelessWidget {
     required this.height,
     required this.navigationService,
   });
+
+  // Variables
   final String googleButtonText = "Login with Google";
 
   @override
@@ -195,11 +219,16 @@ class _OtherLoginItems extends StatelessWidget {
         child: InkWell(
           onTap: () async {
             try {
+              // Initialize Shared Preference to Ensure Next Time User is Logged In
               SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();
-              await AuthService().googleAuth();
-              sharedPreferences.setBool("Logged-In", true);
-              navigationService.replaceWithSetupPinView();
+              // Open Google Sign In
+              UserCredential? credentials = await AuthService().googleAuth();
+              // Check User Choose the Account for Login or not if yes then go to Setup Pin
+              if (credentials != null) {
+                sharedPreferences.setBool("Logged-In", true);
+                navigationService.replaceWithSetupPinView();
+              }
             } catch (e) {
               // ignore: avoid_print
               print(e.toString());
@@ -209,14 +238,17 @@ class _OtherLoginItems extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Google Icon
               SvgPicture.asset(
                 IconsPath.google,
                 width: width * 0.07,
                 height: width * 0.07,
               ),
+              // For Spacing
               SizedBox(
                 width: width * 0.04,
               ),
+              // Google Button Text
               Text(
                 googleButtonText,
                 style: TextStyle(
@@ -235,12 +267,13 @@ class _OtherLoginItems extends StatelessWidget {
 
 class _SignUp extends StatelessWidget {
   final double width, height;
-  final Function signUpNavigation;
+  final NavigationService navigationService;
   const _SignUp(
       {required this.width,
       required this.height,
-      required this.signUpNavigation});
+      required this.navigationService});
 
+  // Variables
   final signUpTitle = "Don't have an account yet? ";
   final signUp = "Sign Up";
 
@@ -251,6 +284,7 @@ class _SignUp extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // Title
           Text(
             signUpTitle,
             style: TextStyle(
@@ -259,8 +293,9 @@ class _SignUp extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
+          // Sign Up Text Button
           InkWell(
-            onTap: () => signUpNavigation(),
+            onTap: () => navigationService.replaceWithSignUpView(),
             child: Text(
               signUp,
               style: TextStyle(
