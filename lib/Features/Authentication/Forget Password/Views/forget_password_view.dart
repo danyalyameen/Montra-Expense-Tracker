@@ -10,6 +10,7 @@ import 'package:stacked/stacked.dart';
 class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
   const ForgetPasswordView({super.key});
 
+  // Variables
   final String appBarTitle = "Forget Password";
   final String title =
       "Don't worry. \nEnter your email and we'll send you a link to reset your password.";
@@ -29,6 +30,7 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
       ),
       body: Column(
         children: [
+          // Title Text
           Padding(
             padding: EdgeInsets.only(
               top: height * 0.1,
@@ -44,9 +46,11 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
               ),
             ),
           ),
+          // For Spacing
           SizedBox(
             height: height * 0.04,
           ),
+          // Email Text Field
           Form(
             key: viewModel.formKey,
             child: CustomTextFormField(
@@ -59,9 +63,11 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
               },
             ),
           ),
+          // For Spacing
           SizedBox(
             height: height * 0.04,
           ),
+          // Continue Button
           CustomElevatedButton(
             width: width,
             height: height,
@@ -91,4 +97,10 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
   @override
   ForgetPasswordViewModel viewModelBuilder(BuildContext context) =>
       ForgetPasswordViewModel();
+
+  @override
+  void onDispose(ForgetPasswordViewModel viewModel) {
+    viewModel.emailController.dispose();
+    super.onDispose(viewModel);
+  }
 }

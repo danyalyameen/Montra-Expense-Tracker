@@ -4,39 +4,22 @@ import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_mo
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 
 class ForgetPasswordViewModel extends ViewModel {
+  // Final Fields
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final emailValid = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  bool _showLoading = false;
 
+  // Get Final Fields
+  GlobalKey<FormState> get formKey => _formKey;
   TextEditingController get emailController => _emailController;
+
+  // Non Final Fields
+  bool _showLoading = false;
+  // Get Non Final Fields
   bool get showLoading => _showLoading;
 
-  void sendResetPasswordLink() async {
-    if (formKey.currentState!.validate()) {
-      try {
-        _showLoading = true;
-        notifyListeners();
-        await auth.sendPasswordResetLink(emailController.text);
-        Fluttertoast.showToast(
-          msg: "Password Reset Link Has been successfully send to your email.",
-          backgroundColor: AppColors.primaryGreen,
-          gravity: ToastGravity.BOTTOM,
-          textColor: AppColors.primaryLight,
-          toastLength: Toast.LENGTH_LONG,
-        );
-        _showLoading = false;
-        notifyListeners();
-        navigationService.back();
-      } catch (e) {
-        // ignore: avoid_print
-        print(e.toString());
-      }
-    }
-  }
-
-  String? validateEmail(String? value) {
+    String? validateEmail(String? value) {
     if (value!.isNotEmpty) {
       if (!emailValid.hasMatch(value)) {
         return "Please Enter valid Email";
@@ -44,6 +27,34 @@ class ForgetPasswordViewModel extends ViewModel {
       return null;
     } else {
       return "Please Enter Your Email";
+    }
+  }
+
+  void sendResetPasswordLink() async {
+    if (formKey.currentState!.validate()) {
+      try {
+        // Show Loading Means Bouncing Balls
+        _showLoading = true;
+        notifyListeners();
+        // Send Password Reset Link
+        await auth.sendPasswordResetLink(emailController.text);
+        // Show Success Toast
+        Fluttertoast.showToast(
+          msg: "Password Reset Link Has been successfully send to your email.",
+          backgroundColor: AppColors.primaryGreen,
+          gravity: ToastGravity.BOTTOM,
+          textColor: AppColors.primaryLight,
+          toastLength: Toast.LENGTH_LONG,
+        );
+        // Hide Loading
+        _showLoading = false;
+        notifyListeners();
+        // Navigate Back
+        navigationService.back();
+      } catch (e) {
+        // ignore: avoid_print
+        print(e.toString());
+      }
     }
   }
 }
