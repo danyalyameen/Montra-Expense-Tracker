@@ -19,6 +19,7 @@ class SplashScreenView extends StackedView<SplashScreenViewModel> {
   @override
   Widget builder(
       BuildContext context, SplashScreenViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(

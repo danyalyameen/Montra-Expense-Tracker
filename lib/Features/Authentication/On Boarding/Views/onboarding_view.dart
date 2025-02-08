@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
-import 'package:montra_expense_tracker/Constants/Theme/app_text_styles.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Features/Authentication/On%20Boarding/Views/onboarding_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
@@ -11,28 +11,51 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
   const OnBoardingView({super.key});
 
   @override
+  void onViewModelReady(OnBoardingViewModel viewModel) {
+    super.onViewModelReady(viewModel);
+    // Call Function When Screen or View is Ready
+    viewModel.automaticChangePage();
+  }
+
+  // Dispose Timer and Page Controller
+  @override
+  void onDispose(OnBoardingViewModel viewModel) {
+    viewModel.timer.cancel();
+    viewModel.pageController.dispose();
+    super.onDispose(viewModel);
+  }
+
+  @override
   Widget builder(
       BuildContext context, OnBoardingViewModel viewModel, Widget? child) {
+    // Changing the Color of Device Notification Bar and Device Navigation Bar
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.grey,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Column(
         children: [
-          // * Main Onboarding Items
+          // Main Onboarding Items
           _OnBardingItem(
             width: width,
             height: height,
             data: Database.onBoardingData,
-            updateCurrentIndex: (index) {
-              viewModel.updateCurrentIndex(index);
-            },
           ),
-          // * Dot Indicators
+          // Dot Indicators
           _ShowIndicators(
             width: width,
             height: height,
           ),
-          // * Buttons For Navigation
+          // Buttons For Navigation
           _AuthenticationButtons(
             width: width,
             height: height,
@@ -52,44 +75,49 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
   bool get reactive => false;
 }
 
-class _OnBardingItem extends StatelessWidget {
+class _OnBardingItem extends ViewModelWidget<OnBoardingViewModel> {
   final double width, height;
   final List<Map<String, dynamic>> data;
-  final Function(int index) updateCurrentIndex;
-  const _OnBardingItem(
-      {required this.width,
-      required this.height,
-      required this.data,
-      required this.updateCurrentIndex});
+  const _OnBardingItem({
+    required this.width,
+    required this.height,
+    required this.data,
+  });
 
-  // * Declare Data Keys
+  // Declare Data Keys
   final String iconKey = "Icon";
   final String titleKey = "Title";
   final String descriptionKey = "Description";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, OnBoardingViewModel viewModel) {
+    // Page View Builder for Making the On Boarding Items
     return SizedBox(
       width: width,
-      height: height * 0.75,
+      height: height * 0.7,
       child: PageView.builder(
+        controller: viewModel.pageController,
         itemCount: data.length,
         onPageChanged: (value) {
-          updateCurrentIndex(value);
+          // Update Current Index and Update the UI
+          viewModel.updateCurrentIndex(value);
         },
         itemBuilder: (context, index) {
           return Padding(
-            padding: EdgeInsets.only(top: height * 0.2),
+            padding: EdgeInsets.only(top: height * 0.16),
             child: Column(
               children: [
+                // Picture of On Boarding Item
                 SvgPicture.asset(
                   data[index][iconKey],
                   width: width * 0.7,
                   height: width * 0.7,
                 ),
+                // For Spacing
                 SizedBox(
                   height: height * 0.01,
                 ),
+                // Title and Description
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width * 0.1),
                   child: SizedBox(
@@ -98,20 +126,29 @@ class _OnBardingItem extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        // Title
                         Text(
                           data[index][titleKey],
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.onBoardingTitleBlack(
-                              context: context),
+                          style: TextStyle(
+                            color: AppColors.black75,
+                            fontSize: width * 0.08,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
+                        // For Spacing
                         SizedBox(
                           height: height * 0.01,
                         ),
+                        // Description
                         Text(
                           data[index][descriptionKey],
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.onBoardingDescriptionBlack(
-                              context: context),
+                          style: TextStyle(
+                            color: AppColors.black25,
+                            fontSize: width * 0.04,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
@@ -138,11 +175,13 @@ class _ShowIndicators extends ViewModelWidget<OnBoardingViewModel> {
         Database.onBoardingData.length,
         (index) {
           return Container(
+            // Changing width and height of Dot Indicators
             width:
                 viewModel.currentIndex == index ? width * 0.04 : width * 0.025,
             height:
                 viewModel.currentIndex == index ? width * 0.04 : width * 0.025,
             margin: EdgeInsets.all(width * 0.01),
+            // Indicators
             child: CircleAvatar(
               backgroundColor: index == viewModel.currentIndex
                   ? AppColors.primaryViolet
@@ -165,6 +204,7 @@ class _AuthenticationButtons extends StatelessWidget {
     required this.navigationSignUp,
   });
 
+  // Text of Authentication Buttons
   final String signUpText = "Sign Up";
   final String loginText = "Login";
 
@@ -176,15 +216,18 @@ class _AuthenticationButtons extends StatelessWidget {
       ),
       child: Column(
         children: [
+          // Sign Up Button
           CustomElevatedButton(
             width: width,
             height: height,
             text: signUpText,
             onPressed: () => navigationSignUp(),
           ),
+          // For Spacing
           SizedBox(
             height: height * 0.015,
           ),
+          // Login Button
           CustomElevatedButton(
             width: width,
             height: height,
