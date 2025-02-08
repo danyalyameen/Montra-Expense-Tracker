@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
+import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginViewModel extends ViewModel {
@@ -32,7 +33,7 @@ class LoginViewModel extends ViewModel {
     _hidePassword = !_hidePassword;
     notifyListeners();
   }
- 
+
   // Validate Email
   String? validateEmail(String? value) {
     if (value!.isNotEmpty) {
@@ -46,7 +47,7 @@ class LoginViewModel extends ViewModel {
       return "Please Enter Your Email";
     }
   }
-  
+
   // Validate Password
   String? validatePassword(String? value) {
     if (value!.isNotEmpty) {
@@ -74,8 +75,10 @@ class LoginViewModel extends ViewModel {
         _showLoading = false;
         notifyListeners();
         // Navigate to Verification View
-        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-        sharedPreferences.setBool("Logged-In", true);
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        sharedPreferences.setBool(Variables.loggedInKey, true);
+        sharedPreferences.setBool(Variables.redirectFromLoginKey, true);
         navigationService.replaceWithSetupPinView();
       } on FirebaseAuthException catch (e) {
         _error = e.code;

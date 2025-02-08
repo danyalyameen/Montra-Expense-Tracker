@@ -1,4 +1,7 @@
 class Variables {
-  static double balance = 9584;
-  static String universalItemKey = "KEY_ITEM_MAP";
+  static String loggedInKey = "Logged-In";
+  static String setupPinKey = "Setup-Pin";
+  static String enteredPinKey = "Entered-Pin";
+  static String walletSetupKey = "Wallet-Setup";
+  static String redirectFromLoginKey = "Redirect-From-Login";
 }

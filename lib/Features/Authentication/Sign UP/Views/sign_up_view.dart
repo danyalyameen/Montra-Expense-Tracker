@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
+import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Sign%20UP/Views/sign_up_view_model.dart';
 import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
@@ -320,7 +321,9 @@ class _OtherSignUpItems extends StatelessWidget {
               UserCredential? credentials = await AuthService().googleAuth();
               // Check User Choose the Account for Login or not if yes then go to Setup Pin
               if (credentials != null) {
-                sharedPreferences.setBool("Logged-In", true);
+                sharedPreferences.setBool(Variables.loggedInKey, true);
+                sharedPreferences.setBool(
+                    Variables.redirectFromLoginKey, false);
                 navigationService.replaceWithSetupPinView();
               }
             } catch (e) {

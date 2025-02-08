@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
+import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VerificationViewModel extends ViewModel {
@@ -40,7 +41,7 @@ class VerificationViewModel extends ViewModel {
         "${userEmail!.substring(0, 10)}*****${userEmail.substring(userEmail.length - 9, userEmail.length)} ";
     return displayEmail;
   }
-  
+
   // Show Timer on Text Widget
   String get resendTiming {
     String minutes = (startTimer ~/ 60).toString().padLeft(2, "0");
@@ -54,7 +55,8 @@ class VerificationViewModel extends ViewModel {
     FirebaseAuth.instance.currentUser!.reload();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (FirebaseAuth.instance.currentUser!.emailVerified) {
-      sharedPreferences.setBool("Logged-In", true);
+      sharedPreferences.setBool(Variables.loggedInKey, true);
+      sharedPreferences.setBool(Variables.redirectFromLoginKey, false);
       navigationService.replaceWithEmailVerifiedView();
     } else {
       Fluttertoast.showToast(

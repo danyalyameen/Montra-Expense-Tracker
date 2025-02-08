@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
+import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -111,7 +112,7 @@ class SetupWalletViewModel extends ViewModel {
         }
         _showLoading = false;
         notifyListeners();
-        sharedPreferences.setBool("Wallet-Setup", true);
+        sharedPreferences.setBool(Variables.walletSetupKey, true);
         navigationService.navigateToAllSetupView();
       }
     } catch (e) {
