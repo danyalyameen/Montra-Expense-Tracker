@@ -146,7 +146,7 @@ class ShowBottomSheetForImportImages {
       context: context,
       builder: (context) {
         return BottomSheet(
-          showDragHandle: true,
+          showDragHandle: false,
           dragHandleColor: AppColors.violet40,
           dragHandleSize: Size(width * 0.2, height * 0.005),
           backgroundColor: AppColors.primaryLight,

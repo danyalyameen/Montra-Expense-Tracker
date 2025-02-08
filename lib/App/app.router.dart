@@ -70,7 +70,7 @@ import 'package:stacked/stacked.dart' as _i1;
 import 'package:stacked_services/stacked_services.dart' as _i33;
 
 class Routes {
-  static const splashScreenView = '/';
+  static const splashScreenView = '/splash-screen-view';
 
   static const onBoardingView = '/on-boarding-view';
 

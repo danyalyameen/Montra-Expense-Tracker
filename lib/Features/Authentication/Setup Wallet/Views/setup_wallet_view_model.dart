@@ -126,7 +126,9 @@ class SetupWalletViewModel extends ViewModel {
         notifyListeners();
         // Navigate to Dashboard
         sharedPreferences.setBool(Variables.walletSetupKey, true);
-        navigationService.replaceWithSuccessfullyDone(msg: "Account Setup Successfully", className: const DashboardView());
+        navigationService.replaceWithSuccessfullyDone(
+            msg: "Account Setup Successfully",
+            className: const DashboardView());
       }
     } catch (e) {
       // ignore: avoid_print
