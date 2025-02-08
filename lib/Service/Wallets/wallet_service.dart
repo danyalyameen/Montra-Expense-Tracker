@@ -5,11 +5,10 @@ import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
 
 class WalletService {
-  DocumentReference user = FirebaseFirestore.instance
-      .collection('users')
-      .doc(AuthService().getUser()!.uid);
-
   Future<bool> addWallet({required Wallets wallet}) async {
+    DocumentReference user = FirebaseFirestore.instance
+        .collection('users')
+        .doc(AuthService().getUser()!.uid);
     var data = await user.get();
     var personData = PersonData.store(data.data() as Map<String, dynamic>);
     var error = false;
@@ -35,6 +34,9 @@ class WalletService {
   }
 
   Future<List<Wallets>> getWallets() async {
+    DocumentReference user = FirebaseFirestore.instance
+        .collection('users')
+        .doc(AuthService().getUser()!.uid);
     var data = await user.get();
     var personData = PersonData.store(data.data() as Map<String, dynamic>);
     if (personData.wallets != null) {

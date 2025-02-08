@@ -6,18 +6,17 @@ import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
 
 class OptionService {
-  DocumentReference user = FirebaseFirestore.instance
-      .collection('users')
-      .doc(AuthService().getUser()!.uid);
   DocumentReference incomeOption = FirebaseFirestore.instance
       .collection("default options")
       .doc("income options");
   DocumentReference expenseOption = FirebaseFirestore.instance
       .collection('default options')
       .doc("expense options");
-
   Future<bool> addExpenseOption(
       {required String name, required Color color}) async {
+    DocumentReference user = FirebaseFirestore.instance
+        .collection('users')
+        .doc(AuthService().getUser()!.uid);
     var error = false;
     String hexCode = '0xFF'
         '${(color.a * 255).round().toRadixString(16).padLeft(2, '0').toUpperCase()}'
@@ -82,6 +81,9 @@ class OptionService {
   }
 
   Future<List> getExpenseOptions() async {
+    DocumentReference user = FirebaseFirestore.instance
+        .collection('users')
+        .doc(AuthService().getUser()!.uid);
     var data = await user.get();
     PersonData personData =
         PersonData.store(data.data() as Map<String, dynamic>);
@@ -98,6 +100,9 @@ class OptionService {
 
   Future<bool> addIncomeOption(
       {required String name, required Color color}) async {
+    DocumentReference user = FirebaseFirestore.instance
+        .collection('users')
+        .doc(AuthService().getUser()!.uid);
     var error = false;
     String hexCode = '0xFF'
         '${(color.a * 255).round().toRadixString(16).padLeft(2, '0').toUpperCase()}'
@@ -159,6 +164,9 @@ class OptionService {
   }
 
   Future<List> getIncomeOptions() async {
+    DocumentReference user = FirebaseFirestore.instance
+        .collection('users')
+        .doc(AuthService().getUser()!.uid);
     var data = await user.get();
     PersonData personData =
         PersonData.store(data.data() as Map<String, dynamic>);
