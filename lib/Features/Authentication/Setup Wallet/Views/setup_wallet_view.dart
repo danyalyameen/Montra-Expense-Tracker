@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
+import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Setup%20Wallet/Views/setup_wallet_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_drop_down.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
@@ -12,12 +13,14 @@ import 'package:stacked/stacked.dart';
 class SetupWalletView extends StackedView<SetupWalletViewModel> {
   const SetupWalletView({super.key});
 
+  // Variables
   final String appBarTitle = "Add new Account";
   final String continueButtonText = "Continue";
 
   @override
   Widget builder(
       BuildContext context, SetupWalletViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -35,10 +38,12 @@ class SetupWalletView extends StackedView<SetupWalletViewModel> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Balance Input Field
             _Balance(
               width: width,
               height: height,
             ),
+            // Background White Box of Text Fields
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -51,13 +56,16 @@ class SetupWalletView extends StackedView<SetupWalletViewModel> {
                 ),
                 child: Column(
                   children: [
+                    // Input Fields
                     _InputFields(
                       width: width,
                       height: height,
                     ),
+                    // For Spacing
                     SizedBox(
                       height: height * 0.01,
                     ),
+                    // Continue Button
                     CustomElevatedButton(
                       width: width,
                       height: height,
@@ -101,6 +109,7 @@ class _Balance extends ViewModelWidget<SetupWalletViewModel> {
     required this.height,
   });
 
+  // Variables
   final String balanceText = "Balance";
   final String balanceHintText = "0";
 
@@ -114,6 +123,7 @@ class _Balance extends ViewModelWidget<SetupWalletViewModel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Balance Title
           Text(
             balanceText,
             style: TextStyle(
@@ -121,16 +131,19 @@ class _Balance extends ViewModelWidget<SetupWalletViewModel> {
                 fontWeight: FontWeight.w600,
                 color: AppColors.light80.withValues(alpha: 0.6)),
           ),
+          // Balance
           Row(
             children: [
+              // Currency Symbol
               Text(
-                "\$",
+                Variables.currency,
                 style: TextStyle(
                   fontSize: width * 0.16,
                   fontWeight: FontWeight.w600,
                   color: AppColors.light80,
                 ),
               ),
+              // Input Field of Balance
               Expanded(
                 child: TextFormField(
                   showCursor: false,
@@ -152,6 +165,21 @@ class _Balance extends ViewModelWidget<SetupWalletViewModel> {
                       color: AppColors.light80,
                     ),
                   ),
+                  onTap: () {
+                    // Always move cursor to the end
+                    viewModel.balanceController.selection =
+                        TextSelection.fromPosition(
+                      TextPosition(
+                          offset: viewModel.balanceController.text.length),
+                    );
+                  },
+                  onChanged: (text) {
+                    // Ensure cursor is always at the end
+                    viewModel.balanceController.selection =
+                        TextSelection.fromPosition(
+                      TextPosition(offset: text.length),
+                    );
+                  },
                 ),
               )
             ],
@@ -169,6 +197,7 @@ class _InputFields extends ViewModelWidget<SetupWalletViewModel> {
     required this.height,
   });
 
+  // Variables
   final String nameTextFieldHintText = "Name";
   final String dropDownHintText = "Account Type";
 
@@ -176,6 +205,7 @@ class _InputFields extends ViewModelWidget<SetupWalletViewModel> {
   Widget build(BuildContext context, SetupWalletViewModel viewModel) {
     return Column(
       children: [
+        // Wallet Name Input Field
         Padding(
           padding: EdgeInsets.only(top: height * 0.05),
           child: CustomTextFormField(
@@ -189,9 +219,11 @@ class _InputFields extends ViewModelWidget<SetupWalletViewModel> {
             onComplete: () => viewModel.onComplete(context),
           ),
         ),
+        // For Spacing
         SizedBox(
           height: height * 0.02,
         ),
+        // Drop Down
         DropDown(
           width: width,
           height: height,

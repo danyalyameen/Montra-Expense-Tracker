@@ -5,9 +5,9 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:ui' as _i33;
+import 'dart:ui' as _i32;
 
-import 'package:flutter/material.dart' as _i32;
+import 'package:flutter/material.dart' as _i31;
 import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Forget%20Password/Views/forget_password_view.dart'
     as _i8;
@@ -26,48 +26,48 @@ import 'package:montra_expense_tracker/Features/Authentication/Sign%20UP/Views/s
 import 'package:montra_expense_tracker/Features/Authentication/Verification/Views/verification_view.dart'
     as _i6;
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Create%20Budget/create_budget_view.dart'
-    as _i22;
-import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Edit%20Budget/edit_budget_view.dart'
-    as _i23;
-import 'package:montra_expense_tracker/Features/Budget/Views/budget_view.dart'
     as _i21;
-import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view.dart'
+import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Edit%20Budget/edit_budget_view.dart'
+    as _i22;
+import 'package:montra_expense_tracker/Features/Budget/Views/budget_view.dart'
     as _i20;
-import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Income/Views/income_view.dart'
-    as _i18;
-import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Notification/Views/notification_view.dart'
-    as _i14;
-import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Transfer/Views/transfer_view.dart'
+import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view.dart'
     as _i19;
-import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart'
+import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Income/Views/income_view.dart'
+    as _i17;
+import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Notification/Views/notification_view.dart'
     as _i13;
+import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Transfer/Views/transfer_view.dart'
+    as _i18;
+import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart'
+    as _i12;
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Attach%20View/Account%20Details/Views/account_details.dart'
-    as _i26;
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view.dart'
     as _i25;
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/About/Views/about_view.dart'
-    as _i30;
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart'
-    as _i28;
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart'
-    as _i31;
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_settings_view.dart'
-    as _i29;
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Views/settings_view.dart'
-    as _i27;
-import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart'
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view.dart'
     as _i24;
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/About/Views/about_view.dart'
+    as _i29;
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart'
+    as _i27;
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart'
+    as _i30;
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_settings_view.dart'
+    as _i28;
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Views/settings_view.dart'
+    as _i26;
+import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart'
+    as _i23;
 import 'package:montra_expense_tracker/Features/Splash%20Screen/Views/splash_screen_view.dart'
     as _i2;
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Details%20Transaction/Views/details_transaction_view.dart'
-    as _i17;
-import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Views/financial_report_summary_view.dart'
     as _i16;
-import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_view.dart'
+import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Views/financial_report_summary_view.dart'
     as _i15;
-import 'package:montra_expense_tracker/Widgets/successfully_done.dart' as _i12;
+import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_view.dart'
+    as _i14;
+import 'package:montra_expense_tracker/Widgets/successfully_done.dart' as _i11;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i34;
+import 'package:stacked_services/stacked_services.dart' as _i33;
 
 class Routes {
   static const splashScreenView = '/';
@@ -87,8 +87,6 @@ class Routes {
   static const setupAccountView = '/setup-account-view';
 
   static const setupWalletView = '/setup-wallet-view';
-
-  static const allSetupView = '/all-setup-view';
 
   static const successfullyDone = '/successfully-done';
 
@@ -140,7 +138,6 @@ class Routes {
     forgetPasswordView,
     setupAccountView,
     setupWalletView,
-    allSetupView,
     successfullyDone,
     dashboardView,
     notificationView,
@@ -204,177 +201,177 @@ class StackedRouter extends _i1.RouterBase {
     ),
     _i1.RouteDef(
       Routes.successfullyDone,
-      page: _i12.SuccessfullyDone,
+      page: _i11.SuccessfullyDone,
     ),
     _i1.RouteDef(
       Routes.dashboardView,
-      page: _i13.DashboardView,
+      page: _i12.DashboardView,
     ),
     _i1.RouteDef(
       Routes.notificationView,
-      page: _i14.NotificationView,
+      page: _i13.NotificationView,
     ),
     _i1.RouteDef(
       Routes.transactionView,
-      page: _i15.TransactionView,
+      page: _i14.TransactionView,
     ),
     _i1.RouteDef(
       Routes.financialReportSummaryView,
-      page: _i16.FinancialReportSummaryView,
+      page: _i15.FinancialReportSummaryView,
     ),
     _i1.RouteDef(
       Routes.detailsTransactionView,
-      page: _i17.DetailsTransactionView,
+      page: _i16.DetailsTransactionView,
     ),
     _i1.RouteDef(
       Routes.incomeView,
-      page: _i18.IncomeView,
+      page: _i17.IncomeView,
     ),
     _i1.RouteDef(
       Routes.transferView,
-      page: _i19.TransferView,
+      page: _i18.TransferView,
     ),
     _i1.RouteDef(
       Routes.expenseView,
-      page: _i20.ExpenseView,
+      page: _i19.ExpenseView,
     ),
     _i1.RouteDef(
       Routes.budgetView,
-      page: _i21.BudgetView,
+      page: _i20.BudgetView,
     ),
     _i1.RouteDef(
       Routes.createBudgetView,
-      page: _i22.CreateBudgetView,
+      page: _i21.CreateBudgetView,
     ),
     _i1.RouteDef(
       Routes.editBudgetView,
-      page: _i23.EditBudgetView,
+      page: _i22.EditBudgetView,
     ),
     _i1.RouteDef(
       Routes.profileView,
-      page: _i24.ProfileView,
+      page: _i23.ProfileView,
     ),
     _i1.RouteDef(
       Routes.accountView,
-      page: _i25.AccountView,
+      page: _i24.AccountView,
     ),
     _i1.RouteDef(
       Routes.accountDetails,
-      page: _i26.AccountDetails,
+      page: _i25.AccountDetails,
     ),
     _i1.RouteDef(
       Routes.settingsView,
-      page: _i27.SettingsView,
+      page: _i26.SettingsView,
     ),
     _i1.RouteDef(
       Routes.currencyView,
-      page: _i28.CurrencyView,
+      page: _i27.CurrencyView,
     ),
     _i1.RouteDef(
       Routes.notificationSettingsView,
-      page: _i29.NotificationSettingsView,
+      page: _i28.NotificationSettingsView,
     ),
     _i1.RouteDef(
       Routes.aboutView,
-      page: _i30.AboutView,
+      page: _i29.AboutView,
     ),
     _i1.RouteDef(
       Routes.helpView,
-      page: _i31.HelpView,
+      page: _i30.HelpView,
     ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashScreenView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
+      return _i31.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.SplashScreenView(),
         settings: data,
       );
     },
     _i3.OnBoardingView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
+      return _i31.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.OnBoardingView(),
         settings: data,
       );
     },
     _i4.SignUpView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
+      return _i31.MaterialPageRoute<dynamic>(
         builder: (context) => const _i4.SignUpView(),
         settings: data,
       );
     },
     _i5.LoginView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
+      return _i31.MaterialPageRoute<dynamic>(
         builder: (context) => const _i5.LoginView(),
         settings: data,
       );
     },
     _i6.VerificationView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
+      return _i31.MaterialPageRoute<dynamic>(
         builder: (context) => const _i6.VerificationView(),
         settings: data,
       );
     },
     _i7.SetupPinView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
+      return _i31.MaterialPageRoute<dynamic>(
         builder: (context) => const _i7.SetupPinView(),
         settings: data,
       );
     },
     _i8.ForgetPasswordView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
+      return _i31.MaterialPageRoute<dynamic>(
         builder: (context) => const _i8.ForgetPasswordView(),
         settings: data,
       );
     },
     _i9.SetupAccountView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
+      return _i31.MaterialPageRoute<dynamic>(
         builder: (context) => const _i9.SetupAccountView(),
         settings: data,
       );
     },
     _i10.SetupWalletView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
+      return _i31.MaterialPageRoute<dynamic>(
         builder: (context) => const _i10.SetupWalletView(),
         settings: data,
       );
     },
-    _i12.SuccessfullyDone: (data) {
+    _i11.SuccessfullyDone: (data) {
       final args = data.getArgs<SuccessfullyDoneArguments>(nullOk: false);
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => _i12.SuccessfullyDone(
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => _i11.SuccessfullyDone(
             key: args.key, msg: args.msg, className: args.className),
         settings: data,
       );
     },
-    _i13.DashboardView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i13.DashboardView(),
+    _i12.DashboardView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i12.DashboardView(),
         settings: data,
       );
     },
-    _i14.NotificationView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i14.NotificationView(),
+    _i13.NotificationView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i13.NotificationView(),
         settings: data,
       );
     },
-    _i15.TransactionView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i15.TransactionView(),
+    _i14.TransactionView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i14.TransactionView(),
         settings: data,
       );
     },
-    _i16.FinancialReportSummaryView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i16.FinancialReportSummaryView(),
+    _i15.FinancialReportSummaryView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i15.FinancialReportSummaryView(),
         settings: data,
       );
     },
-    _i17.DetailsTransactionView: (data) {
+    _i16.DetailsTransactionView: (data) {
       final args = data.getArgs<DetailsTransactionViewArguments>(nullOk: false);
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => _i17.DetailsTransactionView(
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => _i16.DetailsTransactionView(
             args.balance,
             args.description,
             args.time,
@@ -386,40 +383,40 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
-    _i18.IncomeView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i18.IncomeView(),
+    _i17.IncomeView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i17.IncomeView(),
         settings: data,
       );
     },
-    _i19.TransferView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i19.TransferView(),
+    _i18.TransferView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i18.TransferView(),
         settings: data,
       );
     },
-    _i20.ExpenseView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i20.ExpenseView(),
+    _i19.ExpenseView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i19.ExpenseView(),
         settings: data,
       );
     },
-    _i21.BudgetView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i21.BudgetView(),
+    _i20.BudgetView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i20.BudgetView(),
         settings: data,
       );
     },
-    _i22.CreateBudgetView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i22.CreateBudgetView(),
+    _i21.CreateBudgetView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i21.CreateBudgetView(),
         settings: data,
       );
     },
-    _i23.EditBudgetView: (data) {
+    _i22.EditBudgetView: (data) {
       final args = data.getArgs<EditBudgetViewArguments>(nullOk: false);
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => _i23.EditBudgetView(
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => _i22.EditBudgetView(
             args.color,
             args.category,
             args.spendBalance,
@@ -431,63 +428,63 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
-    _i24.ProfileView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i24.ProfileView(),
+    _i23.ProfileView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i23.ProfileView(),
         settings: data,
       );
     },
-    _i25.AccountView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i25.AccountView(),
+    _i24.AccountView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i24.AccountView(),
         settings: data,
       );
     },
-    _i26.AccountDetails: (data) {
+    _i25.AccountDetails: (data) {
       final args = data.getArgs<AccountDetailsArguments>(nullOk: false);
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => _i26.AccountDetails(
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => _i25.AccountDetails(
             args.walletName, args.walletBalance, args.icon,
             key: args.key),
         settings: data,
       );
     },
-    _i27.SettingsView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i27.SettingsView(),
+    _i26.SettingsView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i26.SettingsView(),
         settings: data,
       );
     },
-    _i28.CurrencyView: (data) {
+    _i27.CurrencyView: (data) {
       final args = data.getArgs<CurrencyViewArguments>(
         orElse: () => const CurrencyViewArguments(),
       );
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => _i28.CurrencyView(key: args.key),
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => _i27.CurrencyView(key: args.key),
         settings: data,
       );
     },
-    _i29.NotificationSettingsView: (data) {
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i29.NotificationSettingsView(),
+    _i28.NotificationSettingsView: (data) {
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i28.NotificationSettingsView(),
         settings: data,
       );
     },
-    _i30.AboutView: (data) {
+    _i29.AboutView: (data) {
       final args = data.getArgs<AboutViewArguments>(
         orElse: () => const AboutViewArguments(),
       );
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => _i30.AboutView(key: args.key),
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => _i29.AboutView(key: args.key),
         settings: data,
       );
     },
-    _i31.HelpView: (data) {
+    _i30.HelpView: (data) {
       final args = data.getArgs<HelpViewArguments>(
         orElse: () => const HelpViewArguments(),
       );
-      return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => _i31.HelpView(key: args.key),
+      return _i31.MaterialPageRoute<dynamic>(
+        builder: (context) => _i30.HelpView(key: args.key),
         settings: data,
       );
     },
@@ -507,7 +504,7 @@ class SuccessfullyDoneArguments {
     this.className,
   });
 
-  final _i32.Key? key;
+  final _i31.Key? key;
 
   final String msg;
 
@@ -554,9 +551,9 @@ class DetailsTransactionViewArguments {
 
   final String accountType;
 
-  final _i33.Color color;
+  final _i32.Color color;
 
-  final _i32.Key? key;
+  final _i31.Key? key;
 
   @override
   String toString() {
@@ -601,7 +598,7 @@ class EditBudgetViewArguments {
     this.key,
   });
 
-  final _i33.Color color;
+  final _i32.Color color;
 
   final String category;
 
@@ -609,13 +606,13 @@ class EditBudgetViewArguments {
 
   final int limitBalance;
 
-  final _i33.Color backgroundColor;
+  final _i32.Color backgroundColor;
 
-  final _i33.Color iconColor;
+  final _i32.Color iconColor;
 
   final String icon;
 
-  final _i32.Key? key;
+  final _i31.Key? key;
 
   @override
   String toString() {
@@ -662,7 +659,7 @@ class AccountDetailsArguments {
 
   final String icon;
 
-  final _i32.Key? key;
+  final _i31.Key? key;
 
   @override
   String toString() {
@@ -690,7 +687,7 @@ class AccountDetailsArguments {
 class CurrencyViewArguments {
   const CurrencyViewArguments({this.key});
 
-  final _i32.Key? key;
+  final _i31.Key? key;
 
   @override
   String toString() {
@@ -712,7 +709,7 @@ class CurrencyViewArguments {
 class AboutViewArguments {
   const AboutViewArguments({this.key});
 
-  final _i32.Key? key;
+  final _i31.Key? key;
 
   @override
   String toString() {
@@ -734,7 +731,7 @@ class AboutViewArguments {
 class HelpViewArguments {
   const HelpViewArguments({this.key});
 
-  final _i32.Key? key;
+  final _i31.Key? key;
 
   @override
   String toString() {
@@ -753,7 +750,7 @@ class HelpViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i34.NavigationService {
+extension NavigatorStateExtension on _i33.NavigationService {
   Future<dynamic> navigateToSplashScreenView([
     int? routerId,
     bool preventDuplicates = true,
@@ -880,22 +877,8 @@ extension NavigatorStateExtension on _i34.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToAllSetupView([
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  ]) async {
-    return navigateTo<dynamic>(Routes.allSetupView,
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
   Future<dynamic> navigateToSuccessfullyDone({
-    _i32.Key? key,
+    _i31.Key? key,
     required String msg,
     dynamic className,
     int? routerId,
@@ -976,8 +959,8 @@ extension NavigatorStateExtension on _i34.NavigationService {
     required String category,
     required String type,
     required String accountType,
-    required _i33.Color color,
-    _i32.Key? key,
+    required _i32.Color color,
+    _i31.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1071,14 +1054,14 @@ extension NavigatorStateExtension on _i34.NavigationService {
   }
 
   Future<dynamic> navigateToEditBudgetView({
-    required _i33.Color color,
+    required _i32.Color color,
     required String category,
     required int spendBalance,
     required int limitBalance,
-    required _i33.Color backgroundColor,
-    required _i33.Color iconColor,
+    required _i32.Color backgroundColor,
+    required _i32.Color iconColor,
     required String icon,
-    _i32.Key? key,
+    _i31.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1133,7 +1116,7 @@ extension NavigatorStateExtension on _i34.NavigationService {
     required String walletName,
     required int walletBalance,
     required String icon,
-    _i32.Key? key,
+    _i31.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1167,7 +1150,7 @@ extension NavigatorStateExtension on _i34.NavigationService {
   }
 
   Future<dynamic> navigateToCurrencyView({
-    _i32.Key? key,
+    _i31.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1197,7 +1180,7 @@ extension NavigatorStateExtension on _i34.NavigationService {
   }
 
   Future<dynamic> navigateToAboutView({
-    _i32.Key? key,
+    _i31.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1213,7 +1196,7 @@ extension NavigatorStateExtension on _i34.NavigationService {
   }
 
   Future<dynamic> navigateToHelpView({
-    _i32.Key? key,
+    _i31.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1354,22 +1337,8 @@ extension NavigatorStateExtension on _i34.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithAllSetupView([
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  ]) async {
-    return replaceWith<dynamic>(Routes.allSetupView,
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
   Future<dynamic> replaceWithSuccessfullyDone({
-    _i32.Key? key,
+    _i31.Key? key,
     required String msg,
     dynamic className,
     int? routerId,
@@ -1450,8 +1419,8 @@ extension NavigatorStateExtension on _i34.NavigationService {
     required String category,
     required String type,
     required String accountType,
-    required _i33.Color color,
-    _i32.Key? key,
+    required _i32.Color color,
+    _i31.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1545,14 +1514,14 @@ extension NavigatorStateExtension on _i34.NavigationService {
   }
 
   Future<dynamic> replaceWithEditBudgetView({
-    required _i33.Color color,
+    required _i32.Color color,
     required String category,
     required int spendBalance,
     required int limitBalance,
-    required _i33.Color backgroundColor,
-    required _i33.Color iconColor,
+    required _i32.Color backgroundColor,
+    required _i32.Color iconColor,
     required String icon,
-    _i32.Key? key,
+    _i31.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1607,7 +1576,7 @@ extension NavigatorStateExtension on _i34.NavigationService {
     required String walletName,
     required int walletBalance,
     required String icon,
-    _i32.Key? key,
+    _i31.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1641,7 +1610,7 @@ extension NavigatorStateExtension on _i34.NavigationService {
   }
 
   Future<dynamic> replaceWithCurrencyView({
-    _i32.Key? key,
+    _i31.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1671,7 +1640,7 @@ extension NavigatorStateExtension on _i34.NavigationService {
   }
 
   Future<dynamic> replaceWithAboutView({
-    _i32.Key? key,
+    _i31.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1687,7 +1656,7 @@ extension NavigatorStateExtension on _i34.NavigationService {
   }
 
   Future<dynamic> replaceWithHelpView({
-    _i32.Key? key,
+    _i31.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,

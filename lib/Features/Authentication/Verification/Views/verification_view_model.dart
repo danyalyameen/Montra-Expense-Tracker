@@ -58,7 +58,8 @@ class VerificationViewModel extends ViewModel {
     if (FirebaseAuth.instance.currentUser!.emailVerified) {
       sharedPreferences.setBool(Variables.loggedInKey, true);
       sharedPreferences.setBool(Variables.redirectFromLoginKey, false);
-      navigationService.replaceWithSuccessfullyDone(msg: "Email Verified", className: const SetupPinView());
+      navigationService.replaceWithSuccessfullyDone(
+          msg: "Email Verified", className: const SetupPinView());
     } else {
       Fluttertoast.showToast(
         msg: "Email is Not Yet Verified. Please Check Inbox",

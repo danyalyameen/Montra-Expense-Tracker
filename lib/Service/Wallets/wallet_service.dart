@@ -19,14 +19,16 @@ class WalletService {
       error = false;
     } else {
       for (var element in personData.wallets!) {
-        if (element.walletName != wallet.walletName) {
-          personData.wallets!.insert(0, wallet);
-          await user.update(PersonData(wallets: personData.wallets!).receive());
-          error = false;
-          break;
-        } else {
+        if (element.walletName == wallet.walletName) {
           error = true;
           break;
+        } else {
+          if (element == personData.wallets!.last) {
+            personData.wallets!.insert(0, wallet);
+            await user
+                .update(PersonData(wallets: personData.wallets!).receive());
+            error = false;
+          }
         }
       }
     }

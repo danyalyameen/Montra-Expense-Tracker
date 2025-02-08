@@ -4,30 +4,35 @@ import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
+import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SetupWalletViewModel extends ViewModel {
+  // Final Fields
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _balanceEditingController =
       TextEditingController();
   final TextEditingController _nameEditingController = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  // Get Final Fields
+  GlobalKey<FormState> get formKey => _formKey;
   TextEditingController get balanceController => _balanceEditingController;
   TextEditingController get nameController => _nameEditingController;
 
+  // Non Final Fields
   bool _isFocus = false;
   bool _showLoading = false;
   bool _error = false;
   String _selectedAccountType = "";
-  int _currentIndex = 0;
 
+  // Get Non Final Fields
   bool get isFocus => _isFocus;
   bool get showLoading => _showLoading;
   bool get walletError => _error;
   String get selectedAccountType => _selectedAccountType;
-  int get currentIndex => _currentIndex;
 
+  // Validate Balance
   validateBalance() {
     if (_balanceEditingController.text.isEmpty) {
       Fluttertoast.showToast(
@@ -39,6 +44,7 @@ class SetupWalletViewModel extends ViewModel {
     }
   }
 
+  // Validate Name
   String? validateName(String? value) {
     if (value!.isEmpty) {
       return "Please Enter Your Name";
@@ -50,6 +56,7 @@ class SetupWalletViewModel extends ViewModel {
     return null;
   }
 
+  // Validate DropDown
   validateDropDown() {
     if (_selectedAccountType.isEmpty) {
       Fluttertoast.showToast(
@@ -61,33 +68,33 @@ class SetupWalletViewModel extends ViewModel {
     }
   }
 
+  // Make isFocus True to change the height of Background Color Container
   void onTap() {
     _isFocus = true;
     notifyListeners();
   }
 
+  // Same Change the Height but also unfocus the Text Field
   void onTapOutside(BuildContext context) {
     _isFocus = false;
     FocusScope.of(context).unfocus();
     notifyListeners();
   }
 
+  // Same Change the Height but also unfocus the Text Field
   void onComplete(BuildContext context) {
     _isFocus = false;
     FocusScope.of(context).unfocus();
     notifyListeners();
   }
 
+  // Drop Down Value Change Function
   void onChanged(String value) {
     _selectedAccountType = value;
     notifyListeners();
   }
 
-  void updateCurrentIndex(int index) {
-    _currentIndex = index;
-    notifyListeners();
-  }
-
+  // Main Navigation on Wallet Setup
   void allSetupNavigation() async {
     validateBalance();
     validateDropDown();
@@ -95,25 +102,31 @@ class SetupWalletViewModel extends ViewModel {
       if (formKey.currentState!.validate() &&
           _balanceEditingController.text.isNotEmpty &&
           _selectedAccountType.isNotEmpty) {
+        // Initialize Shared Preference
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
+        // Show Loading
         _showLoading = true;
         notifyListeners();
+        // Add Wallet
         _error = await walletService.addWallet(
             wallet: Wallets(
           balance: int.parse(_balanceEditingController.text),
           walletName: _nameEditingController.text,
           accountType: _selectedAccountType,
         ));
+        // Check Error
         if (_error) {
           _showLoading = false;
           notifyListeners();
           return;
         }
+        // Hide Loading
         _showLoading = false;
         notifyListeners();
+        // Navigate to Dashboard
         sharedPreferences.setBool(Variables.walletSetupKey, true);
-        navigationService.navigateToAllSetupView();
+        navigationService.replaceWithSuccessfullyDone(msg: "Account Setup Successfully", className: const DashboardView());
       }
     } catch (e) {
       // ignore: avoid_print
