@@ -8,11 +8,15 @@ class AuthService {
   final FirebaseFirestore _database = FirebaseFirestore.instance;
 
   Future<UserCredential> signUp(
-      {required String email, required String password}) async {
+      {required String email, required String password, required String name}) async {
     final userCredential = await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
+    await _database
+        .collection('users')
+        .doc(userCredential.user!.uid)
+        .set(PersonData(name: name).receive());
     return userCredential;
   }
 
@@ -25,10 +29,10 @@ class AuthService {
     return userCredential;
   }
 
-  googleAuth() async {
+  Future<UserCredential?> googleAuth() async {
     GoogleSignInAccount? userAccount = await GoogleSignIn().signIn();
     if (userAccount == null) {
-      return;
+      return null;
     }
     GoogleSignInAuthentication? auth = await userAccount.authentication;
     final credentials = GoogleAuthProvider.credential(
@@ -36,13 +40,6 @@ class AuthService {
       idToken: auth.idToken,
     );
     return await _auth.signInWithCredential(credentials);
-  }
-
-  addUserDetails({required String id, required String name}) async {
-    await _database
-        .collection('users')
-        .doc(id)
-        .set(PersonData(name: name).receive());
   }
 
   User? getUser() {
