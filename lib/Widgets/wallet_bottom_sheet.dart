@@ -10,7 +10,8 @@ import 'package:montra_expense_tracker/Widgets/custom_bottom_sheet.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class WalletBottomSheet extends StatefulWidget {
-  const WalletBottomSheet({super.key});
+  final Map<String, dynamic> storeSelectedWallet;
+  const WalletBottomSheet({super.key, required this.storeSelectedWallet});
 
   @override
   State<WalletBottomSheet> createState() => _WalletState();
@@ -18,9 +19,6 @@ class WalletBottomSheet extends StatefulWidget {
 
 class _WalletState extends State<WalletBottomSheet> {
   final String createWallet = "Add Wallet";
-  Map<String, dynamic> storeSelectedWallet = {
-    "option": "Wallet",
-  };
   final String dropDownText = "Wallet";
   final NavigationService navigationService = locator<NavigationService>();
   final WalletService walletService = locator<WalletService>();
@@ -36,9 +34,9 @@ class _WalletState extends State<WalletBottomSheet> {
       buttonWidth: width * 0.3,
       bottomSheetHight: height * 0.44,
       hintText: dropDownText,
-      storeSelectedItem: storeSelectedWallet,
+      storeSelectedItem: widget.storeSelectedWallet,
       showSelectedItemOnHintText: _ShowSelectedWallet(
-        accountName: storeSelectedWallet["option"],
+        accountName: widget.storeSelectedWallet["option"],
         width: width,
       ),
       onPressed: () => navigationService.navigateToSetupWalletView(),
@@ -55,7 +53,7 @@ class _WalletState extends State<WalletBottomSheet> {
               },
               updateHintText: (index) async {
                 var data = await walletService.getWallets();
-                storeSelectedWallet["option"] = data[index].walletName;
+                widget.storeSelectedWallet["option"] = data[index].walletName;
                 navigationService.back();
                 setState(() {});
               },

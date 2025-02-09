@@ -4,9 +4,10 @@ import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
-import 'package:montra_expense_tracker/Constants/Variables/image_path.dart';
+import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/user_transactions.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -14,14 +15,25 @@ class DashboardView extends StackedView<DashboardViewModel> {
   const DashboardView({super.key});
 
   @override
+  void onViewModelReady(DashboardViewModel viewModel) {
+    // Change Notification Bar Color
+    viewModel.notificationBarService.blackNotificationBar();
+    super.onViewModelReady(viewModel);
+  }
+
+  @override
   Widget builder(
       BuildContext context, DashboardViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      // Navigation of Different UIs
       body: Database
           .bottomNavigationViews[viewModel.currentIndexForBottomNavigation],
+      // Floating Action Button Location
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // Floating Action Button
       floatingActionButton: _FAB(
         width: width,
         height: height,
@@ -29,10 +41,8 @@ class DashboardView extends StackedView<DashboardViewModel> {
           viewModel.showOrHideItems();
         },
       ),
+      // Bottom Navigation Bar
       bottomNavigationBar: BottomAppBar(
-        color: AppColors.primaryLight,
-        shape: const CircularNotchedRectangle(),
-        notchMargin: width * 0.02,
         height: height * 0.0956,
         child: _BottomNavigation(
           width: width,
@@ -52,10 +62,12 @@ class DashboardUI extends ViewModelWidget<DashboardViewModel> {
 
   @override
   Widget build(BuildContext context, DashboardViewModel viewModel) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Stack(
       children: [
+        // Background Gradient
         Container(
           height: height * 0.3,
           width: double.infinity,
@@ -74,21 +86,26 @@ class DashboardUI extends ViewModelWidget<DashboardViewModel> {
           padding: EdgeInsets.only(top: height * 0.005),
           child: ListView(
             children: [
+              // Top Navigation
               _TopNavigation(
                 height: height,
                 width: width,
                 navigationNotification: viewModel.notificationNavigation,
               ),
+              // For Spacing
               SizedBox(
                 height: height * 0.01,
               ),
+              // Account Details like Balance
               _ShowAcccount(
                 height: height,
                 width: width,
               ),
+              // For Spacing
               SizedBox(
                 height: height * 0.03,
               ),
+              // Recent Transactions
               _RecentTransactions(
                 width: width,
                 height: height,
@@ -96,6 +113,7 @@ class DashboardUI extends ViewModelWidget<DashboardViewModel> {
             ],
           ),
         ),
+        // Show or Hide the Three Items
         _ShowOrHide(
           width: width,
           height: height,
@@ -106,7 +124,7 @@ class DashboardUI extends ViewModelWidget<DashboardViewModel> {
   }
 }
 
-class _TopNavigation extends StatelessWidget {
+class _TopNavigation extends ViewModelWidget<DashboardViewModel> {
   final double height, width;
   final Function navigationNotification;
   const _TopNavigation({
@@ -115,72 +133,70 @@ class _TopNavigation extends StatelessWidget {
     required this.navigationNotification,
   });
 
-  final String monthText = "Month";
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, DashboardViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: width * 0.03),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppColors.violet60,
-                width: width * 0.006,
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(width * 0.005),
-              child: CircleAvatar(
-                radius: width * 0.04,
-                backgroundImage: AssetImage(ImagePath.userImage),
-              ),
+          // Account Picture
+          FutureBuilder(
+              future: viewModel.getFirstLetterOfName(),
+              builder: (context, snapshot) {
+                return Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppColors.violet60,
+                      width: width * 0.006,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(width * 0.005),
+                    child: CircleAvatar(
+                      radius: width * 0.04,
+                      // User Image
+                      backgroundImage: NetworkImage(
+                        viewModel.imageService.getImage(
+                          userPicture: true,
+                          imageName: Variables.userPictureName,
+                        ),
+                      ),
+                      child: viewModel.imageError
+                          ? ClipOval(
+                              child: Container(
+                                color: AppColors.primaryViolet,
+                                child: Center(
+                                  child: Text(
+                                    snapshot.data!,
+                                    style: TextStyle(
+                                      color: AppColors.primaryLight,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : null,
+                      // Show First Letter Incase of No Profile Picture
+                      onBackgroundImageError: (exception, stackTrace) {
+                        viewModel.imageError = true;
+                        viewModel.notifyListeners();
+                      },
+                    ),
+                  ),
+                );
+              }),
+          // Screen Name
+          Text(
+            "Dashboard",
+            style: TextStyle(
+              color: AppColors.primaryBlack,
+              fontSize: width * 0.045,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          Container(
-            width: width * 0.25,
-            height: height * 0.045,
-            padding: EdgeInsets.only(left: width * 0.02),
-            margin: EdgeInsets.only(top: height * 0.01, bottom: height * 0.01),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(width * 0.06),
-              border: Border.all(
-                width: width * 0.002,
-                color: AppColors.light20,
-              ),
-              color: Colors.transparent,
-            ),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  IconsPath.dropdownArrow,
-                  width: width * 0.07,
-                  height: width * 0.07,
-                  colorFilter: ColorFilter.mode(
-                    AppColors.primaryViolet,
-                    BlendMode.srcIn,
-                  ),
-                ),
-                SizedBox(
-                  width: width * 0.01,
-                ),
-                Text(
-                  monthText,
-                  style: TextStyle(
-                    color: AppColors.primaryBlack,
-                    fontSize: width * 0.035,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  width: width * 0.01,
-                )
-              ],
-            ),
-          ),
+          // Notification
           Center(
             child: InkWell(
               borderRadius: BorderRadius.circular(width),
@@ -202,24 +218,23 @@ class _TopNavigation extends StatelessWidget {
   }
 }
 
-class _ShowAcccount extends StatelessWidget {
+class _ShowAcccount extends ViewModelWidget<DashboardViewModel> {
   final double height, width;
   const _ShowAcccount({
     required this.height,
     required this.width,
   });
 
+  // Variables
   final String accountTitle = "Account Balance";
-  final int balance = 9450;
   final String incomeText = "Income";
-  final int incomeBalance = 5000;
   final String expenseText = "Expense";
-  final int expenseBalance = 1200;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, DashboardViewModel viewModel) {
     return Column(
       children: [
+        // Title
         Text(
           accountTitle,
           style: TextStyle(
@@ -228,145 +243,229 @@ class _ShowAcccount extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
+        // For Spacing
         SizedBox(
           height: height * 0.01,
         ),
-        Text(
-          "\$$balance",
-          style: TextStyle(
-            color: AppColors.primaryBlack,
-            fontSize: width * 0.12,
-            fontWeight: FontWeight.w700,
-          ),
+        // Balance
+        FutureBuilder(
+          future: viewModel.getBalance(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              // Loading Effect
+              return Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade100,
+                child: Container(
+                  width: width * 0.3,
+                  height: height * 0.06,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryGreen,
+                    borderRadius: BorderRadius.circular(width * 0.04),
+                  ),
+                ),
+              );
+            }
+            // Balance
+            return Text(
+              "${Variables.currency}${snapshot.data}",
+              style: TextStyle(
+                color: AppColors.primaryBlack,
+                fontSize: width * 0.12,
+                fontWeight: FontWeight.w700,
+              ),
+            );
+          },
         ),
+        // For Spacing
         SizedBox(
           height: height * 0.01,
         ),
+        // Income and Expense
         Padding(
           padding: EdgeInsets.symmetric(horizontal: width * 0.05),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: width * 0.425,
-                height: height * 0.1,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryGreen,
-                  borderRadius: BorderRadius.circular(width * 0.06),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: width * 0.135,
-                      height: width * 0.135,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryLight,
-                        borderRadius: BorderRadius.circular(width * 0.04),
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          IconsPath.income,
-                          width: width * 0.08,
-                          height: width * 0.08,
-                          colorFilter: ColorFilter.mode(
-                            AppColors.primaryGreen,
-                            BlendMode.srcIn,
-                          ),
+              // Income Background Color
+              FutureBuilder(
+                future: viewModel.getTotalIncome(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    // Loading Effect
+                    return Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: width * 0.425,
+                        height: height * 0.1,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryGreen,
+                          borderRadius: BorderRadius.circular(width * 0.06),
                         ),
                       ),
+                    );
+                  }
+                  return Container(
+                    width: width * 0.425,
+                    height: height * 0.1,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryGreen,
+                      borderRadius: BorderRadius.circular(width * 0.06),
                     ),
-                    SizedBox(
-                      width: width * 0.02,
-                    ),
-                    Column(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          incomeText,
-                          style: TextStyle(
-                              color: AppColors.primaryLight,
-                              fontWeight: FontWeight.w400,
-                              fontSize: width * 0.035),
-                        ),
-                        SizedBox(
-                          height: height * 0.005,
-                        ),
-                        Text(
-                          "\$$incomeBalance",
-                          style: TextStyle(
+                        // Income Icon
+                        Container(
+                          width: width * 0.135,
+                          height: width * 0.135,
+                          decoration: BoxDecoration(
                             color: AppColors.primaryLight,
-                            fontSize: width * 0.05,
-                            fontWeight: FontWeight.w600,
+                            borderRadius: BorderRadius.circular(width * 0.04),
                           ),
+                          child: Center(
+                            child: SvgPicture.asset(
+                              IconsPath.income,
+                              width: width * 0.08,
+                              height: width * 0.08,
+                              colorFilter: ColorFilter.mode(
+                                AppColors.primaryGreen,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // For Spacing
+                        SizedBox(
+                          width: width * 0.02,
+                        ),
+                        // Income Text and Balance
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Income Text
+                            Text(
+                              incomeText,
+                              style: TextStyle(
+                                color: AppColors.primaryLight,
+                                fontWeight: FontWeight.w400,
+                                fontSize: width * 0.035,
+                              ),
+                            ),
+                            // For Spacing
+                            SizedBox(
+                              height: height * 0.005,
+                            ),
+                            // Income Balance
+                            Text(
+                              "${Variables.currency}${snapshot.data}",
+                              style: TextStyle(
+                                color: AppColors.primaryLight,
+                                fontSize: width * 0.05,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
+                          ],
                         )
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  );
+                },
               ),
+              // For Spacing
               SizedBox(
                 width: width * 0.05,
               ),
-              Container(
-                width: width * 0.425,
-                height: height * 0.1,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryRed,
-                  borderRadius: BorderRadius.circular(width * 0.06),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: width * 0.135,
-                      height: width * 0.135,
+              // Expense Background Color
+              FutureBuilder(
+                future: viewModel.getTotalExpense(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    // Loading Effect
+                    return Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: width * 0.425,
+                        height: height * 0.1,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryGreen,
+                          borderRadius: BorderRadius.circular(width * 0.06),
+                        ),
+                      ),
+                    );
+                  } else {
+                    // Background Red Container
+                    return Container(
+                      width: width * 0.425,
+                      height: height * 0.1,
                       decoration: BoxDecoration(
-                        color: AppColors.primaryLight,
-                        borderRadius: BorderRadius.circular(width * 0.04),
+                        color: AppColors.primaryRed,
+                        borderRadius: BorderRadius.circular(width * 0.06),
                       ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          IconsPath.income,
-                          width: width * 0.08,
-                          height: width * 0.08,
-                          colorFilter: ColorFilter.mode(
-                            AppColors.primaryRed,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: width * 0.02,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          expenseText,
-                          style: TextStyle(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Expense Icon
+                          Container(
+                            width: width * 0.135,
+                            height: width * 0.135,
+                            decoration: BoxDecoration(
                               color: AppColors.primaryLight,
-                              fontWeight: FontWeight.w400,
-                              fontSize: width * 0.035),
-                        ),
-                        SizedBox(
-                          height: height * 0.005,
-                        ),
-                        Text(
-                          "\$$expenseBalance",
-                          style: TextStyle(
-                            color: AppColors.primaryLight,
-                            fontSize: width * 0.05,
-                            fontWeight: FontWeight.w600,
+                              borderRadius: BorderRadius.circular(width * 0.04),
+                            ),
+                            child: Center(
+                              child: SvgPicture.asset(
+                                IconsPath.expense,
+                                width: width * 0.08,
+                                height: width * 0.08,
+                                colorFilter: ColorFilter.mode(
+                                  AppColors.primaryRed,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ),
                           ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
+                          // For Spacing
+                          SizedBox(
+                            width: width * 0.02,
+                          ),
+                          // Expense Text and Balance
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Expense Text
+                              Text(
+                                expenseText,
+                                style: TextStyle(
+                                  color: AppColors.primaryLight,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: width * 0.035,
+                                ),
+                              ),
+                              // For Spacing
+                              SizedBox(
+                                height: height * 0.005,
+                              ),
+                              // Expense Balance
+                              Text(
+                                "${Variables.currency}${snapshot.data}",
+                                style: TextStyle(
+                                  color: AppColors.primaryLight,
+                                  fontSize: width * 0.05,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                },
               ),
             ],
           ),
@@ -383,6 +482,7 @@ class _RecentTransactions extends ViewModelWidget<DashboardViewModel> {
     required this.height,
   });
 
+  // Variables
   final String transactionsTitle = "Recent Transactions";
   final String seeAllTransactionsText = "See All";
 
@@ -395,6 +495,7 @@ class _RecentTransactions extends ViewModelWidget<DashboardViewModel> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Transactions Title
               Text(
                 transactionsTitle,
                 style: TextStyle(
@@ -403,20 +504,27 @@ class _RecentTransactions extends ViewModelWidget<DashboardViewModel> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Container(
-                width: width * 0.2,
-                height: height * 0.04,
-                decoration: BoxDecoration(
-                  color: AppColors.violet20,
-                  borderRadius: BorderRadius.circular(width * 0.06),
-                ),
-                child: Center(
-                  child: Text(
-                    seeAllTransactionsText,
-                    style: TextStyle(
-                      color: AppColors.primaryViolet,
-                      fontSize: width * 0.04,
-                      fontWeight: FontWeight.w500,
+              // See All Button
+              InkWell(
+                onTap: () {
+                  viewModel.currentIndexForBottomNavigation = 1;
+                  viewModel.notifyListeners();
+                },
+                child: Container(
+                  width: width * 0.2,
+                  height: height * 0.04,
+                  decoration: BoxDecoration(
+                    color: AppColors.violet20,
+                    borderRadius: BorderRadius.circular(width * 0.06),
+                  ),
+                  child: Center(
+                    child: Text(
+                      seeAllTransactionsText,
+                      style: TextStyle(
+                        color: AppColors.primaryViolet,
+                        fontSize: width * 0.04,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
@@ -424,10 +532,12 @@ class _RecentTransactions extends ViewModelWidget<DashboardViewModel> {
             ],
           ),
         ),
+        // Transactions
         UserTransactions(
           itemCount: 4,
           transactions: viewModel.transactionsService.fetchTransactions(),
           icons: viewModel.transactionsService.transactionIcons(),
+          navigationService: viewModel.navigationService,
         ),
       ],
     );
@@ -442,11 +552,13 @@ class _FAB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Floating Action Button
     return FloatingActionButton(
       onPressed: onPressed,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(width * 0.1)),
       backgroundColor: AppColors.primaryViolet,
+      // Icon
       child: Transform.rotate(
         angle: 45 * 3.14 / 180,
         child: SvgPicture.asset(
@@ -473,91 +585,111 @@ class _ShowOrHide extends ViewModelWidget<DashboardViewModel> {
 
   @override
   Widget build(BuildContext context, DashboardViewModel viewModel) {
-    return viewModel.showItems
-        ? Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.primaryViolet.withValues(alpha: 0.45),
-                  AppColors.primaryViolet.withValues(alpha: 0),
-                ],
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(top: height * 0.68),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () => navigationService.navigateToTransferView(),
-                        child: CircleAvatar(
-                          radius: width * 0.07,
-                          backgroundColor: AppColors.primaryBlue,
-                          child: Center(
-                            child: SvgPicture.asset(
-                              IconsPath.currencyExchange,
-                              width: width * 0.09,
-                              height: width * 0.09,
-                              colorFilter: ColorFilter.mode(
-                                  AppColors.primaryLight, BlendMode.srcIn),
-                            ),
-                          ),
-                        ),
-                      )
+    return ValueListenableBuilder(
+      valueListenable: viewModel.showItems,
+      builder: (context, value, child) {
+        return value
+            ? Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  // Gradient
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.primaryViolet.withValues(alpha: 0.45),
+                      AppColors.primaryViolet.withValues(alpha: 0),
                     ],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
                   ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(top: height * 0.68),
+                  child: Column(
                     children: [
-                      InkWell(
-                        onTap: () => navigationService.navigateToIncomeView(),
-                        child: CircleAvatar(
-                          radius: width * 0.07,
-                          backgroundColor: AppColors.primaryGreen,
-                          child: Center(
-                            child: SvgPicture.asset(
-                              IconsPath.income,
-                              width: width * 0.09,
-                              height: width * 0.09,
-                              colorFilter: ColorFilter.mode(
-                                  AppColors.primaryLight, BlendMode.srcIn),
+                      // Transfer View Widget Icon
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              navigationService.navigateToTransferView();
+                              viewModel.showItems.value = false;
+                            },
+                            child: CircleAvatar(
+                              radius: width * 0.07,
+                              backgroundColor: AppColors.primaryBlue,
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  IconsPath.currencyExchange,
+                                  width: width * 0.09,
+                                  height: width * 0.09,
+                                  colorFilter: ColorFilter.mode(
+                                      AppColors.primaryLight, BlendMode.srcIn),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          )
+                        ],
                       ),
+                      // For Spacing
                       SizedBox(
-                        width: width * 0.25,
+                        height: height * 0.02,
                       ),
-                      InkWell(
-                        onTap: () => navigationService.navigateToExpenseView(),
-                        child: CircleAvatar(
-                          radius: width * 0.07,
-                          backgroundColor: AppColors.primaryRed,
-                          child: SvgPicture.asset(
-                            IconsPath.expense,
-                            width: width * 0.09,
-                            height: width * 0.09,
-                            colorFilter: ColorFilter.mode(
-                                AppColors.primaryLight, BlendMode.srcIn),
+                      // Income View Widget Icon
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              navigationService.navigateToIncomeView();
+                              viewModel.showItems.value = false;
+                            },
+                            child: CircleAvatar(
+                              radius: width * 0.07,
+                              backgroundColor: AppColors.primaryGreen,
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  IconsPath.income,
+                                  width: width * 0.09,
+                                  height: width * 0.09,
+                                  colorFilter: ColorFilter.mode(
+                                      AppColors.primaryLight, BlendMode.srcIn),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          // For Spacing
+                          SizedBox(
+                            width: width * 0.25,
+                          ),
+                          // Expense View Widget Icon
+                          InkWell(
+                            onTap: () {
+                              navigationService.navigateToExpenseView();
+                              viewModel.showItems.value = false;
+                            },
+                            child: CircleAvatar(
+                              radius: width * 0.07,
+                              backgroundColor: AppColors.primaryRed,
+                              child: SvgPicture.asset(
+                                IconsPath.expense,
+                                width: width * 0.09,
+                                height: width * 0.09,
+                                colorFilter: ColorFilter.mode(
+                                    AppColors.primaryLight, BlendMode.srcIn),
+                              ),
+                            ),
+                          )
+                        ],
                       )
                     ],
-                  )
-                ],
-              ),
-            ),
-          )
-        : const SizedBox();
+                  ),
+                ),
+              )
+            : const SizedBox();
+      },
+    );
   }
 }
 
@@ -578,6 +710,7 @@ class _BottomNavigation extends ViewModelWidget<DashboardViewModel> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        // Bottom Navigation First Half Icons
         SizedBox(
           width: width * 0.4,
           child: ListView.builder(
@@ -596,6 +729,7 @@ class _BottomNavigation extends ViewModelWidget<DashboardViewModel> {
                   },
                   child: Column(
                     children: [
+                      // Icon
                       SvgPicture.asset(
                         data[index][iconKey],
                         colorFilter: ColorFilter.mode(
@@ -606,9 +740,11 @@ class _BottomNavigation extends ViewModelWidget<DashboardViewModel> {
                         width: width * 0.08,
                         height: width * 0.08,
                       ),
+                      // For Spacing
                       SizedBox(
                         height: height * 0.004,
                       ),
+                      // Title
                       Text(
                         data[index][titleKey],
                         style: TextStyle(
@@ -627,6 +763,7 @@ class _BottomNavigation extends ViewModelWidget<DashboardViewModel> {
             },
           ),
         ),
+        // Bottom Navigation Second Half Icons
         SizedBox(
           width: width * 0.4,
           child: ListView.builder(
@@ -635,8 +772,8 @@ class _BottomNavigation extends ViewModelWidget<DashboardViewModel> {
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.only(
-                    left: index == 2 ? width * 0.01 : width * 0.08,
-                    top: height * 0.005),
+                    left: index == 2 ? width * 0.012 : width * 0.08,
+                    top: index == 0 ? height * 0.012 : height * 0.005),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
@@ -645,6 +782,7 @@ class _BottomNavigation extends ViewModelWidget<DashboardViewModel> {
                   },
                   child: Column(
                     children: [
+                      // Icon
                       SvgPicture.asset(
                         data[index + 2][iconKey],
                         colorFilter: ColorFilter.mode(
@@ -653,12 +791,14 @@ class _BottomNavigation extends ViewModelWidget<DashboardViewModel> {
                                 ? AppColors.primaryViolet
                                 : AppColors.grey,
                             BlendMode.srcIn),
-                        width: width * 0.08,
-                        height: width * 0.08,
+                        width: index == 0 ? width * 0.06 : width * 0.08,
+                        height: index == 0 ? width * 0.06 : width * 0.08,
                       ),
+                      // For Spacing
                       SizedBox(
                         height: height * 0.004,
                       ),
+                      // Title
                       Text(
                         data[index + 2][titleKey],
                         style: TextStyle(

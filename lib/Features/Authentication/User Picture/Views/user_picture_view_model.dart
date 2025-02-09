@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
+import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
 
 class UserPictureViewModel extends ViewModel {
@@ -14,13 +15,13 @@ class UserPictureViewModel extends ViewModel {
   File? get image => _image;
   bool get showLoading => _showLoading;
   bool get showLoadingForNotNow => _showLoadingForNotNow;
-  
+
   // Store Selected Image in image Variables
   void updateImage(File? newImage) {
     _image = newImage;
     notifyListeners();
   }
-   
+
   // Not Now Button Function
   void notNowButtonFunction() async {
     // Show Loading
@@ -36,7 +37,7 @@ class UserPictureViewModel extends ViewModel {
     // Navigate to Setup Pin
     navigationService.replaceWithSetupPinView();
   }
-  
+
   // Continue Button Function
   void continueButtonFunction() async {
     if (image != null) {
@@ -46,7 +47,7 @@ class UserPictureViewModel extends ViewModel {
       // Upload Image
       imageService.uploadImage(
         userPicture: true,
-        imageUploadName: "user",
+        imageUploadName: Variables.userPictureName,
         imageFile: image,
       );
       // Make Image Uploaded True

@@ -7,21 +7,20 @@ import 'package:stacked_services/stacked_services.dart';
 class CategoryBottomSheet extends StatefulWidget {
   final Future<List> fetchingCategoryOptions;
   final VoidCallback onPressed;
+  final Map<String, dynamic> storeSelectedCategory;
+  final String dropDown;
   const CategoryBottomSheet(
       {super.key,
       required this.fetchingCategoryOptions,
-      required this.onPressed});
+      required this.onPressed,
+      required this.storeSelectedCategory,
+      required this.dropDown});
   @override
   State<CategoryBottomSheet> createState() => _CategoryState();
 }
 
 class _CategoryState extends State<CategoryBottomSheet> {
   final String createCategory = "Create Category";
-  Map<String, dynamic> storeSelectedCategory = {
-    "option": "Category",
-    "color": null
-  };
-  final String dropDownText = "Category";
   final NavigationService navigationService = locator<NavigationService>();
 
   @override
@@ -35,16 +34,16 @@ class _CategoryState extends State<CategoryBottomSheet> {
         buttonText: createCategory,
         buttonWidth: width * 0.38,
         bottomSheetHight: height * 0.29,
-        hintText: dropDownText,
-        storeSelectedItem: storeSelectedCategory,
+        hintText: widget.dropDown,
+        storeSelectedItem: widget.storeSelectedCategory,
         showItems: _ShowItemsForCategory(
           width: width,
           height: height,
           data: widget.fetchingCategoryOptions,
           updateCategory: (index) async {
             var data = await widget.fetchingCategoryOptions;
-            storeSelectedCategory["option"] = data[index].option;
-            storeSelectedCategory["color"] = data[index].color;
+            widget.storeSelectedCategory["option"] = data[index].option;
+            widget.storeSelectedCategory["color"] = data[index].color;
             navigationService.back();
             setState(() {});
           },
@@ -52,7 +51,7 @@ class _CategoryState extends State<CategoryBottomSheet> {
         showSelectedItemOnHintText: _ShowSelectedCategory(
           width: width,
           height: height,
-          storeSelectedCategory: storeSelectedCategory,
+          storeSelectedCategory: widget.storeSelectedCategory,
         ),
         onPressed: () {
           Navigator.pop(context);

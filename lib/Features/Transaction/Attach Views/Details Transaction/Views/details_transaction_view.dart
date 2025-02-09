@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
+import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Details%20Transaction/Views/details_transaction_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/delete_sheet.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
@@ -9,38 +11,58 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class DetailsTransactionView extends StackedView<DetailsTransactionViewModel> {
-  final String balance, description, time, category, type, accountType;
+  final String balance, description, category, type;
+  final DateTime time;
   final Color color;
   const DetailsTransactionView(this.balance, this.description, this.time,
-      this.category, this.type, this.accountType, this.color,
+      this.category, this.type, this.color,
       {super.key});
 
+  // On Creation of View
+  @override
+  void onViewModelReady(DetailsTransactionViewModel viewModel) {
+    viewModel.notificationBarService.whiteNotificationBar();
+    super.onViewModelReady(viewModel);
+  }
+
+  // On Dispose of View
+  @override
+  void onDispose(DetailsTransactionViewModel viewModel) {
+    viewModel.notificationBarService.blackNotificationBar();
+    super.onDispose(viewModel);
+  }
+
+  // Variables
   final String attachments = "No Attachments";
   final String editButtonText = "Edit";
 
   @override
   Widget builder(BuildContext context, DetailsTransactionViewModel viewModel,
       Widget? child) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Background Color and App Bar
           _Background(
             width: width,
             height: height,
             color: color,
+            balance: balance,
             description: description,
             time: time,
             type: type,
             category: category,
-            accountType: accountType,
             navigationService: viewModel.navigationService,
           ),
+          // For Spacing
           SizedBox(
             height: height * 0.04,
           ),
+          // Description and Attachment
           Padding(
             padding: EdgeInsets.only(
               left: width * 0.04,
@@ -49,14 +71,17 @@ class DetailsTransactionView extends StackedView<DetailsTransactionViewModel> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Description
                 _Description(
                   width: width,
                   height: height,
                   description: description,
                 ),
+                // For Spacing
                 SizedBox(
                   height: height * 0.02,
                 ),
+                // Attachments
                 _Attachment(
                   width: width,
                   height: height,
@@ -65,9 +90,11 @@ class DetailsTransactionView extends StackedView<DetailsTransactionViewModel> {
               ],
             ),
           ),
+          // For Spacing
           SizedBox(
-            height: height * 0.3,
+            height: height * 0.24,
           ),
+          // Edit Button
           Center(
             child: CustomElevatedButton(
               width: width,
@@ -88,7 +115,8 @@ class DetailsTransactionView extends StackedView<DetailsTransactionViewModel> {
 class _Background extends StatelessWidget {
   final double width, height;
   final Color color;
-  final String description, time, type, category, accountType;
+  final DateTime time;
+  final String description, type, category, balance;
   final NavigationService navigationService;
   const _Background(
       {required this.width,
@@ -98,13 +126,14 @@ class _Background extends StatelessWidget {
       required this.time,
       required this.type,
       required this.category,
-      required this.accountType,
-      required this.navigationService});
+      required this.navigationService,
+      required this.balance});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        // Background Color Container
         Positioned(
           child: Container(
             width: width,
@@ -118,14 +147,17 @@ class _Background extends StatelessWidget {
             ),
             child: Column(
               children: [
+                // App Bar
                 _AppBar(
                   width: width,
                   height: height,
                   navigationService: navigationService,
                 ),
+                // Balance
                 _Balance(
                   width: width,
                   height: height,
+                  balance: balance,
                   description: description,
                   time: time,
                 ),
@@ -133,12 +165,12 @@ class _Background extends StatelessWidget {
             ),
           ),
         ),
+        // Types Means Category Information
         _Types(
           width: width,
           height: height,
           type: type,
           category: category,
-          wallet: accountType,
         ),
       ],
     );
@@ -153,6 +185,7 @@ class _AppBar extends StatelessWidget {
       required this.height,
       required this.navigationService});
 
+  // Variables
   final String appBarTitle = "Transaction Details";
   final String title = "Remove this Transaction?";
   final String subtitle =
@@ -169,6 +202,7 @@ class _AppBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          // Back Button
           InkWell(
             onTap: () => navigationService.back(),
             child: SvgPicture.asset(
@@ -179,6 +213,7 @@ class _AppBar extends StatelessWidget {
               height: width * 0.1,
             ),
           ),
+          // Title
           Text(
             appBarTitle,
             style: TextStyle(
@@ -187,6 +222,7 @@ class _AppBar extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
+          // Delete Button
           InkWell(
             onTap: () {
               Delete.showSheet(
@@ -213,33 +249,40 @@ class _AppBar extends StatelessWidget {
 
 class _Balance extends StatelessWidget {
   final double width, height;
-  final String description, time;
+  final String balance, description;
+  final DateTime time;
   const _Balance(
       {required this.width,
       required this.height,
       required this.description,
-      required this.time});
-
-  final String balance = "\$120";
+      required this.time,
+      required this.balance});
 
   @override
   Widget build(BuildContext context) {
+    // Format the date
+    final String formattedDate = DateFormat('EEEE d MMMM yyyy')
+        .format(DateTime(time.year, time.month, time.day, time.weekday));
     return Column(
       children: [
+        // For Spacing
         SizedBox(
           height: height * 0.04,
         ),
+        // Balance
         Text(
-          balance,
+          "${Variables.currency}$balance",
           style: TextStyle(
             color: AppColors.primaryLight,
             fontSize: width * 0.12,
             fontWeight: FontWeight.w800,
           ),
         ),
+        // For Spacing
         SizedBox(
           height: height * 0.01,
         ),
+        // Description
         Text(
           description,
           style: TextStyle(
@@ -248,11 +291,13 @@ class _Balance extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
+        // For Spacing
         SizedBox(
           height: height * 0.01,
         ),
+        // Time
         Text(
-          "Saturday 4 June 2021 $time",
+          "$formattedDate  ${time.hour > 12 ? (time.hour - 12).toString().padLeft(2, "0") : time.hour.toString().padLeft(2, "0")}:${time.minute.toString().padLeft(2, "0")} ${time.hour > 12 ? "PM" : "AM"}",
           style: TextStyle(
             color: AppColors.primaryLight,
             fontSize: width * 0.035,
@@ -266,17 +311,17 @@ class _Balance extends StatelessWidget {
 
 class _Types extends StatelessWidget {
   final double width, height;
-  final String type, category, wallet;
-  const _Types(
-      {required this.width,
-      required this.height,
-      required this.type,
-      required this.category,
-      required this.wallet});
+  final String type, category;
+  const _Types({
+    required this.width,
+    required this.height,
+    required this.type,
+    required this.category,
+  });
 
+  // Variables
   final String typeTitle = "Type";
-  final String categoryTitle = "Cateogory";
-  final String walletTitle = "Wallet";
+  final String categoryTitle = "Category";
 
   @override
   Widget build(BuildContext context) {
@@ -286,6 +331,7 @@ class _Types extends StatelessWidget {
         right: width * 0.05,
         top: height * 0.32,
       ),
+      // Background Color
       child: Container(
         height: height * 0.1,
         decoration: BoxDecoration(
@@ -299,9 +345,11 @@ class _Types extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            // Type
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // Type Title
                 Text(
                   typeTitle,
                   style: TextStyle(
@@ -310,9 +358,11 @@ class _Types extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
+                // For Spacing
                 SizedBox(
                   height: height * 0.01,
                 ),
+                // Transaction Type
                 Text(
                   type,
                   style: TextStyle(
@@ -323,22 +373,28 @@ class _Types extends StatelessWidget {
                 )
               ],
             ),
+            // Category
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // Category Title
                 Text(
-                  categoryTitle,
+                  type == "Transfer" ? "Transfer" : categoryTitle,
                   style: TextStyle(
                     color: AppColors.grey,
                     fontSize: width * 0.04,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
+                // For Spacing
                 SizedBox(
                   height: height * 0.01,
                 ),
+                // Category
                 Text(
-                  category,
+                  type == "Transfer"
+                      ? "${category.split(",").first} To ${category.split(",").last}"
+                      : category,
                   style: TextStyle(
                     color: AppColors.primaryBlack,
                     fontSize: width * 0.045,
@@ -347,30 +403,6 @@ class _Types extends StatelessWidget {
                 )
               ],
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  walletTitle,
-                  style: TextStyle(
-                    color: AppColors.grey,
-                    fontSize: width * 0.04,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Text(
-                  wallet,
-                  style: TextStyle(
-                    color: AppColors.primaryBlack,
-                    fontSize: width * 0.045,
-                    fontWeight: FontWeight.w600,
-                  ),
-                )
-              ],
-            )
           ],
         ),
       ),
@@ -384,6 +416,7 @@ class _Description extends StatelessWidget {
   const _Description(
       {required this.width, required this.height, required this.description});
 
+  // Variables
   final String descriptionTitle = "Description";
 
   @override
@@ -391,6 +424,7 @@ class _Description extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Description Title
         Text(
           descriptionTitle,
           style: TextStyle(
@@ -399,9 +433,11 @@ class _Description extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
+        // For Spacing
         SizedBox(
           height: height * 0.01,
         ),
+        // Description
         Text(
           description,
           style: TextStyle(
@@ -421,6 +457,7 @@ class _Attachment extends StatelessWidget {
   const _Attachment(
       {required this.width, required this.height, required this.attachment});
 
+  // Variables
   final String attachmentTitle = "Attachment";
 
   @override
@@ -428,6 +465,7 @@ class _Attachment extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Attachment Title
         Text(
           attachmentTitle,
           style: TextStyle(
@@ -436,9 +474,11 @@ class _Attachment extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
+        // For Spacing
         SizedBox(
           height: height * 0.01,
         ),
+        // Attachment
         Text(
           attachment,
           style: TextStyle(

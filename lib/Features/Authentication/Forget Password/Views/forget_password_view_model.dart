@@ -30,7 +30,7 @@ class ForgetPasswordViewModel extends ViewModel {
       return "Please Enter Your Email";
     }
   }
-  
+
   // Send a Link to Create Password Link
   void sendResetPasswordLink() async {
     if (formKey.currentState!.validate()) {

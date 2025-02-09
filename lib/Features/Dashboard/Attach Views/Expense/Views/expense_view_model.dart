@@ -5,28 +5,34 @@ import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
-import 'package:montra_expense_tracker/Models/default_options_model.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
 
 class ExpenseViewModel extends ViewModel {
-  final TextEditingController _descriptionController = TextEditingController();
+  // Final Fields
   final TextEditingController _balanceController = TextEditingController();
-  final GlobalKey<FormState> descriptionFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _descriptionFormKey = GlobalKey<FormState>();
+  final TextEditingController _descriptionController = TextEditingController();
 
+  // Get Final Fields
+  GlobalKey<FormState> get descriptionFormKey => _descriptionFormKey;
   TextEditingController get descriptionController => _descriptionController;
   TextEditingController get balanceController => _balanceController;
 
+  // Non Final Fields
+  bool _showLoading = false;
+  // Get Non Final Fields
+  bool get showLoading => _showLoading;
+
+  // Store Selected Category which is Selected by User
   Map<String, dynamic> storeSelectedCategory = {
     "option": "Category",
-    "color": null
+    "color": null,
   };
 
+  // Store Selected Wallet which is Select by User
   Map<String, dynamic> storeSelectedWallet = {
     "option": "Wallet",
   };
-
-  bool _showLoading = false;
-  bool get showLoading => _showLoading;
 
   validateBalance() {
     if (_balanceController.text.isEmpty) {
@@ -68,20 +74,8 @@ class ExpenseViewModel extends ViewModel {
     }
   }
 
-  Future<List> fetchingCategoryOptions() async {
-    var data = await expenseOptions.get();
-    var defaultOptions =
-        DefaultOptionsModel.store(data.data() as Map<String, dynamic>);
-    return defaultOptions.defaultExpenseOptions!;
-  }
-
-  Future<PersonData> fetchingWalletOptions() async {
-    var data = await firestore.doc(auth.getUser()!.uid).get();
-    return PersonData.store(data.data() as Map<String, dynamic>);
-  }
-
   void updateCategoryHintText({required int index}) async {
-    var data = await fetchingCategoryOptions();
+    var data = await optionService.getExpenseOptions();
     storeSelectedCategory["option"] = data[index].option;
     storeSelectedCategory["color"] = data[index].color;
     navigationService.back();
@@ -89,8 +83,8 @@ class ExpenseViewModel extends ViewModel {
   }
 
   void updateWalletHintText({required int index}) async {
-    var data = await fetchingWalletOptions();
-    storeSelectedWallet["option"] = data.wallets![index].walletName;
+    List<Wallets> data = await walletService.getWallets();
+    storeSelectedWallet["option"] = data[index].walletName;
     navigationService.back();
     notifyListeners();
   }
@@ -106,33 +100,27 @@ class ExpenseViewModel extends ViewModel {
       try {
         _showLoading = true;
         notifyListeners();
-        final data = await fetchingWalletOptions();
-        if (data.wallets != null) {
-          for (var wallet in data.wallets!) {
-            if (wallet.walletName == storeSelectedWallet["option"]) {
-              wallet.transactions ??= [];
-              if (wallet.transactions != null) {
-                wallet.transactions!.insert(
-                  0,
-                  Transactions(
-                    type: "Expense",
-                    category: storeSelectedCategory["option"],
-                    description: descriptionController.text,
-                    transactionPrice: int.parse(balanceController.text),
-                    time: Timestamp.now(),
-                  ),
-                );
-              }
-              if (wallet.balance != null) {
-                wallet.balance =
-                    wallet.balance! - int.parse(balanceController.text);
-              }
-            }
+        final data = await walletService.getWallets();
+        for (var wallet in data) {
+          if (wallet.walletName == storeSelectedWallet["option"]) {
+            wallet.transactions ??= [];
+            wallet.transactions!.insert(
+              0,
+              Transactions(
+                type: "Expense",
+                category: storeSelectedCategory["option"],
+                description: descriptionController.text,
+                transactionPrice: int.parse(balanceController.text),
+                time: Timestamp.now(),
+              ),
+            );
+            wallet.balance =
+                wallet.balance! - int.parse(balanceController.text);
           }
         }
         await firestore
             .doc(auth.getUser()!.uid)
-            .update(PersonData(wallets: data.wallets).receive());
+            .update(PersonData(wallets: data).receive());
         _showLoading = false;
         notifyListeners();
         navigationService.replaceWithSuccessfullyDone(

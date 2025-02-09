@@ -4,4 +4,5 @@ class Variables {
   static String enteredPinKey = "Entered-Pin";
   static String walletSetupKey = "Wallet-Setup";
   static String currency = "\$";
+  static String userPictureName = "user";
 }

@@ -51,7 +51,9 @@ class VerificationView extends StackedView<VerificationViewModel> {
                 child: SvgPicture.asset(
                   IconsPath.verifyEmail,
                   colorFilter: ColorFilter.mode(
-                      AppColors.primaryViolet, BlendMode.srcIn,),
+                    AppColors.primaryViolet,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),

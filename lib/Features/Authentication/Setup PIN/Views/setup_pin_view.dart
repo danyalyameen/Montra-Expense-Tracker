@@ -12,8 +12,9 @@ class SetupPinView extends StackedView<SetupPinViewModel> {
 
   @override
   void onViewModelReady(SetupPinViewModel viewModel) async {
-    super.onViewModelReady(viewModel);
+    // Change Notification Bar Color
     viewModel.notificationBarService.whiteNotificationBar();
+    super.onViewModelReady(viewModel);
     // Check Pin is already setup or not
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.getBool(Variables.setupPinKey) == true) {

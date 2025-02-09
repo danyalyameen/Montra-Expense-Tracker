@@ -95,7 +95,9 @@ class SetupWalletViewModel extends ViewModel {
           return;
         }
         // Make Account Setup Completed True
-        await firestore.doc(auth.getUser()!.uid).update(PersonData(accountSetupCompleted: true).receive());
+        await firestore
+            .doc(auth.getUser()!.uid)
+            .update(PersonData(accountSetupCompleted: true).receive());
         // Hide Loading
         _showLoading = false;
         notifyListeners();

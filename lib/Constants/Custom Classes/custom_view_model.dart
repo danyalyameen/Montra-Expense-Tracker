@@ -19,7 +19,8 @@ class ViewModel extends BaseViewModel {
   TransactionService transactionsService = locator<TransactionService>();
   BudgetService budgetService = locator<BudgetService>();
   ImageService imageService = locator<ImageService>();
-  NotificationBarService notificationBarService = locator<NotificationBarService>();
+  NotificationBarService notificationBarService =
+      locator<NotificationBarService>();
   CollectionReference firestore =
       FirebaseFirestore.instance.collection("users");
   DocumentReference incomeOptions = FirebaseFirestore.instance

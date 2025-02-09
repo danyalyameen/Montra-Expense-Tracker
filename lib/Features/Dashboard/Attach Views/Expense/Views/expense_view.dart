@@ -56,6 +56,8 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                   CategoryBottomSheet(
                     fetchingCategoryOptions:
                         viewModel.optionService.getExpenseOptions(),
+                    storeSelectedCategory: viewModel.storeSelectedCategory,
+                    dropDown: "Category",
                     onPressed: () {
                       addOption(
                         width: width,
@@ -83,7 +85,9 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                   SizedBox(
                     height: height * 0.02,
                   ),
-                  const WalletBottomSheet(),
+                  WalletBottomSheet(
+                    storeSelectedWallet: viewModel.storeSelectedWallet,
+                  ),
                   SizedBox(
                     height: height * 0.02,
                   ),

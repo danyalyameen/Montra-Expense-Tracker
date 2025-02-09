@@ -49,4 +49,15 @@ class ImageService {
       );
     }
   }
+
+  String getImage({
+    required bool userPicture,
+    required String imageName,
+  }) {
+    String bucketName = "Users";
+    String userFolderName = AuthService().getUser()!.uid;
+    String imageFolderName = userPicture ? "User Image" : "Transaction Images";
+    String imagePath = "$userFolderName/$imageFolderName/$imageName";
+    return storage.from(bucketName).getPublicUrl(imagePath);
+  }
 }

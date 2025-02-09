@@ -75,6 +75,7 @@ class AccountDetails extends StackedView<AccountDetailsViewModel> {
               UserTransactions(
                 icons: viewModel.transactionsService.transactionIcons(),
                 transactions: viewModel.transactionsService.fetchTransactions(),
+                navigationService: viewModel.navigationService,
               ),
             ],
           ),

@@ -11,9 +11,9 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
 
   @override
   void onViewModelReady(OnBoardingViewModel viewModel) {
-    super.onViewModelReady(viewModel);
     // Change Notification Bar Color
     viewModel.notificationBarService.blackNotificationBar();
+    super.onViewModelReady(viewModel);
     // Call Function When Screen or View is Ready
     viewModel.automaticChangePage();
   }

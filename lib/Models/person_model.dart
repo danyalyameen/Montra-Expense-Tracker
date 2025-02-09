@@ -59,7 +59,9 @@ class PersonData {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (name != null) data['Name'] = name;
     if (imageUploaded != null) data['imageUploaded'] = imageUploaded;
-    if (accountSetupCompleted != null) data['accountSetupCompleted'] = accountSetupCompleted;
+    if (accountSetupCompleted != null) {
+      data['accountSetupCompleted'] = accountSetupCompleted;
+    }
     if (wallets != null) {
       data['Wallets'] = wallets!.map((v) => v.receive()).toList();
     }

@@ -386,14 +386,8 @@ class StackedRouter extends _i1.RouterBase {
     _i17.DetailsTransactionView: (data) {
       final args = data.getArgs<DetailsTransactionViewArguments>(nullOk: false);
       return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => _i17.DetailsTransactionView(
-            args.balance,
-            args.description,
-            args.time,
-            args.category,
-            args.type,
-            args.accountType,
-            args.color,
+        builder: (context) => _i17.DetailsTransactionView(args.balance,
+            args.description, args.time, args.category, args.type, args.color,
             key: args.key),
         settings: data,
       );
@@ -549,7 +543,6 @@ class DetailsTransactionViewArguments {
     required this.time,
     required this.category,
     required this.type,
-    required this.accountType,
     required this.color,
     this.key,
   });
@@ -558,13 +551,11 @@ class DetailsTransactionViewArguments {
 
   final String description;
 
-  final String time;
+  final DateTime time;
 
   final String category;
 
   final String type;
-
-  final String accountType;
 
   final _i33.Color color;
 
@@ -572,7 +563,7 @@ class DetailsTransactionViewArguments {
 
   @override
   String toString() {
-    return '{"balance": "$balance", "description": "$description", "time": "$time", "category": "$category", "type": "$type", "accountType": "$accountType", "color": "$color", "key": "$key"}';
+    return '{"balance": "$balance", "description": "$description", "time": "$time", "category": "$category", "type": "$type", "color": "$color", "key": "$key"}';
   }
 
   @override
@@ -583,7 +574,6 @@ class DetailsTransactionViewArguments {
         other.time == time &&
         other.category == category &&
         other.type == type &&
-        other.accountType == accountType &&
         other.color == color &&
         other.key == key;
   }
@@ -595,7 +585,6 @@ class DetailsTransactionViewArguments {
         time.hashCode ^
         category.hashCode ^
         type.hashCode ^
-        accountType.hashCode ^
         color.hashCode ^
         key.hashCode;
   }
@@ -984,10 +973,9 @@ extension NavigatorStateExtension on _i34.NavigationService {
   Future<dynamic> navigateToDetailsTransactionView({
     required String balance,
     required String description,
-    required String time,
+    required DateTime time,
     required String category,
     required String type,
-    required String accountType,
     required _i33.Color color,
     _i32.Key? key,
     int? routerId,
@@ -1003,7 +991,6 @@ extension NavigatorStateExtension on _i34.NavigationService {
             time: time,
             category: category,
             type: type,
-            accountType: accountType,
             color: color,
             key: key),
         id: routerId,
@@ -1458,10 +1445,9 @@ extension NavigatorStateExtension on _i34.NavigationService {
   Future<dynamic> replaceWithDetailsTransactionView({
     required String balance,
     required String description,
-    required String time,
+    required DateTime time,
     required String category,
     required String type,
-    required String accountType,
     required _i33.Color color,
     _i32.Key? key,
     int? routerId,
@@ -1477,7 +1463,6 @@ extension NavigatorStateExtension on _i34.NavigationService {
             time: time,
             category: category,
             type: type,
-            accountType: accountType,
             color: color,
             key: key),
         id: routerId,

@@ -288,9 +288,7 @@ class _OtherSignUpItems extends StatelessWidget {
   final double width, height;
   final void Function() onTap;
   const _OtherSignUpItems(
-      {required this.width,
-      required this.height,
-      required this.onTap});
+      {required this.width, required this.height, required this.onTap});
 
   // Variables
   final String buttonText = "Sign Up with Google";

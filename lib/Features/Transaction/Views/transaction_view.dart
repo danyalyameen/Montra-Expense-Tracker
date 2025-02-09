@@ -52,6 +52,7 @@ class TransactionView extends StackedView<TransactionViewModel> {
               height: height * 0.62,
               icons: viewModel.transactionsService.transactionIcons(),
               transactions: viewModel.transactionsService.fetchTransactions(),
+              navigationService: viewModel.navigationService,
             ),
           ),
         ],

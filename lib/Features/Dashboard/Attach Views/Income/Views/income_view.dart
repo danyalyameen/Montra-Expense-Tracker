@@ -56,6 +56,8 @@ class IncomeView extends StackedView<IncomeViewModel> {
                   CategoryBottomSheet(
                     fetchingCategoryOptions:
                         viewModel.optionService.getIncomeOptions(),
+                    storeSelectedCategory: viewModel.storeSelectedIncome,
+                    dropDown: "Income",
                     onPressed: () {
                       addOption(
                         width: width,
@@ -83,7 +85,9 @@ class IncomeView extends StackedView<IncomeViewModel> {
                   SizedBox(
                     height: height * 0.02,
                   ),
-                  const WalletBottomSheet(),
+                  WalletBottomSheet(
+                    storeSelectedWallet: viewModel.storeSelectedWallet,
+                  ),
                   SizedBox(
                     height: height * 0.02,
                   ),

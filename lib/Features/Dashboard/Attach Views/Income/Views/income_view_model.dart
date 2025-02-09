@@ -15,7 +15,7 @@ class IncomeViewModel extends ViewModel {
   final GlobalKey<FormState> descriptionFormKey = GlobalKey<FormState>();
   Map<String, dynamic> storeSelectedIncome = {
     "option": "Income",
-    "color": null
+    "color": null,
   };
 
   Map<String, dynamic> storeSelectedWallet = {
