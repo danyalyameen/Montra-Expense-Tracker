@@ -1,17 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Sign%20UP/Views/sign_up_view_model.dart';
-import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_form_field.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -61,7 +57,7 @@ class SignUpView extends StackedView<SignUpViewModel> {
           _OtherSignUpItems(
             width: width,
             height: height,
-            navigationService: viewModel.navigationService,
+            onTap: () => viewModel.googleAuthentication(),
           ),
           // Login Navigation Text Button
           _Login(
@@ -79,6 +75,7 @@ class SignUpView extends StackedView<SignUpViewModel> {
 
   @override
   void onDispose(SignUpViewModel viewModel) {
+    // Disposing Controllers
     viewModel.nameController.dispose();
     viewModel.emailController.dispose();
     viewModel.passwordController.dispose();
@@ -100,7 +97,7 @@ class _SignUpUI extends ViewModelWidget<SignUpViewModel> {
   final String nameHintText = "Name";
   final String emailHintText = "Email";
   final String passwordHintText = "Password";
-  final String signUpButtonHintText = "Sign Up";
+  final String signUpButtonText = "Sign Up";
 
   @override
   Widget build(BuildContext context, SignUpViewModel viewModel) {
@@ -206,7 +203,7 @@ class _SignUpUI extends ViewModelWidget<SignUpViewModel> {
                     size: width * 0.06,
                   )
                 : Text(
-                    signUpButtonHintText,
+                    signUpButtonText,
                     style: TextStyle(
                       color: AppColors.primaryLight,
                       fontSize: width * 0.045,
@@ -289,11 +286,11 @@ class _PrivacePolicy extends ViewModelWidget<SignUpViewModel> {
 
 class _OtherSignUpItems extends StatelessWidget {
   final double width, height;
-  final NavigationService navigationService;
+  final void Function() onTap;
   const _OtherSignUpItems(
       {required this.width,
       required this.height,
-      required this.navigationService});
+      required this.onTap});
 
   // Variables
   final String buttonText = "Sign Up with Google";
@@ -312,25 +309,7 @@ class _OtherSignUpItems extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: () async {
-            try {
-              // Initialize Shared Preference to Ensure Next Time User is Logged In
-              SharedPreferences sharedPreferences =
-                  await SharedPreferences.getInstance();
-              // Open Google Sign In
-              UserCredential? credentials = await AuthService().googleAuth();
-              // Check User Choose the Account for Login or not if yes then go to Setup Pin
-              if (credentials != null) {
-                sharedPreferences.setBool(Variables.loggedInKey, true);
-                sharedPreferences.setBool(
-                    Variables.redirectFromLoginKey, false);
-                navigationService.replaceWithUserPictureView();
-              }
-            } catch (e) {
-              // ignore: avoid_print
-              print(e.toString());
-            }
-          },
+          onTap: onTap,
           borderRadius: BorderRadius.circular(width * 0.04),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

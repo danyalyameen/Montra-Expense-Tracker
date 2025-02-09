@@ -63,7 +63,7 @@ class SetupWalletView extends StackedView<SetupWalletViewModel> {
                     ),
                     // For Spacing
                     SizedBox(
-                      height: height * 0.01,
+                      height: height * 0.03,
                     ),
                     // Continue Button
                     CustomElevatedButton(
@@ -117,7 +117,7 @@ class _Balance extends ViewModelWidget<SetupWalletViewModel> {
   Widget build(BuildContext context, SetupWalletViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.only(
-        top: height * 0.2,
+        top: height * 0.22,
         left: width * 0.05,
       ),
       child: Column(
@@ -219,7 +219,7 @@ class _InputFields extends ViewModelWidget<SetupWalletViewModel> {
         ),
         // For Spacing
         SizedBox(
-          height: height * 0.02,
+          height: height * 0.03,
         ),
         // Drop Down
         DropDown(

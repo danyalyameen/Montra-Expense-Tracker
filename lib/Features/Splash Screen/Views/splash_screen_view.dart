@@ -12,7 +12,9 @@ class SplashScreenView extends StackedView<SplashScreenViewModel> {
   // This Function is Called when the Screen is Ready to View
   @override
   void onViewModelReady(SplashScreenViewModel viewModel) {
+    // Change Notification Bar Color
     viewModel.notificationBarService.whiteNotificationBar();
+    // Navigate After 3 seconds
     viewModel.navigation();
     super.onViewModelReady(viewModel);
   }
@@ -62,7 +64,7 @@ class _Logo extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               boxShadow: [
-                // Glowing Effect means shadow of App
+                // Glowing Effect means shadow of Container
                 BoxShadow(
                   color: Colors.pinkAccent.withValues(alpha: 0.6),
                   spreadRadius: width * 0.014,

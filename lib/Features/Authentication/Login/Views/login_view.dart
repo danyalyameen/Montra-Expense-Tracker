@@ -1,19 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Login/Views/login_view_model.dart';
-import 'package:montra_expense_tracker/Models/person_model.dart';
-import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_form_field.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -65,7 +59,7 @@ class LoginView extends StackedView<LoginViewModel> {
           _OtherLoginItems(
             width: width,
             height: height,
-            navigationService: viewModel.navigationService,
+            onTap: () => viewModel.googleAuthentication(),
           ),
           // Sign Up Text Button
           _SignUp(
@@ -83,6 +77,7 @@ class LoginView extends StackedView<LoginViewModel> {
 
   @override
   void onDispose(LoginViewModel viewModel) {
+    // Disposing Controllers
     viewModel.emailController.dispose();
     viewModel.passwordController.dispose();
     super.onDispose(viewModel);
@@ -196,11 +191,11 @@ class _LoginUI extends ViewModelWidget<LoginViewModel> {
 
 class _OtherLoginItems extends StatelessWidget {
   final double width, height;
-  final NavigationService navigationService;
+  final void Function() onTap;
   const _OtherLoginItems({
     required this.width,
     required this.height,
-    required this.navigationService,
+    required this.onTap,
   });
 
   // Variables
@@ -220,37 +215,7 @@ class _OtherLoginItems extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: () async {
-            try {
-              // Initialize Shared Preference to Ensure Next Time User is Logged In
-              SharedPreferences sharedPreferences =
-                  await SharedPreferences.getInstance();
-              // Open Google Sign In
-              UserCredential? credentials = await AuthService().googleAuth();
-              // Check User Choose the Account for Login or not if yes then go to Setup Pin
-              if (credentials != null) {
-                // Make Variables True
-                sharedPreferences.setBool(Variables.loggedInKey, true);
-                sharedPreferences.setBool(Variables.redirectFromLoginKey, true);
-                // Get User Data
-                final data = await FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(AuthService().getUser()!.uid)
-                    .get();
-                final personData =
-                    PersonData.store(data.data() as Map<String, dynamic>);
-                // Navigate to Verification View
-                if (personData.imageUploaded == true) {
-                  navigationService.replaceWithSetupPinView();
-                } else {
-                  navigationService.replaceWithUserPictureView();
-                }
-              }
-            } catch (e) {
-              // ignore: avoid_print
-              print(e.toString());
-            }
-          },
+          onTap: onTap,
           borderRadius: BorderRadius.circular(width * 0.04),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

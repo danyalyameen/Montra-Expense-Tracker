@@ -23,7 +23,7 @@ class OnBoardingViewModel extends ViewModel {
     notifyListeners();
   }
 
-  // Automatic Go To Next Page After 3 seconds
+  // Automatic Go To Next Page After 5 seconds
   void automaticChangePage() {
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       // Check Index either the item is last or not

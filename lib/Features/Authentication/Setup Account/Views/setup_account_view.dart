@@ -16,6 +16,7 @@ class SetupAccountView extends StackedView<SetupAccountViewModel> {
   @override
   void onViewModelReady(SetupAccountViewModel viewModel) {
     super.onViewModelReady(viewModel);
+    // Change Notification Bar Color
     viewModel.notificationBarService.blackNotificationBar();
   }
 

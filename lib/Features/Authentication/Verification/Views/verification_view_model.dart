@@ -57,7 +57,6 @@ class VerificationViewModel extends ViewModel {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (FirebaseAuth.instance.currentUser!.emailVerified) {
       sharedPreferences.setBool(Variables.loggedInKey, true);
-      sharedPreferences.setBool(Variables.redirectFromLoginKey, false);
       navigationService.replaceWithSuccessfullyDone(
           msg: "Email Verified", className: const UserPictureView());
     } else {

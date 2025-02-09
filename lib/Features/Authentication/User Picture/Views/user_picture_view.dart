@@ -17,6 +17,7 @@ class UserPictureView extends StackedView<UserPictureViewModel> {
   @override
   Widget builder(
       BuildContext context, UserPictureViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     final double width = MediaQuery.sizeOf(context).width;
     final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(

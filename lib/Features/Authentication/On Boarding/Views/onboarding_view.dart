@@ -12,6 +12,7 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
   @override
   void onViewModelReady(OnBoardingViewModel viewModel) {
     super.onViewModelReady(viewModel);
+    // Change Notification Bar Color
     viewModel.notificationBarService.blackNotificationBar();
     // Call Function When Screen or View is Ready
     viewModel.automaticChangePage();
@@ -20,6 +21,7 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
   // Dispose Timer and Page Controller
   @override
   void onDispose(OnBoardingViewModel viewModel) {
+    // Dispose Controller and Timer
     viewModel.timer.cancel();
     viewModel.pageController.dispose();
     super.onDispose(viewModel);

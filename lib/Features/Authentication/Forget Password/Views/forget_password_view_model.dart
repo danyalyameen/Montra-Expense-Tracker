@@ -7,7 +7,7 @@ class ForgetPasswordViewModel extends ViewModel {
   // Final Fields
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
-  final emailValid = RegExp(
+  final _emailValid = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
   // Get Final Fields
@@ -19,9 +19,10 @@ class ForgetPasswordViewModel extends ViewModel {
   // Get Non Final Fields
   bool get showLoading => _showLoading;
 
+  // Validate Email
   String? validateEmail(String? value) {
     if (value!.isNotEmpty) {
-      if (!emailValid.hasMatch(value)) {
+      if (!_emailValid.hasMatch(value)) {
         return "Please Enter valid Email";
       }
       return null;
@@ -29,7 +30,8 @@ class ForgetPasswordViewModel extends ViewModel {
       return "Please Enter Your Email";
     }
   }
-
+  
+  // Send a Link to Create Password Link
   void sendResetPasswordLink() async {
     if (formKey.currentState!.validate()) {
       try {

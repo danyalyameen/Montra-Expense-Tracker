@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
+import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpViewModel extends ViewModel {
   // Final Fields
@@ -10,7 +12,7 @@ class SignUpViewModel extends ViewModel {
   final TextEditingController _emailEditingController = TextEditingController();
   final TextEditingController _passwordEditingController =
       TextEditingController();
-  final emailValid = RegExp(
+  final _emailValid = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
   // Get Final Fields
@@ -50,7 +52,7 @@ class SignUpViewModel extends ViewModel {
   // Validate Email
   String? validateEmail(String? value) {
     if (value!.isNotEmpty) {
-      if (!emailValid.hasMatch(value)) {
+      if (!_emailValid.hasMatch(value)) {
         return "Please Enter valid Email";
       } else if (firebaseError == "email-already-in-use") {
         _error = "";
@@ -109,6 +111,24 @@ class SignUpViewModel extends ViewModel {
     } else if (isCheck == false) {
       _isError = true;
       notifyListeners();
+    }
+  }
+
+  void googleAuthentication() async {
+    try {
+      // Initialize Shared Preference to Ensure Next Time User is Logged In
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      // Open Google Sign In
+      UserCredential? credentials = await auth.googleAuth();
+      // Check User Choose the Account for Login or not if yes then go to Setup Pin
+      if (credentials != null) {
+        sharedPreferences.setBool(Variables.loggedInKey, true);
+        navigationService.replaceWithUserPictureView();
+      }
+    } catch (e) {
+      // ignore: avoid_print
+      print(e.toString());
     }
   }
 }

@@ -20,6 +20,7 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel> {
   @override
   Widget builder(
       BuildContext context, ForgetPasswordViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(

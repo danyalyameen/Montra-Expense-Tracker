@@ -3,6 +3,5 @@ class Variables {
   static String setupPinKey = "Setup-Pin";
   static String enteredPinKey = "Entered-Pin";
   static String walletSetupKey = "Wallet-Setup";
-  static String redirectFromLoginKey = "Redirect-From-Login";
   static String currency = "\$";
 }

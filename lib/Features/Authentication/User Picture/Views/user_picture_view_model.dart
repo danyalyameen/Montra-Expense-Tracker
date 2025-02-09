@@ -14,12 +14,14 @@ class UserPictureViewModel extends ViewModel {
   File? get image => _image;
   bool get showLoading => _showLoading;
   bool get showLoadingForNotNow => _showLoadingForNotNow;
-
+  
+  // Store Selected Image in image Variables
   void updateImage(File? newImage) {
     _image = newImage;
     notifyListeners();
   }
-
+   
+  // Not Now Button Function
   void notNowButtonFunction() async {
     // Show Loading
     _showLoadingForNotNow = true;
@@ -34,7 +36,8 @@ class UserPictureViewModel extends ViewModel {
     // Navigate to Setup Pin
     navigationService.replaceWithSetupPinView();
   }
-
+  
+  // Continue Button Function
   void continueButtonFunction() async {
     if (image != null) {
       // Show Loading
