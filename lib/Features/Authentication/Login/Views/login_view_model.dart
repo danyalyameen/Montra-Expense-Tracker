@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
+import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginViewModel extends ViewModel {
@@ -71,15 +72,24 @@ class LoginViewModel extends ViewModel {
         notifyListeners();
         await auth.login(
             email: emailController.text, password: passwordController.text);
-        // Hide Loading
-        _showLoading = false;
-        notifyListeners();
-        // Navigate to Verification View
+        // Setting values in Shared Preferences
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         sharedPreferences.setBool(Variables.loggedInKey, true);
         sharedPreferences.setBool(Variables.redirectFromLoginKey, true);
-        navigationService.replaceWithSetupPinView();
+        // Get User Data
+        final data = await firestore.doc(auth.getUser()!.uid).get();
+        final personData =
+            PersonData.store(data.data() as Map<String, dynamic>);
+        // Hide Loading
+        _showLoading = false;
+        notifyListeners();
+        // Navigate to Verification View
+        if (personData.imageUploaded == true) {
+          navigationService.replaceWithSetupPinView();
+        } else if (personData.imageUploaded == false) {
+          navigationService.replaceWithUserPictureView();
+        }
       } on FirebaseAuthException catch (e) {
         _error = e.code;
         _showLoading = false;

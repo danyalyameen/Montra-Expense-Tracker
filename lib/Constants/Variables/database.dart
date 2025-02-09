@@ -31,98 +31,6 @@ class Database {
     },
   ];
 
-  static List<Map<String, dynamic>> categoryOptions = [
-    {
-      "Category": "Grocery",
-      "Colors": AppColors.primaryRed,
-    },
-    {
-      "Category": "Food",
-      "Colors": AppColors.primaryBlue,
-    },
-    {
-      "Category": "Travel",
-      "Colors": AppColors.primaryGreen,
-    },
-    {
-      "Category": "Gadgets",
-      "Colors": AppColors.primaryYellow,
-    },
-    {
-      "Category": "Subscription",
-      "Colors": AppColors.primaryViolet,
-    },
-  ];
-
-  static List<Map<String, dynamic>> incomeOptions = [
-    {
-      "Income": "Business",
-      "Colors": AppColors.primaryRed,
-    },
-    {
-      "Income": "Rent",
-      "Colors": AppColors.primaryBlue,
-    },
-    {
-      "Income": "Job",
-      "Colors": AppColors.primaryGreen,
-    },
-    {
-      "Income": "Investment",
-      "Colors": AppColors.primaryYellow,
-    },
-  ];
-  static List<Map<String, dynamic>> todayExpenseDatabase = [
-    {
-      "Category": "Shopping",
-      "Description": "Buy Some Grocery",
-      "Time": "10:00 AM",
-      "Expense": "- \$120",
-      "Icon": IconsPath.shopping,
-      "Icon-Color": AppColors.primaryYellow,
-      "Icon-Background": AppColors.yellow20,
-    },
-    {
-      "Category": "Subscription",
-      "Description": "Disney + Annual Subscription",
-      "Time": "03:30 PM",
-      "Expense": "- \$80",
-      "Icon": IconsPath.subscription,
-      "Icon-Color": AppColors.primaryViolet,
-      "Icon-Background": AppColors.violet20,
-    },
-    {
-      "Category": "Food",
-      "Description": "Buy a ramen",
-      "Time": "07:30 PM",
-      "Expense": "- \$32",
-      "Icon": IconsPath.food,
-      "Icon-Color": AppColors.primaryRed,
-      "Icon-Background": AppColors.red20,
-    },
-  ];
-
-  static List<Map<String, dynamic>> incomeDatabase = [
-    {
-      "Category": "Salary",
-      "Description": "Salary of November",
-      "Time": "04:30 PM",
-      "Expense": "+ \$4500",
-      "Icon": IconsPath.money,
-      "Icon-Color": AppColors.primaryGreen,
-      "Icon-Background": AppColors.green20,
-    },
-    {
-      "Category": "Passive Income",
-      "Description": "UI8 sales",
-      "Time": "08:30 PM",
-      "Expense": "+ \$1000",
-      "Icon": IconsPath.money,
-      "Icon-Color": AppColors.primaryGreen,
-      "Icon-Background": AppColors.green20,
-    },
-  ];
-
   static List<Map<String, dynamic>> settingsData = [
     {
       "Title": "Currency",
@@ -180,12 +88,6 @@ class Database {
       "Background-Color": AppColors.violet20,
     },
     {
-      "Icon": IconsPath.export,
-      "Page-Name": "Export Data",
-      "Icon-Color": AppColors.primaryViolet,
-      "Background-Color": AppColors.violet20,
-    },
-    {
       "Icon": IconsPath.logout,
       "Page-Name": "Logout",
       "Icon-Color": AppColors.primaryRed,
@@ -206,27 +108,6 @@ class Database {
     "October",
     "November",
     "December",
-  ];
-
-  static List<Map<String, dynamic>> budgetData = [
-    {
-      "Category": "Shopping",
-      "Color": AppColors.primaryYellow,
-      "Icon": IconsPath.shopping,
-      "Icon-Color": AppColors.primaryYellow,
-      "Icon-Background": AppColors.yellow20,
-      "Limit": 1000,
-      "Spend": 1200,
-    },
-    {
-      "Category": "Transportation",
-      "Color": AppColors.primaryBlue,
-      "Icon": IconsPath.transportation,
-      "Icon-Color": AppColors.primaryBlue,
-      "Icon-Background": AppColors.blue20,
-      "Limit": 700,
-      "Spend": 350,
-    },
   ];
 
   static List<Map<String, dynamic>> financialReport = [
@@ -254,13 +135,6 @@ class Database {
       "Icon-Color": AppColors.primaryGreen,
       "Icon-Background": AppColors.green20,
     },
-  ];
-
-  static List<String> time = [
-    "Today",
-    "Week",
-    "Month",
-    "Year",
   ];
 
   static List<Map<String, dynamic>> bottomNavigationData = [
@@ -317,13 +191,6 @@ class Database {
     "Remove all",
   ];
 
-  static List<String> frequencyData = [
-    "Daily",
-    "Weekly",
-    "Monthly",
-    "Yearly",
-  ];
-
   static List<String> filterbyData = [
     "Income",
     "Expense",
@@ -337,8 +204,6 @@ class Database {
     "Oldest",
   ];
 
-  static List<String> dates = [];
-
   static List<Map<String, dynamic>> attachmentData = [
     {
       "Icon": IconsPath.camera,
@@ -349,13 +214,4 @@ class Database {
       "Title": "Gallery",
     },
   ];
-
-  static int i = 1;
-
-  static void addDataToDates() {
-    while (i <= 31) {
-      dates.add("$i");
-      i++;
-    }
-  }
 }

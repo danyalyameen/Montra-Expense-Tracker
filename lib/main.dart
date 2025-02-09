@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/App/app.locator.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_theme.dart';
-import 'package:montra_expense_tracker/Features/Authentication/User%20Picture/Views/user_picture_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -36,7 +35,6 @@ class MyApp extends StatelessWidget {
       navigatorKey: StackedService.navigatorKey,
       // Light Theme of App
       theme: AppTheme().lightTheme,
-      home: const UserPictureView(),
     );
   }
 }

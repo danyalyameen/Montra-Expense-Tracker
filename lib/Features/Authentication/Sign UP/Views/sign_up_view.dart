@@ -324,7 +324,7 @@ class _OtherSignUpItems extends StatelessWidget {
                 sharedPreferences.setBool(Variables.loggedInKey, true);
                 sharedPreferences.setBool(
                     Variables.redirectFromLoginKey, false);
-                navigationService.replaceWithSetupPinView();
+                navigationService.replaceWithUserPictureView();
               }
             } catch (e) {
               // ignore: avoid_print

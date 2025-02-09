@@ -1,13 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:montra_expense_tracker/App/app.router.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Authentication/User%20Picture/Views/user_picture_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 class UserPictureView extends StackedView<UserPictureViewModel> {
   const UserPictureView({super.key});
@@ -47,7 +46,6 @@ class UserPictureView extends StackedView<UserPictureViewModel> {
           _Buttons(
             width: width,
             height: height,
-            navigationService: viewModel.navigationService,
           )
         ],
       ),
@@ -85,15 +83,15 @@ class _UserImage extends ViewModelWidget<UserPictureViewModel> {
           viewModel.updateImage(img);
         },
         child: SizedBox(
-          width: width * 0.55,
-          height: width * 0.55,
+          width: width * 0.555,
+          height: width * 0.555,
           child: Stack(
             children: [
               // Background Violet
               Center(
                 child: Container(
-                  width: width * 0.54,
-                  height: width * 0.54,
+                  width: width * 0.555,
+                  height: width * 0.555,
                   decoration: BoxDecoration(
                     color: AppColors.primaryViolet,
                     shape: BoxShape.circle,
@@ -103,8 +101,8 @@ class _UserImage extends ViewModelWidget<UserPictureViewModel> {
               // Background Light
               Center(
                 child: Container(
-                  width: width * 0.52,
-                  height: width * 0.52,
+                  width: width * 0.53,
+                  height: width * 0.53,
                   decoration: BoxDecoration(
                     color: AppColors.primaryLight,
                     shape: BoxShape.circle,
@@ -161,20 +159,19 @@ class _UserImage extends ViewModelWidget<UserPictureViewModel> {
   }
 }
 
-class _Buttons extends StatelessWidget {
+class _Buttons extends ViewModelWidget<UserPictureViewModel> {
   final double width, height;
-  final NavigationService navigationService;
-  const _Buttons(
-      {required this.width,
-      required this.height,
-      required this.navigationService});
+  const _Buttons({
+    required this.width,
+    required this.height,
+  });
 
   // Variables
   final String notNowButtonText = "Not Now";
   final String continueText = "Continue";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, UserPictureViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.only(
           left: width * 0.06,
@@ -196,15 +193,20 @@ class _Buttons extends StatelessWidget {
                   ),
                 ),
               ),
-              onPressed: () => navigationService.replaceWithSetupPinView(),
-              child: Text(
-                notNowButtonText,
-                style: TextStyle(
-                  color: AppColors.primaryViolet,
-                  fontSize: width * 0.04,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              onPressed: () => viewModel.notNowButtonFunction(),
+              child: viewModel.showLoading
+                  ? SpinKitThreeBounce(
+                      color: AppColors.primaryViolet,
+                      size: width * 0.06,
+                    )
+                  : Text(
+                      continueText,
+                      style: TextStyle(
+                        color: AppColors.primaryViolet,
+                        fontSize: width * 0.045,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
             ),
           ),
           // Continue Button
@@ -213,23 +215,29 @@ class _Buttons extends StatelessWidget {
             height: height * 0.05,
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor:
-                    WidgetStatePropertyAll(AppColors.primaryViolet),
+                backgroundColor: WidgetStatePropertyAll(viewModel.showLoading
+                    ? AppColors.violet20
+                    : AppColors.primaryViolet),
                 shape: WidgetStatePropertyAll(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(width * 0.06),
                   ),
                 ),
               ),
-              onPressed: () => navigationService.replaceWithSetupPinView(),
-              child: Text(
-                continueText,
-                style: TextStyle(
-                  color: AppColors.primaryLight,
-                  fontSize: width * 0.045,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              onPressed: () => viewModel.continueButtonFunction(),
+              child: viewModel.showLoading
+                  ? SpinKitThreeBounce(
+                      color: AppColors.primaryViolet,
+                      size: width * 0.06,
+                    )
+                  : Text(
+                      continueText,
+                      style: TextStyle(
+                        color: AppColors.primaryLight,
+                        fontSize: width * 0.045,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
             ),
           ),
         ],

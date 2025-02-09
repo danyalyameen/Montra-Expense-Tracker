@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -7,6 +8,7 @@ import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Login/Views/login_view_model.dart';
+import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
@@ -227,9 +229,19 @@ class _OtherLoginItems extends StatelessWidget {
               UserCredential? credentials = await AuthService().googleAuth();
               // Check User Choose the Account for Login or not if yes then go to Setup Pin
               if (credentials != null) {
+                // Make Variables True
                 sharedPreferences.setBool(Variables.loggedInKey, true);
                 sharedPreferences.setBool(Variables.redirectFromLoginKey, true);
-                navigationService.replaceWithSetupPinView();
+                // Get User Data
+                final data = await FirebaseFirestore.instance.collection('users').doc(AuthService().getUser()!.uid).get();
+                final personData =
+                    PersonData.store(data.data() as Map<String, dynamic>);
+                // Navigate to Verification View
+                if (personData.imageUploaded == true) {
+                  navigationService.replaceWithSetupPinView();
+                } else if (personData.imageUploaded == false) {
+                  navigationService.replaceWithUserPictureView();
+                }
               }
             } catch (e) {
               // ignore: avoid_print

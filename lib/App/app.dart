@@ -5,6 +5,7 @@ import 'package:montra_expense_tracker/Features/Authentication/Setup%20Account/V
 import 'package:montra_expense_tracker/Features/Authentication/Setup%20PIN/Views/setup_pin_view.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Setup%20Wallet/Views/setup_wallet_view.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Sign%20UP/Views/sign_up_view.dart';
+import 'package:montra_expense_tracker/Features/Authentication/User%20Picture/Views/user_picture_view.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Verification/Views/verification_view.dart';
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Create%20Budget/create_budget_view.dart';
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Edit%20Budget/edit_budget_view.dart';
@@ -38,11 +39,12 @@ import 'package:stacked_services/stacked_services.dart';
 
 @StackedApp(
   routes: [
-    MaterialRoute(page: SplashScreenView),
+    MaterialRoute(page: SplashScreenView, initial: true),
     MaterialRoute(page: OnBoardingView),
     MaterialRoute(page: SignUpView),
     MaterialRoute(page: LoginView),
     MaterialRoute(page: VerificationView),
+    MaterialRoute(page: UserPictureView),
     MaterialRoute(page: SetupPinView),
     MaterialRoute(page: ForgetPasswordView),
     MaterialRoute(page: SetupAccountView),
