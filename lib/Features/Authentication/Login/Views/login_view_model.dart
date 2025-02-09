@@ -76,7 +76,6 @@ class LoginViewModel extends ViewModel {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         sharedPreferences.setBool(Variables.loggedInKey, true);
-        sharedPreferences.setBool(Variables.redirectFromLoginKey, true);
         // Get User Data
         final data = await firestore.doc(auth.getUser()!.uid).get();
         final personData =
@@ -87,7 +86,7 @@ class LoginViewModel extends ViewModel {
         // Navigate to Verification View
         if (personData.imageUploaded == true) {
           navigationService.replaceWithSetupPinView();
-        } else if (personData.imageUploaded == false) {
+        } else {
           navigationService.replaceWithUserPictureView();
         }
       } on FirebaseAuthException catch (e) {

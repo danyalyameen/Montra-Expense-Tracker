@@ -89,7 +89,7 @@ class SignUpViewModel extends ViewModel {
         notifyListeners();
         // Sign Up User
         await auth.signUp(
-            name: emailController.text,
+            name: nameController.text,
             email: emailController.text,
             password: passwordController.text);
         // Hide Loading

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
@@ -14,6 +13,7 @@ class SetupPinView extends StackedView<SetupPinViewModel> {
   @override
   void onViewModelReady(SetupPinViewModel viewModel) async {
     super.onViewModelReady(viewModel);
+    viewModel.notificationBarService.whiteNotificationBar();
     // Check Pin is already setup or not
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.getBool(Variables.setupPinKey) == true) {
@@ -25,12 +25,6 @@ class SetupPinView extends StackedView<SetupPinViewModel> {
   @override
   Widget builder(
       BuildContext context, SetupPinViewModel viewModel, Widget? child) {
-    // Change Color of Notification Bar of Device
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarBrightness: Brightness.light,
-      statusBarColor: AppColors.primaryViolet,
-      statusBarIconBrightness: Brightness.light,
-    ));
     // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;

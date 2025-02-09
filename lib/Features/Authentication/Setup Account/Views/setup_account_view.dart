@@ -14,6 +14,12 @@ class SetupAccountView extends StackedView<SetupAccountViewModel> {
   final String buttonText = "Let's go";
 
   @override
+  void onViewModelReady(SetupAccountViewModel viewModel) {
+    super.onViewModelReady(viewModel);
+    viewModel.notificationBarService.blackNotificationBar();
+  }
+
+  @override
   Widget builder(
       BuildContext context, SetupAccountViewModel viewModel, Widget? child) {
     // Get Screen Size of Device

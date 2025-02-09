@@ -9,9 +9,11 @@ class UserPictureViewModel extends ViewModel {
   // Non Final Fields
   File? _image;
   bool _showLoading = false;
+  bool _showLoadingForNotNow = false;
   // Get Non Final Fields
   File? get image => _image;
   bool get showLoading => _showLoading;
+  bool get showLoadingForNotNow => _showLoadingForNotNow;
 
   void updateImage(File? newImage) {
     _image = newImage;
@@ -20,15 +22,17 @@ class UserPictureViewModel extends ViewModel {
 
   void notNowButtonFunction() async {
     // Show Loading
-    _showLoading = true;
+    _showLoadingForNotNow = true;
     notifyListeners();
     // Make image uploaded false
     await firestore
         .doc(auth.getUser()!.uid)
         .update(PersonData(imageUploaded: false).receive());
     // Hide Loading
-    _showLoading = false;
+    _showLoadingForNotNow = false;
     notifyListeners();
+    // Navigate to Setup Pin
+    navigationService.replaceWithSetupPinView();
   }
 
   void continueButtonFunction() async {

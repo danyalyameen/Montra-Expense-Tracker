@@ -3,6 +3,7 @@ import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
+import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SetupPinViewModel extends ViewModel {
@@ -33,12 +34,15 @@ class SetupPinViewModel extends ViewModel {
   void storePin() async {
     // Initialize Shared Preferences
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    //Get User Data
+    final data = await firestore.doc(auth.getUser()!.uid).get();
+    final personData = PersonData.store(data.data() as Map<String, dynamic>);
     // Check Pin is already setup or not
     if (sharedPreferences.getBool(Variables.setupPinKey) == true &&
         _enteredPin == sharedPreferences.getString(Variables.enteredPinKey) &&
         _enteredPin.length == 4) {
       // Account is Setup Or Not. If Account is Setup then go to Dashboard otherwise Setup Account View
-      if (sharedPreferences.getBool(Variables.walletSetupKey) == true) {
+      if (personData.accountSetupCompleted == true) {
         navigationService.replaceWithDashboardView();
       } else {
         navigationService.replaceWithSetupAccountView();
@@ -68,7 +72,7 @@ class SetupPinViewModel extends ViewModel {
       // Check The Retype Pin is Same or Not
       if (_enteredPin == sharedPreferences.getString(Variables.enteredPinKey)) {
         sharedPreferences.setBool(Variables.setupPinKey, true);
-        if (sharedPreferences.getBool(Variables.redirectFromLoginKey) == true) {
+        if (personData.accountSetupCompleted == true) {
           navigationService.replaceWithDashboardView();
         } else {
           navigationService.replaceWithSetupAccountView();

@@ -117,7 +117,7 @@ class _Balance extends ViewModelWidget<SetupWalletViewModel> {
   Widget build(BuildContext context, SetupWalletViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.only(
-        top: viewModel.isFocus ? height * 0.24 : height * 0.32,
+        top: height * 0.2,
         left: width * 0.05,
       ),
       child: Column(
@@ -127,9 +127,10 @@ class _Balance extends ViewModelWidget<SetupWalletViewModel> {
           Text(
             balanceText,
             style: TextStyle(
-                fontSize: width * 0.05,
-                fontWeight: FontWeight.w600,
-                color: AppColors.light80.withValues(alpha: 0.6)),
+              fontSize: width * 0.05,
+              fontWeight: FontWeight.w600,
+              color: AppColors.light80.withValues(alpha: 0.6),
+            ),
           ),
           // Balance
           Row(
@@ -214,9 +215,6 @@ class _InputFields extends ViewModelWidget<SetupWalletViewModel> {
             hintText: nameTextFieldHintText,
             controller: viewModel.nameController,
             validator: (value) => viewModel.validateName(value),
-            onTap: () => viewModel.onTap(),
-            onTapOutside: (event) => viewModel.onTapOutside(context),
-            onComplete: () => viewModel.onComplete(context),
           ),
         ),
         // For Spacing

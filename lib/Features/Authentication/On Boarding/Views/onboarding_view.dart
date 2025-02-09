@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
@@ -13,6 +12,7 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
   @override
   void onViewModelReady(OnBoardingViewModel viewModel) {
     super.onViewModelReady(viewModel);
+    viewModel.notificationBarService.blackNotificationBar();
     // Call Function When Screen or View is Ready
     viewModel.automaticChangePage();
   }
@@ -28,16 +28,6 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
   @override
   Widget builder(
       BuildContext context, OnBoardingViewModel viewModel, Widget? child) {
-    // Changing the Color of Device Notification Bar and Device Navigation Bar
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.grey,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.white,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
     // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;

@@ -194,13 +194,13 @@ class _Buttons extends ViewModelWidget<UserPictureViewModel> {
                 ),
               ),
               onPressed: () => viewModel.notNowButtonFunction(),
-              child: viewModel.showLoading
+              child: viewModel.showLoadingForNotNow
                   ? SpinKitThreeBounce(
                       color: AppColors.primaryViolet,
                       size: width * 0.06,
                     )
                   : Text(
-                      continueText,
+                      notNowButtonText,
                       style: TextStyle(
                         color: AppColors.primaryViolet,
                         fontSize: width * 0.045,

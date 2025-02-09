@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PersonData {
   String? name;
-  bool? imageUploaded;
+  bool? imageUploaded, accountSetupCompleted;
   List<Wallets>? wallets;
   List<UserIncomeOptions>? userIncomeOptions;
   List<UserExpenseOptions>? userExpenseOptions;
@@ -11,6 +11,7 @@ class PersonData {
   PersonData(
       {this.name,
       this.imageUploaded,
+      this.accountSetupCompleted,
       this.wallets,
       this.userIncomeOptions,
       this.userExpenseOptions,
@@ -19,6 +20,7 @@ class PersonData {
   PersonData.store(Map<String, dynamic> json) {
     name = json['Name'];
     imageUploaded = json['imageUploaded'];
+    accountSetupCompleted = json['accountSetupCompleted'];
     if (json['Wallets'] != null) {
       wallets = <Wallets>[];
       json['Wallets'].forEach(
@@ -57,6 +59,7 @@ class PersonData {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (name != null) data['Name'] = name;
     if (imageUploaded != null) data['imageUploaded'] = imageUploaded;
+    if (accountSetupCompleted != null) data['accountSetupCompleted'] = accountSetupCompleted;
     if (wallets != null) {
       data['Wallets'] = wallets!.map((v) => v.receive()).toList();
     }

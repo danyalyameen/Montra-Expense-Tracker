@@ -233,13 +233,16 @@ class _OtherLoginItems extends StatelessWidget {
                 sharedPreferences.setBool(Variables.loggedInKey, true);
                 sharedPreferences.setBool(Variables.redirectFromLoginKey, true);
                 // Get User Data
-                final data = await FirebaseFirestore.instance.collection('users').doc(AuthService().getUser()!.uid).get();
+                final data = await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(AuthService().getUser()!.uid)
+                    .get();
                 final personData =
                     PersonData.store(data.data() as Map<String, dynamic>);
                 // Navigate to Verification View
                 if (personData.imageUploaded == true) {
                   navigationService.replaceWithSetupPinView();
-                } else if (personData.imageUploaded == false) {
+                } else {
                   navigationService.replaceWithUserPictureView();
                 }
               }

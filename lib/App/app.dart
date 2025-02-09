@@ -30,6 +30,7 @@ import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_vi
 import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
 import 'package:montra_expense_tracker/Service/Budgets/budget_service.dart';
 import 'package:montra_expense_tracker/Service/Image%20Picker/image_service.dart';
+import 'package:montra_expense_tracker/Service/Notification%20Bar/notification_bar_service.dart';
 import 'package:montra_expense_tracker/Service/Options/option_service.dart';
 import 'package:montra_expense_tracker/Service/Transactions/transaction_service.dart';
 import 'package:montra_expense_tracker/Service/Wallets/wallet_service.dart';
@@ -78,6 +79,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: WalletService),
     LazySingleton(classType: OptionService),
     LazySingleton(classType: ImageService),
+    LazySingleton(classType: NotificationBarService),
   ],
 )
 class App {}

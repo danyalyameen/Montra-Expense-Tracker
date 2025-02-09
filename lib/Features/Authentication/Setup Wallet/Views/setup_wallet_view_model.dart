@@ -3,10 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SetupWalletViewModel extends ViewModel {
   // Final Fields
@@ -21,13 +19,11 @@ class SetupWalletViewModel extends ViewModel {
   TextEditingController get nameController => _nameEditingController;
 
   // Non Final Fields
-  bool _isFocus = false;
   bool _showLoading = false;
   bool _error = false;
   String _selectedAccountType = "";
 
   // Get Non Final Fields
-  bool get isFocus => _isFocus;
   bool get showLoading => _showLoading;
   bool get walletError => _error;
   String get selectedAccountType => _selectedAccountType;
@@ -68,26 +64,6 @@ class SetupWalletViewModel extends ViewModel {
     }
   }
 
-  // Make isFocus True to change the height of Background Color Container
-  void onTap() {
-    _isFocus = true;
-    notifyListeners();
-  }
-
-  // Same Change the Height but also unfocus the Text Field
-  void onTapOutside(BuildContext context) {
-    _isFocus = false;
-    FocusScope.of(context).unfocus();
-    notifyListeners();
-  }
-
-  // Same Change the Height but also unfocus the Text Field
-  void onComplete(BuildContext context) {
-    _isFocus = false;
-    FocusScope.of(context).unfocus();
-    notifyListeners();
-  }
-
   // Drop Down Value Change Function
   void onChanged(String value) {
     _selectedAccountType = value;
@@ -102,9 +78,6 @@ class SetupWalletViewModel extends ViewModel {
       if (formKey.currentState!.validate() &&
           _balanceEditingController.text.isNotEmpty &&
           _selectedAccountType.isNotEmpty) {
-        // Initialize Shared Preference
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
         // Show Loading
         _showLoading = true;
         notifyListeners();
@@ -121,11 +94,12 @@ class SetupWalletViewModel extends ViewModel {
           notifyListeners();
           return;
         }
+        // Make Account Setup Completed True
+        await firestore.doc(auth.getUser()!.uid).update(PersonData(accountSetupCompleted: true).receive());
         // Hide Loading
         _showLoading = false;
         notifyListeners();
         // Navigate to Dashboard
-        sharedPreferences.setBool(Variables.walletSetupKey, true);
         navigationService.replaceWithSuccessfullyDone(
             msg: "Account Setup Successfully",
             className: const DashboardView());

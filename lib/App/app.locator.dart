@@ -12,6 +12,7 @@ import 'package:stacked_shared/stacked_shared.dart';
 import '../Service/Authentication/auth_service.dart';
 import '../Service/Budgets/budget_service.dart';
 import '../Service/Image%20Picker/image_service.dart';
+import '../Service/Notification%20Bar/notification_bar_service.dart';
 import '../Service/Options/option_service.dart';
 import '../Service/Transactions/transaction_service.dart';
 import '../Service/Wallets/wallet_service.dart';
@@ -34,4 +35,5 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => WalletService());
   locator.registerLazySingleton(() => OptionService());
   locator.registerLazySingleton(() => ImageService());
+  locator.registerLazySingleton(() => NotificationBarService());
 }
