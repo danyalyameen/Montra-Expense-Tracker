@@ -97,11 +97,12 @@ class TransferViewModel extends ViewModel {
         notifyListeners();
         // Add Transaction
         transactionsService.addTransaction(
-            transactionPrice: int.parse(balanceController.text),
-            walletName: storeSelectedWallet["option"],
-            category: "${fromController.text},${toController.text}",
-            description: descriptionController.text,
-            transactionType: "Transfer",);
+          transactionPrice: int.parse(balanceController.text),
+          walletName: storeSelectedWallet["option"],
+          category: "${fromController.text},${toController.text}",
+          description: descriptionController.text,
+          transactionType: "Transfer",
+        );
         // Hide Transaction
         _showLoading = false;
         notifyListeners();

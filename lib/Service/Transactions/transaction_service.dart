@@ -18,7 +18,8 @@ class TransactionService {
       {required int transactionPrice,
       required String walletName,
       required String category,
-      required String description, required String transactionType}) async {
+      required String description,
+      required String transactionType}) async {
     // Get User Wallets
     List<Wallets> wallets = await walletService.getWallets();
     var time = Timestamp.now();
@@ -43,8 +44,12 @@ class TransactionService {
           case "Income":
             wallet.balance = wallet.balance! + transactionPrice;
             break;
-          default:
+          case "Transfer":
             wallet.balance = wallet.balance! - transactionPrice;
+            break;
+          case "Expense":
+            wallet.balance = wallet.balance! - transactionPrice;
+            break;
         }
         // Terminate Loop
         break;
@@ -59,6 +64,7 @@ class TransactionService {
             imageFile: imageService.image,
           )
         : null;
+    await Future.delayed(const Duration(seconds: 3));
   }
 
   Future<List<Transactions>> getTransactions() async {
@@ -98,7 +104,7 @@ class TransactionService {
           break;
         case "Expense":
           switch (transaction.category) {
-            case "Grocery":
+            case "Shopping":
               iconData.add({
                 "icon": IconsPath.shopping,
                 "iconColor": AppColors.primaryYellow,
@@ -135,6 +141,12 @@ class TransactionService {
               break;
           }
           break;
+        default:
+          iconData.add({
+            "icon": IconsPath.menuDots,
+            "iconColor": AppColors.primaryRed,
+            "iconBackgroundColor": AppColors.red20
+          });
       }
     }
     return iconData;

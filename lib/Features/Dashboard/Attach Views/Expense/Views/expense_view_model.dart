@@ -4,7 +4,6 @@ import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
-import 'package:montra_expense_tracker/Models/person_model.dart';
 
 class ExpenseViewModel extends ViewModel {
   // Final Fields
@@ -75,23 +74,6 @@ class ExpenseViewModel extends ViewModel {
         toastLength: Toast.LENGTH_LONG,
       );
     }
-  }
-
-  // Update Category
-  void updateCategoryHintText({required int index}) async {
-    var data = await optionService.getExpenseOptions();
-    storeSelectedCategory["option"] = data[index].option;
-    storeSelectedCategory["color"] = data[index].color;
-    navigationService.back();
-    notifyListeners();
-  }
-
-  // Update Wallet
-  void updateWalletHintText({required int index}) async {
-    List<Wallets> data = await walletService.getWallets();
-    storeSelectedWallet["option"] = data[index].walletName;
-    navigationService.back();
-    notifyListeners();
   }
 
   // Add Transaction

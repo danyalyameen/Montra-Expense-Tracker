@@ -164,12 +164,13 @@ class _TopNavigation extends ViewModelWidget<DashboardViewModel> {
                     highlightColor: Colors.grey.shade100,
                     child: Container(
                       decoration: BoxDecoration(
-                          color: AppColors.light80,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: width * 0.008,
-                            color: AppColors.violet60,
-                          ),),
+                        color: AppColors.light80,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          width: width * 0.008,
+                          color: AppColors.violet60,
+                        ),
+                      ),
                       child: CircleAvatar(
                         backgroundColor: AppColors.primaryViolet,
                         radius: width * 0.04,
@@ -177,6 +178,7 @@ class _TopNavigation extends ViewModelWidget<DashboardViewModel> {
                     ),
                   );
                 }
+                // First Letter of Name
                 var data = snapshot.data![1] as String;
                 return Container(
                   decoration: BoxDecoration(
@@ -646,9 +648,10 @@ class _ShowOrHide extends ViewModelWidget<DashboardViewModel> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
-                            onTap: () {
-                              navigationService.navigateToTransferView();
+                            onTap: () async {
                               viewModel.showItems.value = false;
+                              await navigationService.navigateToTransferView();
+                              viewModel.notifyListeners();
                             },
                             child: CircleAvatar(
                               radius: width * 0.07,
@@ -734,6 +737,7 @@ class _BottomNavigation extends ViewModelWidget<DashboardViewModel> {
     required this.height,
   });
 
+  // Variables
   final String iconKey = "Icon";
   final String titleKey = "Title";
   final List<Map<String, dynamic>> data = Database.bottomNavigationData;

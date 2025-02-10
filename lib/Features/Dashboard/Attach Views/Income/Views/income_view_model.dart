@@ -5,7 +5,6 @@ import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
-import 'package:montra_expense_tracker/Models/person_model.dart';
 
 class IncomeViewModel extends ViewModel {
   // Final Fields
@@ -78,23 +77,6 @@ class IncomeViewModel extends ViewModel {
         toastLength: Toast.LENGTH_LONG,
       );
     }
-  }
-
-  // Store Selected Income in Map
-  void updateIncomeHintText({required int index}) async {
-    List data = await optionService.getIncomeOptions();
-    storeSelectedIncome["option"] = data[index].option;
-    storeSelectedIncome["color"] = data[index].color;
-    navigationService.back();
-    notifyListeners();
-  }
-
-  // Store Selected Wallet in Map
-  void updateWalletHintText({required int index}) async {
-    List<Wallets> wallets = await walletService.getWallets();
-    storeSelectedWallet["option"] = wallets[index].walletName;
-    navigationService.back();
-    notifyListeners();
   }
 
   void addIncomeCompleted() async {
