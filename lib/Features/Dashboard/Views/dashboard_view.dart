@@ -29,8 +29,18 @@ class DashboardView extends StackedView<DashboardViewModel> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       // Navigation of Different UIs
-      body: Database
-          .bottomNavigationViews[viewModel.currentIndexForBottomNavigation],
+      body: Stack(
+        children: [
+          Database
+              .bottomNavigationViews[viewModel.currentIndexForBottomNavigation],
+          // Show or Hide the Three Items
+          _ShowOrHide(
+            width: width,
+            height: height,
+            navigationService: viewModel.navigationService,
+          ),
+        ],
+      ),
       // Floating Action Button Location
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       // Floating Action Button
@@ -113,12 +123,6 @@ class DashboardUI extends ViewModelWidget<DashboardViewModel> {
             ],
           ),
         ),
-        // Show or Hide the Three Items
-        _ShowOrHide(
-          width: width,
-          height: height,
-          navigationService: viewModel.navigationService,
-        ),
       ],
     );
   }
@@ -142,8 +146,38 @@ class _TopNavigation extends ViewModelWidget<DashboardViewModel> {
         children: [
           // Account Picture
           FutureBuilder(
-              future: viewModel.getFirstLetterOfName(),
+              future: Future.wait([
+                precacheImage(
+                    NetworkImage(
+                      viewModel.imageService.getImage(
+                        userPicture: true,
+                        imageName: Variables.userPictureName,
+                      ),
+                    ),
+                    context),
+                viewModel.getFirstLetterOfName()
+              ]),
               builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: AppColors.light80,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: width * 0.008,
+                            color: AppColors.violet60,
+                          ),),
+                      child: CircleAvatar(
+                        backgroundColor: AppColors.primaryViolet,
+                        radius: width * 0.04,
+                      ),
+                    ),
+                  );
+                }
+                var data = snapshot.data![1] as String;
                 return Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -169,7 +203,7 @@ class _TopNavigation extends ViewModelWidget<DashboardViewModel> {
                                 color: AppColors.primaryViolet,
                                 child: Center(
                                   child: Text(
-                                    snapshot.data!,
+                                    data,
                                     style: TextStyle(
                                       color: AppColors.primaryLight,
                                     ),
@@ -535,8 +569,8 @@ class _RecentTransactions extends ViewModelWidget<DashboardViewModel> {
         // Transactions
         UserTransactions(
           itemCount: 4,
-          transactions: viewModel.transactionsService.fetchTransactions(),
-          icons: viewModel.transactionsService.transactionIcons(),
+          transactions: viewModel.transactionsService.getTransactions(),
+          icons: viewModel.transactionsService.getTransactionIcons(),
           navigationService: viewModel.navigationService,
         ),
       ],

@@ -1,34 +1,40 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
-import 'package:montra_expense_tracker/Models/person_model.dart';
 
 class TransferViewModel extends ViewModel {
+  // Final Text Fields
   final TextEditingController _balanceController = TextEditingController();
   final TextEditingController _fromController = TextEditingController();
   final TextEditingController _toController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final ValueNotifier _itemIndex = ValueNotifier(0);
 
+  // Get Final Fields
+  GlobalKey<FormState> get formKey => _formKey;
   TextEditingController get balanceController => _balanceController;
   TextEditingController get fromController => _fromController;
   TextEditingController get toController => _toController;
   TextEditingController get descriptionController => _descriptionController;
-
-  final ValueNotifier _itemIndex = ValueNotifier(0);
-  final ValueNotifier errorValueNotifier = ValueNotifier("");
   ValueNotifier get itemIndex => _itemIndex;
+
+  // Non Final Fields
   bool _showLoading = false;
+  final ValueNotifier errorValueNotifier = ValueNotifier("");
+
+  // Get Non Final Fields
   bool get showLoading => _showLoading;
 
+  // Store Wallet which is Selected by User
   Map<String, dynamic> storeSelectedWallet = {
     "option": "Wallet",
   };
 
+  // Validate Balance
   validateBalance() {
     if (_balanceController.text.isEmpty) {
       Fluttertoast.showToast(
@@ -40,6 +46,7 @@ class TransferViewModel extends ViewModel {
     }
   }
 
+  // Validate From
   String? validateFrom(String? value) {
     if (value!.isNotEmpty) {
       return null;
@@ -48,6 +55,7 @@ class TransferViewModel extends ViewModel {
     }
   }
 
+  // Validate To
   String? validateTo(String? value) {
     if (value!.isNotEmpty) {
       return null;
@@ -56,6 +64,7 @@ class TransferViewModel extends ViewModel {
     }
   }
 
+  // Validate Description
   String? validateDescription(String? value) {
     if (value!.isNotEmpty) {
       return null;
@@ -64,6 +73,7 @@ class TransferViewModel extends ViewModel {
     }
   }
 
+  // Validate Wallet
   validateWallet() {
     if (storeSelectedWallet["option"] == "Wallet") {
       Fluttertoast.showToast(
@@ -75,22 +85,6 @@ class TransferViewModel extends ViewModel {
     }
   }
 
-  Future<PersonData> fetchingWalletOptions() async {
-    var data = await firestore.doc(auth.getUser()!.uid).get();
-    return PersonData.store(data.data() as Map<String, dynamic>);
-  }
-
-  void updateWalletHintText({required int index}) async {
-    var data = await fetchingWalletOptions();
-    storeSelectedWallet["option"] = data.wallets![index].walletName;
-    navigationService.back();
-    notifyListeners();
-  }
-
-  void onPageChanged(int value) {
-    _itemIndex.value = value;
-  }
-
   void addTransferTransactionCompleted() async {
     validateBalance();
     validateWallet();
@@ -98,37 +92,20 @@ class TransferViewModel extends ViewModel {
         _balanceController.text.isNotEmpty &&
         storeSelectedWallet["option"] != "Wallet") {
       try {
+        // Show Loading
         _showLoading = true;
         notifyListeners();
-        final data = await fetchingWalletOptions();
-        if (data.wallets != null) {
-          for (var wallet in data.wallets!) {
-            if (wallet.walletName == storeSelectedWallet["option"]) {
-              wallet.transactions ??= [];
-              if (wallet.transactions != null) {
-                wallet.transactions!.insert(
-                  0,
-                  Transactions(
-                    type: "Transfer",
-                    category: "${fromController.text},${toController.text}",
-                    description: descriptionController.text,
-                    transactionPrice: int.parse(balanceController.text),
-                    time: Timestamp.now(),
-                  ),
-                );
-              }
-              if (wallet.balance != null) {
-                wallet.balance =
-                    wallet.balance! - int.parse(balanceController.text);
-              }
-            }
-          }
-        }
-        await firestore
-            .doc(auth.getUser()!.uid)
-            .update(PersonData(wallets: data.wallets).receive());
+        // Add Transaction
+        transactionsService.addTransaction(
+            transactionPrice: int.parse(balanceController.text),
+            walletName: storeSelectedWallet["option"],
+            category: "${fromController.text},${toController.text}",
+            description: descriptionController.text,
+            transactionType: "Transfer",);
+        // Hide Transaction
         _showLoading = false;
         notifyListeners();
+        // Navigation
         navigationService.replaceWithSuccessfullyDone(
             msg: "Transaction Added", className: const DashboardView());
       } catch (e) {

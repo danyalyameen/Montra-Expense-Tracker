@@ -9,6 +9,7 @@ class Delete {
     required double height,
     required String title,
     required String subtitle,
+    VoidCallback? onPressed,
   }) {
     showModalBottomSheet(
       context: context,
@@ -19,7 +20,7 @@ class Delete {
           dragHandleSize: Size(width * 0.2, height * 0.005),
           backgroundColor: AppColors.primaryLight,
           constraints:
-              BoxConstraints(maxHeight: height * 0.28, minWidth: width),
+              BoxConstraints(maxHeight: height * 0.35, minWidth: width),
           onClosing: () {},
           builder: (context) {
             return Column(
@@ -28,12 +29,12 @@ class Delete {
                   title,
                   style: TextStyle(
                     color: AppColors.primaryBlack,
-                    fontSize: width * 0.05,
-                    fontWeight: FontWeight.bold,
+                    fontSize: width * 0.055,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
                 SizedBox(
-                  height: height * 0.01,
+                  height: height * 0.02,
                 ),
                 Padding(
                   padding: EdgeInsets.only(
@@ -51,7 +52,7 @@ class Delete {
                   ),
                 ),
                 SizedBox(
-                  height: height * 0.02,
+                  height: height * 0.025,
                 ),
                 Padding(
                   padding: EdgeInsets.only(
@@ -63,6 +64,7 @@ class Delete {
                     children: [
                       SizedBox(
                         width: width * 0.425,
+                        height: height * 0.06,
                         child: CustomElevatedButton(
                           width: width,
                           height: height,
@@ -80,10 +82,12 @@ class Delete {
                       ),
                       SizedBox(
                         width: width * 0.425,
+                        height: height * 0.06,
                         child: CustomElevatedButton(
                           width: width,
                           height: height,
                           text: "Yes",
+                          onPressed: onPressed,
                         ),
                       ),
                     ],

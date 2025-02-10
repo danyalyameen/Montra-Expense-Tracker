@@ -83,7 +83,7 @@ class _UserTransactionsState extends State<UserTransactions> {
                               .navigateToDetailsTransactionView(
                             balance: transaction.transactionPrice.toString(),
                             description: transaction.description!,
-                            time: transaction.time!.toDate(),
+                            time: transaction.time!,
                             category: transaction.category!,
                             type: transaction.type!,
                             color: switch (transaction.type!) {

@@ -50,8 +50,8 @@ class TransactionView extends StackedView<TransactionViewModel> {
             onTap: () {},
             child: UserTransactions(
               height: height * 0.62,
-              icons: viewModel.transactionsService.transactionIcons(),
-              transactions: viewModel.transactionsService.fetchTransactions(),
+              icons: viewModel.transactionsService.getTransactionIcons(),
+              transactions: viewModel.transactionsService.getTransactions(),
               navigationService: viewModel.navigationService,
             ),
           ),

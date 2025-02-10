@@ -9,13 +9,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class ImageService {
   SupabaseStorageClient storage = Supabase.instance.client.storage;
   ImagePicker imagePicker = ImagePicker();
+  File? _image;
+  File? get image => _image;
 
   Future<File?> pickImage({required bool pickFromCamera}) async {
     XFile? imageFile = await imagePicker.pickImage(
       source: pickFromCamera ? ImageSource.camera : ImageSource.gallery,
     );
     if (imageFile != null) {
-      return File(imageFile.path);
+      _image = File(imageFile.path);
+      return _image;
     } else {
       Fluttertoast.showToast(
         msg: "No Image Selected",
@@ -38,7 +41,7 @@ class ImageService {
     String imagePath = "$userFolderName/$imageFolderName/$imageUploadName";
     if (imageFile != null) {
       File image = File(imageFile.path);
-      storage.from(bucketName).upload(imagePath, image);
+      await storage.from(bucketName).upload(imagePath, image);
     } else {
       Fluttertoast.showToast(
         msg: "No Image Selected",

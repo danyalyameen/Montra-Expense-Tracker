@@ -21,7 +21,7 @@ class BudgetService {
   }
 
   Future<int> spend({required String category, required int month}) async {
-    final data = await transactionsService.fetchTransactions();
+    final data = await transactionsService.getTransactions();
     var transactions = data.where(
       (e) {
         return e.category == category && e.time!.toDate().month == month;

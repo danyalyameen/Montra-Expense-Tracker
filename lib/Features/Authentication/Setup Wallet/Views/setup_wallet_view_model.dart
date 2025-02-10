@@ -81,6 +81,8 @@ class SetupWalletViewModel extends ViewModel {
         // Show Loading
         _showLoading = true;
         notifyListeners();
+        var data = await firestore.doc(auth.getUser()!.uid).get();
+        var personData = PersonData.store(data.data() as Map<String, dynamic>);
         // Add Wallet
         _error = await walletService.addWallet(
             wallet: Wallets(
@@ -95,9 +97,12 @@ class SetupWalletViewModel extends ViewModel {
           return;
         }
         // Make Account Setup Completed True
-        await firestore
-            .doc(auth.getUser()!.uid)
-            .update(PersonData(accountSetupCompleted: true).receive());
+        personData.accountSetupCompleted == null ||
+                personData.accountSetupCompleted == true
+            ? null
+            : await firestore
+                .doc(auth.getUser()!.uid)
+                .update(PersonData(accountSetupCompleted: true).receive());
         // Hide Loading
         _showLoading = false;
         notifyListeners();

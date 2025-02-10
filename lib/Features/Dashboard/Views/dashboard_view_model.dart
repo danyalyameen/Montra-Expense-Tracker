@@ -46,7 +46,7 @@ class DashboardViewModel extends ViewModel {
   // Get the Total Income of This Month
   Future<int> getTotalIncome() async {
     int income = 0;
-    final transactions = await transactionsService.fetchTransactions();
+    final transactions = await transactionsService.getTransactions();
     if (transactions.isNotEmpty) {
       for (var transaction in transactions) {
         if (transaction.type == "Income" &&
@@ -63,7 +63,7 @@ class DashboardViewModel extends ViewModel {
   // Get the Total Expense of This Month
   Future<int> getTotalExpense() async {
     int expense = 0;
-    final transactions = await transactionsService.fetchTransactions();
+    final transactions = await transactionsService.getTransactions();
     if (transactions.isNotEmpty) {
       for (var transaction in transactions) {
         if (transaction.type != "Income" &&

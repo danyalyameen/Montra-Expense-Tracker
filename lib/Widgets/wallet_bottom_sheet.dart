@@ -212,7 +212,12 @@ class _ShowItemsForWallet extends StatelessWidget {
                                       padding:
                                           EdgeInsets.only(right: width * 0.06),
                                       child: SvgPicture.asset(
-                                        IconsPath.wallet,
+                                        switch (data.accountType!) {
+                                          "Wallet" => IconsPath.wallet,
+                                          "Bank" => IconsPath.bank,
+                                          String() =>
+                                            throw UnimplementedError(),
+                                        },
                                         width: width * 0.025,
                                         height: height * 0.025,
                                         colorFilter: ColorFilter.mode(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
+import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view_model.dart';
 import 'package:montra_expense_tracker/Widgets/add_options.dart';
 import 'package:montra_expense_tracker/Widgets/category_bottom_sheet.dart';
@@ -13,7 +14,8 @@ import 'package:stacked/stacked.dart';
 
 class ExpenseView extends StackedView<ExpenseViewModel> {
   const ExpenseView({super.key});
-
+  
+  // Variables
   final String appBarTitle = "Expense";
   final String continueButtonText = "Continue";
   final String descriptionText = "Description";
@@ -21,6 +23,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
   @override
   Widget builder(
       BuildContext context, ExpenseViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -36,10 +39,12 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Balance
           _Balance(
             width: width,
             balanceController: viewModel.balanceController,
           ),
+          // White Color Background Container
           Expanded(
             child: Container(
               width: double.infinity,
@@ -53,6 +58,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
               ),
               child: Column(
                 children: [
+                  // Category Bottom Sheet
                   CategoryBottomSheet(
                     fetchingCategoryOptions:
                         viewModel.optionService.getExpenseOptions(),
@@ -68,9 +74,11 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                       );
                     },
                   ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.02,
                   ),
+                  // Description
                   Form(
                     key: viewModel.descriptionFormKey,
                     child: CustomTextFormField(
@@ -82,19 +90,25 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                           viewModel.validateDescription(value),
                     ),
                   ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.02,
                   ),
+                  // Wallet Bottom Sheet
                   WalletBottomSheet(
                     storeSelectedWallet: viewModel.storeSelectedWallet,
                   ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.02,
                   ),
+                  // To Import Images
                   const FileInserter(),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.02,
                   ),
+                  // Continue Button
                   CustomElevatedButton(
                     width: width,
                     height: height,
@@ -133,7 +147,8 @@ class _Balance extends StatelessWidget {
   final double width;
   final TextEditingController balanceController;
   const _Balance({required this.width, required this.balanceController});
-
+  
+  // Variables
   final String inputHintText = "How much?";
 
   @override
@@ -143,6 +158,7 @@ class _Balance extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Input Hint Text
           Text(
             inputHintText,
             style: TextStyle(
@@ -151,15 +167,18 @@ class _Balance extends StatelessWidget {
               color: AppColors.light80.withValues(alpha: 0.6),
             ),
           ),
+          // Balance Text Field
           Row(
             children: [
+              // Currency
               Text(
-                "\$",
+                Variables.currency,
                 style: TextStyle(
                     fontSize: width * 0.16,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.light80),
+                    color: AppColors.light80,),
               ),
+              // Balance Text Field
               Expanded(
                 child: TextField(
                   controller: balanceController,
@@ -181,6 +200,16 @@ class _Balance extends StatelessWidget {
                       color: AppColors.light80,
                     ),
                   ),
+                  onTap: () {
+                    balanceController.selection = TextSelection.fromPosition(
+                      TextPosition(offset: balanceController.text.length),
+                    );
+                  },
+                  onChanged: (value) {
+                    balanceController.selection = TextSelection.fromPosition(
+                      TextPosition(offset: value.length),
+                    );
+                  },
                 ),
               )
             ],

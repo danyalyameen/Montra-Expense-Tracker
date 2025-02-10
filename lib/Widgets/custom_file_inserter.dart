@@ -22,7 +22,6 @@ class _FileInserterState extends State<FileInserter> {
   final String iconKey = "Icon";
   final String titleKey = "Title";
   File? img;
-  File? get image => img;
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +115,9 @@ class _FileInserterState extends State<FileInserter> {
                             child: SvgPicture.asset(
                               IconsPath.close,
                               colorFilter: ColorFilter.mode(
-                                  AppColors.primaryBlack, BlendMode.srcIn),
+                                AppColors.primaryBlack,
+                                BlendMode.srcIn,
+                              ),
                             ),
                           ),
                         ),

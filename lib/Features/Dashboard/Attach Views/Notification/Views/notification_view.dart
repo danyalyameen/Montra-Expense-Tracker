@@ -10,11 +10,13 @@ import 'package:stacked/stacked.dart';
 class NotificationView extends StackedView<NotificationViewModel> {
   const NotificationView({super.key});
 
+  // Variables
   final String appBarTitle = "Notification";
 
   @override
   Widget builder(
       BuildContext context, NotificationViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -23,12 +25,14 @@ class NotificationView extends StackedView<NotificationViewModel> {
         width: width,
         height: height,
         actions: [
+          // Show Menu
           _ShowMenu(
             width: width,
             height: height,
           ),
         ],
       ),
+      // Notification UI
       body: _Notifications(
         width: width,
         height: height,
@@ -52,6 +56,7 @@ class _ShowMenu extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(width * 0.06),
         onTap: () {
+          // Popup Menu
           showMenu(
             context: context,
             position: RelativeRect.fromLTRB(width, 0, 0, height),
@@ -86,57 +91,58 @@ class _Notifications extends StatelessWidget {
   final double width, height;
   const _Notifications({required this.width, required this.height});
 
+  // Variables
   final String titleKey = "Title";
   final String descriptionKey = "Description";
   final String timeKey = "Time";
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.separated(
-        itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () {},
-            child: ListTile(
-              title: Text(
-                Database.notificationsData[index][titleKey],
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: AppColors.primaryBlack.withValues(alpha: 0.9),
-                  fontSize: width * 0.042,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              subtitle: Text(
-                Database.notificationsData[index][descriptionKey],
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: AppColors.black25,
-                  fontWeight: FontWeight.w400,
-                  fontSize: width * 0.035,
-                ),
-              ),
-              trailing: Text(
-                Database.notificationsData[index][timeKey],
-                style: TextStyle(
-                  color: AppColors.primaryBlack.withValues(alpha: 0.8),
-                  fontSize: width * 0.035,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+    return ListView.separated(
+      itemBuilder: (context, index) {
+        return ListTile(
+          // Title
+          title: Text(
+            Database.notificationsData[index][titleKey],
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: AppColors.primaryBlack.withValues(alpha: 0.9),
+              fontSize: width * 0.042,
+              fontWeight: FontWeight.w500,
             ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return Divider(
-            color: AppColors.grey,
-            thickness: width * 0.0005,
-          );
-        },
-        itemCount: Database.notificationsData.length,
-      ),
+          ),
+          // Subtitle
+          subtitle: Text(
+            Database.notificationsData[index][descriptionKey],
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: AppColors.black25,
+              fontWeight: FontWeight.w400,
+              fontSize: width * 0.035,
+            ),
+          ),
+          // Trailing
+          trailing: Text(
+            Database.notificationsData[index][timeKey],
+            style: TextStyle(
+              color: AppColors.primaryBlack.withValues(alpha: 0.8),
+              fontSize: width * 0.035,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        );
+      },
+      // Separated Widget
+      separatorBuilder: (context, index) {
+        return Divider(
+          color: AppColors.grey,
+          thickness: width * 0.0005,
+        );
+      },
+      // Item Count
+      itemCount: Database.notificationsData.length,
     );
   }
 }

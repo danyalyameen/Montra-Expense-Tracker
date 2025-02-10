@@ -1,35 +1,42 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
-import 'package:montra_expense_tracker/Models/default_options_model.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
 
 class IncomeViewModel extends ViewModel {
+  // Final Fields
+  final GlobalKey<FormState> _descriptionFormKey = GlobalKey<FormState>();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _balanceEditingController =
       TextEditingController();
-  final GlobalKey<FormState> descriptionFormKey = GlobalKey<FormState>();
+
+  // Get Final Fields
+  GlobalKey<FormState> get descriptionFormKey => _descriptionFormKey;
+  TextEditingController get descriptionController => _descriptionController;
+  TextEditingController get balanceController => _balanceEditingController;
+
+  // Map to Store Selected Option or Income
   Map<String, dynamic> storeSelectedIncome = {
     "option": "Income",
     "color": null,
   };
 
+  // Map to Store Selected Option or Wallet
   Map<String, dynamic> storeSelectedWallet = {
     "option": "Wallet",
   };
 
-  TextEditingController get descriptionController => _descriptionController;
-  TextEditingController get balanceController => _balanceEditingController;
-
-  final ValueNotifier _itemIndex = ValueNotifier(0);
-  ValueNotifier get itemIndex => _itemIndex;
+  // Non Final Fields
   bool _showLoading = false;
+  File? image;
+  // Get Non Final Fields
   bool get showLoading => _showLoading;
 
+  // Validate Balance
   validateBalance() {
     if (_balanceEditingController.text.isEmpty) {
       Fluttertoast.showToast(
@@ -41,6 +48,7 @@ class IncomeViewModel extends ViewModel {
     }
   }
 
+  // Validate Income
   validateIncome() {
     if (storeSelectedIncome["option"] == "Income") {
       Fluttertoast.showToast(
@@ -52,6 +60,7 @@ class IncomeViewModel extends ViewModel {
     }
   }
 
+  // Validate Description
   String? validateDescription(String? value) {
     if (value!.isEmpty) {
       return "Please Enter Your Description";
@@ -59,6 +68,7 @@ class IncomeViewModel extends ViewModel {
     return null;
   }
 
+  // Validate Wallet
   validateWallet() {
     if (storeSelectedWallet["option"] == "Wallet") {
       Fluttertoast.showToast(
@@ -70,35 +80,20 @@ class IncomeViewModel extends ViewModel {
     }
   }
 
-  Future<List> fetchingIncomeOptions() async {
-    var data = await incomeOptions.get();
-    var defaultOptions =
-        DefaultOptionsModel.store(data.data() as Map<String, dynamic>);
-    return defaultOptions.defaultIncomeOptions!;
-  }
-
-  Future<PersonData> fetchingWalletOptions() async {
-    var data = await firestore.doc(auth.getUser()!.uid).get();
-    return PersonData.store(data.data() as Map<String, dynamic>);
-  }
-
+  // Store Selected Income in Map
   void updateIncomeHintText({required int index}) async {
-    List data = await fetchingIncomeOptions();
+    List data = await optionService.getIncomeOptions();
     storeSelectedIncome["option"] = data[index].option;
     storeSelectedIncome["color"] = data[index].color;
     navigationService.back();
     notifyListeners();
   }
 
+  // Store Selected Wallet in Map
   void updateWalletHintText({required int index}) async {
-    PersonData personData = await fetchingWalletOptions();
-    storeSelectedWallet["option"] = personData.wallets![index].walletName;
+    List<Wallets> wallets = await walletService.getWallets();
+    storeSelectedWallet["option"] = wallets[index].walletName;
     navigationService.back();
-    notifyListeners();
-  }
-
-  void onPageChanged(int value) {
-    _itemIndex.value = value;
     notifyListeners();
   }
 
@@ -106,42 +101,27 @@ class IncomeViewModel extends ViewModel {
     validateBalance();
     validateIncome();
     validateWallet();
+    // Check All the Values are Valid or Not
     if (descriptionFormKey.currentState!.validate() &&
         _balanceEditingController.text.isNotEmpty &&
         storeSelectedIncome["option"] != "Income" &&
         storeSelectedWallet["option"] != "Wallet") {
       try {
+        // Show Loading
         _showLoading = true;
         notifyListeners();
-        final data = await fetchingWalletOptions();
-        if (data.wallets != null) {
-          for (var wallet in data.wallets!) {
-            if (wallet.walletName == storeSelectedWallet["option"]) {
-              wallet.transactions ??= [];
-              if (wallet.transactions != null) {
-                wallet.transactions!.insert(
-                  0,
-                  Transactions(
-                    type: "Income",
-                    category: storeSelectedIncome["option"],
-                    description: descriptionController.text,
-                    transactionPrice: int.parse(balanceController.text),
-                    time: Timestamp.now(),
-                  ),
-                );
-              }
-              if (wallet.balance != null) {
-                wallet.balance =
-                    wallet.balance! + int.parse(balanceController.text);
-              }
-            }
-          }
-        }
-        await firestore
-            .doc(auth.getUser()!.uid)
-            .update(PersonData(wallets: data.wallets).receive());
+        // Add Transaction
+        transactionsService.addTransaction(
+          transactionPrice: int.parse(balanceController.text),
+          walletName: storeSelectedWallet["option"],
+          category: storeSelectedIncome["option"],
+          description: descriptionController.text,
+          transactionType: "Income",
+        );
+        // Hide Loading
         _showLoading = false;
         notifyListeners();
+        // Navigate to Dashboard
         navigationService.replaceWithSuccessfullyDone(
             msg: "Transaction Added", className: const DashboardView());
       } catch (e) {

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
@@ -34,6 +33,7 @@ class ExpenseViewModel extends ViewModel {
     "option": "Wallet",
   };
 
+  // Validate Balance
   validateBalance() {
     if (_balanceController.text.isEmpty) {
       Fluttertoast.showToast(
@@ -45,6 +45,7 @@ class ExpenseViewModel extends ViewModel {
     }
   }
 
+  // Validate Category
   validateCategory() {
     if (storeSelectedCategory["option"] == "Category") {
       Fluttertoast.showToast(
@@ -56,6 +57,7 @@ class ExpenseViewModel extends ViewModel {
     }
   }
 
+  // Validate Description
   String? validateDescription(String? value) {
     if (value!.isEmpty) {
       return "Please Enter Your Description";
@@ -63,6 +65,7 @@ class ExpenseViewModel extends ViewModel {
     return null;
   }
 
+  // Validate Wallet
   validateWallet() {
     if (storeSelectedWallet["option"] == "Wallet") {
       Fluttertoast.showToast(
@@ -74,6 +77,7 @@ class ExpenseViewModel extends ViewModel {
     }
   }
 
+  // Update Category
   void updateCategoryHintText({required int index}) async {
     var data = await optionService.getExpenseOptions();
     storeSelectedCategory["option"] = data[index].option;
@@ -82,6 +86,7 @@ class ExpenseViewModel extends ViewModel {
     notifyListeners();
   }
 
+  // Update Wallet
   void updateWalletHintText({required int index}) async {
     List<Wallets> data = await walletService.getWallets();
     storeSelectedWallet["option"] = data[index].walletName;
@@ -89,6 +94,7 @@ class ExpenseViewModel extends ViewModel {
     notifyListeners();
   }
 
+  // Add Transaction
   void addExpenseTransactionCompleted() async {
     validateBalance();
     validateCategory();
@@ -98,31 +104,21 @@ class ExpenseViewModel extends ViewModel {
         storeSelectedCategory["option"] != "Category" &&
         storeSelectedWallet["option"] != "Wallet") {
       try {
+        // Show Loading
         _showLoading = true;
         notifyListeners();
-        final data = await walletService.getWallets();
-        for (var wallet in data) {
-          if (wallet.walletName == storeSelectedWallet["option"]) {
-            wallet.transactions ??= [];
-            wallet.transactions!.insert(
-              0,
-              Transactions(
-                type: "Expense",
-                category: storeSelectedCategory["option"],
-                description: descriptionController.text,
-                transactionPrice: int.parse(balanceController.text),
-                time: Timestamp.now(),
-              ),
-            );
-            wallet.balance =
-                wallet.balance! - int.parse(balanceController.text);
-          }
-        }
-        await firestore
-            .doc(auth.getUser()!.uid)
-            .update(PersonData(wallets: data).receive());
+        // Add Transaction
+        transactionsService.addTransaction(
+          transactionPrice: int.parse(balanceController.text),
+          walletName: storeSelectedWallet["option"],
+          category: storeSelectedCategory["option"],
+          description: descriptionController.text,
+          transactionType: "Expense",
+        );
+        // Hide Loading
         _showLoading = false;
         notifyListeners();
+        // Navigation
         navigationService.replaceWithSuccessfullyDone(
             msg: "Transaction Added", className: const DashboardView());
       } catch (e) {

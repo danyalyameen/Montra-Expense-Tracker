@@ -5,10 +5,11 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:ui' as _i33;
+import 'dart:ui' as _i34;
 
-import 'package:flutter/material.dart' as _i32;
+import 'package:cloud_firestore/cloud_firestore.dart' as _i33;
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as _i32;
 import 'package:montra_expense_tracker/Features/Authentication/Forget%20Password/Views/forget_password_view.dart'
     as _i9;
 import 'package:montra_expense_tracker/Features/Authentication/Login/Views/login_view.dart'
@@ -69,7 +70,7 @@ import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_vi
     as _i15;
 import 'package:montra_expense_tracker/Widgets/successfully_done.dart' as _i12;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i34;
+import 'package:stacked_services/stacked_services.dart' as _i35;
 
 class Routes {
   static const splashScreenView = '/';
@@ -394,7 +395,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i18.IncomeView: (data) {
       return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i18.IncomeView(),
+        builder: (context) =>const _i18.IncomeView(),
         settings: data,
       );
     },
@@ -551,13 +552,13 @@ class DetailsTransactionViewArguments {
 
   final String description;
 
-  final DateTime time;
+  final _i33.Timestamp time;
 
   final String category;
 
   final String type;
 
-  final _i33.Color color;
+  final _i34.Color color;
 
   final _i32.Key? key;
 
@@ -602,7 +603,7 @@ class EditBudgetViewArguments {
     this.key,
   });
 
-  final _i33.Color color;
+  final _i34.Color color;
 
   final String category;
 
@@ -610,9 +611,9 @@ class EditBudgetViewArguments {
 
   final int limitBalance;
 
-  final _i33.Color backgroundColor;
+  final _i34.Color backgroundColor;
 
-  final _i33.Color iconColor;
+  final _i34.Color iconColor;
 
   final String icon;
 
@@ -754,7 +755,7 @@ class HelpViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i34.NavigationService {
+extension NavigatorStateExtension on _i35.NavigationService {
   Future<dynamic> navigateToSplashScreenView([
     int? routerId,
     bool preventDuplicates = true,
@@ -973,10 +974,10 @@ extension NavigatorStateExtension on _i34.NavigationService {
   Future<dynamic> navigateToDetailsTransactionView({
     required String balance,
     required String description,
-    required DateTime time,
+    required _i33.Timestamp time,
     required String category,
     required String type,
-    required _i33.Color color,
+    required _i34.Color color,
     _i32.Key? key,
     int? routerId,
     bool preventDuplicates = true,
@@ -1070,12 +1071,12 @@ extension NavigatorStateExtension on _i34.NavigationService {
   }
 
   Future<dynamic> navigateToEditBudgetView({
-    required _i33.Color color,
+    required _i34.Color color,
     required String category,
     required int spendBalance,
     required int limitBalance,
-    required _i33.Color backgroundColor,
-    required _i33.Color iconColor,
+    required _i34.Color backgroundColor,
+    required _i34.Color iconColor,
     required String icon,
     _i32.Key? key,
     int? routerId,
@@ -1445,10 +1446,10 @@ extension NavigatorStateExtension on _i34.NavigationService {
   Future<dynamic> replaceWithDetailsTransactionView({
     required String balance,
     required String description,
-    required DateTime time,
+    required _i33.Timestamp time,
     required String category,
     required String type,
-    required _i33.Color color,
+    required _i34.Color color,
     _i32.Key? key,
     int? routerId,
     bool preventDuplicates = true,
@@ -1542,12 +1543,12 @@ extension NavigatorStateExtension on _i34.NavigationService {
   }
 
   Future<dynamic> replaceWithEditBudgetView({
-    required _i33.Color color,
+    required _i34.Color color,
     required String category,
     required int spendBalance,
     required int limitBalance,
-    required _i33.Color backgroundColor,
-    required _i33.Color iconColor,
+    required _i34.Color backgroundColor,
+    required _i34.Color iconColor,
     required String icon,
     _i32.Key? key,
     int? routerId,

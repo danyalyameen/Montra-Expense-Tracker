@@ -4,29 +4,78 @@ import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart';
+import 'package:montra_expense_tracker/Service/Image%20Picker/image_service.dart';
+import 'package:montra_expense_tracker/Service/Wallets/wallet_service.dart';
 
 class TransactionService {
-  Future<List<Transactions>> fetchTransactions() async {
+  final user = FirebaseFirestore.instance
+      .collection('users')
+      .doc(AuthService().getUser()!.uid);
+  final walletService = locator<WalletService>();
+  final imageService = locator<ImageService>();
+
+  void addTransaction(
+      {required int transactionPrice,
+      required String walletName,
+      required String category,
+      required String description, required String transactionType}) async {
+    // Get User Wallets
+    List<Wallets> wallets = await walletService.getWallets();
+    var time = Timestamp.now();
+    // Get the Selected Wallet
+    for (var wallet in wallets) {
+      if (wallet.walletName == walletName) {
+        // Initialize Transactions if it is null
+        wallet.transactions ??= [];
+        // Add the Transaction
+        wallet.transactions!.insert(
+          0,
+          Transactions(
+            type: transactionType,
+            category: category,
+            description: description,
+            transactionPrice: transactionPrice,
+            time: time,
+          ),
+        );
+        // Update Wallet Balance
+        switch (transactionType) {
+          case "Income":
+            wallet.balance = wallet.balance! + transactionPrice;
+            break;
+          default:
+            wallet.balance = wallet.balance! - transactionPrice;
+        }
+        // Terminate Loop
+        break;
+      }
+    }
+    // Update User Wallet
+    await user.update(PersonData(wallets: wallets).receive());
+    imageService.image != null
+        ? imageService.uploadImage(
+            userPicture: false,
+            imageUploadName: time.toString(),
+            imageFile: imageService.image,
+          )
+        : null;
+  }
+
+  Future<List<Transactions>> getTransactions() async {
     List<Transactions> transactions = [];
-    final firestore = FirebaseFirestore.instance;
-    final auth = locator<AuthService>();
-    final data =
-        await firestore.collection('users').doc(auth.getUser()!.uid).get();
+    final data = await user.get();
     final personData = PersonData.store(data.data() as Map<String, dynamic>);
     for (var wallet in personData.wallets!) {
-      if (wallet.transactions != null) {
-        for (var e in wallet.transactions!) {
-          transactions.add(e);
-        }
-      } else {
-        return [];
+      wallet.transactions ??= [];
+      for (var e in wallet.transactions!) {
+        transactions.add(e);
       }
     }
     return transactions;
   }
 
-  Future<List<Map<String, dynamic>>> transactionIcons() async {
-    final transactions = await fetchTransactions();
+  Future<List<Map<String, dynamic>>> getTransactionIcons() async {
+    final transactions = await getTransactions();
     if (transactions.isEmpty) {
       return [];
     }
@@ -89,5 +138,29 @@ class TransactionService {
       }
     }
     return iconData;
+  }
+
+  void deleteTransaction({required Timestamp time}) async {
+    final walletService = locator<WalletService>();
+    final wallets = await walletService.getWallets();
+    for (var wallet in wallets) {
+      wallet.transactions ??= [];
+      if (wallet.transactions!.isNotEmpty) {
+        int index =
+            wallet.transactions!.indexWhere((element) => element.time == time);
+        switch (wallet.transactions![index].type) {
+          case "Income":
+            wallet.balance =
+                wallet.balance! - wallet.transactions![index].transactionPrice!;
+            wallet.transactions!.removeAt(index);
+            break;
+          default:
+            wallet.balance =
+                wallet.balance! + wallet.transactions![index].transactionPrice!;
+            wallet.transactions!.removeAt(index);
+        }
+      }
+    }
+    await user.update(PersonData(wallets: wallets).receive());
   }
 }
