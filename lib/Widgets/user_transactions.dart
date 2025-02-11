@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
+import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -78,8 +79,8 @@ class _UserTransactionsState extends State<UserTransactions> {
                     if (icons.data != null) {
                       final icon = icons.data![index];
                       return InkWell(
-                        onTap: () {
-                          widget.navigationService
+                        onTap: () async {
+                          await widget.navigationService
                               .navigateToDetailsTransactionView(
                             balance: transaction.transactionPrice.toString(),
                             description: transaction.description!,
@@ -93,6 +94,7 @@ class _UserTransactionsState extends State<UserTransactions> {
                               String() => throw UnimplementedError(),
                             },
                           );
+                          setState(() {});
                         },
                         child: Container(
                           margin: EdgeInsets.only(top: height * 0.01),
@@ -118,8 +120,13 @@ class _UserTransactionsState extends State<UserTransactions> {
                                   child: Center(
                                     child: SvgPicture.asset(
                                       icon["icon"],
-                                      colorFilter: ColorFilter.mode(
-                                          icon["iconColor"], BlendMode.srcIn),
+                                      colorFilter:
+                                          icon["icon"] == IconsPath.other
+                                              ? null
+                                              : ColorFilter.mode(
+                                                  icon["iconColor"],
+                                                  BlendMode.srcIn,
+                                                ),
                                       width: width * 0.09,
                                       height: width * 0.09,
                                     ),

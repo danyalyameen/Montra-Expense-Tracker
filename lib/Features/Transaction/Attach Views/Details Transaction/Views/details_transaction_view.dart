@@ -67,7 +67,9 @@ class DetailsTransactionView extends StackedView<DetailsTransactionViewModel> {
                 subtitle: subtitle,
                 onPressed: () {
                   viewModel.transactionsService.deleteTransaction(time: time);
-                  viewModel.navigationService.back();
+                  viewModel.navigationService.popUntil(
+                    (route) => route.settings.name == "/dashboard-view",
+                  );
                 },
               );
             },

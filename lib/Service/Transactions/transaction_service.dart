@@ -139,11 +139,17 @@ class TransactionService {
                 "iconBackgroundColor": AppColors.red20
               });
               break;
+            default:
+              iconData.add({
+                "icon": IconsPath.other,
+                "iconColor": AppColors.primaryRed,
+                "iconBackgroundColor": AppColors.red20
+              });
           }
           break;
         default:
           iconData.add({
-            "icon": IconsPath.menuDots,
+            "icon": IconsPath.other,
             "iconColor": AppColors.primaryRed,
             "iconBackgroundColor": AppColors.red20
           });
@@ -160,16 +166,36 @@ class TransactionService {
       if (wallet.transactions!.isNotEmpty) {
         int index =
             wallet.transactions!.indexWhere((element) => element.time == time);
-        switch (wallet.transactions![index].type) {
-          case "Income":
-            wallet.balance =
-                wallet.balance! - wallet.transactions![index].transactionPrice!;
-            wallet.transactions!.removeAt(index);
-            break;
-          default:
-            wallet.balance =
-                wallet.balance! + wallet.transactions![index].transactionPrice!;
-            wallet.transactions!.removeAt(index);
+        if (index >= 0) {
+          switch (wallet.transactions![index].type) {
+            case "Income":
+              wallet.balance = wallet.balance! -
+                  wallet.transactions![index].transactionPrice!;
+              await imageService.deleteImage(
+                userPicture: false,
+                imageName: wallet.transactions![index].time.toString(),
+              );
+              wallet.transactions!.removeAt(index);
+              break;
+            case "Transfer":
+              wallet.balance = wallet.balance! +
+                  wallet.transactions![index].transactionPrice!;
+              await imageService.deleteImage(
+                userPicture: false,
+                imageName: wallet.transactions![index].time.toString(),
+              );
+              wallet.transactions!.removeAt(index);
+              break;
+            case "Expense":
+              wallet.balance = wallet.balance! +
+                  wallet.transactions![index].transactionPrice!;
+              await imageService.deleteImage(
+                userPicture: false,
+                imageName: wallet.transactions![index].time.toString(),
+              );
+              wallet.transactions!.removeAt(index);
+              break;
+          }
         }
       }
     }

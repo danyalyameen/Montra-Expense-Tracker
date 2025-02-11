@@ -47,6 +47,7 @@ class IconsPath {
   static String logout = "assets/Icons/Operations/logout.svg";
   static String menuDots = "assets/Icons/Operations/menu dots.svg";
   static String notification = "assets/Icons/Operations/notification.svg";
+  static String other = "assets/Icons/Operations/other.svg";
   static String settings = "assets/Icons/Operations/settings.svg";
   static String show = "assets/Icons/Operations/show.svg";
   static String success = "assets/Icons/Operations/success.svg";

@@ -42,6 +42,7 @@ class ImageService {
     if (imageFile != null) {
       File image = File(imageFile.path);
       await storage.from(bucketName).upload(imagePath, image);
+      _image = null;
     } else {
       Fluttertoast.showToast(
         msg: "No Image Selected",
@@ -62,5 +63,16 @@ class ImageService {
     String imageFolderName = userPicture ? "User Image" : "Transaction Images";
     String imagePath = "$userFolderName/$imageFolderName/$imageName";
     return storage.from(bucketName).getPublicUrl(imagePath);
+  }
+
+  Future<void> deleteImage({
+    required bool userPicture,
+    required String imageName,
+  }) async {
+    String bucketName = "Users";
+    String userFolderName = AuthService().getUser()!.uid;
+    String imageFolderName = userPicture ? "User Image" : "Transaction Images";
+    String imagePath = "$userFolderName/$imageFolderName/$imageName";
+    await storage.from(bucketName).remove([imagePath]);
   }
 }

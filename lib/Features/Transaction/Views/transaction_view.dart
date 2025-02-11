@@ -13,25 +13,30 @@ import 'package:stacked_services/stacked_services.dart';
 class TransactionView extends StackedView<TransactionViewModel> {
   const TransactionView({super.key});
 
-  final String title = "Transactions";
+  // Variables
+  final String title = "This Month";
 
   @override
   Widget builder(
       BuildContext context, TransactionViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Column(
         children: [
+          // Top Navigation
           _TopNavigation(
             width: width,
             height: height,
           ),
+          // Financial Report
           _SeeFinancialReport(
             width: width,
             height: height,
             navigationService: viewModel.navigationService,
           ),
+          // User Transactions Text
           Padding(
             padding: EdgeInsets.only(
               top: height * 0.03,
@@ -46,14 +51,12 @@ class TransactionView extends StackedView<TransactionViewModel> {
               ),
             ),
           ),
-          InkWell(
-            onTap: () {},
-            child: UserTransactions(
-              height: height * 0.62,
-              icons: viewModel.transactionsService.getTransactionIcons(),
-              transactions: viewModel.transactionsService.getTransactions(),
-              navigationService: viewModel.navigationService,
-            ),
+          // User Transactions
+          UserTransactions(
+            height: height * 0.62,
+            icons: viewModel.transactionsService.getTransactionIcons(),
+            transactions: viewModel.transactionsService.getTransactions(),
+            navigationService: viewModel.navigationService,
           ),
         ],
       ),
@@ -72,7 +75,8 @@ class _TopNavigation extends StatelessWidget {
     required this.height,
   });
 
-  final String monthText = "Month";
+  // Variables
+  final String appBarTitle = "Transactions";
   final String dropDownArrow = IconsPath.dropdownArrow;
   final String filter = IconsPath.filter;
 
@@ -86,46 +90,8 @@ class _TopNavigation extends StatelessWidget {
         bottom: height * 0.02,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: width * 0.23,
-            height: height * 0.045,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(width * 0.06),
-              border: Border.all(
-                width: width * 0.002,
-                color: AppColors.light20,
-              ),
-            ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: width * 0.006),
-                  child: SvgPicture.asset(
-                    dropDownArrow,
-                    width: width * 0.07,
-                    height: width * 0.07,
-                    colorFilter: ColorFilter.mode(
-                      AppColors.primaryViolet,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: width * 0.01,
-                ),
-                Text(
-                  monthText,
-                  style: TextStyle(
-                    color: AppColors.primaryBlack,
-                    fontSize: width * 0.035,
-                    fontWeight: FontWeight.w500,
-                  ),
-                )
-              ],
-            ),
-          ),
+          // Filter
           InkWell(
             borderRadius: BorderRadius.circular(width * 0.03),
             onTap: () {
@@ -143,6 +109,7 @@ class _TopNavigation extends StatelessWidget {
                 ),
               ),
               child: Center(
+                // Filter Icon
                 child: SvgPicture.asset(
                   filter,
                   colorFilter:
@@ -153,6 +120,21 @@ class _TopNavigation extends StatelessWidget {
               ),
             ),
           ),
+          // For Spacing
+          SizedBox(
+            width: width * 0.2,
+          ),
+          // App Bar Title
+          Center(
+            child: Text(
+              appBarTitle,
+              style: TextStyle(
+                color: AppColors.primaryBlack,
+                fontSize: width * 0.05,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -160,14 +142,11 @@ class _TopNavigation extends StatelessWidget {
 }
 
 class _ShowFilter {
+  // Variables
   static const String title = "Filter Transaction";
   static const String resetButtonText = "Reset";
   static const String subtitleFilter = "Filter by";
   static const String subtitleSort = "Sort by";
-  static const String subtitleCategory = "Category";
-  static const String chooseCategory = "Choose Category";
-  static const String selectedCategory = "0";
-  static const String selectedText = "Selected";
   static const String buttonText = "Apply";
   static void bottomSheet({
     required BuildContext context,
@@ -185,7 +164,7 @@ class _ShowFilter {
           backgroundColor: AppColors.primaryLight,
           enableDrag: false,
           constraints: BoxConstraints(
-            maxHeight: height * 0.68,
+            maxHeight: height * 0.62,
             minWidth: width,
           ),
           onClosing: () {},
@@ -198,6 +177,7 @@ class _ShowFilter {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // Title
                       Text(
                         title,
                         style: TextStyle(
@@ -206,6 +186,7 @@ class _ShowFilter {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
+                      // Reset Button
                       Container(
                         width: width * 0.2,
                         height: height * 0.04,
@@ -226,9 +207,11 @@ class _ShowFilter {
                       )
                     ],
                   ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.02,
                   ),
+                  // Filter by Text
                   Text(
                     subtitleFilter,
                     style: TextStyle(
@@ -237,9 +220,11 @@ class _ShowFilter {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.02,
                   ),
+                  // Filter By Options
                   Row(
                     children: List.generate(
                       Database.filterbyData.length,
@@ -260,6 +245,7 @@ class _ShowFilter {
                               borderRadius: BorderRadius.circular(width),
                             ),
                             child: Center(
+                              // Text
                               child: Text(
                                 Database.filterbyData[index],
                                 style: TextStyle(
@@ -274,9 +260,11 @@ class _ShowFilter {
                       },
                     ),
                   ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.02,
                   ),
+                  // Sort By Text
                   Text(
                     subtitleSort,
                     style: TextStyle(
@@ -285,9 +273,11 @@ class _ShowFilter {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.02,
                   ),
+                  // Sort By Options
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.start,
                     runSpacing: width * 0.04,
@@ -311,6 +301,7 @@ class _ShowFilter {
                               borderRadius: BorderRadius.circular(width),
                             ),
                             child: Center(
+                              // Text
                               child: Text(
                                 Database.sortbyData[index],
                                 style: TextStyle(
@@ -325,78 +316,11 @@ class _ShowFilter {
                       },
                     ),
                   ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  Text(
-                    subtitleCategory,
-                    style: TextStyle(
-                      color: AppColors.primaryBlack,
-                      fontSize: width * 0.05,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: width * 0.01,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          chooseCategory,
-                          style: TextStyle(
-                            color: AppColors.black75,
-                            fontSize: width * 0.04,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(
-                          width: width * 0.25,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                selectedCategory,
-                                style: TextStyle(
-                                  color: AppColors.black50,
-                                  fontSize: width * 0.035,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              SizedBox(
-                                width: width * 0.01,
-                              ),
-                              Text(
-                                selectedText,
-                                style: TextStyle(
-                                  color: AppColors.black50,
-                                  fontSize: width * 0.035,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              SizedBox(
-                                width: width * 0.06,
-                                height: width * 0.06,
-                                child: SvgPicture.asset(
-                                  IconsPath.rightArrow,
-                                  colorFilter: ColorFilter.mode(
-                                      AppColors.primaryViolet, BlendMode.srcIn),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.04,
                   ),
+                  // Category Text
                   CustomElevatedButton(
                     width: width,
                     height: height,
@@ -420,6 +344,7 @@ class _SeeFinancialReport extends StatelessWidget {
       required this.height,
       required this.navigationService});
 
+  // Variables
   final String report = "See your financial report.";
 
   @override
@@ -438,6 +363,7 @@ class _SeeFinancialReport extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Text
               Text(
                 report,
                 style: TextStyle(
@@ -446,6 +372,7 @@ class _SeeFinancialReport extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                 ),
               ),
+              // Arrow Icon
               SvgPicture.asset(
                 IconsPath.rightArrow,
                 colorFilter:

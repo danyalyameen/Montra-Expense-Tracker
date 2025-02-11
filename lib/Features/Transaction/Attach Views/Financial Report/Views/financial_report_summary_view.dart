@@ -2,33 +2,56 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
+import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
+import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Views/financial_report_summary_view_model.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
 class FinancialReportSummaryView
     extends StackedView<FinancialReportSummaryViewModel> {
   const FinancialReportSummaryView({super.key});
 
+  // Variables
   final String backgroundColorKey = "Background";
+
+  @override
+  void onViewModelReady(FinancialReportSummaryViewModel viewModel) {
+    // Change Notification Bar Color
+    viewModel.notificationBarService.whiteNotificationBar();
+    super.onViewModelReady(viewModel);
+  }
+
+  @override
+  void onDispose(FinancialReportSummaryViewModel viewModel) {
+    // Change Notification Bar Color
+    viewModel.notificationBarService.blackNotificationBar();
+    super.onDispose(viewModel);
+  }
 
   @override
   Widget builder(BuildContext context,
       FinancialReportSummaryViewModel viewModel, Widget? child) {
+    // Get Screen Size of Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Database.financialReport[viewModel.currentIndex]
-          [backgroundColorKey],
+      backgroundColor: viewModel.currentIndex == 0
+          ? AppColors.primaryRed
+          : AppColors.primaryGreen,
       body: GestureDetector(
         onTapUp: (details) {
+          // Switching between Two UIs
           viewModel.swithingViews(details: details, deviceWidth: width);
         },
         child: Column(
           children: [
+            // Top White Indicators
             _Indicators(
               width: width,
               height: height,
             ),
+            // The Summary of the Report
             _ReportSummaryUI(
               width: width,
               height: height,
@@ -42,9 +65,6 @@ class FinancialReportSummaryView
   @override
   FinancialReportSummaryViewModel viewModelBuilder(BuildContext context) =>
       FinancialReportSummaryViewModel();
-
-  @override
-  bool get reactive => false;
 }
 
 class _Indicators extends ViewModelWidget<FinancialReportSummaryViewModel> {
@@ -88,67 +108,164 @@ class _Indicators extends ViewModelWidget<FinancialReportSummaryViewModel> {
 class _ReportSummaryUI
     extends ViewModelWidget<FinancialReportSummaryViewModel> {
   final double width, height;
-  _ReportSummaryUI({required this.width, required this.height});
+  const _ReportSummaryUI({required this.width, required this.height});
 
-  final List<Map<String, dynamic>> data = Database.financialReport;
-  final String titleKey = "Title";
-  final String descriptionKey = "Description";
-  final String spendKey = "Spend";
-  final String categoryKey = "Category";
-  final String iconKey = "Icon";
-  final String iconColorKey = "Icon-Color";
-  final String iconBackgroundColorKey = "Icon-Background";
+  // Variables
+  final String appBarTitle = "This Month";
+  final String spendTitle = "You Spend 💸";
+  final String incomeTitle = "You Earned 💰";
 
   @override
   Widget build(
       BuildContext context, FinancialReportSummaryViewModel viewModel) {
     return Expanded(
-      child: PageView.builder(
-        itemCount: data.length,
-        onPageChanged: (value) {
-          viewModel.onChanged(value);
-        },
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          index = viewModel.currentIndex;
-          return Column(
-            children: [
-              Text(
-                data[index][titleKey],
-                style: TextStyle(
-                  color: AppColors.primaryLight.withValues(alpha: 0.6),
-                  fontSize: width * 0.065,
-                  fontWeight: FontWeight.w600,
+      child: FutureBuilder(
+        future: Future.wait([
+          viewModel.getTotalSpend(),
+          viewModel.getBiggestSpend(),
+          viewModel.getTotalIncome(),
+          viewModel.getBiggestIncome()
+        ]),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Column(
+              children: [
+                // Title Means This Month
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    width: width * 0.4,
+                    height: height * 0.05,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryGreen,
+                      borderRadius: BorderRadius.circular(width * 0.04),
+                    ),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: height * 0.2,
-              ),
-              Text(
-                data[index][descriptionKey],
-                style: TextStyle(
-                  color: AppColors.light80,
-                  fontSize: width * 0.09,
-                  fontWeight: FontWeight.w700,
+                // For Spacing
+                SizedBox(
+                  height: height * 0.2,
                 ),
-              ),
-              Text(
-                "\$${data[index][spendKey]}",
-                style: TextStyle(
-                  color: AppColors.primaryLight,
-                  fontWeight: FontWeight.w700,
-                  fontSize: width * 0.16,
+                // Description Means You Spend or You Earn
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    width: width * 0.4,
+                    height: height * 0.05,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryGreen,
+                      borderRadius: BorderRadius.circular(width * 0.04),
+                    ),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: height * 0.15,
-              ),
-              _BiggestSpend(
-                width: width,
-                height: height,
-                index: index,
-              ),
-            ],
+                // For Spacing
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                // Spend
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    width: width * 0.4,
+                    height: height * 0.05,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryGreen,
+                      borderRadius: BorderRadius.circular(width * 0.04),
+                    ),
+                  ),
+                ),
+                // For Spacing
+                SizedBox(
+                  height: height * 0.15,
+                ),
+                // Biggest Spend
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    width: width * 0.9,
+                    height: height * 0.3,
+                    padding: EdgeInsets.only(
+                        top: height * 0.02,
+                        left: width * 0.18,
+                        right: width * 0.18),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryLight,
+                      borderRadius: BorderRadius.circular(width * 0.06),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+          // Data
+          int totalSpend = snapshot.data![0] as int;
+          Map<String, dynamic> biggestSpendAndCategory =
+              snapshot.data![1] as Map<String, dynamic>;
+          int totalIncome = snapshot.data![2] as int;
+          Map<String, dynamic> biggestIncomeAndCategory =
+              snapshot.data![3] as Map<String, dynamic>;
+          return PageView.builder(
+            itemCount: 2,
+            onPageChanged: (value) {
+              viewModel.onChanged(value);
+            },
+            // So that It can't scroll
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              index = viewModel.currentIndex;
+              return Column(
+                children: [
+                  // Title Means This Month
+                  Text(
+                    appBarTitle,
+                    style: TextStyle(
+                      color: AppColors.primaryLight.withValues(alpha: 0.6),
+                      fontSize: width * 0.065,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  // For Spacing
+                  SizedBox(
+                    height: height * 0.2,
+                  ),
+                  // Description Means You Spend or You Earn
+                  Text(
+                    index == 0 ? spendTitle : incomeTitle,
+                    style: TextStyle(
+                      color: AppColors.light80,
+                      fontSize: width * 0.09,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  // Spend
+                  Text(
+                    "${Variables.currency}${index == 0 ? totalSpend : totalIncome}",
+                    style: TextStyle(
+                      color: AppColors.primaryLight,
+                      fontWeight: FontWeight.w700,
+                      fontSize: width * 0.16,
+                    ),
+                  ),
+                  // For Spacing
+                  SizedBox(
+                    height: height * 0.15,
+                  ),
+                  // Biggest Spend
+                  _BiggestSpend(
+                    width: width,
+                    height: height,
+                    index: index,
+                    category: index == 0
+                        ? biggestSpendAndCategory
+                        : biggestIncomeAndCategory,
+                  ),
+                ],
+              );
+            },
           );
         },
       ),
@@ -159,16 +276,16 @@ class _ReportSummaryUI
 class _BiggestSpend extends StatelessWidget {
   final double width, height;
   final int index;
-  _BiggestSpend(
-      {required this.width, required this.height, required this.index});
+  final Map<String, dynamic> category;
+  const _BiggestSpend(
+      {required this.width,
+      required this.height,
+      required this.index,
+      required this.category});
 
-  final List<Map<String, dynamic>> data = Database.financialReport;
-  final String titleKey = "Title";
-  final String biggestSpendKey = "Biggest-Spending";
-  final String categoryKey = "Category";
-  final String iconKey = "Icon";
-  final String iconColorKey = "Icon-Color";
-  final String iconBackgroundColorKey = "Icon-Background";
+  // Variables
+  final String biggestSpendTitle = "Biggest Spend";
+  final String biggestIncomeTitle = "Biggest Income";
 
   @override
   Widget build(BuildContext context) {
@@ -179,12 +296,13 @@ class _BiggestSpend extends StatelessWidget {
           top: height * 0.02, left: width * 0.18, right: width * 0.18),
       decoration: BoxDecoration(
         color: AppColors.primaryLight,
-        borderRadius: BorderRadius.circular(width * 0.04),
+        borderRadius: BorderRadius.circular(width * 0.06),
       ),
       child: Column(
         children: [
+          // Title
           Text(
-            data[index][titleKey],
+            index == 0 ? biggestSpendTitle : biggestIncomeTitle,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: AppColors.primaryBlack,
@@ -195,6 +313,7 @@ class _BiggestSpend extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Category
               Container(
                 margin: EdgeInsets.symmetric(vertical: height * 0.02),
                 height: height * 0.08,
@@ -211,31 +330,38 @@ class _BiggestSpend extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      // Icon
                       Padding(
                         padding: EdgeInsets.only(left: width * 0.01),
                         child: Container(
                           width: width * 0.11,
                           height: width * 0.11,
                           decoration: BoxDecoration(
-                            color: data[index][iconBackgroundColorKey],
+                            color: category["iconBackgroundColor"],
                             borderRadius: BorderRadius.circular(width * 0.04),
                           ),
                           child: Center(
                             child: SvgPicture.asset(
-                              data[index][iconKey],
-                              colorFilter: ColorFilter.mode(
-                                  data[index][iconColorKey], BlendMode.srcIn),
+                              category["icon"],
+                              colorFilter: category["icon"] != IconsPath.other
+                                  ? ColorFilter.mode(
+                                      category["iconColor"],
+                                      BlendMode.srcIn,
+                                    )
+                                  : null,
                               width: width * 0.065,
                               height: width * 0.065,
                             ),
                           ),
                         ),
                       ),
+                      // For Spacing
                       SizedBox(
                         width: width * 0.02,
                       ),
+                      // Category
                       Text(
-                        data[index][categoryKey],
+                        category["category"],
                         style: TextStyle(
                           color: AppColors.primaryBlack,
                           fontSize: width * 0.038,
@@ -248,8 +374,9 @@ class _BiggestSpend extends StatelessWidget {
               ),
             ],
           ),
+          // Biggest Spend
           Text(
-            "\$ ${data[index][biggestSpendKey]}",
+            "${Variables.currency}${category["largestNumber"]}",
             style: TextStyle(
               color: AppColors.primaryBlack,
               fontSize: width * 0.08,
