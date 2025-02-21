@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:montra_expense_tracker/App/app.locator.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
@@ -54,8 +56,13 @@ class TransactionView extends StackedView<TransactionViewModel> {
           // User Transactions
           UserTransactions(
             height: height * 0.62,
-            icons: viewModel.transactionsService.getTransactionIcons(),
-            transactions: viewModel.transactionsService.getTransactions(),
+            icons: viewModel.isApply
+                ? viewModel.transactionsService.getTransactionIcons(
+                    userTransactions: viewModel.sortTransactions)
+                : viewModel.transactionsService.getTransactionIcons(),
+            transactions: viewModel.isApply
+                ? viewModel.filter()
+                : viewModel.transactionsService.getTransactions(),
             navigationService: viewModel.navigationService,
           ),
         ],
@@ -68,7 +75,7 @@ class TransactionView extends StackedView<TransactionViewModel> {
       TransactionViewModel();
 }
 
-class _TopNavigation extends StatelessWidget {
+class _TopNavigation extends ViewModelWidget<TransactionViewModel> {
   final double width, height;
   _TopNavigation({
     required this.width,
@@ -81,7 +88,7 @@ class _TopNavigation extends StatelessWidget {
   final String filter = IconsPath.filter;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, TransactionViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.only(
         right: width * 0.04,
@@ -95,8 +102,22 @@ class _TopNavigation extends StatelessWidget {
           InkWell(
             borderRadius: BorderRadius.circular(width * 0.03),
             onTap: () {
+              // Open Bottom Sheet
               _ShowFilter.bottomSheet(
-                  context: context, width: width, height: height);
+                context: context,
+                width: width,
+                height: height,
+                onFilterChanged: (value) {
+                  viewModel.onChangeFilter(value);
+                },
+                onSortChanged: (value) {
+                  viewModel.onChangeSort(value);
+                },
+                onApply: () async {
+                  await viewModel.filter();
+                  viewModel.notifyListeners();
+                },
+              );
             },
             child: Container(
               width: width * 0.1,
@@ -148,186 +169,268 @@ class _ShowFilter {
   static const String subtitleFilter = "Filter by";
   static const String subtitleSort = "Sort by";
   static const String buttonText = "Apply";
-  static void bottomSheet({
+  static String selectedFilter = Database.sortbyData[0];
+  static String selectedSort = Database.sortbyData[0];
+  static ValueNotifier<bool> showLoading = ValueNotifier(false);
+  // Bottom Sheet Function
+  static Future<void> bottomSheet({
     required BuildContext context,
     required double width,
     required double height,
-  }) {
+    required void Function(String value) onFilterChanged,
+    required void Function(String value) onSortChanged,
+    required VoidCallback? onApply,
+  }) async {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        return BottomSheet(
-          showDragHandle: true,
-          dragHandleColor: AppColors.violet40,
-          dragHandleSize: Size(width * 0.2, height * 0.005),
-          backgroundColor: AppColors.primaryLight,
-          enableDrag: false,
-          constraints: BoxConstraints(
-            maxHeight: height * 0.62,
-            minWidth: width,
-          ),
-          onClosing: () {},
-          builder: (context) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return BottomSheet(
+              showDragHandle: true,
+              dragHandleColor: AppColors.violet40,
+              dragHandleSize: Size(width * 0.2, height * 0.005),
+              backgroundColor: AppColors.primaryLight,
+              enableDrag: false,
+              constraints: BoxConstraints(
+                maxHeight: height * 0.62,
+                minWidth: width,
+              ),
+              onClosing: () {},
+              builder: (context) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Title
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Title
+                          Text(
+                            title,
+                            style: TextStyle(
+                              color: AppColors.primaryBlack,
+                              fontSize: width * 0.05,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          // Reset Button
+                          InkWell(
+                            borderRadius: BorderRadius.circular(width * 0.06),
+                            onTap: () {
+                              setState(
+                                () {
+                                  selectedFilter = "";
+                                  onFilterChanged(selectedFilter);
+                                  onSortChanged(Database.sortbyData[2]);
+                                },
+                              );
+                            },
+                            child: Container(
+                              width: width * 0.2,
+                              height: height * 0.04,
+                              decoration: BoxDecoration(
+                                color: AppColors.violet20,
+                                borderRadius:
+                                    BorderRadius.circular(width * 0.06),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  resetButtonText,
+                                  style: TextStyle(
+                                    color: AppColors.primaryViolet,
+                                    fontSize: width * 0.04,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      // For Spacing
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      // Filter by Text
                       Text(
-                        title,
+                        subtitleFilter,
                         style: TextStyle(
                           color: AppColors.primaryBlack,
                           fontSize: width * 0.05,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      // Reset Button
-                      Container(
-                        width: width * 0.2,
+                      // For Spacing
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      // Filter By Options
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        spacing: width * 0.04,
+                        children: List.generate(
+                          Database.filterbyData.length,
+                          (index) {
+                            return InkWell(
+                              borderRadius: BorderRadius.circular(width),
+                              onTap: () {
+                                // Select Filter and store its value
+                                setState(() {
+                                  selectedFilter = Database.filterbyData[index];
+                                  onFilterChanged(selectedFilter);
+                                });
+                              },
+                              child: Container(
+                                width: width * 0.26,
+                                height: height * 0.06,
+                                decoration: BoxDecoration(
+                                  color: selectedFilter ==
+                                          Database.filterbyData[index]
+                                      ? AppColors.violet20
+                                      : Colors.transparent,
+                                  border: Border.all(
+                                    color: selectedFilter ==
+                                            Database.filterbyData[index]
+                                        ? AppColors.primaryViolet
+                                        : AppColors.light40,
+                                    width: width * 0.004,
+                                  ),
+                                  borderRadius: BorderRadius.circular(width),
+                                ),
+                                child: Center(
+                                  // Text
+                                  child: Text(
+                                    Database.filterbyData[index],
+                                    style: TextStyle(
+                                      color: selectedFilter ==
+                                              Database.filterbyData[index]
+                                          ? AppColors.primaryViolet
+                                          : AppColors.primaryBlack,
+                                      fontSize: width * 0.04,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      // For Spacing
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      // Sort By Text
+                      Text(
+                        subtitleSort,
+                        style: TextStyle(
+                          color: AppColors.primaryBlack,
+                          fontSize: width * 0.05,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      // For Spacing
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      // Sort By Options
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.start,
+                        runSpacing: width * 0.04,
+                        spacing: width * 0.04,
+                        children: List.generate(
+                          Database.sortbyData.length,
+                          (index) {
+                            return InkWell(
+                              borderRadius: BorderRadius.circular(width),
+                              onTap: () {
+                                // Store Sort Value and Update UI
+                                setState(
+                                  () {
+                                    selectedSort = Database.sortbyData[index];
+                                    onSortChanged(selectedSort);
+                                  },
+                                );
+                              },
+                              child: Container(
+                                width: width * 0.26,
+                                height: height * 0.06,
+                                decoration: BoxDecoration(
+                                  color:
+                                      selectedSort == Database.sortbyData[index]
+                                          ? AppColors.violet20
+                                          : Colors.transparent,
+                                  border: Border.all(
+                                    color: selectedSort ==
+                                            Database.sortbyData[index]
+                                        ? AppColors.primaryViolet
+                                        : AppColors.light40,
+                                    width: width * 0.004,
+                                  ),
+                                  borderRadius: BorderRadius.circular(width),
+                                ),
+                                child: Center(
+                                  // Text
+                                  child: Text(
+                                    Database.sortbyData[index],
+                                    style: TextStyle(
+                                      color: selectedSort ==
+                                              Database.sortbyData[index]
+                                          ? AppColors.primaryViolet
+                                          : AppColors.primaryBlack,
+                                      fontSize: width * 0.04,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      // For Spacing
+                      SizedBox(
                         height: height * 0.04,
-                        decoration: BoxDecoration(
-                          color: AppColors.violet20,
-                          borderRadius: BorderRadius.circular(width * 0.06),
-                        ),
-                        child: Center(
-                          child: Text(
-                            resetButtonText,
-                            style: TextStyle(
-                              color: AppColors.primaryViolet,
-                              fontSize: width * 0.04,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      )
+                      ),
+                      // Apply Button
+                      ValueListenableBuilder(
+                        valueListenable: showLoading,
+                        builder: (context, value, child) {
+                          return CustomElevatedButton(
+                            width: width,
+                            height: height,
+                            backgroundColor: value
+                                ? AppColors.violet20
+                                : AppColors.primaryViolet,
+                            onPressed: () async {
+                              showLoading.value = true;
+                              onApply!.call();
+                              showLoading.value = false;
+                              locator<NavigationService>().back();
+                            },
+                            child: value
+                                ? SpinKitThreeBounce(
+                                    color: AppColors.primaryViolet,
+                                    size: width * 0.06,
+                                  )
+                                : Text(
+                                    buttonText,
+                                    style: TextStyle(
+                                      color: AppColors.primaryLight,
+                                      fontSize: width * 0.045,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                          );
+                        },
+                      ),
                     ],
                   ),
-                  // For Spacing
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  // Filter by Text
-                  Text(
-                    subtitleFilter,
-                    style: TextStyle(
-                      color: AppColors.primaryBlack,
-                      fontSize: width * 0.05,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  // For Spacing
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  // Filter By Options
-                  Row(
-                    children: List.generate(
-                      Database.filterbyData.length,
-                      (index) {
-                        return InkWell(
-                          onTap: () {},
-                          child: Container(
-                            width: width * 0.26,
-                            height: height * 0.06,
-                            margin: index == 0
-                                ? const EdgeInsets.all(0)
-                                : EdgeInsets.only(left: width * 0.05),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: AppColors.light40,
-                                width: width * 0.004,
-                              ),
-                              borderRadius: BorderRadius.circular(width),
-                            ),
-                            child: Center(
-                              // Text
-                              child: Text(
-                                Database.filterbyData[index],
-                                style: TextStyle(
-                                  color: AppColors.primaryBlack,
-                                  fontSize: width * 0.04,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  // For Spacing
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  // Sort By Text
-                  Text(
-                    subtitleSort,
-                    style: TextStyle(
-                      color: AppColors.primaryBlack,
-                      fontSize: width * 0.05,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  // For Spacing
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  // Sort By Options
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.start,
-                    runSpacing: width * 0.04,
-                    children: List.generate(
-                      Database.sortbyData.length,
-                      (index) {
-                        return InkWell(
-                          onTap: () {},
-                          child: Container(
-                            width: width * 0.26,
-                            height: height * 0.06,
-                            margin: index == 0 ||
-                                    index == Database.sortbyData.length - 1
-                                ? const EdgeInsets.all(0)
-                                : EdgeInsets.only(left: width * 0.05),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: AppColors.light40,
-                                width: width * 0.004,
-                              ),
-                              borderRadius: BorderRadius.circular(width),
-                            ),
-                            child: Center(
-                              // Text
-                              child: Text(
-                                Database.sortbyData[index],
-                                style: TextStyle(
-                                  color: AppColors.primaryBlack,
-                                  fontSize: width * 0.04,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  // For Spacing
-                  SizedBox(
-                    height: height * 0.04,
-                  ),
-                  // Category Text
-                  CustomElevatedButton(
-                    width: width,
-                    height: height,
-                    text: buttonText,
-                  ),
-                ],
-              ),
+                );
+              },
             );
           },
         );

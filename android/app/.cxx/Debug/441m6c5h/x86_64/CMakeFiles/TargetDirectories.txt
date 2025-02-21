@@ -1,0 +1,2 @@
+D:/Portfolio/montra_expense_tracker/android/app/.cxx/Debug/441m6c5h/x86_64/CMakeFiles/edit_cache.dir
+D:/Portfolio/montra_expense_tracker/android/app/.cxx/Debug/441m6c5h/x86_64/CMakeFiles/rebuild_cache.dir

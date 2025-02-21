@@ -77,16 +77,17 @@ class TransactionService {
         transactions.add(e);
       }
     }
+    transactions.sort((a, b) => b.time!.compareTo(a.time!));
     return transactions;
   }
 
-  Future<List<Map<String, dynamic>>> getTransactionIcons() async {
+  Future<List<Map<String, dynamic>>> getTransactionIcons({List<Transactions>? userTransactions}) async {
     final transactions = await getTransactions();
     if (transactions.isEmpty) {
       return [];
     }
     List<Map<String, dynamic>> iconData = [];
-    for (var transaction in transactions) {
+    for (var transaction in  userTransactions ?? transactions) {
       switch (transaction.type) {
         case "Income":
           iconData.add({
