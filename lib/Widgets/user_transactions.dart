@@ -62,152 +62,166 @@ class _UserTransactionsState extends State<UserTransactions> {
               ),
             );
           }
-          if (snapshot.data!.isNotEmpty) {
-            return FutureBuilder<List<Map<String, dynamic>>?>(
-              future: widget.icons,
-              builder: (context, icons) {
-                return ListView.builder(
-                  itemCount: widget.itemCount == null ||
-                          snapshot.data!.length < widget.itemCount!
-                      ? snapshot.data!.length
-                      : widget.itemCount,
-                  itemBuilder: (context, index) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Container();
-                    }
-                    final transaction = snapshot.data![index];
-                    if (icons.data != null) {
-                      final icon = icons.data![index];
-                      return InkWell(
-                        onTap: () async {
-                          await widget.navigationService
-                              .navigateToDetailsTransactionView(
-                            balance: transaction.transactionPrice.toString(),
-                            description: transaction.description!,
-                            time: transaction.time!,
-                            category: transaction.category!,
-                            type: transaction.type!,
-                            color: switch (transaction.type!) {
-                              "Income" => AppColors.primaryGreen,
-                              "Transfer" => AppColors.primaryBlue,
-                              "Expense" => AppColors.primaryRed,
-                              String() => throw UnimplementedError(),
-                            },
-                          );
-                          setState(() {});
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(top: height * 0.01),
-                          width: width * 0.9,
-                          height: height * 0.1,
-                          decoration: BoxDecoration(
-                            color: AppColors.light80,
-                            borderRadius: BorderRadius.circular(width * 0.04),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(left: width * 0.04),
-                                child: Container(
-                                  width: width * 0.15,
-                                  height: width * 0.15,
-                                  decoration: BoxDecoration(
-                                    color: icon["iconBackgroundColor"],
-                                    borderRadius:
-                                        BorderRadius.circular(width * 0.04),
+          if (snapshot.data != null) {
+            if (snapshot.data!.isNotEmpty) {
+              return FutureBuilder<List<Map<String, dynamic>>?>(
+                future: widget.icons,
+                builder: (context, icons) {
+                  return ListView.builder(
+                    itemCount: widget.itemCount == null ||
+                            snapshot.data!.length < widget.itemCount!
+                        ? snapshot.data!.length
+                        : widget.itemCount,
+                    itemBuilder: (context, index) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Container();
+                      }
+                      final transaction = snapshot.data![index];
+                      if (icons.data != null) {
+                        final icon = icons.data![index];
+                        return InkWell(
+                          onTap: () async {
+                            await widget.navigationService
+                                .navigateToDetailsTransactionView(
+                              balance: transaction.transactionPrice.toString(),
+                              description: transaction.description!,
+                              time: transaction.time!,
+                              category: transaction.category!,
+                              type: transaction.type!,
+                              color: switch (transaction.type!) {
+                                "Income" => AppColors.primaryGreen,
+                                "Transfer" => AppColors.primaryBlue,
+                                "Expense" => AppColors.primaryRed,
+                                String() => throw UnimplementedError(),
+                              },
+                            );
+                            setState(() {});
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(top: height * 0.01),
+                            width: width * 0.9,
+                            height: height * 0.1,
+                            decoration: BoxDecoration(
+                              color: AppColors.light80,
+                              borderRadius: BorderRadius.circular(width * 0.04),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: width * 0.04),
+                                  child: Container(
+                                    width: width * 0.15,
+                                    height: width * 0.15,
+                                    decoration: BoxDecoration(
+                                      color: icon["iconBackgroundColor"],
+                                      borderRadius:
+                                          BorderRadius.circular(width * 0.04),
+                                    ),
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        icon["icon"],
+                                        colorFilter:
+                                            icon["icon"] == IconsPath.other
+                                                ? null
+                                                : ColorFilter.mode(
+                                                    icon["iconColor"],
+                                                    BlendMode.srcIn,
+                                                  ),
+                                        width: width * 0.09,
+                                        height: width * 0.09,
+                                      ),
+                                    ),
                                   ),
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                      icon["icon"],
-                                      colorFilter:
-                                          icon["icon"] == IconsPath.other
-                                              ? null
-                                              : ColorFilter.mode(
-                                                  icon["iconColor"],
-                                                  BlendMode.srcIn,
-                                                ),
-                                      width: width * 0.09,
-                                      height: width * 0.09,
-                                    ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: height * 0.02, left: width * 0.04),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        transaction.type! == "Transfer"
+                                            ? "${transaction.category!.split(',').first} To ${transaction.category!.split(',').last}"
+                                            : transaction.category!,
+                                        style: TextStyle(
+                                          color: AppColors.primaryBlack,
+                                          fontSize: width * 0.042,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.002,
+                                      ),
+                                      Text(
+                                        transaction.description!.length > 20
+                                            ? "${transaction.description!.substring(0, 20)}..."
+                                            : transaction.description!,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: AppColors.grey,
+                                          fontSize: width * 0.035,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: height * 0.02, left: width * 0.04),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      transaction.type! == "Transfer"
-                                          ? "${transaction.category!.split(',').first} To ${transaction.category!.split(',').last}"
-                                          : transaction.category!,
-                                      style: TextStyle(
-                                        color: AppColors.primaryBlack,
-                                        fontSize: width * 0.042,
-                                        fontWeight: FontWeight.w600,
+                                const Spacer(),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      right: width * 0.04, top: height * 0.02),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        transaction.type! == "Income"
+                                            ? "\$${transaction.transactionPrice!}"
+                                            : "- \$${transaction.transactionPrice!}",
+                                        style: TextStyle(
+                                          color: transaction.type == "Income"
+                                              ? AppColors.primaryGreen
+                                              : AppColors.primaryRed,
+                                          fontSize: width * 0.045,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.002,
-                                    ),
-                                    Text(
-                                      transaction.description!.length > 20
-                                          ? "${transaction.description!.substring(0, 20)}..."
-                                          : transaction.description!,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: AppColors.grey,
-                                        fontSize: width * 0.035,
+                                      SizedBox(
+                                        height: height * 0.005,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    right: width * 0.04, top: height * 0.02),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      transaction.type! == "Income"
-                                          ? "\$${transaction.transactionPrice!}"
-                                          : "- \$${transaction.transactionPrice!}",
-                                      style: TextStyle(
-                                        color: transaction.type == "Income"
-                                            ? AppColors.primaryGreen
-                                            : AppColors.primaryRed,
-                                        fontSize: width * 0.045,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.005,
-                                    ),
-                                    Text(
-                                      "${transaction.time!.toDate().hour > 12 ? (transaction.time!.toDate().hour - 12).toString().padLeft(2, "0") : transaction.time!.toDate().hour.toString().padLeft(2, "0")}:${transaction.time!.toDate().minute.toString().padLeft(2, "0")} ${transaction.time!.toDate().hour >= 12 ? "PM" : "AM"}",
-                                      style: TextStyle(
-                                        color: AppColors.grey,
-                                        fontSize: width * 0.032,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
+                                      Text(
+                                        "${transaction.time!.toDate().hour > 12 ? (transaction.time!.toDate().hour - 12).toString().padLeft(2, "0") : transaction.time!.toDate().hour.toString().padLeft(2, "0")}:${transaction.time!.toDate().minute.toString().padLeft(2, "0")} ${transaction.time!.toDate().hour >= 12 ? "PM" : "AM"}",
+                                        style: TextStyle(
+                                          color: AppColors.grey,
+                                          fontSize: width * 0.032,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
-                  },
-                );
-              },
-            );
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  );
+                },
+              );
+            } else {
+              return Center(
+                child: Text(
+                  "No Transactions",
+                  style: TextStyle(
+                    color: AppColors.primaryBlack,
+                    fontSize: width * 0.05,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              );
+            }
           } else {
             return Center(
               child: Text(

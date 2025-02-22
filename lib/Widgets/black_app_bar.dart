@@ -25,6 +25,7 @@ PreferredSizeWidget? blackAppBar(
         fontWeight: FontWeight.w700,
       ),
     ),
+    scrolledUnderElevation: 0,
     leading: leading ??
         Center(
           child: InkWell(
