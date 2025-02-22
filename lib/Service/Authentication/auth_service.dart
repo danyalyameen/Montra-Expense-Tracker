@@ -48,6 +48,12 @@ class AuthService {
     return _auth.currentUser;
   }
 
+  Future<PersonData> getUserDetails() async {
+    var data =
+        await _database.collection('users').doc(_auth.currentUser!.uid).get();
+    return PersonData.store(data.data() as Map<String, dynamic>);
+  }
+
   sendEmailVerificationLink() async {
     await _auth.currentUser!.sendEmailVerification();
   }

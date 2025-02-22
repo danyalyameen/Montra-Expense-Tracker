@@ -40,8 +40,6 @@ class _FileInserterState extends State<FileInserter> {
                       context: context,
                       width: width,
                       height: height,
-                      iconKey: iconKey,
-                      titleKey: titleKey,
                     );
                     setState(() {});
                   },
@@ -137,8 +135,6 @@ class ShowBottomSheetForImportImages {
     required BuildContext context,
     required double width,
     required double height,
-    required String iconKey,
-    required String titleKey,
   }) async {
     File? image;
     ImageService imageService = locator<ImageService>();

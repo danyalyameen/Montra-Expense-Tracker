@@ -31,7 +31,7 @@ class ImageService {
     }
   }
 
-  void uploadImage(
+  Future<void> uploadImage(
       {required bool userPicture,
       required String imageUploadName,
       required File? imageFile}) async {
@@ -62,7 +62,9 @@ class ImageService {
     String userFolderName = AuthService().getUser()!.uid;
     String imageFolderName = userPicture ? "User Image" : "Transaction Images";
     String imagePath = "$userFolderName/$imageFolderName/$imageName";
-    return storage.from(bucketName).getPublicUrl(imagePath);
+    String url = storage.from(bucketName).getPublicUrl(imagePath);
+    String strictUrl = "$url?t=${DateTime.now().millisecondsSinceEpoch}";
+    return strictUrl;
   }
 
   Future<void> deleteImage({

@@ -70,8 +70,6 @@ class Database {
   static List navigationViewsForProfile = [
     const AccountView(),
     const SettingsView(),
-    const AccountView(),
-    const SettingsView(),
   ];
 
   static List<Map<String, dynamic>> profileData = [

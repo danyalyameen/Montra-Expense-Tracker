@@ -78,8 +78,6 @@ class _UserImage extends ViewModelWidget<UserPictureViewModel> {
             context: context,
             width: width,
             height: height,
-            iconKey: 'Icon',
-            titleKey: 'Title',
           );
           viewModel.updateImage(img);
         },

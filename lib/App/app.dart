@@ -16,6 +16,7 @@ import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Notific
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Attach%20View/Account%20Details/Views/account_details.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view.dart';
+import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Edit%20Profile/Views/edit_profile_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/About/Views/about_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart';
@@ -63,6 +64,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: CreateBudgetView),
     MaterialRoute(page: EditBudgetView),
     MaterialRoute(page: ProfileView),
+    MaterialRoute(page: EditProfileView),
     MaterialRoute(page: AccountView),
     MaterialRoute(page: AccountDetails),
     MaterialRoute(page: SettingsView),
