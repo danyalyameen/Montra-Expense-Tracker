@@ -3,8 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Views/financial_report_summary_view_model.dart';
+import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
@@ -118,6 +119,9 @@ class _ReportSummaryUI
   @override
   Widget build(
       BuildContext context, FinancialReportSummaryViewModel viewModel) {
+        
+    // Providers
+    var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     return Expanded(
       child: FutureBuilder(
         future: Future.wait([
@@ -243,7 +247,7 @@ class _ReportSummaryUI
                   ),
                   // Spend
                   Text(
-                    "${Variables.currency}${index == 0 ? totalSpend : totalIncome}",
+                    "${currencyProvider.currency}${index == 0 ? totalSpend : totalIncome}",
                     style: TextStyle(
                       color: AppColors.primaryLight,
                       fontWeight: FontWeight.w700,
@@ -289,6 +293,8 @@ class _BiggestSpend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Providers
+    var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     return Container(
       width: width * 0.9,
       height: height * 0.3,
@@ -376,7 +382,7 @@ class _BiggestSpend extends StatelessWidget {
           ),
           // Biggest Spend
           Text(
-            "${Variables.currency}${category["largestNumber"]}",
+            "${currencyProvider.currency}${category["largestNumber"]}",
             style: TextStyle(
               color: AppColors.primaryBlack,
               fontSize: width * 0.08,

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/App/app.locator.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_theme.dart';
+import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -18,8 +20,13 @@ void main() async {
     anonKey:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVkdnFsaHJncmNxamNsZG5jeXloIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY2ODQ1NTAsImV4cCI6MjA1MjI2MDU1MH0.zfyrYng-SoBnHFhJ7eyT5n5aUrzFz-M-316cIujihz8",
   );
-  // Run the application
-  runApp(const MyApp());
+  // Run the application and Initialize Provider
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => CurrencyProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Authentication/Setup%20Wallet/Views/setup_wallet_view_model.dart';
+import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
 import 'package:montra_expense_tracker/Widgets/custom_drop_down.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_form_field.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
 class SetupWalletView extends StackedView<SetupWalletViewModel> {
@@ -115,6 +116,9 @@ class _Balance extends ViewModelWidget<SetupWalletViewModel> {
 
   @override
   Widget build(BuildContext context, SetupWalletViewModel viewModel) {
+    
+    // Providers
+    var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     return Padding(
       padding: EdgeInsets.only(
         top: height * 0.22,
@@ -137,7 +141,7 @@ class _Balance extends ViewModelWidget<SetupWalletViewModel> {
             children: [
               // Currency Symbol
               Text(
-                Variables.currency,
+                currencyProvider.currency,
                 style: TextStyle(
                   fontSize: width * 0.16,
                   fontWeight: FontWeight.w600,

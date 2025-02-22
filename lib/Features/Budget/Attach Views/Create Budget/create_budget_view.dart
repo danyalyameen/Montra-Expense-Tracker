@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Create%20Budget/create_budget_view_model.dart';
+import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
 import 'package:montra_expense_tracker/Widgets/add_options.dart';
 import 'package:montra_expense_tracker/Widgets/category_bottom_sheet.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/switch_tile.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
 class CreateBudgetView extends StackedView<CreateBudgetViewModel> {
@@ -140,6 +141,9 @@ class _BudgetBalance extends ViewModelWidget<CreateBudgetViewModel> {
 
   @override
   Widget build(BuildContext context, CreateBudgetViewModel viewModel) {
+    
+    // Providers
+    var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     return Padding(
       padding: EdgeInsets.only(
           top: isOn ? height * 0.28 : height * 0.35, left: width * 0.05),
@@ -158,7 +162,7 @@ class _BudgetBalance extends ViewModelWidget<CreateBudgetViewModel> {
           Row(
             children: [
               Text(
-                Variables.currency,
+                currencyProvider.currency,
                 style: TextStyle(
                     fontSize: width * 0.16,
                     fontWeight: FontWeight.w600,

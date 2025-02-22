@@ -4,10 +4,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Details%20Transaction/Views/details_transaction_view_model.dart';
+import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
 import 'package:montra_expense_tracker/Widgets/delete_sheet.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
@@ -212,6 +213,9 @@ class _Balance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    // Providers
+    var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     // Format the date
     final String formattedDate = DateFormat('EEEE d MMMM yyyy').format(DateTime(
         time.toDate().year,
@@ -226,7 +230,7 @@ class _Balance extends StatelessWidget {
         ),
         // Balance
         Text(
-          "${Variables.currency}$balance",
+          "${currencyProvider.currency}$balance",
           style: TextStyle(
             color: AppColors.primaryLight,
             fontSize: width * 0.12,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
-import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view_model.dart';
+import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
 import 'package:montra_expense_tracker/Widgets/add_options.dart';
 import 'package:montra_expense_tracker/Widgets/category_bottom_sheet.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
@@ -10,6 +10,7 @@ import 'package:montra_expense_tracker/Widgets/custom_file_inserter.dart';
 import 'package:montra_expense_tracker/Widgets/custom_text_form_field.dart';
 import 'package:montra_expense_tracker/Widgets/wallet_bottom_sheet.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
 class ExpenseView extends StackedView<ExpenseViewModel> {
@@ -153,6 +154,9 @@ class _Balance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    // Providers
+    var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     return Padding(
       padding: EdgeInsets.only(top: width * 0.3, left: width * 0.05),
       child: Column(
@@ -172,7 +176,7 @@ class _Balance extends StatelessWidget {
             children: [
               // Currency
               Text(
-                Variables.currency,
+                currencyProvider.currency,
                 style: TextStyle(
                   fontSize: width * 0.16,
                   fontWeight: FontWeight.w600,

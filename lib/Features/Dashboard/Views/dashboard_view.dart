@@ -6,7 +6,9 @@ import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view_model.dart';
+import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
 import 'package:montra_expense_tracker/Widgets/user_transactions.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -268,6 +270,8 @@ class _ShowAcccount extends ViewModelWidget<DashboardViewModel> {
 
   @override
   Widget build(BuildContext context, DashboardViewModel viewModel) {
+    // Providers
+    var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     return Column(
       children: [
         // Title
@@ -304,7 +308,7 @@ class _ShowAcccount extends ViewModelWidget<DashboardViewModel> {
             }
             // Balance
             return Text(
-              "${Variables.currency}${snapshot.data}",
+              "${currencyProvider.currency}${snapshot.data}",
               style: TextStyle(
                 color: AppColors.primaryBlack,
                 fontSize: width * 0.12,
@@ -396,7 +400,7 @@ class _ShowAcccount extends ViewModelWidget<DashboardViewModel> {
                             ),
                             // Income Balance
                             Text(
-                              "${Variables.currency}${snapshot.data}",
+                              "${currencyProvider.currency}${snapshot.data}",
                               style: TextStyle(
                                 color: AppColors.primaryLight,
                                 fontSize: width * 0.05,
@@ -488,7 +492,7 @@ class _ShowAcccount extends ViewModelWidget<DashboardViewModel> {
                               ),
                               // Expense Balance
                               Text(
-                                "${Variables.currency}${snapshot.data}",
+                                "${currencyProvider.currency}${snapshot.data}",
                                 style: TextStyle(
                                   color: AppColors.primaryLight,
                                   fontSize: width * 0.05,

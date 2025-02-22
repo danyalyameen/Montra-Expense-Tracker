@@ -61,10 +61,10 @@ class Database {
   ];
 
   static List navigationViewsForSettings = [
-    CurrencyView(),
+    const CurrencyView(),
     const NotificationSettingsView(),
-    AboutView(),
-    HelpView(),
+    const AboutView(),
+    const HelpView(),
   ];
 
   static List navigationViewsForProfile = [

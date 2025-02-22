@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 
 class SettingsView extends StackedView<SettingsViewModel> {
   const SettingsView({super.key});
+  // Variables
   final String appBarTitle = "Settings";
 
   @override
@@ -25,10 +26,12 @@ class SettingsView extends StackedView<SettingsViewModel> {
       ),
       body: Column(
         children: [
+          // Top Line
           Divider(
             color: AppColors.light20,
             thickness: width * 0.002,
           ),
+          // Settings Items
           _SettingsItems(
             width: width,
             height: height,
@@ -51,7 +54,8 @@ class _SettingsItems extends StatelessWidget {
   final Function({required int index}) navigate;
   _SettingsItems(
       {required this.width, required this.height, required this.navigate});
-
+  
+  // Variables
   final String titleKey = "Title";
   final String defaultSelectionKey = "Default-Selection";
   final List<Map<String, dynamic>> data = Database.settingsData;
@@ -67,6 +71,7 @@ class _SettingsItems extends StatelessWidget {
               navigate(index: index);
             },
             child: ListTile(
+              // Title
               title: Text(
                 data[index][titleKey],
                 style: TextStyle(
@@ -75,9 +80,11 @@ class _SettingsItems extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              // Trailing Means Default Selection and Arrow
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  // Default Selection
                   Text(
                     "${data[index][defaultSelectionKey]}",
                     style: TextStyle(
@@ -85,9 +92,11 @@ class _SettingsItems extends StatelessWidget {
                       fontSize: width * 0.04,
                     ),
                   ),
+                  // For Spacing
                   SizedBox(
                     width: width * 0.01,
                   ),
+                  // Arrow
                   SvgPicture.asset(
                     IconsPath.rightArrow,
                     colorFilter: ColorFilter.mode(

@@ -4,6 +4,8 @@ import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
+import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -32,6 +34,8 @@ class _UserTransactionsState extends State<UserTransactions> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
+    // Providers
+    var currencyProvider = Provider.of<CurrencyProvider>(context);
     return SizedBox(
       height: widget.height ?? height * 0.5,
       width: widget.width ?? width * 0.9,
@@ -176,8 +180,8 @@ class _UserTransactionsState extends State<UserTransactions> {
                                     children: [
                                       Text(
                                         transaction.type! == "Income"
-                                            ? "\$${transaction.transactionPrice!}"
-                                            : "- \$${transaction.transactionPrice!}",
+                                            ? "${currencyProvider.currency}${transaction.transactionPrice!}"
+                                            : "- ${currencyProvider.currency}${transaction.transactionPrice!}",
                                         style: TextStyle(
                                           color: transaction.type == "Income"
                                               ? AppColors.primaryGreen

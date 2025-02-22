@@ -3,11 +3,10 @@ import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class AboutView extends StackedView<AboutViewModel> {
-  AboutView({super.key});
+  const AboutView({super.key});
 
-  String appBarTitle = "About";
+  final String appBarTitle = "About";
 
   @override
   Widget builder(

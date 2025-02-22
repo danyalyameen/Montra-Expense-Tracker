@@ -8,6 +8,7 @@ class NotificationSettingsView
     extends StackedView<NotificationSettingsViewModel> {
   const NotificationSettingsView({super.key});
 
+  // Variables
   final String appBarTitle = 'Notification';
   final String expenseAlertTitle = "Expense Alert";
   final String expenseAlertSubtitle = "Get notification about your expense";
@@ -18,6 +19,7 @@ class NotificationSettingsView
   @override
   Widget builder(BuildContext context, NotificationSettingsViewModel viewModel,
       Widget? child) {
+    // Get Screen Size of a Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -29,25 +31,30 @@ class NotificationSettingsView
           viewModel.navigationService.back();
         },
       ),
-      body: Column(
-        children: [
-          SwitchTile(
-            value: viewModel.alertNotification,
-            title: expenseAlertTitle,
-            subtitle: expenseAlertSubtitle,
-            onChanged: (value) {
-              viewModel.updateExpense(value);
-            },
-          ),
-          SwitchTile(
-            value: viewModel.budgetAlertNotification,
-            title: budgetAlertTitle,
-            subtitle: budgetAlertSubtitle,
-            onChanged: (value) {
-              viewModel.updateBudget(value);
-            },
-          ),
-        ],
+      body: Padding(
+        padding: EdgeInsets.only(left: width * 0.04),
+        child: Column(
+          children: [
+            // Expense Alert
+            SwitchTile(
+              value: viewModel.alertNotification,
+              title: expenseAlertTitle,
+              subtitle: expenseAlertSubtitle,
+              onChanged: (value) {
+                viewModel.updateExpense(value);
+              },
+            ),
+            // Budget Alert
+            SwitchTile(
+              value: viewModel.budgetAlertNotification,
+              title: budgetAlertTitle,
+              subtitle: budgetAlertSubtitle,
+              onChanged: (value) {
+                viewModel.updateBudget(value);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

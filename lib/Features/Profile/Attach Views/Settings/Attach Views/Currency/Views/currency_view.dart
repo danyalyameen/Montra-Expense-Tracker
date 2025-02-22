@@ -7,14 +7,14 @@ import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class CurrencyView extends StackedView<CurrencyViewModel> {
-  CurrencyView({super.key});
-  String appBarTitle = "Currency";
+  const CurrencyView({super.key});
+  final String appBarTitle = "Currency";
 
   @override
   Widget builder(
       BuildContext context, CurrencyViewModel viewModel, Widget? child) {
+    // Get Screen Size of a Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -26,15 +26,17 @@ class CurrencyView extends StackedView<CurrencyViewModel> {
       ),
       body: Column(
         children: [
+          // Top Line
           Divider(
             color: AppColors.light20,
             thickness: width * 0.002,
           ),
+          // Currency Items
           _CurrencyItems(
             width: width,
             height: height,
             markSelected: ({required index}) {
-              viewModel.markSelected(index);
+              viewModel.markSelected(index, context);
             },
           ),
         ],
@@ -52,7 +54,8 @@ class _CurrencyItems extends StatelessWidget {
   final Function({required int index}) markSelected;
   _CurrencyItems(
       {required this.width, required this.height, required this.markSelected});
-
+  
+  // Variables
   final String currencyKey = "Currency";
   final String isSelectKey = "isSelect";
   final List<Map<String, dynamic>> data = Database.currencyData;
@@ -68,6 +71,7 @@ class _CurrencyItems extends StatelessWidget {
               markSelected(index: index);
             },
             child: ListTile(
+              // Title
               title: Text(
                 data[index][currencyKey],
                 style: TextStyle(
@@ -76,6 +80,7 @@ class _CurrencyItems extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              // Trailing Icon of Tick
               trailing: data[index][isSelectKey] == true
                   ? SvgPicture.asset(
                       IconsPath.success,

@@ -3,11 +3,10 @@ import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class HelpView extends StackedView<HelpViewModel> {
-  HelpView({super.key});
+  const HelpView({super.key});
 
-  String appBarTitle = "Help";
+  final String appBarTitle = "Help";
 
   @override
   Widget builder(BuildContext context, HelpViewModel viewModel, Widget? child) {
