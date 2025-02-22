@@ -81,13 +81,14 @@ class TransactionService {
     return transactions;
   }
 
-  Future<List<Map<String, dynamic>>> getTransactionIcons({List<Transactions>? userTransactions}) async {
+  Future<List<Map<String, dynamic>>> getTransactionIcons(
+      {List<Transactions>? userTransactions}) async {
     final transactions = await getTransactions();
     if (transactions.isEmpty) {
       return [];
     }
     List<Map<String, dynamic>> iconData = [];
-    for (var transaction in  userTransactions ?? transactions) {
+    for (var transaction in userTransactions ?? transactions) {
       switch (transaction.type) {
         case "Income":
           iconData.add({

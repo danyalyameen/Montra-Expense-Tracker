@@ -5,20 +5,27 @@ import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Budget/Views/budget_view_model.dart';
-import 'package:montra_expense_tracker/Models/person_model.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 class BudgetView extends StackedView<BudgetViewModel> {
   const BudgetView({super.key});
 
+  // Variables
   final String buttonText = "Create a budget";
+
+  @override
+  void onViewModelReady(BudgetViewModel viewModel) {
+    viewModel.index = DateTime.now().month - 1;
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   Widget builder(
       BuildContext context, BudgetViewModel viewModel, Widget? child) {
+    // Get Screen Size of a Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -26,9 +33,11 @@ class BudgetView extends StackedView<BudgetViewModel> {
       appBar: whiteAppBar(
         toolBarHight: height * 0.12,
         backgroundColor: AppColors.primaryViolet,
+        // Months
         title: Database.months[viewModel.index],
         width: width,
         height: height,
+        // Months Decrement
         leading: Center(
           child: InkWell(
             borderRadius: BorderRadius.circular(width * 0.06),
@@ -44,6 +53,7 @@ class BudgetView extends StackedView<BudgetViewModel> {
             ),
           ),
         ),
+        // Months Increment
         actions: [
           Padding(
             padding: EdgeInsets.only(right: width * 0.02),
@@ -63,6 +73,7 @@ class BudgetView extends StackedView<BudgetViewModel> {
           ),
         ],
       ),
+      // Background Container
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -74,14 +85,14 @@ class BudgetView extends StackedView<BudgetViewModel> {
         ),
         child: Column(
           children: [
+            // Budgets
             Expanded(
               child: _BudgetItemUI(
                 height: height,
                 width: width,
-                data: viewModel.budgetService.fetchBudget(),
-                navigationService: viewModel.navigationService,
               ),
             ),
+            // Create Budget
             Padding(
               padding: EdgeInsets.only(bottom: height * 0.05),
               child: CustomElevatedButton(
@@ -105,15 +116,12 @@ class BudgetView extends StackedView<BudgetViewModel> {
 
 class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
   final double width, height;
-  final NavigationService navigationService;
-  final Future<List<Budget>> data;
   const _BudgetItemUI({
-    required this.data,
     required this.width,
     required this.height,
-    required this.navigationService,
   });
 
+  // Variables
   final String titleOnEmptyList =
       "You don't have a budget. \n Let's make one so you in control.";
   final String warning = "You've exceed the limit";
@@ -121,16 +129,37 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
   @override
   Widget build(BuildContext context, BudgetViewModel viewModel) {
     return FutureBuilder(
-      future: data,
+      future: viewModel.budgetService.fetchBudget(month: viewModel.index + 1),
       builder: (context, budgets) {
+        // Loading State
         if (budgets.connectionState == ConnectionState.waiting) {
           return Center(
-            child: CircularProgressIndicator(
-              color: AppColors.primaryViolet,
+            child: Column(
+              children: List.generate(
+                2,
+                (index) {
+                  return Padding(
+                    padding: EdgeInsets.only(top: height * 0.02),
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: width * 0.9,
+                        height: height * 0.24,
+                        decoration: BoxDecoration(
+                          color: AppColors.light80,
+                          borderRadius: BorderRadius.circular(width * 0.06),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           );
         }
-        if (budgets.data == null) {
+        // Empty Data State
+        if (budgets.data!.isEmpty) {
           return Center(
             child: Text(
               titleOnEmptyList,
@@ -143,46 +172,83 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
             ),
           );
         } else {
+          // Non Empty State
           return ListView.builder(
             itemCount: budgets.data!.length,
-            itemBuilder: (context, index) {
-              final budget = budgets.data![index];
+            itemBuilder: (context, itemIndex) {
+              final budget = budgets.data![itemIndex];
+              // Fetching whole month spend
               return FutureBuilder(
-                future: viewModel.budgetService.spend(
-                  category: budget.category!,
-                  month: viewModel.index + 1,
-                ),
-                builder: (context, spend) {
+                future: Future.wait([
+                  viewModel.budgetService.spend(
+                    category: budget.category!,
+                    month: viewModel.index + 1,
+                  ),
+                  viewModel.budgetService.getBudgetIcons(
+                    month: viewModel.index + 1,
+                  )
+                ]),
+                builder: (context, snapshot) {
+                  // Loading State
                   if (budgets.connectionState == ConnectionState.waiting) {
                     return Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.primaryViolet,
+                      child: Column(
+                        children: List.generate(
+                          2,
+                          (index) {
+                            return Padding(
+                              padding: EdgeInsets.only(top: height * 0.02),
+                              child: Shimmer.fromColors(
+                                baseColor: Colors.grey.shade300,
+                                highlightColor: Colors.grey.shade100,
+                                child: Container(
+                                  width: width * 0.9,
+                                  height: height * 0.24,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.light80,
+                                    borderRadius:
+                                        BorderRadius.circular(width * 0.06),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     );
                   }
-                  if (spend.data != null) {
+                  // If spend Data is Not Null
+                  if (snapshot.data?[1] != null) {
+                    var spend = snapshot.data![0] as int;
+                    var icons = snapshot.data![1] as List<Map<String, dynamic>>;
+                    var icon = icons[itemIndex]["icon"];
                     return Padding(
                       padding: EdgeInsets.only(
-                        top: index == 0 ? height * 0.04 : height * 0.02,
+                        top: itemIndex == 0 ? height * 0.04 : height * 0.02,
                         bottom: height * 0.02,
                       ),
                       child: Center(
                         child: SizedBox(
                           width: width * 0.9,
-                          height: spend.data! > budget.balance!
+                          height: spend > budget.balance!
                               ? height * 0.24
                               : height * 0.2,
                           child: InkWell(
-                            onTap: () {
-                              // navigationService.navigateToEditBudgetView(
-                              //     color: data[index][colorKey],
-                              //     category: data[index][categoryKey],
-                              //     spendBalance: data[index][spendKey],
-                              //     limitBalance: data[index][limitKey],
-                              //     backgroundColor: data[index]
-                              //         [iconBackgroundColorKey],
-                              //     icon: data[index][iconKey],
-                              //     iconColor: data[index][iconColorKey]);
+                            onTap: () async {
+                              await viewModel.navigationService
+                                  .navigateToEditBudgetView(
+                                color: Color(int.parse(budget.color!)),
+                                category: budget.category!,
+                                spendBalance: spend,
+                                limitBalance: budget.balance!,
+                                backgroundColor: Color(int.parse(budget.color!))
+                                    .withAlpha(20),
+                                icon: icon,
+                                iconColor: Color(int.parse(budget.color!)),
+                                index: itemIndex,
+                                month: viewModel.index + 1,
+                              );
+                              viewModel.notifyListeners();
                             },
                             child: Card(
                               color: AppColors.light80,
@@ -194,6 +260,7 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // Top Things like Category and Warning Signs
                                   Padding(
                                     padding: EdgeInsets.only(
                                       top: height * 0.02,
@@ -205,6 +272,7 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
+                                        // Category
                                         Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
@@ -222,6 +290,7 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceAround,
                                               children: [
+                                                // Circle Color
                                                 SizedBox(
                                                   width: width * 0.035,
                                                   height: height * 0.035,
@@ -233,9 +302,11 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
                                                     ),
                                                   ),
                                                 ),
+                                                // For Spacing
                                                 SizedBox(
                                                   width: width * 0.02,
                                                 ),
+                                                // Category
                                                 Text(
                                                   budget.category!,
                                                   style: TextStyle(
@@ -249,7 +320,8 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
                                             ),
                                           ),
                                         ),
-                                        spend.data! > budget.balance!
+                                        // Warning
+                                        spend > budget.balance!
                                             ? SvgPicture.asset(
                                                 IconsPath.warning,
                                                 colorFilter: ColorFilter.mode(
@@ -260,13 +332,14 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
                                       ],
                                     ),
                                   ),
+                                  // Budget Balance
                                   Padding(
                                     padding:
                                         EdgeInsets.only(left: width * 0.04),
                                     child: Text(
-                                      spend.data! > budget.balance!
+                                      spend > budget.balance!
                                           ? "Remaining \$0"
-                                          : "Remaining \$${budget.balance! - spend.data!}",
+                                          : "Remaining \$${budget.balance! - spend}",
                                       style: TextStyle(
                                         color: AppColors.primaryBlack,
                                         fontSize: width * 0.06,
@@ -274,14 +347,17 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
                                       ),
                                     ),
                                   ),
+                                  // For Spacing
                                   SizedBox(
                                     height: height * 0.01,
                                   ),
+                                  // Progress Bar
                                   Center(
                                     child: SizedBox(
                                       width: width * 0.8,
                                       child: Stack(
                                         children: [
+                                          // Back Color Means Light Back Color
                                           Container(
                                             width: width * 0.8,
                                             height: height * 0.018,
@@ -292,13 +368,15 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
                                               color: AppColors.light40,
                                             ),
                                           ),
+                                          // Progress Bar
                                           Container(
                                             width: width *
                                                 0.8 *
                                                 viewModel.percentage(
-                                                    index: index,
-                                                    spend: spend.data!,
-                                                    limit: budget.balance!),
+                                                  index: itemIndex,
+                                                  spend: spend,
+                                                  limit: budget.balance!,
+                                                ),
                                             height: height * 0.018,
                                             decoration: BoxDecoration(
                                               borderRadius:
@@ -313,11 +391,12 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
                                       ),
                                     ),
                                   ),
+                                  // Spend
                                   Padding(
                                     padding: EdgeInsets.only(
                                         top: height * 0.01, left: width * 0.04),
                                     child: Text(
-                                      "\$${spend.data} of \$${budget.balance}",
+                                      "\$$spend of \$${budget.balance}",
                                       style: TextStyle(
                                         color: AppColors.grey,
                                         fontSize: width * 0.045,
@@ -325,7 +404,8 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
                                       ),
                                     ),
                                   ),
-                                  spend.data! > budget.balance!
+                                  // Warning
+                                  spend > budget.balance!
                                       ? Padding(
                                           padding: EdgeInsets.only(
                                               left: width * 0.04,

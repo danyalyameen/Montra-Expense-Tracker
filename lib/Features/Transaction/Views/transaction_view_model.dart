@@ -12,17 +12,17 @@ class TransactionViewModel extends ViewModel {
   // Get Non Final Fields
   String get selectedFilter => _selectedFilter;
   String get selectedSort => _selectedSort;
-  
+
   // Store New Filter Value
   void onChangeFilter(String value) {
     _selectedFilter = value;
   }
-  
+
   // Store New Sort Value
   void onChangeSort(String value) {
     _selectedSort = value;
   }
-  
+
   // Apply Button Function
   Future<List<Transactions>> filter() async {
     // Make it true
@@ -43,115 +43,115 @@ class TransactionViewModel extends ViewModel {
     // Filtered the Transaction According to Selected Type
     if (_selectedFilter.isNotEmpty) {
       switch (selectedFilter) {
-          case "Expense":
-            switch (_selectedSort) {
-              case "Highest":
-                sortedTransactions = [];
-                sortedTransactions = sortOut(
-                  transactions: expenseTransactions,
-                  reversed: true,
-                  byTime: false,
-                );
-                break;
-              case "Lowest":
-                sortedTransactions = [];
-                sortedTransactions = sortOut(
-                  transactions: expenseTransactions,
-                  reversed: false,
-                  byTime: false,
-                );
-                break;
-              case "Newest":
-                sortedTransactions = [];
-                sortedTransactions = sortOut(
-                  transactions: expenseTransactions,
-                  reversed: true,
-                  byTime: true,
-                );
-                break;
-              case "Oldest":
-                sortedTransactions = [];
-                sortedTransactions = sortOut(
-                  transactions: expenseTransactions,
-                  reversed: false,
-                  byTime: true,
-                );
-                break;
-            }
-            break;
-          case "Income":
-            switch (_selectedSort) {
-              case "Highest":
-                sortedTransactions = [];
-                sortedTransactions = sortOut(
-                  transactions: incomeTransactions,
-                  reversed: true,
-                  byTime: false,
-                );
-                break;
-              case "Lowest":
-                sortedTransactions = [];
-                sortedTransactions = sortOut(
-                  transactions: incomeTransactions,
-                  reversed: false,
-                  byTime: false,
-                );
-                break;
-              case "Newest":
-                sortedTransactions = [];
-                sortedTransactions = sortOut(
-                  transactions: incomeTransactions,
-                  reversed: true,
-                  byTime: true,
-                );
-                break;
-              case "Oldest":
-                sortedTransactions = [];
-                sortedTransactions = sortOut(
-                  transactions: incomeTransactions,
-                  reversed: false,
-                  byTime: true,
-                );
-                break;
-            }
-            break;
-          case "Transfer":
-            switch (_selectedSort) {
-              case "Highest":
-                sortedTransactions = [];
-                sortedTransactions = sortOut(
-                  transactions: transferTransactions,
-                  reversed: true,
-                  byTime: false,
-                );
-                break;
-              case "Lowest":
-                sortedTransactions = [];
-                sortedTransactions = sortOut(
-                  transactions: transferTransactions,
-                  reversed: false,
-                  byTime: false,
-                );
-                break;
-              case "Newest":
-                sortedTransactions = [];
-                sortedTransactions = sortOut(
-                  transactions: transferTransactions,
-                  reversed: true,
-                  byTime: true,
-                );
-                break;
-              case "Oldest":
-                sortedTransactions = [];
-                sortedTransactions = sortOut(
-                  transactions: transferTransactions,
-                  reversed: false,
-                  byTime: true,
-                );
-                break;
-            }
-            break;
-        }
+        case "Expense":
+          switch (_selectedSort) {
+            case "Highest":
+              sortedTransactions = [];
+              sortedTransactions = sortOut(
+                transactions: expenseTransactions,
+                reversed: true,
+                byTime: false,
+              );
+              break;
+            case "Lowest":
+              sortedTransactions = [];
+              sortedTransactions = sortOut(
+                transactions: expenseTransactions,
+                reversed: false,
+                byTime: false,
+              );
+              break;
+            case "Newest":
+              sortedTransactions = [];
+              sortedTransactions = sortOut(
+                transactions: expenseTransactions,
+                reversed: true,
+                byTime: true,
+              );
+              break;
+            case "Oldest":
+              sortedTransactions = [];
+              sortedTransactions = sortOut(
+                transactions: expenseTransactions,
+                reversed: false,
+                byTime: true,
+              );
+              break;
+          }
+          break;
+        case "Income":
+          switch (_selectedSort) {
+            case "Highest":
+              sortedTransactions = [];
+              sortedTransactions = sortOut(
+                transactions: incomeTransactions,
+                reversed: true,
+                byTime: false,
+              );
+              break;
+            case "Lowest":
+              sortedTransactions = [];
+              sortedTransactions = sortOut(
+                transactions: incomeTransactions,
+                reversed: false,
+                byTime: false,
+              );
+              break;
+            case "Newest":
+              sortedTransactions = [];
+              sortedTransactions = sortOut(
+                transactions: incomeTransactions,
+                reversed: true,
+                byTime: true,
+              );
+              break;
+            case "Oldest":
+              sortedTransactions = [];
+              sortedTransactions = sortOut(
+                transactions: incomeTransactions,
+                reversed: false,
+                byTime: true,
+              );
+              break;
+          }
+          break;
+        case "Transfer":
+          switch (_selectedSort) {
+            case "Highest":
+              sortedTransactions = [];
+              sortedTransactions = sortOut(
+                transactions: transferTransactions,
+                reversed: true,
+                byTime: false,
+              );
+              break;
+            case "Lowest":
+              sortedTransactions = [];
+              sortedTransactions = sortOut(
+                transactions: transferTransactions,
+                reversed: false,
+                byTime: false,
+              );
+              break;
+            case "Newest":
+              sortedTransactions = [];
+              sortedTransactions = sortOut(
+                transactions: transferTransactions,
+                reversed: true,
+                byTime: true,
+              );
+              break;
+            case "Oldest":
+              sortedTransactions = [];
+              sortedTransactions = sortOut(
+                transactions: transferTransactions,
+                reversed: false,
+                byTime: true,
+              );
+              break;
+          }
+          break;
+      }
     } else {
       switch (_selectedSort) {
         case "Highest":
@@ -193,7 +193,7 @@ class TransactionViewModel extends ViewModel {
     // Return Sorted Transactions
     return sortedTransactions;
   }
-  
+
   // Make a sort out method to sort the transactions and make code reuseful
   List<Transactions> sortOut(
       {required List<Transactions> transactions,

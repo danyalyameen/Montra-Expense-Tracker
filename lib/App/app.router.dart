@@ -395,7 +395,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i18.IncomeView: (data) {
       return _i32.MaterialPageRoute<dynamic>(
-        builder: (context) =>const _i18.IncomeView(),
+        builder: (context) => const _i18.IncomeView(),
         settings: data,
       );
     },
@@ -427,13 +427,15 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<EditBudgetViewArguments>(nullOk: false);
       return _i32.MaterialPageRoute<dynamic>(
         builder: (context) => _i23.EditBudgetView(
-            args.color,
-            args.category,
-            args.spendBalance,
-            args.limitBalance,
-            args.backgroundColor,
-            args.iconColor,
-            args.icon,
+            month: args.month,
+            color: args.color,
+            category: args.category,
+            spendBalance: args.spendBalance,
+            limitBalance: args.limitBalance,
+            backgroundColor: args.backgroundColor,
+            iconColor: args.iconColor,
+            icon: args.icon,
+            index: args.index,
             key: args.key),
         settings: data,
       );
@@ -593,6 +595,7 @@ class DetailsTransactionViewArguments {
 
 class EditBudgetViewArguments {
   const EditBudgetViewArguments({
+    required this.month,
     required this.color,
     required this.category,
     required this.spendBalance,
@@ -600,8 +603,11 @@ class EditBudgetViewArguments {
     required this.backgroundColor,
     required this.iconColor,
     required this.icon,
+    required this.index,
     this.key,
   });
+
+  final int month;
 
   final _i34.Color color;
 
@@ -617,35 +623,41 @@ class EditBudgetViewArguments {
 
   final String icon;
 
+  final int index;
+
   final _i32.Key? key;
 
   @override
   String toString() {
-    return '{"color": "$color", "category": "$category", "spendBalance": "$spendBalance", "limitBalance": "$limitBalance", "backgroundColor": "$backgroundColor", "iconColor": "$iconColor", "icon": "$icon", "key": "$key"}';
+    return '{"month": "$month", "color": "$color", "category": "$category", "spendBalance": "$spendBalance", "limitBalance": "$limitBalance", "backgroundColor": "$backgroundColor", "iconColor": "$iconColor", "icon": "$icon", "index": "$index", "key": "$key"}';
   }
 
   @override
   bool operator ==(covariant EditBudgetViewArguments other) {
     if (identical(this, other)) return true;
-    return other.color == color &&
+    return other.month == month &&
+        other.color == color &&
         other.category == category &&
         other.spendBalance == spendBalance &&
         other.limitBalance == limitBalance &&
         other.backgroundColor == backgroundColor &&
         other.iconColor == iconColor &&
         other.icon == icon &&
+        other.index == index &&
         other.key == key;
   }
 
   @override
   int get hashCode {
-    return color.hashCode ^
+    return month.hashCode ^
+        color.hashCode ^
         category.hashCode ^
         spendBalance.hashCode ^
         limitBalance.hashCode ^
         backgroundColor.hashCode ^
         iconColor.hashCode ^
         icon.hashCode ^
+        index.hashCode ^
         key.hashCode;
   }
 }
@@ -1071,6 +1083,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> navigateToEditBudgetView({
+    required int month,
     required _i34.Color color,
     required String category,
     required int spendBalance,
@@ -1078,6 +1091,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
     required _i34.Color backgroundColor,
     required _i34.Color iconColor,
     required String icon,
+    required int index,
     _i32.Key? key,
     int? routerId,
     bool preventDuplicates = true,
@@ -1087,6 +1101,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.editBudgetView,
         arguments: EditBudgetViewArguments(
+            month: month,
             color: color,
             category: category,
             spendBalance: spendBalance,
@@ -1094,6 +1109,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
             backgroundColor: backgroundColor,
             iconColor: iconColor,
             icon: icon,
+            index: index,
             key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
@@ -1543,6 +1559,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }
 
   Future<dynamic> replaceWithEditBudgetView({
+    required int month,
     required _i34.Color color,
     required String category,
     required int spendBalance,
@@ -1550,6 +1567,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
     required _i34.Color backgroundColor,
     required _i34.Color iconColor,
     required String icon,
+    required int index,
     _i32.Key? key,
     int? routerId,
     bool preventDuplicates = true,
@@ -1559,6 +1577,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.editBudgetView,
         arguments: EditBudgetViewArguments(
+            month: month,
             color: color,
             category: category,
             spendBalance: spendBalance,
@@ -1566,6 +1585,7 @@ extension NavigatorStateExtension on _i35.NavigationService {
             backgroundColor: backgroundColor,
             iconColor: iconColor,
             icon: icon,
+            index: index,
             key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,

@@ -216,7 +216,7 @@ class _TransferTextField extends ViewModelWidget<TransferViewModel> {
     required this.width,
     required this.height,
   });
-  
+
   // Variables
   final String fromText = "From";
   final String toText = "To";

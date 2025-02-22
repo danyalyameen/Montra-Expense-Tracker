@@ -7,24 +7,33 @@ import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/delete_sheet.dart';
 import 'package:stacked/stacked.dart';
 
-// ignore: must_be_immutable
 class EditBudgetView extends StackedView<EditBudgetViewModel> {
   final Color color;
   final String category, icon;
-  final int spendBalance, limitBalance;
+  final int spendBalance, limitBalance, index, month;
   final Color iconColor, backgroundColor;
-  EditBudgetView(this.color, this.category, this.spendBalance,
-      this.limitBalance, this.backgroundColor, this.iconColor, this.icon,
-      {super.key});
+  const EditBudgetView(
+      {required this.month,
+      required this.color,
+      required this.category,
+      required this.spendBalance,
+      required this.limitBalance,
+      required this.backgroundColor,
+      required this.iconColor,
+      required this.icon,
+      required this.index,
+      super.key});
 
-  String appBarTitle = "Budget Details";
-  String warning = "You've exceed the limit";
-  String title = "Remove this Budget?";
-  String subtitle = "Are you sure do you want to remove this budget?";
+  // Variables
+  final String appBarTitle = "Budget Details";
+  final String warning = "You've exceed the limit";
+  final String title = "Remove this Budget?";
+  final String subtitle = "Are you sure do you want to remove this budget?";
 
   @override
   Widget builder(
       BuildContext context, EditBudgetViewModel viewModel, Widget? child) {
+    // Get Screen Size of a Device
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -38,12 +47,21 @@ class EditBudgetView extends StackedView<EditBudgetViewModel> {
             padding: EdgeInsets.only(right: width * 0.04),
             child: InkWell(
               onTap: () {
+                // Delete Sheet
                 Delete.showSheet(
                   context: context,
                   width: width,
                   height: height,
                   title: title,
                   subtitle: subtitle,
+                  onPressed: () async {
+                    await viewModel.budgetService.deleteBudget(
+                      month: month,
+                      index: index,
+                    );
+                    viewModel.navigationService.back();
+                    viewModel.navigationService.back();
+                  },
                 );
               },
               child: SvgPicture.asset(
@@ -59,6 +77,7 @@ class EditBudgetView extends StackedView<EditBudgetViewModel> {
       ),
       body: Column(
         children: [
+          // Budget Category
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -78,29 +97,36 @@ class EditBudgetView extends StackedView<EditBudgetViewModel> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      // Icon of Category
                       Padding(
                         padding: EdgeInsets.only(left: width * 0.01),
                         child: Container(
                           width: width * 0.11,
                           height: width * 0.11,
                           decoration: BoxDecoration(
-                            color: backgroundColor,
+                            color: icon == IconsPath.other
+                                ? AppColors.red20
+                                : backgroundColor,
                             borderRadius: BorderRadius.circular(width * 0.04),
                           ),
                           child: Center(
                             child: SvgPicture.asset(
                               icon,
-                              colorFilter:
-                                  ColorFilter.mode(iconColor, BlendMode.srcIn),
+                              colorFilter: icon == IconsPath.other
+                                  ? null
+                                  : ColorFilter.mode(
+                                      iconColor, BlendMode.srcIn),
                               width: width * 0.065,
                               height: width * 0.065,
                             ),
                           ),
                         ),
                       ),
+                      // For Spacing
                       SizedBox(
                         width: width * 0.02,
                       ),
+                      // Category Name
                       Text(
                         category,
                         style: TextStyle(
@@ -115,25 +141,30 @@ class EditBudgetView extends StackedView<EditBudgetViewModel> {
               ),
             ],
           ),
+          // For Spacing
           SizedBox(
             height: height * 0.01,
           ),
+          // Remaining Balance
           _RemainingBalance(
             spendBalance: spendBalance,
             limitBalance: limitBalance,
             width: width,
             height: height,
           ),
+          // For Spacing
           SizedBox(
             height: height * 0.01,
           ),
+          // Progress Bar or Spend Bar
           _BalancePercentageIndicator(
             width: width,
             height: height,
             spendBalance: spendBalance,
             limitBalance: limitBalance,
-            color: color,
+            color: icon == IconsPath.other ? AppColors.primaryRed : color,
           ),
+          // Warning
           _Warning(
             spendBalance: spendBalance,
             limitBalance: limitBalance,
@@ -164,6 +195,7 @@ class _RemainingBalance extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Remaining
         Text(
           "Remaining",
           style: TextStyle(
@@ -172,9 +204,11 @@ class _RemainingBalance extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
+        // For Spacing
         SizedBox(
           height: height * 0.01,
         ),
+        // Remaining Balance
         Text(
           spendBalance > limitBalance
               ? "\$0"
@@ -208,6 +242,7 @@ class _BalancePercentageIndicator extends StatelessWidget {
         width: width * 0.8,
         child: Stack(
           children: [
+            // Background
             Container(
               width: width * 0.8,
               height: height * 0.018,
@@ -216,6 +251,7 @@ class _BalancePercentageIndicator extends StatelessWidget {
                 color: AppColors.light40,
               ),
             ),
+            // Progress Bar
             Container(
               width: (width * 0.8) * (spendBalance / limitBalance),
               height: height * 0.018,
@@ -231,6 +267,7 @@ class _BalancePercentageIndicator extends StatelessWidget {
   }
 }
 
+// Warning
 class _Warning extends StatelessWidget {
   final int spendBalance, limitBalance;
   final double width, height;
@@ -257,14 +294,17 @@ class _Warning extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Icon
                   SvgPicture.asset(
                     IconsPath.warning,
                     colorFilter: ColorFilter.mode(
                         AppColors.primaryLight, BlendMode.srcIn),
                   ),
+                  // For Spacing
                   SizedBox(
                     width: width * 0.04,
                   ),
+                  // Warning Text
                   Text(
                     warning,
                     style: TextStyle(

@@ -14,7 +14,7 @@ import 'package:stacked/stacked.dart';
 
 class ExpenseView extends StackedView<ExpenseViewModel> {
   const ExpenseView({super.key});
-  
+
   // Variables
   final String appBarTitle = "Expense";
   final String continueButtonText = "Continue";
@@ -147,7 +147,7 @@ class _Balance extends StatelessWidget {
   final double width;
   final TextEditingController balanceController;
   const _Balance({required this.width, required this.balanceController});
-  
+
   // Variables
   final String inputHintText = "How much?";
 
@@ -174,9 +174,10 @@ class _Balance extends StatelessWidget {
               Text(
                 Variables.currency,
                 style: TextStyle(
-                    fontSize: width * 0.16,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.light80,),
+                  fontSize: width * 0.16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.light80,
+                ),
               ),
               // Balance Text Field
               Expanded(

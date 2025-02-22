@@ -7,13 +7,13 @@ class FinancialReportSummaryViewModel extends ViewModel {
   // Non Final Fields
   int _currentIndex = 0;
   int get currentIndex => _currentIndex;
-  
+
   // On Change of Page on Page View Builder
   void onChanged(int value) {
     currentIndex == value;
     notifyListeners();
   }
-  
+
   // Get Total Expense
   Future<int> getTotalSpend() async {
     // Get Transactions
@@ -30,7 +30,7 @@ class FinancialReportSummaryViewModel extends ViewModel {
     }
     return totalSpend;
   }
-  
+
   // Get Biggest Transaction Details
   Future<Map<String, dynamic>> getBiggestSpend() async {
     // Store Biggest Transactions Details
@@ -54,7 +54,7 @@ class FinancialReportSummaryViewModel extends ViewModel {
         return element.transactionPrice! == largestNumber!;
       },
     );
-    
+
     // Store Transaction Details according to Its Type
     switch (transaction.type) {
       case "Transfer":
@@ -112,7 +112,7 @@ class FinancialReportSummaryViewModel extends ViewModel {
     }
     return category;
   }
-  
+
   // Get Total Income of User
   Future<int> getTotalIncome() async {
     // Get Transactions
@@ -128,7 +128,7 @@ class FinancialReportSummaryViewModel extends ViewModel {
     }
     return totalIncome;
   }
-  
+
   // Get Biggest Income
   Future<Map<String, dynamic>> getBiggestIncome() async {
     // Store Biggest Transactions Details
@@ -164,19 +164,18 @@ class FinancialReportSummaryViewModel extends ViewModel {
     }
     return category;
   }
-  
+
   // Navigate Between Pages By calculating the width of Device
   void swithingViews(
       {required TapUpDetails details, required double deviceWidth}) {
     // If index is last navigate to back
-    if (_currentIndex == 2 &&
-        details.localPosition.dx > deviceWidth / 2) {
+    if (_currentIndex == 2 && details.localPosition.dx > deviceWidth / 2) {
       navigationService.back();
-    // If index is second switch to first page
+      // If index is second switch to first page
     } else if (details.localPosition.dx > deviceWidth / 2) {
       _currentIndex++;
       notifyListeners();
-    // If index is first switch to second page
+      // If index is first switch to second page
     } else if (details.localPosition.dx < deviceWidth / 2 &&
         _currentIndex > 0) {
       _currentIndex--;
