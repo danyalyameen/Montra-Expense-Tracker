@@ -38,6 +38,16 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   build_runner: ^2.4.13
   stacked_generator: ^1.6.1
+  flutter_launcher_icons: ^0.14.3
+
+# Flutter Launcher Icons
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/Icons/App Logo/montra_app_logo.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "assets/Icons/App Logo/logo_foreground.png"
+  adaptive_icon_foreground: "assets/Icons/App Logo/logo_foreground.png"
 
 # Material Design
 flutter:
@@ -52,8 +62,6 @@ flutter:
     - assets/Icons/Finance/
     - assets/Icons/Illustrations/
     - assets/Icons/Operations/
-# Images
-    - assets/Images/User Image/
 
 # Fonts
   fonts:

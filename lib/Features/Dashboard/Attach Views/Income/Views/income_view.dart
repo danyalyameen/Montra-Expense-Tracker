@@ -142,6 +142,13 @@ class IncomeView extends StackedView<IncomeViewModel> {
 
   @override
   IncomeViewModel viewModelBuilder(BuildContext context) => IncomeViewModel();
+
+  @override
+  void onDispose(IncomeViewModel viewModel) {
+    viewModel.balanceController.dispose();
+    viewModel.descriptionController.dispose();
+    super.onDispose(viewModel);
+  }
 }
 
 class _Balance extends StatelessWidget {
@@ -154,7 +161,6 @@ class _Balance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     // Providers
     var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     return Padding(

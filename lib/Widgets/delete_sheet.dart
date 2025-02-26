@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 
+// Sheet for Delete Something
 class Delete {
   static bool showLoading = false;
   static void showSheet({
@@ -28,6 +29,7 @@ class Delete {
             return StatefulBuilder(builder: (context, setState) {
               return Column(
                 children: [
+                  // Title
                   Text(
                     title,
                     style: TextStyle(
@@ -36,9 +38,11 @@ class Delete {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.02,
                   ),
+                  // Description
                   Padding(
                     padding: EdgeInsets.only(
                       left: width * 0.05,
@@ -54,9 +58,11 @@ class Delete {
                       ),
                     ),
                   ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.025,
                   ),
+                  // Buttons
                   Padding(
                     padding: EdgeInsets.only(
                       left: width * 0.05,
@@ -65,6 +71,7 @@ class Delete {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        // No or Cancel
                         SizedBox(
                           width: width * 0.425,
                           height: height * 0.06,
@@ -80,9 +87,11 @@ class Delete {
                             ),
                           ),
                         ),
+                        // For Spacing
                         SizedBox(
                           width: width * 0.05,
                         ),
+                        // Yes or OK
                         SizedBox(
                           width: width * 0.425,
                           height: height * 0.06,

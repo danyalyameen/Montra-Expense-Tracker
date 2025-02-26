@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
-import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Financial%20Report/Views/financial_report_summary_view_model.dart';
 import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
@@ -80,7 +79,7 @@ class _Indicators extends ViewModelWidget<FinancialReportSummaryViewModel> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(
-          Database.financialReport.length,
+          2,
           (index) {
             return Padding(
               padding: EdgeInsets.only(
@@ -89,7 +88,7 @@ class _Indicators extends ViewModelWidget<FinancialReportSummaryViewModel> {
                 right: width * 0.01,
               ),
               child: Container(
-                width: (width * 0.82) / Database.financialReport.length,
+                width: (width * 0.82) / 2,
                 height: height * 0.006,
                 decoration: BoxDecoration(
                   color: viewModel.currentIndex == index
@@ -119,7 +118,6 @@ class _ReportSummaryUI
   @override
   Widget build(
       BuildContext context, FinancialReportSummaryViewModel viewModel) {
-        
     // Providers
     var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     return Expanded(

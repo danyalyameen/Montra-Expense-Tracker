@@ -6,6 +6,7 @@ class SettingsViewModel extends ViewModel {
   void navigation({required int index}) async {
     await navigationService
         .navigateToView(Database.navigationViewsForSettings[index]);
+    
     rebuildUi();
   }
 }

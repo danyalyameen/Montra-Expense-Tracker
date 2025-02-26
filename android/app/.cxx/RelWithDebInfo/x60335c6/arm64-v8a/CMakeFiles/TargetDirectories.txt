@@ -1,0 +1,2 @@
+D:/Portfolio/montra_expense_tracker/android/app/.cxx/RelWithDebInfo/x60335c6/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/Portfolio/montra_expense_tracker/android/app/.cxx/RelWithDebInfo/x60335c6/arm64-v8a/CMakeFiles/rebuild_cache.dir

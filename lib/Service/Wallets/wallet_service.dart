@@ -7,13 +7,17 @@ import 'package:montra_expense_tracker/Service/Authentication/auth_service.dart'
 
 class WalletService {
   Future<bool> addWallet({required Wallets wallet}) async {
+    // Instance
     DocumentReference user = FirebaseFirestore.instance
         .collection('users')
         .doc(AuthService().getUser()!.uid);
+    // Get User Data and Store it
     var data = await user.get();
     var personData = PersonData.store(data.data() as Map<String, dynamic>);
     var error = false;
+    // Intialize if null
     personData.wallets ??= [];
+    // Add Wallet if empty otherwise check the name is already present or not
     if (personData.wallets!.isEmpty) {
       personData.wallets!.insert(0, wallet);
       await user.update(PersonData(wallets: personData.wallets!).receive());
@@ -36,7 +40,8 @@ class WalletService {
     }
     return error;
   }
-
+  
+  // Get Wallets
   Future<List<Wallets>> getWallets() async {
     DocumentReference user = FirebaseFirestore.instance
         .collection('users')
@@ -45,7 +50,8 @@ class WalletService {
     var personData = PersonData.store(data.data() as Map<String, dynamic>);
     return personData.wallets!;
   }
-
+  
+  // Get Transactions
   Future<List<Transactions>> getWalletTransactions(
       {required String walletName}) async {
     DocumentReference user = FirebaseFirestore.instance
@@ -60,7 +66,8 @@ class WalletService {
     }
     return [];
   }
-
+  
+  // Get Wallet Transaction Icons Same as Get Data and Calculate Icons
   Future<List<Map<String, dynamic>>> getWalletTransactionsIcons(
       {required String walletName}) async {
     DocumentReference user = FirebaseFirestore.instance
@@ -149,7 +156,8 @@ class WalletService {
     }
     return [];
   }
-
+  
+  // Delete Wallet. First Find Wallet by name and delete it
   Future<void> deleteWallet({required String name}) async {
     DocumentReference user = FirebaseFirestore.instance
         .collection('users')

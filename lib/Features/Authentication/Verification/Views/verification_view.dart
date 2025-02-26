@@ -31,6 +31,7 @@ class VerificationView extends StackedView<VerificationViewModel> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: AppColors.primaryLight,
       appBar: blackAppBar(
         title: appBarTitle,
         width: width,
@@ -98,6 +99,12 @@ class VerificationView extends StackedView<VerificationViewModel> {
 
   @override
   bool get reactive => false;
+
+  @override
+  void onDispose(VerificationViewModel viewModel) {
+    viewModel.resendTimer?.cancel();
+    super.onDispose(viewModel);
+  }
 }
 
 class _VerificationUI extends StatelessWidget {

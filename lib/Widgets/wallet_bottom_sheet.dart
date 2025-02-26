@@ -18,6 +18,7 @@ class WalletBottomSheet extends StatefulWidget {
 }
 
 class _WalletState extends State<WalletBottomSheet> {
+  // Variables
   final String createWallet = "Add Wallet";
   final String dropDownText = "Wallet";
   final NavigationService navigationService = locator<NavigationService>();
@@ -26,6 +27,7 @@ class _WalletState extends State<WalletBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    // Get Screen Size of a Device
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return CustomBottomSheet(
@@ -44,6 +46,7 @@ class _WalletState extends State<WalletBottomSheet> {
         height: height * 0.3,
         child: Column(
           children: [
+            // Show Items
             _ShowItemsForWallet(
               width: width,
               height: height,
@@ -58,6 +61,7 @@ class _WalletState extends State<WalletBottomSheet> {
                 setState(() {});
               },
             ),
+            // Indicators
             _Indicators(
               itemIndex: itemIndex,
               width: width,
@@ -71,6 +75,7 @@ class _WalletState extends State<WalletBottomSheet> {
   }
 }
 
+// Show Selected Wallet Name
 class _ShowSelectedWallet extends StatelessWidget {
   final String accountName;
   final double width;
@@ -92,6 +97,7 @@ class _ShowSelectedWallet extends StatelessWidget {
   }
 }
 
+// Show Available Wallets
 class _ShowItemsForWallet extends StatelessWidget {
   final double width, height;
   final Future<List<Wallets>> data;
@@ -104,7 +110,8 @@ class _ShowItemsForWallet extends StatelessWidget {
     required this.updateIndex,
     required this.data,
   });
-
+  
+  // Variables
   final String bankBalanceText = "Balance";
 
   @override
@@ -114,6 +121,7 @@ class _ShowItemsForWallet extends StatelessWidget {
       child: FutureBuilder<List<Wallets>>(
         future: data,
         builder: (context, snapshot) {
+          // Loading State
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -145,6 +153,7 @@ class _ShowItemsForWallet extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
+                          // Wallet name
                           Padding(
                             padding: EdgeInsets.only(top: height * 0.01),
                             child: Text(
@@ -156,9 +165,11 @@ class _ShowItemsForWallet extends StatelessWidget {
                               ),
                             ),
                           ),
+                          // For Spacing
                           SizedBox(
                             height: height * 0.04,
                           ),
+                          // Balance
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -168,6 +179,7 @@ class _ShowItemsForWallet extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
+                                    // Title
                                     Text(
                                       bankBalanceText,
                                       style: TextStyle(
@@ -176,6 +188,7 @@ class _ShowItemsForWallet extends StatelessWidget {
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
+                                    // Balance
                                     Padding(
                                       padding:
                                           EdgeInsets.only(right: width * 0.07),
@@ -191,9 +204,11 @@ class _ShowItemsForWallet extends StatelessWidget {
                                   ],
                                 ),
                               ),
+                              // For Spacing
                               SizedBox(
                                 height: height * 0.025,
                               ),
+                              // Icon Either Bank or Wallet
                               Padding(
                                 padding: EdgeInsets.only(left: width * 0.07),
                                 child: Row(
@@ -245,6 +260,7 @@ class _ShowItemsForWallet extends StatelessWidget {
   }
 }
 
+// Indicators
 class _Indicators extends StatefulWidget {
   final double width, height;
   final Future<List<Wallets>> data;

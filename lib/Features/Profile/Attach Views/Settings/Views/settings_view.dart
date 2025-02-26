@@ -18,6 +18,7 @@ class SettingsView extends StackedView<SettingsViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: AppColors.primaryLight,
       appBar: blackAppBar(
         title: appBarTitle,
         width: width,
@@ -54,7 +55,7 @@ class _SettingsItems extends StatelessWidget {
   final Function({required int index}) navigate;
   _SettingsItems(
       {required this.width, required this.height, required this.navigate});
-  
+
   // Variables
   final String titleKey = "Title";
   final String defaultSelectionKey = "Default-Selection";

@@ -18,6 +18,7 @@ class FileInserter extends StatefulWidget {
 }
 
 class _FileInserterState extends State<FileInserter> {
+  // Variables
   final String hintText = "Add attachment";
   final String iconKey = "Icon";
   final String titleKey = "Title";
@@ -33,6 +34,7 @@ class _FileInserterState extends State<FileInserter> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          // Image is null then show file inserter ui otherwise image
           img == null
               ? InkWell(
                   onTap: () async {
@@ -43,6 +45,7 @@ class _FileInserterState extends State<FileInserter> {
                     );
                     setState(() {});
                   },
+                  // Border From DottedBorder Package
                   child: DottedBorder(
                     borderType: BorderType.RRect,
                     radius: Radius.circular(width * 0.03),
@@ -57,6 +60,7 @@ class _FileInserterState extends State<FileInserter> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            // Icon
                             SvgPicture.asset(
                               IconsPath.attachment,
                               width: width * 0.03,
@@ -66,9 +70,11 @@ class _FileInserterState extends State<FileInserter> {
                                 BlendMode.srcIn,
                               ),
                             ),
+                            // For Spacing
                             SizedBox(
                               width: width * 0.02,
                             ),
+                            // Text
                             Text(
                               hintText,
                               style: TextStyle(
@@ -83,11 +89,13 @@ class _FileInserterState extends State<FileInserter> {
                     ),
                   ),
                 )
+                // Image with Cross to unselect or delete the image
               : SizedBox(
                   width: width * 0.8,
                   height: height * 0.1,
                   child: Stack(
                     children: [
+                      // Image
                       Positioned(
                         top: height * 0.005,
                         left: width * 0.02,
@@ -99,6 +107,7 @@ class _FileInserterState extends State<FileInserter> {
                           ),
                         ),
                       ),
+                      // Cross or delete Icon
                       Positioned(
                         left: 0,
                         top: 0,
@@ -129,6 +138,7 @@ class _FileInserterState extends State<FileInserter> {
   }
 }
 
+// Bottom Sheet For Import Images
 class ShowBottomSheetForImportImages {
   ImagePicker imagePicker = ImagePicker();
   static Future<File?> bottomSheet({
@@ -136,6 +146,7 @@ class ShowBottomSheetForImportImages {
     required double width,
     required double height,
   }) async {
+    // Variables
     File? image;
     ImageService imageService = locator<ImageService>();
     Completer<File?> completer = Completer<File?>();
@@ -157,6 +168,7 @@ class ShowBottomSheetForImportImages {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  // Camera Option
                   ImagePickerWidget(
                     title: "Camera",
                     icon: IconsPath.camera,
@@ -168,6 +180,7 @@ class ShowBottomSheetForImportImages {
                       Navigator.pop(context);
                     },
                   ),
+                  // Gallery Option
                   ImagePickerWidget(
                     title: "Gallery",
                     icon: IconsPath.gallery,
@@ -190,6 +203,7 @@ class ShowBottomSheetForImportImages {
   }
 }
 
+// UI of Camera and Gallery
 class ImagePickerWidget extends StatelessWidget {
   final String title, icon;
   final VoidCallback? onPressed;
@@ -198,6 +212,7 @@ class ImagePickerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get Screen Size of a Device
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return InkWell(
@@ -217,6 +232,7 @@ class ImagePickerWidget extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
+              // Icon
               Padding(
                 padding: EdgeInsets.only(
                   top: height * 0.01,
@@ -229,9 +245,11 @@ class ImagePickerWidget extends StatelessWidget {
                       AppColors.primaryViolet, BlendMode.srcIn),
                 ),
               ),
+              // For Spacing
               SizedBox(
                 height: height * 0.005,
               ),
+              // Text
               Text(
                 title,
                 style: TextStyle(

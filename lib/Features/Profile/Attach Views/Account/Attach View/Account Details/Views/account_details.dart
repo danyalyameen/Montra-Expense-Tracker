@@ -3,9 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Attach%20View/Account%20Details/Views/account_details_view_model.dart';
+import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/delete_sheet.dart';
 import 'package:montra_expense_tracker/Widgets/user_transactions.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
 class AccountDetails extends StackedView<AccountDetailsViewModel> {
@@ -24,6 +26,7 @@ class AccountDetails extends StackedView<AccountDetailsViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: AppColors.primaryLight,
       appBar: blackAppBar(
         title: appBarTitle,
         width: width,
@@ -123,6 +126,7 @@ class _WalletDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currencyProvider = Provider.of<CurrencyProvider>(context);
     return Column(
       children: [
         // Wallet Icon
@@ -164,7 +168,7 @@ class _WalletDetails extends StatelessWidget {
         ),
         // Wallet Balance
         Text(
-          "\$$walletBalance",
+          "${currencyProvider.currency}$walletBalance",
           style: TextStyle(
             color: AppColors.primaryBlack,
             fontWeight: FontWeight.w700,

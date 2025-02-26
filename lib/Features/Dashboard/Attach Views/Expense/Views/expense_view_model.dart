@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
@@ -77,10 +79,12 @@ class ExpenseViewModel extends ViewModel {
   }
 
   // Add Transaction
-  void addExpenseTransactionCompleted() async {
+  void addExpenseTransactionCompleted({required BuildContext context}) async {
     validateBalance();
     validateCategory();
     validateWallet();
+    final double width = MediaQuery.sizeOf(context).width;
+    final double height = MediaQuery.sizeOf(context).height;
     if (descriptionFormKey.currentState!.validate() &&
         _balanceController.text.isNotEmpty &&
         storeSelectedCategory["option"] != "Category" &&
@@ -89,20 +93,128 @@ class ExpenseViewModel extends ViewModel {
         // Show Loading
         _showLoading = true;
         notifyListeners();
+        // Get Budgets
+        var budgets =
+            await budgetService.fetchBudget(month: DateTime.now().month);
+        // Get Spend
+        var spend = await budgetService.spend(
+            category: storeSelectedCategory["option"],
+            month: DateTime.now().month);
+        // Check if Spend is greater than or equal to Budget Limit
+        if (budgets.isNotEmpty) {
+          log("W");
+          for (var budget in budgets) {
+            log("H");
+
+            if (budget.category == storeSelectedCategory["option"] &&
+                spend >= budget.balance!) {
+              log("A");
+
+              showDialog(
+                // ignore: use_build_context_synchronously
+                context: context,
+                builder: (context) {
+                  log("T");
+                  return AlertDialog(
+                    backgroundColor: AppColors.primaryLight,
+                    title: const Text("Budget Limit Exceeded"),
+                    content: const Text(
+                        "You have exceeded your budget limit. Please reduce your spend."),
+                    actions: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                color: AppColors.primaryViolet,
+                                fontWeight: FontWeight.w500,
+                                fontSize: width * 0.04,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              _showLoading = false;
+                              notifyListeners();
+                            },
+                          ),
+                          SizedBox(
+                            width: width * 0.26,
+                            height: height * 0.04,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll(
+                                    AppColors.primaryViolet),
+                                shape: WidgetStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(width * 0.04),
+                                  ),
+                                ),
+                              ),
+                              onPressed: () async {
+                                Navigator.pop(context);
+                                bool error =
+                                    await transactionsService.addTransaction(
+                                  transactionPrice:
+                                      int.parse(balanceController.text),
+                                  walletName: storeSelectedWallet["option"],
+                                  category: storeSelectedCategory["option"],
+                                  description: descriptionController.text,
+                                  transactionType: "Expense",
+                                );
+                                // Hide Loading
+                                _showLoading = false;
+                                notifyListeners();
+                                // Navigation
+                                error
+                                    ? null
+                                    : navigationService
+                                        .replaceWithSuccessfullyDone(
+                                            msg: "Transaction Added",
+                                            className: const DashboardView());
+                              },
+                              child: Text(
+                                "OK",
+                                style: TextStyle(
+                                  color: AppColors.primaryLight,
+                                  fontSize: width * 0.045,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  );
+                },
+              );
+              break;
+            } else {
+              if (budget == budgets.last) {
+                bool error = await transactionsService.addTransaction(
+                  transactionPrice: int.parse(balanceController.text),
+                  walletName: storeSelectedWallet["option"],
+                  category: storeSelectedCategory["option"],
+                  description: descriptionController.text,
+                  transactionType: "Expense",
+                );
+                // Hide Loading
+                _showLoading = false;
+                notifyListeners();
+                // Navigation
+                error
+                    ? null
+                    : navigationService.replaceWithSuccessfullyDone(
+                        msg: "Transaction Added",
+                        className: const DashboardView());
+              }
+            }
+          }
+        }
         // Add Transaction
-        transactionsService.addTransaction(
-          transactionPrice: int.parse(balanceController.text),
-          walletName: storeSelectedWallet["option"],
-          category: storeSelectedCategory["option"],
-          description: descriptionController.text,
-          transactionType: "Expense",
-        );
-        // Hide Loading
-        _showLoading = false;
-        notifyListeners();
-        // Navigation
-        navigationService.replaceWithSuccessfullyDone(
-            msg: "Transaction Added", className: const DashboardView());
       } catch (e) {
         // ignore: avoid_print
         print("Firebase Error : $e");

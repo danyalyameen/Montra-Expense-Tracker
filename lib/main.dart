@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:montra_expense_tracker/App/app.locator.dart';
 import 'package:montra_expense_tracker/App/app.router.dart';
-import 'package:montra_expense_tracker/Constants/Theme/app_theme.dart';
 import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -34,14 +33,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<CurrencyProvider>(context, listen: false).setDefaultCurrency();
     return MaterialApp(
       // Remove the debug banner
       debugShowCheckedModeBanner: false,
       // Generate Routes So that we can navigate with Navigation Service of Stacked
       onGenerateRoute: StackedRouter().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,
-      // Light Theme of App
-      theme: AppTheme().lightTheme,
     );
   }
 }

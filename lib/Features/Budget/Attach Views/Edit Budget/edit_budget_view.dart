@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Edit%20Budget/edit_budget_view_model.dart';
+import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/delete_sheet.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
 class EditBudgetView extends StackedView<EditBudgetViewModel> {
@@ -37,6 +39,7 @@ class EditBudgetView extends StackedView<EditBudgetViewModel> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: AppColors.primaryLight,
       appBar: blackAppBar(
         title: appBarTitle,
         width: width,
@@ -193,6 +196,7 @@ class _RemainingBalance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currencyProvider = Provider.of<CurrencyProvider>(context);
     return Column(
       children: [
         // Remaining
@@ -211,8 +215,8 @@ class _RemainingBalance extends StatelessWidget {
         // Remaining Balance
         Text(
           spendBalance > limitBalance
-              ? "\$0"
-              : "\$${limitBalance - spendBalance}",
+              ? "${currencyProvider.currency}0"
+              : "${currencyProvider.currency}${limitBalance - spendBalance}",
           style: TextStyle(
             color: AppColors.primaryBlack,
             fontSize: width * 0.15,

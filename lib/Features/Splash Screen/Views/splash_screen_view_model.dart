@@ -4,7 +4,8 @@ import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreenViewModel extends ViewModel {
-  void navigation() async {
+
+  Future<void> navigation() async {
     // Navigate to Onboarding View After the Delay of 3 seconds
     await Future.delayed(const Duration(seconds: 3));
     // Initialize Shared Preference So that we can check if the User is Logged In or Not
@@ -18,3 +19,5 @@ class SplashScreenViewModel extends ViewModel {
     }
   }
 }
+
+class PersonModel {}

@@ -30,6 +30,7 @@ class CustomBottomSheet extends StatefulWidget {
 class _CustomBottomSheetState extends State<CustomBottomSheet> {
   @override
   Widget build(BuildContext context) {
+    // Get Screen Size of a Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return InkWell(
@@ -57,6 +58,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            // Show Selected Category
             Padding(
               padding: EdgeInsets.only(left: width * 0.04),
               child: widget.storeSelectedItem["option"] == widget.hintText
@@ -70,6 +72,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                     )
                   : widget.showSelectedItemOnHintText,
             ),
+            // Icon
             Padding(
               padding: EdgeInsets.only(right: width * 0.035),
               child: SvgPicture.asset(
@@ -100,6 +103,7 @@ class BottomSheet {
     showModalBottomSheet(
       context: context,
       builder: (context) {
+        // White Colors Container Sheet
         return Container(
           height: height,
           width: double.infinity,
@@ -112,12 +116,14 @@ class BottomSheet {
           ),
           child: Column(
             children: [
+              // Items Shown By User
               showItems,
               Padding(
                 padding: EdgeInsets.only(bottom: buttonsBottomHight),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    // Cancel Button
                     SizedBox(
                       width: buttonWidth,
                       child: ElevatedButton(
@@ -139,6 +145,7 @@ class BottomSheet {
                         ),
                       ),
                     ),
+                    // Ok Button
                     SizedBox(
                       width: buttonWidth,
                       child: ElevatedButton(

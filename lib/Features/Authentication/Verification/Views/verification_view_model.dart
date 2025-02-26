@@ -18,6 +18,8 @@ class VerificationViewModel extends ViewModel {
   // Non Final Fields
   int startTimer = 120;
   Timer? _resendTimer;
+  // Get Non Final Fields
+  Timer? get resendTimer => _resendTimer;
 
   // Start Timer
   void startResendTimer() {

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Attach%20Views/Details%20Transaction/Views/details_transaction_view_model.dart';
@@ -50,6 +51,7 @@ class DetailsTransactionView extends StackedView<DetailsTransactionViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: AppColors.primaryLight,
       appBar: whiteAppBar(
         title: appBarTitle,
         width: width,
@@ -66,11 +68,9 @@ class DetailsTransactionView extends StackedView<DetailsTransactionViewModel> {
                 height: height,
                 title: title,
                 subtitle: subtitle,
-                onPressed: () {
+                onPressed: () async {
                   viewModel.transactionsService.deleteTransaction(time: time);
-                  viewModel.navigationService.popUntil(
-                    (route) => route.settings.name == "/dashboard-view",
-                  );
+                  viewModel.navigationService.replaceWithDashboardView();
                 },
               );
             },
@@ -213,7 +213,6 @@ class _Balance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     // Providers
     var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     // Format the date

@@ -4,8 +4,10 @@ import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view_model.dart';
+import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
 import 'package:montra_expense_tracker/Widgets/black_app_bar.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -24,6 +26,7 @@ class AccountView extends StackedView<AccountViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: AppColors.primaryLight,
       appBar: blackAppBar(
         title: appBarTitle,
         width: width,
@@ -87,6 +90,7 @@ class _AccountBalance extends ViewModelWidget<AccountViewModel> {
 
   @override
   Widget build(BuildContext context, AccountViewModel viewModel) {
+    final currencyProvider = Provider.of<CurrencyProvider>(context);
     return Stack(
       children: [
         // Background
@@ -138,7 +142,7 @@ class _AccountBalance extends ViewModelWidget<AccountViewModel> {
                     ),
                     // Balance
                     Text(
-                      "\$${snapshot.data}",
+                      "${currencyProvider.currency}${snapshot.data}",
                       style: TextStyle(
                         color: AppColors.primaryBlack,
                         fontWeight: FontWeight.w600,
@@ -171,6 +175,7 @@ class _AddedWallets extends ViewModelWidget<AccountViewModel> {
 
   @override
   Widget build(BuildContext context, AccountViewModel viewModel) {
+    final currencyProvider = Provider.of<CurrencyProvider>(context);
     return SizedBox(
       width: width * 0.9,
       height: height * 0.38,
@@ -259,7 +264,7 @@ class _AddedWallets extends ViewModelWidget<AccountViewModel> {
                       const Spacer(),
                       // Wallet Balance
                       Text(
-                        "\$${wallet.balance}",
+                        "${currencyProvider.currency}${wallet.balance}",
                         style: TextStyle(
                           color: AppColors.primaryBlack,
                           fontSize: width * 0.045,

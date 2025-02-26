@@ -15,6 +15,7 @@ void addOption({
   required BuildContext context,
   required bool addExpense,
 }) {
+  // Variables
   TextEditingController nameController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Color selectedColor = AppColors.primaryGreen;
@@ -27,6 +28,7 @@ void addOption({
         builder: (context, setState) {
           return AlertDialog(
             backgroundColor: AppColors.primaryLight,
+            // Title
             title: Text(
               title,
               style: TextStyle(
@@ -44,6 +46,7 @@ void addOption({
               ),
               child: Column(
                 children: [
+                  // Name Text Field
                   Form(
                     key: formKey,
                     child: CustomTextFormField(
@@ -63,9 +66,11 @@ void addOption({
                       },
                     ),
                   ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.015,
                   ),
+                  // Color Picker
                   InkWell(
                     onTap: () {
                       showColorPicker(
@@ -94,6 +99,7 @@ void addOption({
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          // Text
                           Text(
                             "Picked Color",
                             style: TextStyle(
@@ -102,6 +108,7 @@ void addOption({
                               fontWeight: FontWeight.w500,
                             ),
                           ),
+                          // Picked Color
                           Container(
                             width: width * 0.15,
                             height: height * 0.03,
@@ -114,12 +121,15 @@ void addOption({
                       ),
                     ),
                   ),
+                  // For Spacing
                   SizedBox(
                     height: height * 0.03,
                   ),
+                  // Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // Cancel Button
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
@@ -133,6 +143,7 @@ void addOption({
                           ),
                         ),
                       ),
+                      // OK button
                       CustomElevatedButton(
                         width: width * 0.3,
                         height: height * 0.7,
@@ -154,6 +165,7 @@ void addOption({
                                 ),
                               ),
                         onPressed: () async {
+                          // Add Option
                           if (formKey.currentState!.validate()) {
                             if (selectedColor != AppColors.primaryGreen) {
                               OptionService optionService =

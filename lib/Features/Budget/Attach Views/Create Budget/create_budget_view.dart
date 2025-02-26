@@ -127,6 +127,12 @@ class CreateBudgetView extends StackedView<CreateBudgetViewModel> {
   @override
   CreateBudgetViewModel viewModelBuilder(BuildContext context) =>
       CreateBudgetViewModel();
+
+  @override
+  void onDispose(CreateBudgetViewModel viewModel) {
+    viewModel.balanceController.dispose();
+    super.onDispose(viewModel);
+  }
 }
 
 class _BudgetBalance extends ViewModelWidget<CreateBudgetViewModel> {
@@ -141,7 +147,6 @@ class _BudgetBalance extends ViewModelWidget<CreateBudgetViewModel> {
 
   @override
   Widget build(BuildContext context, CreateBudgetViewModel viewModel) {
-    
     // Providers
     var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     return Padding(

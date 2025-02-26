@@ -18,6 +18,7 @@ class CurrencyView extends StackedView<CurrencyViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: AppColors.primaryLight,
       appBar: blackAppBar(
         title: appBarTitle,
         width: width,
@@ -35,8 +36,8 @@ class CurrencyView extends StackedView<CurrencyViewModel> {
           _CurrencyItems(
             width: width,
             height: height,
-            markSelected: ({required index}) {
-              viewModel.markSelected(index, context);
+            markSelected: ({required index}) async {
+              await viewModel.markSelected(index, context);
             },
           ),
         ],
@@ -54,7 +55,7 @@ class _CurrencyItems extends StatelessWidget {
   final Function({required int index}) markSelected;
   _CurrencyItems(
       {required this.width, required this.height, required this.markSelected});
-  
+
   // Variables
   final String currencyKey = "Currency";
   final String isSelectKey = "isSelect";

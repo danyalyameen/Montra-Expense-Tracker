@@ -34,6 +34,7 @@ class EditProfileView extends StackedView<EditProfileViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: AppColors.primaryLight,
       resizeToAvoidBottomInset: false,
       appBar: blackAppBar(
         title: appBarTitle,
@@ -97,6 +98,12 @@ class EditProfileView extends StackedView<EditProfileViewModel> {
   @override
   EditProfileViewModel viewModelBuilder(BuildContext context) =>
       EditProfileViewModel();
+
+  @override
+  void onDispose(EditProfileViewModel viewModel) {
+    viewModel.nameController.dispose();
+    super.onDispose(viewModel);
+  }
 }
 
 class _UserImage extends ViewModelWidget<EditProfileViewModel> {
@@ -134,7 +141,7 @@ class _UserImage extends ViewModelWidget<EditProfileViewModel> {
                       baseColor: Colors.grey.shade300,
                       highlightColor: Colors.grey.shade100,
                       child: Container(
-                        width: width * 0.35,
+                        width: width * 0.37,
                         decoration: BoxDecoration(
                           color: AppColors.primaryLight,
                           shape: BoxShape.circle,
@@ -167,33 +174,37 @@ class _UserImage extends ViewModelWidget<EditProfileViewModel> {
                         ValueListenableBuilder(
                           valueListenable: viewModel.imageError,
                           builder: (context, value, child) {
-                            return CircleAvatar(
-                              radius: width * 0.16,
-                              backgroundImage: viewModel.image == null
-                                  ? NetworkImage(
-                                      viewModel.imageService.getImage(
-                                          imageName: "user", userPicture: true),
-                                    )
-                                  : FileImage(viewModel.image!),
-                              backgroundColor: value
-                                  ? AppColors.primaryViolet
-                                  : Colors.transparent,
-                              onBackgroundImageError: (exception, stackTrace) {
-                                viewModel.imageError.value = true;
-                              },
-                              child: value
-                                  ? Padding(
-                                      padding:
-                                          EdgeInsets.only(top: height * 0.038),
-                                      child: ClipOval(
-                                        child: Icon(
-                                          Icons.person,
-                                          size: width * 0.5,
-                                          color: AppColors.grey,
+                            return Center(
+                              child: CircleAvatar(
+                                radius: width * 0.16,
+                                backgroundImage: viewModel.image == null
+                                    ? NetworkImage(
+                                        viewModel.imageService.getImage(
+                                            imageName: "user",
+                                            userPicture: true),
+                                      )
+                                    : FileImage(viewModel.image!),
+                                backgroundColor: value
+                                    ? AppColors.light60
+                                    : Colors.transparent,
+                                onBackgroundImageError:
+                                    (exception, stackTrace) {
+                                  viewModel.imageError.value = true;
+                                },
+                                child: value
+                                    ? Padding(
+                                        padding: EdgeInsets.only(
+                                            top: height * 0.024),
+                                        child: ClipOval(
+                                          child: Icon(
+                                            Icons.person,
+                                            size: width * 0.32,
+                                            color: AppColors.grey,
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  : null,
+                                      )
+                                    : null,
+                              ),
                             );
                           },
                         ),

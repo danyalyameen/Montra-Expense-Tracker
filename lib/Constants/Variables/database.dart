@@ -6,12 +6,12 @@ import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/V
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/About/Views/about_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart';
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_settings_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Views/settings_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart';
 import 'package:montra_expense_tracker/Features/Transaction/Views/transaction_view.dart';
 
 class Database {
+  // On Boarding Data
   static List<Map<String, dynamic>> onBoardingData = [
     {
       "Icon": IconsPath.gainMoney,
@@ -30,15 +30,12 @@ class Database {
       "Description": "Setup your budget for each category so you in control",
     },
   ];
-
+  
+  // Settings Data
   static List<Map<String, dynamic>> settingsData = [
     {
       "Title": "Currency",
       "Default-Selection": "USD",
-    },
-    {
-      "Title": "Notification",
-      "Default-Selection": "",
     },
     {
       "Title": "About",
@@ -49,7 +46,8 @@ class Database {
       "Default-Selection": "",
     },
   ];
-
+  
+  // Currencies
   static List<Map<String, dynamic>> currencyData = [
     {"Currency": "United States (USD)", "isSelect": true, "Symbol": "USD"},
     {"Currency": "Pakistan (PKR)", "isSelect": false, "Symbol": "PKR"},
@@ -59,19 +57,21 @@ class Database {
     {"Currency": "Germany (EUR)", "isSelect": false, "Symbol": "EUR"},
     {"Currency": "Korea (WON)", "isSelect": false, "Symbol": "WON"},
   ];
-
+  
+  // Navigation Views
   static List navigationViewsForSettings = [
     const CurrencyView(),
-    const NotificationSettingsView(),
     const AboutView(),
     const HelpView(),
   ];
-
+  
+  // Navigation Views For Profile
   static List navigationViewsForProfile = [
     const AccountView(),
     const SettingsView(),
   ];
-
+  
+  // Profile Data
   static List<Map<String, dynamic>> profileData = [
     {
       "Icon": IconsPath.account,
@@ -92,7 +92,8 @@ class Database {
       "Background-Color": AppColors.logoutBackground,
     },
   ];
-
+  
+  // Months
   static List<String> months = [
     "January",
     "February",
@@ -108,33 +109,7 @@ class Database {
     "December",
   ];
 
-  static List<Map<String, dynamic>> financialReport = [
-    {
-      "Background": AppColors.primaryRed,
-      "Title": "This Month",
-      "Description": "You Spend 💸",
-      "Spend": 332,
-      "Biggest-Spending-Title": "Your Biggest Spending is from",
-      "Biggest-Spending": 120,
-      "Category": "Shopping",
-      "Icon": IconsPath.shopping,
-      "Icon-Color": AppColors.primaryYellow,
-      "Icon-Background": AppColors.yellow20,
-    },
-    {
-      "Background": AppColors.primaryGreen,
-      "Title": "This Month",
-      "Description": "You Earned 💰",
-      "Spend": 6000,
-      "Biggest-Spending-Title": "Your Biggest Income is from",
-      "Biggest-Spending": 5000,
-      "Category": "Salary",
-      "Icon": IconsPath.money,
-      "Icon-Color": AppColors.primaryGreen,
-      "Icon-Background": AppColors.green20,
-    },
-  ];
-
+  // Bottom Navigation
   static List<Map<String, dynamic>> bottomNavigationData = [
     {
       "Icon": IconsPath.home,
@@ -153,63 +128,33 @@ class Database {
       "Title": "Profile",
     },
   ];
-
+  
+  // Navigation Views
   static List bottomNavigationViews = [
     const DashboardUI(),
     const TransactionView(),
     const BudgetView(),
     const ProfileView(),
   ];
-
-  static List<Map<String, dynamic>> notificationsData = [
-    {
-      "Title": "Shopping budget has exceeds the limit",
-      "Description": "Your shopping budget has exceeds the limit",
-      "Time": "19.30",
-    },
-    {
-      "Title": "Utilities budget has exceeds the limit",
-      "Description": "Your utilities budget has exceeds the limit",
-      "Time": "17.28",
-    },
-    {
-      "Title": "Travel budget has exceeds the limit",
-      "Description": "Your travel budget has exceeds the limit",
-      "Time": "23.07",
-    },
-  ];
-
+  
+  // Types of Account
   static List<String> accountTypes = [
     "Wallet",
     "Bank",
   ];
-
-  static List<String> menuItems = [
-    "Mark All Read",
-    "Remove all",
-  ];
-
+  
+  // filter Options
   static List<String> filterbyData = [
     "Income",
     "Expense",
     "Transfer",
   ];
-
+  
+  // Sort Options
   static List<String> sortbyData = [
     "Highest",
     "Lowest",
     "Newest",
     "Oldest",
-  ];
-
-  static List<Map<String, dynamic>> attachmentData = [
-    {
-      "Icon": IconsPath.camera,
-      "Title": "Camera",
-    },
-    {
-      "Icon": IconsPath.gallery,
-      "Title": "Gallery",
-    },
   ];
 }

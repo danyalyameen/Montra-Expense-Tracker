@@ -34,6 +34,7 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: AppColors.primaryLight,
       body: Column(
         children: [
           // Main Onboarding Items

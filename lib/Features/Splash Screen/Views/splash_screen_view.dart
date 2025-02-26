@@ -11,11 +11,11 @@ class SplashScreenView extends StackedView<SplashScreenViewModel> {
 
   // This Function is Called when the Screen is Ready to View
   @override
-  void onViewModelReady(SplashScreenViewModel viewModel) {
+  void onViewModelReady(SplashScreenViewModel viewModel) async {
     // Change Notification Bar Color
     viewModel.notificationBarService.whiteNotificationBar();
-    // Navigate After 3 seconds
-    viewModel.navigation();
+    // Navigation
+    await viewModel.navigation();
     super.onViewModelReady(viewModel);
   }
 

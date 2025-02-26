@@ -20,6 +20,7 @@ class CategoryBottomSheet extends StatefulWidget {
 }
 
 class _CategoryState extends State<CategoryBottomSheet> {
+  // Variables
   final String createCategory = "Create Category";
   final NavigationService navigationService = locator<NavigationService>();
 
@@ -29,6 +30,7 @@ class _CategoryState extends State<CategoryBottomSheet> {
     final double height = MediaQuery.of(context).size.height;
     return Padding(
       padding: EdgeInsets.only(top: height * 0.05),
+      // Custom Bottom Sheet For UI like Text Field
       child: CustomBottomSheet(
         buttonsBottomHight: height * 0.08,
         buttonText: createCategory,
@@ -36,6 +38,7 @@ class _CategoryState extends State<CategoryBottomSheet> {
         bottomSheetHight: height * 0.29,
         hintText: widget.dropDown,
         storeSelectedItem: widget.storeSelectedCategory,
+        // Show Items
         showItems: _ShowItemsForCategory(
           width: width,
           height: height,
@@ -48,11 +51,13 @@ class _CategoryState extends State<CategoryBottomSheet> {
             setState(() {});
           },
         ),
+        // Selected Item
         showSelectedItemOnHintText: _ShowSelectedCategory(
           width: width,
           height: height,
           storeSelectedCategory: widget.storeSelectedCategory,
         ),
+        // On Pressed
         onPressed: () {
           Navigator.pop(context);
           widget.onPressed();
@@ -86,6 +91,7 @@ class _ShowSelectedCategory extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Selected Category Name
             Padding(
               padding: EdgeInsets.all(width * 0.02),
               child: Text(
@@ -94,9 +100,11 @@ class _ShowSelectedCategory extends StatelessWidget {
                     color: AppColors.primaryBlack, fontWeight: FontWeight.w500),
               ),
             ),
+            // For Spacing
             SizedBox(
               width: width * 0.02,
             ),
+            // Selected Category Color
             Padding(
               padding: EdgeInsets.only(right: width * 0.04),
               child: CircleAvatar(
@@ -130,6 +138,7 @@ class _ShowItemsForCategory extends StatelessWidget {
       child: FutureBuilder<List>(
         future: data,
         builder: (context, snapshot) {
+          // Loading STate
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -158,6 +167,7 @@ class _ShowItemsForCategory extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        // Option Means Category
                         Padding(
                           padding: const EdgeInsets.all(10),
                           child: Text(
@@ -167,9 +177,11 @@ class _ShowItemsForCategory extends StatelessWidget {
                             ),
                           ),
                         ),
+                        // For Spacing
                         SizedBox(
                           width: width * 0.02,
                         ),
+                        // Color
                         Padding(
                           padding: EdgeInsets.only(right: width * 0.04),
                           child: CircleAvatar(

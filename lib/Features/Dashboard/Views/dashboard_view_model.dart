@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Custom%20Classes/custom_view_model.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
 
@@ -8,12 +7,7 @@ class DashboardViewModel extends ViewModel {
 
   // Non Final Felds
   int currentIndexForBottomNavigation = 0;
-  bool imageError = false;
-
-  // Navigate to Notification View
-  void notificationNavigation() {
-    navigationService.navigateToNotificationView();
-  }
+  ValueNotifier<bool> imageError = ValueNotifier(false);
 
   // Update the Current Index of Bottom Navigation and Update the UI
   void updateIndexForBottomNavigation(int index) {

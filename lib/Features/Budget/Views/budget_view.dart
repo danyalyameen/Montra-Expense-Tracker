@@ -5,8 +5,10 @@ import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
 import 'package:montra_expense_tracker/Features/Budget/Views/budget_view_model.dart';
+import 'package:montra_expense_tracker/Providers/Currency/currency_provider.dart';
 import 'package:montra_expense_tracker/Widgets/custom_elevated_button.dart';
 import 'package:montra_expense_tracker/Widgets/white_app_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
@@ -128,6 +130,7 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
 
   @override
   Widget build(BuildContext context, BudgetViewModel viewModel) {
+    final currencyProvider = Provider.of<CurrencyProvider>(context);
     return FutureBuilder(
       future: viewModel.budgetService.fetchBudget(month: viewModel.index + 1),
       builder: (context, budgets) {
@@ -338,8 +341,8 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
                                         EdgeInsets.only(left: width * 0.04),
                                     child: Text(
                                       spend > budget.balance!
-                                          ? "Remaining \$0"
-                                          : "Remaining \$${budget.balance! - spend}",
+                                          ? "Remaining ${currencyProvider.currency}0"
+                                          : "Remaining ${currencyProvider.currency}${budget.balance! - spend}",
                                       style: TextStyle(
                                         color: AppColors.primaryBlack,
                                         fontSize: width * 0.06,
@@ -396,7 +399,7 @@ class _BudgetItemUI extends ViewModelWidget<BudgetViewModel> {
                                     padding: EdgeInsets.only(
                                         top: height * 0.01, left: width * 0.04),
                                     child: Text(
-                                      "\$$spend of \$${budget.balance}",
+                                      "${currencyProvider.currency}$spend of ${currencyProvider.currency}${budget.balance}",
                                       style: TextStyle(
                                         color: AppColors.grey,
                                         fontSize: width * 0.045,

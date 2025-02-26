@@ -35,7 +35,9 @@ class EditProfileViewModel extends ViewModel {
               userPicture: true, imageFile: image, imageUploadName: "user");
         }
         await firestore.doc(auth.getUser()!.uid).update(
-              PersonData(name: nameController.text).receive(),
+              PersonData(
+                      name: nameController.text, imageUploaded: image != null)
+                  .receive(),
             );
         showLoading.value = false;
         Fluttertoast.showToast(

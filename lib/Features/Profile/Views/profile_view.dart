@@ -4,8 +4,12 @@ import 'package:montra_expense_tracker/App/app.router.dart';
 import 'package:montra_expense_tracker/Constants/Theme/app_colors.dart';
 import 'package:montra_expense_tracker/Constants/Variables/database.dart';
 import 'package:montra_expense_tracker/Constants/Variables/icons_path.dart';
+import 'package:montra_expense_tracker/Constants/Variables/variables.dart';
 import 'package:montra_expense_tracker/Features/Profile/Views/profile_view_model.dart';
 import 'package:montra_expense_tracker/Models/person_model.dart';
+import 'package:montra_expense_tracker/Widgets/delete_sheet.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
@@ -30,11 +34,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
               height: height * 0.05,
             ),
             // Profile Pages
-            _ProfilePages(
-              navigate: ({required index}) {
-                viewModel.navigation(index: index);
-              },
-            ),
+            _ProfilePages(),
           ],
         ),
       ),
@@ -95,6 +95,7 @@ class _UserAccount extends ViewModelWidget<ProfileViewModel> {
           onTap: () async {
             await viewModel.navigationService
                 .navigateToEditProfileView(name: userDetails.name!);
+            viewModel.imageError.value = false;
             viewModel.notifyListeners();
           },
           child: Container(
@@ -136,12 +137,12 @@ class _UserAccount extends ViewModelWidget<ProfileViewModel> {
                         child: CircleAvatar(
                           radius: width * 0.08,
                           backgroundColor: value
-                              ? AppColors.primaryViolet
+                              ? AppColors.primaryBlue
                               : Colors.transparent,
-                          backgroundImage: value
-                              ? null
-                              : NetworkImage(viewModel.imageService.getImage(
-                                  userPicture: true, imageName: "user")),
+                          backgroundImage: NetworkImage(
+                            viewModel.imageService
+                                .getImage(userPicture: true, imageName: "user"),
+                          ),
                           child: value
                               ? Text(userDetails.name![0].toUpperCase(),
                                   style: TextStyle(
@@ -179,12 +180,16 @@ class _UserAccount extends ViewModelWidget<ProfileViewModel> {
                       height: height * 0.005,
                     ),
                     // Username
-                    Text(
-                      userDetails.name!,
-                      style: TextStyle(
-                        color: AppColors.primaryLight,
-                        fontSize: width * 0.045,
-                        fontWeight: FontWeight.w600,
+                    SizedBox(
+                      width: width * 0.4,
+                      child: Text(
+                        userDetails.name!,
+                        softWrap: true,
+                        style: TextStyle(
+                          color: AppColors.primaryLight,
+                          fontSize: width * 0.045,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -211,8 +216,7 @@ class _UserAccount extends ViewModelWidget<ProfileViewModel> {
 }
 
 class _ProfilePages extends StatelessWidget {
-  final Function({required int index}) navigate;
-  _ProfilePages({required this.navigate});
+  _ProfilePages();
 
   // Variables
   final String profileDataIconKey = "Icon";
@@ -223,6 +227,7 @@ class _ProfilePages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<ProfileViewModel>(context);
     // Get Screen Size of a Device
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -240,7 +245,24 @@ class _ProfilePages extends StatelessWidget {
             // Each Profile Page
             return InkWell(
               onTap: () {
-                navigate(index: index);
+                index < 2
+                    ? viewModel.navigation(index: index)
+                    : Delete.showSheet(
+                        context: context,
+                        width: width,
+                        height: height,
+                        title: "Logout",
+                        subtitle: "Are you sure you want to logout?",
+                        onPressed: () async {
+                          viewModel.auth.signOut();
+                          SharedPreferences sharedPreferences =
+                              await SharedPreferences.getInstance();
+                          sharedPreferences.setBool(
+                              Variables.loggedInKey, false);
+                          viewModel.navigationService
+                              .replaceWithOnBoardingView();
+                        },
+                      );
               },
               child: ListTile(
                 minTileHeight: height * 0.07,

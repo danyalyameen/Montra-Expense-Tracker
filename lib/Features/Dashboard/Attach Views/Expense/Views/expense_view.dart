@@ -129,7 +129,8 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                    onPressed: () => viewModel.addExpenseTransactionCompleted(),
+                    onPressed: () => viewModel.addExpenseTransactionCompleted(
+                        context: context),
                   )
                 ],
               ),
@@ -142,6 +143,13 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
 
   @override
   ExpenseViewModel viewModelBuilder(BuildContext context) => ExpenseViewModel();
+
+  @override
+  void onDispose(ExpenseViewModel viewModel) {
+    viewModel.balanceController.dispose();
+    viewModel.descriptionController.dispose();
+    super.onDispose(viewModel);
+  }
 }
 
 class _Balance extends StatelessWidget {
@@ -154,7 +162,6 @@ class _Balance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     // Providers
     var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     return Padding(

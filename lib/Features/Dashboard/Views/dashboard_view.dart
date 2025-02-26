@@ -11,7 +11,6 @@ import 'package:montra_expense_tracker/Widgets/user_transactions.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 class DashboardView extends StackedView<DashboardViewModel> {
   const DashboardView({super.key});
@@ -30,6 +29,7 @@ class DashboardView extends StackedView<DashboardViewModel> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: AppColors.primaryLight,
       // Navigation of Different UIs
       body: Stack(
         children: [
@@ -39,8 +39,7 @@ class DashboardView extends StackedView<DashboardViewModel> {
           _ShowOrHide(
             width: width,
             height: height,
-            navigationService: viewModel.navigationService,
-          ),
+          )
         ],
       ),
       // Floating Action Button Location
@@ -56,6 +55,7 @@ class DashboardView extends StackedView<DashboardViewModel> {
       // Bottom Navigation Bar
       bottomNavigationBar: BottomAppBar(
         height: height * 0.0956,
+        color: AppColors.primaryLight,
         child: _BottomNavigation(
           width: width,
           height: height,
@@ -102,7 +102,6 @@ class DashboardUI extends ViewModelWidget<DashboardViewModel> {
               _TopNavigation(
                 height: height,
                 width: width,
-                navigationNotification: viewModel.notificationNavigation,
               ),
               // For Spacing
               SizedBox(
@@ -132,11 +131,9 @@ class DashboardUI extends ViewModelWidget<DashboardViewModel> {
 
 class _TopNavigation extends ViewModelWidget<DashboardViewModel> {
   final double height, width;
-  final Function navigationNotification;
   const _TopNavigation({
     required this.height,
     required this.width,
-    required this.navigationNotification,
   });
 
   @override
@@ -144,53 +141,43 @@ class _TopNavigation extends ViewModelWidget<DashboardViewModel> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: width * 0.03),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           // Account Picture
           FutureBuilder(
-              future: Future.wait([
-                precacheImage(
-                    NetworkImage(
-                      viewModel.imageService.getImage(
-                        userPicture: true,
-                        imageName: Variables.userPictureName,
+            future: viewModel.getFirstLetterOfName(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.light80,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        width: width * 0.008,
+                        color: AppColors.violet60,
                       ),
                     ),
-                    context),
-                viewModel.getFirstLetterOfName()
-              ]),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.light80,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          width: width * 0.008,
-                          color: AppColors.violet60,
-                        ),
-                      ),
-                      child: CircleAvatar(
-                        backgroundColor: AppColors.primaryViolet,
-                        radius: width * 0.04,
-                      ),
-                    ),
-                  );
-                }
-                // First Letter of Name
-                var data = snapshot.data![1] as String;
-                return Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppColors.violet60,
-                      width: width * 0.006,
+                    child: CircleAvatar(
+                      backgroundColor: AppColors.primaryViolet,
+                      radius: width * 0.04,
                     ),
                   ),
-                  child: Padding(
+                );
+              }
+              return ValueListenableBuilder(
+                valueListenable: viewModel.imageError,
+                builder: (context, value, child) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.violet60,
+                        width: width * 0.006,
+                      ),
+                    ),
                     padding: EdgeInsets.all(width * 0.005),
                     child: CircleAvatar(
                       radius: width * 0.04,
@@ -201,13 +188,13 @@ class _TopNavigation extends ViewModelWidget<DashboardViewModel> {
                           imageName: Variables.userPictureName,
                         ),
                       ),
-                      child: viewModel.imageError
+                      child: viewModel.imageError.value
                           ? ClipOval(
                               child: Container(
                                 color: AppColors.primaryViolet,
                                 child: Center(
                                   child: Text(
-                                    data,
+                                    snapshot.data!,
                                     style: TextStyle(
                                       color: AppColors.primaryLight,
                                     ),
@@ -218,38 +205,26 @@ class _TopNavigation extends ViewModelWidget<DashboardViewModel> {
                           : null,
                       // Show First Letter Incase of No Profile Picture
                       onBackgroundImageError: (exception, stackTrace) {
-                        viewModel.imageError = true;
-                        viewModel.notifyListeners();
+                        viewModel.imageError.value = true;
                       },
                     ),
-                  ),
-                );
-              }),
-          // Screen Name
-          Text(
-            "Dashboard",
-            style: TextStyle(
-              color: AppColors.primaryBlack,
-              fontSize: width * 0.045,
-              fontWeight: FontWeight.w600,
-            ),
+                  );
+                },
+              );
+            },
           ),
-          // Notification
-          Center(
-            child: InkWell(
-              borderRadius: BorderRadius.circular(width),
-              onTap: () => navigationNotification(),
-              child: SvgPicture.asset(
-                IconsPath.notification,
-                width: width * 0.08,
-                height: width * 0.08,
-                colorFilter: ColorFilter.mode(
-                  AppColors.primaryViolet,
-                  BlendMode.srcIn,
-                ),
+          // Screen Name
+          Padding(
+            padding: EdgeInsets.only(left: width * 0.26),
+            child: Text(
+              "Dashboard",
+              style: TextStyle(
+                color: AppColors.primaryBlack,
+                fontSize: width * 0.045,
+                fontWeight: FontWeight.w600,
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -615,120 +590,179 @@ class _FAB extends StatelessWidget {
   }
 }
 
-class _ShowOrHide extends ViewModelWidget<DashboardViewModel> {
+class _ShowOrHide extends StatefulWidget {
   final double width, height;
-  final NavigationService navigationService;
-  const _ShowOrHide(
-      {required this.navigationService,
-      required this.width,
-      required this.height});
+
+  const _ShowOrHide({
+    required this.width,
+    required this.height,
+  });
 
   @override
-  Widget build(BuildContext context, DashboardViewModel viewModel) {
+  State<_ShowOrHide> createState() => _ShowOrHideState();
+}
+
+class _ShowOrHideState extends State<_ShowOrHide>
+    with TickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _transformAnimation, _sizeAnimation, _fadeAnimation;
+
+  @override
+  void initState() {
+    // Initialize Controller
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    // Transform Animation
+    _transformAnimation =
+        Tween<double>(begin: widget.height * 0.7, end: widget.height * 0.68)
+            .animate(_animationController);
+    // Size Animation
+    _sizeAnimation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_animationController);
+    // Fade Animation
+    _fadeAnimation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_animationController);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = Provider.of<DashboardViewModel>(context, listen: false);
     return ValueListenableBuilder(
       valueListenable: viewModel.showItems,
       builder: (context, value, child) {
-        return value
-            ? Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  // Gradient
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.primaryViolet.withValues(alpha: 0.45),
-                      AppColors.primaryViolet.withValues(alpha: 0),
-                    ],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(top: height * 0.68),
-                  child: Column(
-                    children: [
-                      // Transfer View Widget Icon
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () async {
-                              viewModel.showItems.value = false;
-                              await navigationService.navigateToTransferView();
-                              viewModel.notifyListeners();
-                            },
-                            child: CircleAvatar(
-                              radius: width * 0.07,
-                              backgroundColor: AppColors.primaryBlue,
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  IconsPath.currencyExchange,
-                                  width: width * 0.09,
-                                  height: width * 0.09,
-                                  colorFilter: ColorFilter.mode(
-                                      AppColors.primaryLight, BlendMode.srcIn),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      // For Spacing
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                      // Income View Widget Icon
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              navigationService.navigateToIncomeView();
-                              viewModel.showItems.value = false;
-                            },
-                            child: CircleAvatar(
-                              radius: width * 0.07,
-                              backgroundColor: AppColors.primaryGreen,
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  IconsPath.income,
-                                  width: width * 0.09,
-                                  height: width * 0.09,
-                                  colorFilter: ColorFilter.mode(
-                                      AppColors.primaryLight, BlendMode.srcIn),
-                                ),
-                              ),
+        if (value) {
+          _animationController.forward();
+        } else {
+          _animationController.reverse();
+        }
+        return AnimatedBuilder(
+          animation: _animationController,
+          builder: (context, child) {
+            return Stack(
+              children: [
+                value
+                    ? Opacity(
+                        opacity: _fadeAnimation.value,
+                        child: Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          decoration: BoxDecoration(
+                            // Gradient
+                            gradient: LinearGradient(
+                              colors: [
+                                AppColors.primaryViolet.withValues(alpha: 0.45),
+                                AppColors.primaryViolet.withValues(alpha: 0),
+                              ],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
                             ),
                           ),
-                          // For Spacing
-                          SizedBox(
-                            width: width * 0.25,
-                          ),
-                          // Expense View Widget Icon
-                          InkWell(
-                            onTap: () {
-                              navigationService.navigateToExpenseView();
-                              viewModel.showItems.value = false;
-                            },
-                            child: CircleAvatar(
-                              radius: width * 0.07,
-                              backgroundColor: AppColors.primaryRed,
-                              child: SvgPicture.asset(
-                                IconsPath.expense,
-                                width: width * 0.09,
-                                height: width * 0.09,
-                                colorFilter: ColorFilter.mode(
-                                    AppColors.primaryLight, BlendMode.srcIn),
-                              ),
-                            ),
-                          )
-                        ],
+                        ),
                       )
-                    ],
+                    : const SizedBox(),
+                Transform.scale(
+                  scale: _sizeAnimation.value,
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: _transformAnimation.value),
+                    child: Column(
+                      children: [
+                        // Transfer View Widget Icon
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                viewModel.showItems.value = false;
+                                viewModel.navigationService
+                                    .navigateToTransferView();
+                              },
+                              child: CircleAvatar(
+                                radius: widget.width * 0.07,
+                                backgroundColor: AppColors.primaryBlue,
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    IconsPath.currencyExchange,
+                                    width: widget.width * 0.09,
+                                    height: widget.width * 0.09,
+                                    colorFilter: ColorFilter.mode(
+                                        AppColors.primaryLight,
+                                        BlendMode.srcIn),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        // For Spacing
+                        SizedBox(
+                          height: widget.height * 0.02,
+                        ),
+                        // Income View Widget Icon
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                viewModel.showItems.value = false;
+                                viewModel.navigationService
+                                    .navigateToIncomeView();
+                              },
+                              child: CircleAvatar(
+                                radius: widget.width * 0.07,
+                                backgroundColor: AppColors.primaryGreen,
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    IconsPath.income,
+                                    width: widget.width * 0.09,
+                                    height: widget.width * 0.09,
+                                    colorFilter: ColorFilter.mode(
+                                        AppColors.primaryLight,
+                                        BlendMode.srcIn),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // For Spacing
+                            SizedBox(
+                              width: widget.width * 0.25,
+                            ),
+                            // Expense View Widget Icon
+                            InkWell(
+                              onTap: () {
+                                viewModel.showItems.value = false;
+                                viewModel.navigationService
+                                    .navigateToExpenseView();
+                              },
+                              child: CircleAvatar(
+                                radius: widget.width * 0.07,
+                                backgroundColor: AppColors.primaryRed,
+                                child: SvgPicture.asset(
+                                  IconsPath.expense,
+                                  width: widget.width * 0.09,
+                                  height: widget.width * 0.09,
+                                  colorFilter: ColorFilter.mode(
+                                      AppColors.primaryLight, BlendMode.srcIn),
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              )
-            : const SizedBox();
+              ],
+            );
+          },
+        );
       },
     );
   }

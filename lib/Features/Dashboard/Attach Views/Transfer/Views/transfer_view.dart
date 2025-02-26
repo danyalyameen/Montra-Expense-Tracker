@@ -129,6 +129,15 @@ class TransferView extends StackedView<TransferViewModel> {
   @override
   TransferViewModel viewModelBuilder(BuildContext context) =>
       TransferViewModel();
+
+  @override
+  void onDispose(TransferViewModel viewModel) {
+    viewModel.balanceController.dispose();
+    viewModel.descriptionController.dispose();
+    viewModel.fromController.dispose();
+    viewModel.toController.dispose();
+    super.onDispose(viewModel);
+  }
 }
 
 class _Balance extends StatelessWidget {

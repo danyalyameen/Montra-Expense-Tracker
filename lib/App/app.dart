@@ -12,7 +12,6 @@ import 'package:montra_expense_tracker/Features/Budget/Attach%20Views/Edit%20Bud
 import 'package:montra_expense_tracker/Features/Budget/Views/budget_view.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Expense/Views/expense_view.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Income/Views/income_view.dart';
-import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Notification/Views/notification_view.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Views/dashboard_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Attach%20View/Account%20Details/Views/account_details.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Account/Views/account_view.dart';
@@ -20,7 +19,6 @@ import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Edit%20Pr
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/About/Views/about_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Currency/Views/currency_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Help/Views/help_view.dart';
-import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Attach%20Views/Notification/Views/notification_settings_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Attach%20Views/Settings/Views/settings_view.dart';
 import 'package:montra_expense_tracker/Features/Profile/Views/profile_view.dart';
 import 'package:montra_expense_tracker/Features/Dashboard/Attach%20Views/Transfer/Views/transfer_view.dart';
@@ -36,42 +34,86 @@ import 'package:montra_expense_tracker/Service/Options/option_service.dart';
 import 'package:montra_expense_tracker/Service/Transactions/transaction_service.dart';
 import 'package:montra_expense_tracker/Service/Wallets/wallet_service.dart';
 import 'package:montra_expense_tracker/Widgets/successfully_done.dart';
+import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 @StackedApp(
   routes: [
-    MaterialRoute(page: SplashScreenView, initial: true),
-    MaterialRoute(page: OnBoardingView),
-    MaterialRoute(page: SignUpView),
-    MaterialRoute(page: LoginView),
-    MaterialRoute(page: VerificationView),
-    MaterialRoute(page: UserPictureView),
-    MaterialRoute(page: SetupPinView),
-    MaterialRoute(page: ForgetPasswordView),
-    MaterialRoute(page: SetupAccountView),
-    MaterialRoute(page: SetupWalletView),
-    MaterialRoute(page: SuccessfullyDone),
-    MaterialRoute(page: DashboardView),
-    MaterialRoute(page: NotificationView),
-    MaterialRoute(page: TransactionView),
-    MaterialRoute(page: FinancialReportSummaryView),
-    MaterialRoute(page: DetailsTransactionView),
-    MaterialRoute(page: IncomeView),
-    MaterialRoute(page: TransferView),
-    MaterialRoute(page: ExpenseView),
-    MaterialRoute(page: BudgetView),
-    MaterialRoute(page: CreateBudgetView),
-    MaterialRoute(page: EditBudgetView),
-    MaterialRoute(page: ProfileView),
-    MaterialRoute(page: EditProfileView),
-    MaterialRoute(page: AccountView),
-    MaterialRoute(page: AccountDetails),
-    MaterialRoute(page: SettingsView),
-    MaterialRoute(page: CurrencyView),
-    MaterialRoute(page: NotificationSettingsView),
-    MaterialRoute(page: AboutView),
-    MaterialRoute(page: HelpView),
+    CustomRoute(
+        page: SplashScreenView,
+        initial: true,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: OnBoardingView,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: SignUpView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: LoginView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: VerificationView,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: UserPictureView,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: SetupPinView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: ForgetPasswordView,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: SetupAccountView,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: SetupWalletView,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: SuccessfullyDone,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: DashboardView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: TransactionView,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: FinancialReportSummaryView,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: DetailsTransactionView,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: IncomeView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: TransferView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: ExpenseView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: BudgetView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: CreateBudgetView,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: EditBudgetView,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: ProfileView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: EditProfileView,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: AccountView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: AccountDetails,
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: SettingsView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: CurrencyView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: AboutView, transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(
+        page: HelpView, transitionsBuilder: TransitionsBuilders.slideLeft),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

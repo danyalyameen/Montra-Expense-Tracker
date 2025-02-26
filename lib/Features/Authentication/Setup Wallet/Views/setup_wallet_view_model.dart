@@ -97,7 +97,7 @@ class SetupWalletViewModel extends ViewModel {
           return;
         }
         // Make Account Setup Completed True
-        personData.accountSetupCompleted == null ||
+        personData.accountSetupCompleted != null &&
                 personData.accountSetupCompleted == true
             ? null
             : await firestore
@@ -108,8 +108,7 @@ class SetupWalletViewModel extends ViewModel {
         notifyListeners();
         // Navigate to Dashboard
         navigationService.replaceWithSuccessfullyDone(
-            msg: "Account Setup Successfully",
-            className: const DashboardView());
+            msg: "Successfully", className: const DashboardView());
       }
     } catch (e) {
       // ignore: avoid_print

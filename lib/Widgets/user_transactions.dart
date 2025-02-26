@@ -32,6 +32,7 @@ class UserTransactions extends StatefulWidget {
 class _UserTransactionsState extends State<UserTransactions> {
   @override
   Widget build(BuildContext context) {
+    // Get Screen Size of a Device
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     // Providers
@@ -42,6 +43,7 @@ class _UserTransactionsState extends State<UserTransactions> {
       child: FutureBuilder<List<Transactions>>(
         future: widget.transactions,
         builder: (context, snapshot) {
+          // Loading State
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: ListView(
@@ -66,6 +68,7 @@ class _UserTransactionsState extends State<UserTransactions> {
               ),
             );
           }
+          // Check Data is not null and not empty
           if (snapshot.data != null) {
             if (snapshot.data!.isNotEmpty) {
               return FutureBuilder<List<Map<String, dynamic>>?>(
@@ -77,6 +80,7 @@ class _UserTransactionsState extends State<UserTransactions> {
                         ? snapshot.data!.length
                         : widget.itemCount,
                     itemBuilder: (context, index) {
+                      // Loading State
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Container();
                       }
@@ -85,6 +89,7 @@ class _UserTransactionsState extends State<UserTransactions> {
                         final icon = icons.data![index];
                         return InkWell(
                           onTap: () async {
+                            // Navigate to Details Transaction View
                             await widget.navigationService
                                 .navigateToDetailsTransactionView(
                               balance: transaction.transactionPrice.toString(),
@@ -112,6 +117,7 @@ class _UserTransactionsState extends State<UserTransactions> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                // Icon
                                 Padding(
                                   padding: EdgeInsets.only(left: width * 0.04),
                                   child: Container(
@@ -138,6 +144,7 @@ class _UserTransactionsState extends State<UserTransactions> {
                                     ),
                                   ),
                                 ),
+                                // Title and Description
                                 Padding(
                                   padding: EdgeInsets.only(
                                       top: height * 0.02, left: width * 0.04),
@@ -145,6 +152,7 @@ class _UserTransactionsState extends State<UserTransactions> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      // Title
                                       Text(
                                         transaction.type! == "Transfer"
                                             ? "${transaction.category!.split(',').first} To ${transaction.category!.split(',').last}"
@@ -155,9 +163,11 @@ class _UserTransactionsState extends State<UserTransactions> {
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
+                                      // For Spacing
                                       SizedBox(
                                         height: height * 0.002,
                                       ),
+                                      // Description
                                       Text(
                                         transaction.description!.length > 20
                                             ? "${transaction.description!.substring(0, 20)}..."
@@ -171,7 +181,9 @@ class _UserTransactionsState extends State<UserTransactions> {
                                     ],
                                   ),
                                 ),
+                                // For Spacing
                                 const Spacer(),
+                                // Price and Time
                                 Padding(
                                   padding: EdgeInsets.only(
                                       right: width * 0.04, top: height * 0.02),

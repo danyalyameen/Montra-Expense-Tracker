@@ -101,6 +101,13 @@ class SetupWalletView extends StackedView<SetupWalletViewModel> {
   @override
   SetupWalletViewModel viewModelBuilder(BuildContext context) =>
       SetupWalletViewModel();
+
+  @override
+  void onDispose(SetupWalletViewModel viewModel) {
+    viewModel.nameController.dispose();
+    viewModel.balanceController.dispose();
+    super.onDispose(viewModel);
+  }
 }
 
 class _Balance extends ViewModelWidget<SetupWalletViewModel> {
@@ -116,7 +123,6 @@ class _Balance extends ViewModelWidget<SetupWalletViewModel> {
 
   @override
   Widget build(BuildContext context, SetupWalletViewModel viewModel) {
-    
     // Providers
     var currencyProvider = Provider.of<CurrencyProvider>(context, listen: true);
     return Padding(
